@@ -1199,7 +1199,7 @@ public class Table {
                 query.append(" WHERE ").append(selectWhere);
             }
 
-            String sortClause = "";
+            //String sortClause = "";
             if (sortColumn != null && !"".equals(sortColumn)) {
                 query.append(" ORDER BY ").append(sortColumn).append(' ').append(settings.getSortOrder());
             }
@@ -1320,9 +1320,22 @@ public class Table {
                                 int eSize = exportedIDs.get(i - 1).size();
                                 if (eSize > 0) {
                                     for (int c = 0; c < eSize; c++) {
-                                        int z = exportedIDs.get(i - 1).get(c);
+                                        List<Integer> ids = exportedIDs.get(i - 1);
+                                        int z = ids.get(c);
                                         String fTable = exportedKeys.getForeignTable(z);
-                                        out.printTH(fTable);
+                                        // Also add the column name if this table is referenced more than once
+                                        boolean foundOther = false;
+                                        for(int d = 0; d < eSize; d++) {
+                                            if(d!=c) {
+                                                int y = ids.get(d);
+                                                if(fTable.equals(exportedKeys.getForeignTable(y))) {
+                                                    foundOther = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if(foundOther) out.printTH(fTable+"<br>."+exportedKeys.getForeignKey(z));
+                                        else out.printTH(fTable);
                                     }
                                 }
                             } else {

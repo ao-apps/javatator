@@ -719,7 +719,10 @@ public class PgSQLConnector extends JDBCConnector {
                     + "  inner join pg_class ft on co.confrelid=ft.oid\n"
                     + "WHERE\n"
                     + "  "+(isImported ? "cl" : "ft")+".relname=?\n"
-                    + "  and co.contype='f'"
+                    + "  and co.contype='f'\n"
+                    + "ORDER BY\n"
+                    + "  cl.relname,\n"
+                    + "  co.conname"
                 );
                 try {
                     pstmt.setString(1, table);

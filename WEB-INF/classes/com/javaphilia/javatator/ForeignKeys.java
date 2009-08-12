@@ -161,11 +161,11 @@ public class ForeignKeys {
 	 * Gets the ids of the specified foreign key in the array.
 	 */
 	public List<Integer> getForeignIDs(String column) {
-        List<String> hasBeen=new ArrayList<String>();
+        // List<String> hasBeen=new ArrayList<String>();
         List<Integer> ids=new ArrayList<Integer>();
         for(int i=0;i<size;i++) {
-            if(primaryKeys.get(i).equals(column) && !hasBeen.contains(foreignTables.get(i))) {
-                hasBeen.add(foreignTables.get(i));
+            if(primaryKeys.get(i).equals(column) /*&& !hasBeen.contains(foreignTables.get(i))*/) {
+                //hasBeen.add(foreignTables.get(i));
                 ids.add(new Integer(i));
             }
         }
