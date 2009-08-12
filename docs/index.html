@@ -1,0 +1,79 @@
+<HTML>
+<HEAD>
+<TITLE>Javatator - Documentation</TITLE>
+<STYLE type="text/css">
+<!--
+body {  font-family: Arial, Helvetica, sans-serif; font-size: 10pt}
+-->
+</STYLE>
+</HEAD>
+<BODY bgcolor="#ffffff" link="#0000ff" vlink="#0000ff">
+
+<CENTER>
+<FONT size=6 color="#999999"><B>Javatator - Documentation</B></FONT>
+<BR><BR>
+[ <A href="http://www.javaphilia.com/">http://www.javaphilia.com/</A> ]
+</CENTER>
+<BR><BR>
+<FONT size=5 color="#999999"><B>Configuration</B></FONT>
+<BR><BR>
+All configurable options are placed in the <FONT color=#ff6600>database.properties</FONT> file. Here is a list of possible options:
+<UL>
+<LI><CODE><FONT color="#ff6600">db.</FONT>mysql<FONT color="#ff6600">.name</FONT>=MySQL</CODE>
+<BR><BR>
+This simply creates an option to connect to a new database product. Replace the mysql with whatever you want.
+<BR>
+e.g. <CODE><FONT color="#ff6600">db.</FONT>psql<FONT color="#ff6600">.name</FONT>=PostgreSQL</CODE>
+<BR>
+That would create an option to connect to a database product called "PostgreSQL". The other values such as the driver to be used can be specified using "psql" as part of the "db." identifier - see the other options below, and replace "mysql" with the identifier, e.g. "psql".
+<BR><BR>
+<LI><CODE><FONT color=#ff6600>db.</FONT>mysql<FONT color=#ff6600>.connector</FONT>=com.netspade.javatator.MySQLConnector</CODE>
+<BR><BR>
+This specifies the custom <CODE>Connector</CODE> for Javatator to use when interacting with the database. The default is the <CODE>com.netspade.javatator.JDBCConnector</CODE>, which uses all the standard methods in the driver. However, many drivers are not fully implemented so these "connector" classes must be used.
+<BR><BR>
+<LI><CODE><FONT color=#ff6600>db.</FONT>mysql<FONT color=#ff6600>.driver</FONT>=org.gjt.mm.mysql.Driver</CODE>
+<BR><BR>
+This specifies the driver to use when accessing the database.
+<BR><BR>
+<LI><CODE><FONT color=#ff6600>db.</FONT>mysql<FONT color=#ff6600>.url</FONT>=jdbc:mysql://%h:%p/%d</CODE>
+<BR><BR>
+This specifies how the URL to access the database is created. <CODE><FONT color=#ff6600>%h</FONT></CODE> is the hostname, <CODE><FONT color=#ff6600>%p</FONT></CODE> is the port and <CODE><FONT color=#ff6600>%d</FONT></CODE> is the name of the database you want to access.
+<BR><BR>
+<LI><CODE><FONT color=#ff6600>db.</FONT>mysql<FONT color=#ff6600>.host.deny</FONT>=</CODE>
+<BR><BR>
+Use this if you want to deny access to certain hosts.
+<BR><BR>
+<LI><CODE><FONT color=#ff6600>db.</FONT>mysql<FONT color=#ff6600>.defaultport</FONT>=3306</CODE>
+<BR><BR>
+This specifies the default port to be used.
+<BR><BR>
+<LI><CODE><FONT color=#ff6600>db.</FONT>mysql<FONT color=#ff6600>.port</FONT>=</CODE>
+<BR><BR>
+This restricts access to this port only.
+<BR><BR><BR><BR>
+<LI><CODE><FONT color=#ff6600>db.*.connections</FONT>=32</CODE>
+<BR><BR>
+This a global config option. The connections are on a per product+hostname+port+username+password+database basis. These are maximum number of connections only, unused ones are cleaned up.
+<BR><BR>
+<LI><CODE><FONT color=#ff6600>db.*.hostname</FONT>=</CODE>
+<BR><BR>
+If provided, limits access to this host.
+<BR><BR>
+<LI><CODE><FONT color=#ff6600>db.*.username</FONT>=</CODE>
+<BR><BR>
+If provided, limits access to this account.
+<BR><BR>
+<LI><CODE><FONT color=#ff6600>db.*.password</FONT>=</CODE>
+<BR><BR>
+If provided, the password will not be prompted for.
+<BR><BR>
+<LI><CODE><FONT color=#ff6600>db.*.database</FONT>=</CODE>
+<BR><BR>
+If provided, limits access to this database.
+<BR><BR>
+<LI><CODE><FONT color=#ff6600>db.*.dbproduct</FONT>=</CODE>
+<BR><BR>
+If provided, limits access to this product.
+</UL>
+</BODY>
+</HTML>

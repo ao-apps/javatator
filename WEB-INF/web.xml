@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/j2ee/dtds/web-app_2_3.dtd">
+
+<web-app>
+  <display-name>Welcome to Tomcat</display-name>
+  <description>
+    Welcome to Tomcat
+  </description>
+  <servlet>
+    <servlet-name>CSS</servlet-name>
+    <servlet-class>com.javaphilia.javatator.CSS</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Images</servlet-name>
+    <servlet-class>com.javaphilia.javatator.Images</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>JavaScript</servlet-name>
+    <servlet-class>com.javaphilia.javatator.JavaScript</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Main</servlet-name>
+    <servlet-class>com.javaphilia.javatator.Main</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>SchemaImage</servlet-name>
+    <servlet-class>com.javaphilia.javatator.SchemaImage</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Settings</servlet-name>
+    <servlet-class>com.javaphilia.javatator.Settings</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CSS</servlet-name>
+    <url-pattern>/servlet/com.javaphilia.javatator.CSS</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Images</servlet-name>
+    <url-pattern>/servlet/com.javaphilia.javatator.Images</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>JavaScript</servlet-name>
+    <url-pattern>/servlet/com.javaphilia.javatator.JavaScript</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Main</servlet-name>
+    <url-pattern>/servlet/com.javaphilia.javatator.Main</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SchemaImage</servlet-name>
+    <url-pattern>/servlet/com.javaphilia.javatator.SchemaImage</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Settings</servlet-name>
+    <url-pattern>/servlet/com.javaphilia.javatator.Settings</url-pattern>
+  </servlet-mapping>
+</web-app>

@@ -1,0 +1,14 @@
+TODO - things that need doing / BUGS that need fixing
+
+*** wishlist
+
+> Add option for turning off display of foreign key tables in explore and select
+> Add support for views
+> Database connection stats (both current user and overall)
+> Sorting java properties
+> Bug reporting tool
+> Password reset tool
+
+***
+
+Please report bugs to jason@javatator.com. Thankyou.

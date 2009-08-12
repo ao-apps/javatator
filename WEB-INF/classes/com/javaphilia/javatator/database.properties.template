@@ -1,0 +1,60 @@
+######################################
+# Config for PostgreSQL              #
+######################################
+
+db.psql.name=PostgreSQL
+db.psql.connector=com.javaphilia.javatator.PgSQLConnector
+db.psql.driver=org.postgresql.Driver
+db.psql.url=jdbc:postgresql://%h:%p/%d
+db.psql.host.deny=127.0.0.1
+db.psql.defaultport=5432
+db.psql.port=5432
+
+######################################
+# Config for MySQL                   #
+######################################
+
+db.mysql.name=MySQL
+db.mysql.connector=com.javaphilia.javatator.MySQLConnector
+db.mysql.driver=org.gjt.mm.mysql.Driver
+db.mysql.url=jdbc:mysql://%h:%p/%d
+db.mysql.host.deny=
+db.mysql.defaultport=3306
+db.mysql.port=3306
+
+######################################
+# Config for Interbase               #
+######################################
+
+db.interbase.name=Interbase
+db.interbase.connector=com.javaphilia.javatator.InterbaseConnector
+db.interbase.driver=interbase.interclient.Driver
+db.interbase.url=jdbc:interbase://%h/%d
+db.interbase.host.deny=
+db.interbase.defaultport=3060
+db.interbase.port=3060
+
+######################################
+# Global Config options              #
+######################################
+
+# The connections are on a per product+hostname+port+username+password+database basis
+# These are maximum number of connections only, unused ones are cleaned up
+db.*.connections=32
+
+# If provided, limits access to these hosts
+# Hosts must be separated by spaces only
+db.*.hostname=suspendo.aoindustries.com connector.aoindustries.com
+
+# If provided, limits access to this account
+db.*.username=
+
+# If provided, the password will not be prompted for
+db.*.password=
+
+# If provided, limits access to this database
+db.*.database=
+
+# If provided, limits access to this product
+db.dbproduct=
+
