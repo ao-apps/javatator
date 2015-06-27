@@ -304,7 +304,7 @@ public class SchemaImage extends HttpServlet {
                             }
                         }
                         if (foreignTable == null) {
-                            throw new SQLException("Unable to find table: " + key.getForeignTableName());
+                            throw new AssertionError("Unable to find table: " + key.getForeignTableName());
                         }
 
                         // Get the row link y position for both tables

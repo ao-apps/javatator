@@ -31,6 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1394,7 +1395,7 @@ public class PgSQLConnector extends JDBCConnector {
      * As of PostgreSQL version 8, requires explicit casts.
      */
     @Override
-	public void insertRow(String[] column, String[] function, String[] value) throws SQLException, IOException {
+	public void insertRow(String[] column, String[] function, String[] values) throws SQLException, IOException {
         String table = settings.getTable();
         Columns columns = getColumns(table);
         // Build the SQL
@@ -1410,7 +1411,11 @@ public class PgSQLConnector extends JDBCConnector {
                 SB.append(function[i]);
             } else {
                 String type = getCastType(columns.getType(columns.getID(column[i])));
-                SB.append("?::").append(type);
+                if("bool".equals(type) || "boolean".equals(type)) {
+                    SB.append("?");
+                } else {
+                    SB.append("?::").append(type);
+                }
             }
         }
         SB.append(')');
@@ -1420,10 +1425,21 @@ public class PgSQLConnector extends JDBCConnector {
         try {
             PreparedStatement stmt=conn.prepareStatement(sql);
             try {
-                stmt.setEscapeProcessing(false);
+                stmt.setEscapeProcessing(false); // TODO: Why are these used?
                 int pos=1;
                 for(int i=0;i<column.length;i++) {
-                    if(function[i]==null || function[i].length()==0) stmt.setString(pos++,value[i]);
+                    if(function[i]==null || function[i].length()==0) {
+                        String type = getCastType(columns.getType(columns.getID(column[i])));
+                        String val = values[i];
+                        if("bool".equals(type) || "boolean".equals(type)) {
+                            if(val==null) stmt.setNull(pos++, Types.BOOLEAN);
+                            else if("true".equals(val)) stmt.setBoolean(pos++, true);
+                            else if("false".equals(val)) stmt.setBoolean(pos++, false);
+                            else throw new AssertionError("value should be null, \"true\", or \"false\": "+val);
+                        } else {
+                            stmt.setString(pos++, val);
+                        }
+                    }
                 }
                 stmt.executeUpdate();
             } finally {
