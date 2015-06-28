@@ -91,7 +91,7 @@ public class PgSQLConnector extends JDBCConnector {
 
     @Override
 	protected void appendIsNull(StringBuffer SB, String value) {
-        SB.append(value).append(" ISNULL");
+        SB.append('"').append(value).append("\" ISNULL");
 	}
 
     /**
@@ -1568,12 +1568,12 @@ public class PgSQLConnector extends JDBCConnector {
         String table = settings.getTable();
         Columns columns = getColumns(table);
         // Build the SQL statement
-        StringBuffer SB = new StringBuffer("UPDATE ").append(table).append(" SET ");
+        StringBuffer SB = new StringBuffer("UPDATE \"").append(table).append("\" SET ");
         for (int i = 0; i < column.length; i++) {
             if (i > 0) {
                 SB.append(", ");
             }
-            SB.append(column[i]).append('=');
+            SB.append('"').append(column[i]).append("\"=");
             if (function[i] != null && function[i].length() > 0) {
                 SB.append(function[i]);
             } else {
@@ -1587,7 +1587,7 @@ public class PgSQLConnector extends JDBCConnector {
                 appendIsNull(SB, primaryKeys[i]);
             } else {
                 String type = getCastType(columns.getType(columns.getID(primaryKeys[i])));
-                SB.append(primaryKeys[i]).append("=?::").append(type);
+                SB.append('"').append(primaryKeys[i]).append("\"=?::").append(type);
             }
         }
         String sql = SB.toString();
