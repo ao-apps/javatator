@@ -347,7 +347,9 @@ public class DatabasePool {
             try {
                 connectLock.wait();
             } catch(InterruptedException err) {
-                        err.printStackTrace();
+				err.printStackTrace();
+				// Restore the interrupted status
+				Thread.currentThread().interrupt();
             }
             }
         }

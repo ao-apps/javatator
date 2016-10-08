@@ -69,7 +69,9 @@ public class DatabasePoolCleanup extends Thread {
             try {
             sleep(DatabasePool.CLEANUP_POLL_DELAY);
             } catch(InterruptedException err) {
-                    err.printStackTrace();
+				err.printStackTrace();
+				// Restore the interrupted status
+				Thread.currentThread().interrupt();
             }
         }
     }
