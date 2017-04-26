@@ -275,7 +275,10 @@ public class PgSQLConnector extends JDBCConnector {
                         + "  c.relname='"+table+"'\n"
                         + "  AND c.oid=r.rcrelid"
                     );
-                } else if(version.startsWith("8.")) {
+                } else if(
+					version.startsWith("8.")
+					|| version.startsWith("9.")
+				) {
                     R=stmt.executeQuery(
                         "SELECT\n"
                         + "  co.conname,\n"
@@ -379,7 +382,10 @@ public class PgSQLConnector extends JDBCConnector {
                 } finally {
                     stmt.close();
                 }
-            } else if(version.startsWith("8.")) {
+            } else if(
+				version.startsWith("8.")
+				|| version.startsWith("9.")
+			) {
                 ForeignKeys foreignKeys = getForeignKeys(table, true);
                 if(foreignKeys!=null) {
                     for(int c=0;c<foreignKeys.getSize();c++) {
@@ -605,7 +611,10 @@ public class PgSQLConnector extends JDBCConnector {
                 } finally {
                     stmt.close();
                 }
-            } else if(version.startsWith("8.")) {
+            } else if(
+				version.startsWith("8.")
+				|| version.startsWith("9.")
+			) {
                 ForeignKeys foreignKeys = getForeignKeys(table, true);
                 for(int c=0;c<foreignKeys.getSize();c++) {
                     if(constraint.equals(foreignKeys.getConstraintName(c))) {
@@ -695,7 +704,10 @@ public class PgSQLConnector extends JDBCConnector {
                 } finally {
                     stmt.close();
                 }
-            } else if(version.startsWith("8.")) {
+            } else if(
+				version.startsWith("8.")
+				|| version.startsWith("9.")
+			) {
                 List<Long> foreignTableOids = new ArrayList<Long>();
                 List<List<Integer>> foreignKeyAttNums = new ArrayList<List<Integer>>();
                 List<Long> primaryTableOids = new ArrayList<Long>();
