@@ -42,44 +42,42 @@ public class DatabasePoolCleanup extends Thread {
 	 * and sets its priority to normal.
 	 */
 	private DatabasePoolCleanup() {
-        super("Cleanup JDBC Connections");
-        setPriority(Thread.NORM_PRIORITY);
-        setDaemon(true);
-        start();
+		super("Cleanup JDBC Connections");
+		setPriority(Thread.NORM_PRIORITY);
+		setDaemon(true);
+		start();
 	}
 
-    /**
+	/**
 	 * Periodically polls every connection in the connection pool. If it finds a
 	 * connection is idle for more than the <code>DatabasePool.MAX_IDLE_TIME</code>,
 	 * it closes the connection.
 	 */
-    @Override
+	@Override
 	public void run() {
-        while(true) {
-            try {
-            while(true) {
-                sleep(DatabasePool.CLEANUP_POLL_DELAY);
-                DatabasePool.cleanup();
-            }
-            } catch(ThreadDeath TD) {
-            throw TD;
-            } catch(Throwable T) {
-                    T.printStackTrace();
-            }
-            try {
-            sleep(DatabasePool.CLEANUP_POLL_DELAY);
-            } catch(InterruptedException err) {
+		while(true) {
+			try {
+				while(true) {
+					sleep(DatabasePool.CLEANUP_POLL_DELAY);
+					DatabasePool.cleanup();
+				}
+			} catch(ThreadDeath TD) {
+				throw TD;
+			} catch(Throwable T) {
+				T.printStackTrace();
+			}
+			try {
+				sleep(DatabasePool.CLEANUP_POLL_DELAY);
+			} catch(InterruptedException err) {
 				err.printStackTrace();
-				// Restore the interrupted status
-				Thread.currentThread().interrupt();
-            }
-        }
-    }
+			}
+		}
+	}
 
-    /**
-     * Starts the RefreshConnection thread.  Does nothing if already started.
-     */
-    public static synchronized void startThread() {
-        if(thread==null) thread=new DatabasePoolCleanup();
-    }
+	/**
+	 * Starts the RefreshConnection thread.  Does nothing if already started.
+	 */
+	public static synchronized void startThread() {
+		if(thread == null) thread = new DatabasePoolCleanup();
+	}
 }

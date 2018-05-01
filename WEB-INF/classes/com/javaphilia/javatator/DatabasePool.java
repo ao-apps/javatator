@@ -58,42 +58,42 @@ public class DatabasePool {
 	/**
 	 * The database product this pool is for.
 	 */
-	private String databaseProduct;
+	private final String databaseProduct;
 
 	/**
 	 * The hostname this pool is for.
 	 */
-	private String hostname;
+	private final String hostname;
 
 	/**
 	 * The port this pool is for.
 	 */
-	private int port;
+	private final int port;
 
 	/**
 	 * The username this pool is for.
 	 */
-	private String username;
+	private final String username;
 
 	/**
 	 * The password this pool is for.
 	 */
-	private String password;
+	private final String password;
 
 	/**
 	 * The database this pool is for.
 	 */
-	private String database;
+	private final String database;
 
 	/**
 	 * The URL this pool is using.
 	 */
-	private String url;
+	private final String url;
 
 	/**
 	 * The number of connections is taken from the properties file at construction time.
 	 */
-	private int numConnections;
+	private final int numConnections;
 
 	/**
 	 * Instances of <code>Connection</code> to reuse i.e. the <code>Connection</code>
@@ -101,203 +101,203 @@ public class DatabasePool {
 	 *
 	 * @see  #getConnection
 	 */
-	private Connection[] connections;
+	private final Connection[] connections;
 
 	/**
 	 * Flags used to keep track of which connections are busy
 	 */
-	private boolean[] busyConnections;
+	private final boolean[] busyConnections;
 
 	/**
 	 * Total time using each connection
 	 */
-	private long[] totalTimes;
+	private final long[] totalTimes;
 
 	/**
 	 * The time getting each DB connection from the pool
 	 */
-	private long[] startTimes;
+	private final long[] startTimes;
 
 	/**
 	 * The time returning each DB connection to the pool
 	 */
-	private long[] releaseTimes;
+	private final long[] releaseTimes;
 
 	/**
 	 * Counts the number of times each connection is connected
 	 */
-	private long[] connectCount;
+	private final long[] connectCount;
 
 	/**
 	 * Counts the number of times each connection is used
 	 */
-	private long[] connectionUses;
+	private final long[] connectionUses;
 
-	private final Object connectLock=new Object();
+	private final Object connectLock = new Object();
 
 	// Only load the driver the first time
-	private boolean driverLoaded=false;
+	private boolean driverLoaded = false;
 
 	static {
-        DatabasePoolCleanup.startThread();
+		DatabasePoolCleanup.startThread();
 	}
 
 	/**
 	 * The constructor is used internally only.
 	 */
 	private DatabasePool(
-        String databaseProduct,
-        String hostname,
-        int port,
-        String username,
-        String password,
-        String database,
-        String url
-    ) throws IOException {
-        this.databaseProduct=databaseProduct;
-        this.hostname=hostname;
-        this.port=port;
-        this.username=username;
-        this.password=password;
-        this.database=database;
-        this.url=url;
-        numConnections=Integer.parseInt(DatabaseConfiguration.getProperty("connections", databaseProduct));
-        connections=new Connection[numConnections];
-        busyConnections=new boolean[numConnections];
-        totalTimes=new long[numConnections];
-        startTimes=new long[numConnections];
-        releaseTimes=new long[numConnections];
-        connectCount=new long[numConnections];
-        connectionUses=new long[numConnections];
+		String databaseProduct,
+		String hostname,
+		int port,
+		String username,
+		String password,
+		String database,
+		String url
+	) throws IOException {
+		this.databaseProduct = databaseProduct;
+		this.hostname = hostname;
+		this.port = port;
+		this.username = username;
+		this.password = password;
+		this.database = database;
+		this.url = url;
+		numConnections = Integer.parseInt(DatabaseConfiguration.getProperty("connections", databaseProduct));
+		connections = new Connection[numConnections];
+		busyConnections = new boolean[numConnections];
+		totalTimes = new long[numConnections];
+		startTimes = new long[numConnections];
+		releaseTimes = new long[numConnections];
+		connectCount = new long[numConnections];
+		connectionUses = new long[numConnections];
 	}
 
-    public static void cleanup() throws SQLException {
-        synchronized(pools) {
-            int size=pools.size();
-            for(int c=0;c<size;c++) {
-                pools.get(c).cleanup0();
-            }
-        }
+	public static void cleanup() throws SQLException {
+		synchronized(pools) {
+			int size = pools.size();
+			for(int c = 0; c < size; c++) {
+				pools.get(c).cleanup0();
+			}
+		}
 	}
 
-    private void cleanup0() throws SQLException {
-        long time=System.currentTimeMillis();
-        int size=connections.length;
-        synchronized(connectLock) {
-            for(int c=0;c<size;c++) {
-                if(
-                   connections[c]!=null &&
-                   !busyConnections[c] &&
-                   (time-releaseTimes[c])>=MAX_IDLE_TIME
-                   ) {
-                    connections[c].close();
-                    connections[c]=null;
-                }
-            }
-        }
+	private void cleanup0() throws SQLException {
+		long time = System.currentTimeMillis();
+		int size = connections.length;
+		synchronized(connectLock) {
+			for(int c = 0; c < size; c++) {
+				if(
+				   connections[c] != null &&
+				   !busyConnections[c] &&
+				   (time - releaseTimes[c]) >= MAX_IDLE_TIME
+				) {
+					connections[c].close();
+					connections[c]=null;
+				}
+			}
+		}
 	}
 
-    public static void closeDatabase(Settings settings) throws SQLException {
-        synchronized(pools) {
-            int size=pools.size();
-            for(int c=0;c<size;c++) {
-                DatabasePool temp=pools.get(c);
-                if(
-                   temp.database.equals(settings.getDatabase())
-                   && temp.hostname.equals(settings.getHostname())
-                   && temp.port==settings.getPort()
-                   && temp.databaseProduct.equals(settings.getDatabaseProduct())
-                   ) {
-                    while(!temp.closeDatabase0()) {
-                        // Try until closed
-                    }
-                    //break;
-                }
-            }
-        }
+	public static void closeDatabase(Settings settings) throws SQLException {
+		synchronized(pools) {
+			int size = pools.size();
+			for(int c = 0; c < size; c++) {
+				DatabasePool temp = pools.get(c);
+				if(
+				   temp.database.equals(settings.getDatabase())
+				   && temp.hostname.equals(settings.getHostname())
+				   && temp.port == settings.getPort()
+				   && temp.databaseProduct.equals(settings.getDatabaseProduct())
+				) {
+					while(!temp.closeDatabase0()) {
+						// Try until closed
+					}
+					//break;
+				}
+			}
+		}
 	}
 
-    private boolean closeDatabase0() throws SQLException {
-        long time=System.currentTimeMillis();
-        boolean isSuccess=true;
-        int size=connections.length;
-        synchronized(connectLock) {
-            for(int c=0;c<size;c++) {
-            if(connections[c]!=null) {
-                if(
-                   !busyConnections[c] ||
-                   (busyConnections[c] && (time-releaseTimes[c])>=MAX_IDLE_TIME)
-                   ) {
-                connections[c].close();
-                connections[c]=null;
-                busyConnections[c]=false;
-                System.out.println("a connection was killed successfully");
-                } else {
-                isSuccess=false;
-                }
-            }
-            }
-        }
-    	return isSuccess;
+	private boolean closeDatabase0() throws SQLException {
+		long time = System.currentTimeMillis();
+		boolean isSuccess = true;
+		int size = connections.length;
+		synchronized(connectLock) {
+			for(int c = 0; c < size; c++) {
+				if(connections[c] != null) {
+					if(
+					   !busyConnections[c] ||
+					   (busyConnections[c] && (time - releaseTimes[c]) >= MAX_IDLE_TIME)
+					) {
+						connections[c].close();
+						connections[c] = null;
+						busyConnections[c] = false;
+						System.out.println("a connection was killed successfully");
+					} else {
+						isSuccess = false;
+					}
+				}
+			}
+		}
+		return isSuccess;
 	}
 
-    /**
+	/**
 	 * Locates or creates the proper <code>DatabasePool</code> for a <code>Settings</code> and
 	 * retrieves a <code>Connection</code> from it.
 	 */
 	public static Connection getConnection(Settings settings) throws SQLException, IOException {
-        String databaseProduct=settings.getDatabaseProduct();
-        if(databaseProduct==null || (databaseProduct=databaseProduct.trim()).length()==0) throw new SQLException("databaseProduct not set");
-        String hostname=settings.getHostname();
-        if(hostname==null || (hostname=hostname.trim()).length()==0) throw new SQLException("hostname not set");
-        int port=settings.getPort();
-        if(port<1 || port>65535) throw new SQLException("Invalid port: "+port);
-        String username=settings.getUsername();
-        if(username==null || (username=username.trim()).length()==0) throw new SQLException("username not set");
-        String password=settings.getPassword();
-        if(password==null) password="";
-        String database=settings.getDatabase();
-        if(database==null || (database=database.trim()).length()==0) throw new SQLException("database not set");
+		String databaseProduct = settings.getDatabaseProduct();
+		if(databaseProduct == null || (databaseProduct = databaseProduct.trim()).length() == 0) throw new SQLException("databaseProduct not set");
+		String hostname = settings.getHostname();
+		if(hostname == null || (hostname = hostname.trim()).length() == 0) throw new SQLException("hostname not set");
+		int port = settings.getPort();
+		if(port < 1 || port > 65535) throw new SQLException("Invalid port: " + port);
+		String username = settings.getUsername();
+		if(username == null || (username = username.trim()).length() == 0) throw new SQLException("username not set");
+		String password = settings.getPassword();
+		if(password == null) password = "";
+		String database = settings.getDatabase();
+		if(database == null || (database = database.trim()).length() == 0) throw new SQLException("database not set");
 
-        // Look for an existing pool
-        DatabasePool pool=null;
-        synchronized(pools) {
-            int size=pools.size();
-            for(int c=0;c<size;c++) {
-                DatabasePool temp=pools.get(c);
-                if(
-                   databaseProduct.equals(temp.databaseProduct)
-                   && hostname.equals(temp.hostname)
-                   && port==temp.port
-                   && username.equals(temp.username)
-                   && password.equals(temp.password)
-                   && database.equals(temp.database)
-                   ) {
-                    pool=temp;
-                    break;
-                }
-            }
+		// Look for an existing pool
+		DatabasePool pool = null;
+		synchronized(pools) {
+			int size = pools.size();
+			for(int c = 0; c < size; c++) {
+				DatabasePool temp = pools.get(c);
+				if(
+				   databaseProduct.equals(temp.databaseProduct)
+				   && hostname.equals(temp.hostname)
+				   && port == temp.port
+				   && username.equals(temp.username)
+				   && password.equals(temp.password)
+				   && database.equals(temp.database)
+				) {
+					pool = temp;
+					break;
+				}
+			}
 
-            // Create if not found
-            if(pool==null) {
-                pool=new DatabasePool(
-                              databaseProduct,
-                              hostname,
-                              port,
-                              username,
-                              password,
-                              database,
-                              settings.getURL()
-                              );
-                pools.add(pool);
-            }
-        }
+			// Create if not found
+			if(pool == null) {
+				pool = new DatabasePool(
+					databaseProduct,
+					hostname,
+					port,
+					username,
+					password,
+					database,
+					settings.getURL()
+				);
+				pools.add(pool);
+			}
+		}
 
-        // Get an available connection from the pool
-        return pool.getConnection0();
+		// Get an available connection from the pool
+		return pool.getConnection0();
 	}
 
-    /**
+	/**
 	 * Gets a connection to the database.  Multiple <code>Connection</code>s to the database
 	 * may exist at any moment. It checks the <code>Connection</code> pool for a not busy
 	 * <code>Connection</code> sequentially. If found, it returns that <code>Connection</code>
@@ -306,81 +306,79 @@ public class DatabasePool {
 	 * busy, it waits till a connection becomes available.
 	 */
 	private Connection getConnection0() throws SQLException, IOException {
-        synchronized(connectLock) {
-            while(true) {
-            for(int c=0;c<numConnections;c++) {
-                if(!busyConnections[c]) {
-                startTimes[c]=System.currentTimeMillis();
-                Connection conn=connections[c];
-                if(conn==null || conn.isClosed()) {
-                    if(!driverLoaded) {
-                    try {
-                        Class.forName(DatabaseConfiguration.getProperty("driver",databaseProduct)).newInstance();
-                        driverLoaded=true;
-                    } catch(ClassNotFoundException err) {
-                                        SQLException sqlErr=new SQLException();
-                                        sqlErr.initCause(err);
-                                        throw sqlErr;
-                    } catch(InstantiationException err) {
-                                        SQLException sqlErr=new SQLException();
-                                        sqlErr.initCause(err);
-                                        throw sqlErr;
-                    } catch(IllegalAccessException err) {
-                                        SQLException sqlErr=new SQLException();
-                                        sqlErr.initCause(err);
-                                        throw sqlErr;
-                    }
-                    }
-                    conn=connections[c]=DriverManager.getConnection(
-                        url,
-                        username,
-                        password
-                    );
-                    connectCount[c]++;
-                }
-                busyConnections[c]=true;
-                releaseTimes[c]=0;
-                connectionUses[c]++;
-                return conn;
-                }
-            }
-            try {
-                connectLock.wait();
-            } catch(InterruptedException err) {
-				err.printStackTrace();
-				// Restore the interrupted status
-				Thread.currentThread().interrupt();
-            }
-            }
-        }
-    }
+		synchronized(connectLock) {
+			while(true) {
+				for(int c = 0; c < numConnections; c++) {
+					if(!busyConnections[c]) {
+						startTimes[c] = System.currentTimeMillis();
+						Connection conn = connections[c];
+						if(conn == null || conn.isClosed()) {
+							if(!driverLoaded) {
+								try {
+									Class.forName(DatabaseConfiguration.getProperty("driver", databaseProduct)).newInstance();
+									driverLoaded = true;
+								} catch(ClassNotFoundException err) {
+									SQLException sqlErr = new SQLException();
+									sqlErr.initCause(err);
+									throw sqlErr;
+								} catch(InstantiationException err) {
+									SQLException sqlErr = new SQLException();
+									sqlErr.initCause(err);
+									throw sqlErr;
+								} catch(IllegalAccessException err) {
+									SQLException sqlErr = new SQLException();
+									sqlErr.initCause(err);
+									throw sqlErr;
+								}
+							}
+							conn = connections[c] = DriverManager.getConnection(
+								url,
+								username,
+								password
+							);
+							connectCount[c]++;
+						}
+						busyConnections[c] = true;
+						releaseTimes[c] = 0;
+						connectionUses[c]++;
+						return conn;
+					}
+				}
+				try {
+					connectLock.wait();
+				} catch(InterruptedException err) {
+					err.printStackTrace();
+				}
+			}
+		}
+	}
 
-    /**
-     * Releases a <code>Connection</code> by calling release connection on
-     * all the pools until the correct pool is found.
-     */
-    public static void releaseConnection(Connection conn) {
-        synchronized(pools) {
-            int size=pools.size();
-            for(int c=0;c<size;c++) {
-                if(pools.get(c).releaseConnection0(conn)) break;
-            }
-        }
-    }
+	/**
+	 * Releases a <code>Connection</code> by calling release connection on
+	 * all the pools until the correct pool is found.
+	 */
+	public static void releaseConnection(Connection conn) {
+		synchronized(pools) {
+			int size = pools.size();
+			for(int c = 0; c < size; c++) {
+				if(pools.get(c).releaseConnection0(conn)) break;
+			}
+		}
+	}
 
-    private boolean releaseConnection0(Connection conn) {
-        synchronized(connectLock) {
-            for(int c=0;c<numConnections;c++) {
-                if(conn==connections[c]) {
-                    busyConnections[c]=false;
-                    long time=System.currentTimeMillis();
-                    releaseTimes[c]=time;
-                    totalTimes[c]+=time-startTimes[c];
-                    connectLock.notify();
-                    return true;
-                }
-            }
-        }
-        return false;
+	private boolean releaseConnection0(Connection conn) {
+		synchronized(connectLock) {
+			for(int c = 0; c < numConnections; c++) {
+				if(conn == connections[c]) {
+					busyConnections[c] = false;
+					long time = System.currentTimeMillis();
+					releaseTimes[c] = time;
+					totalTimes[c] += time - startTimes[c];
+					connectLock.notify();
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
