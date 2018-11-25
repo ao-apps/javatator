@@ -24,6 +24,7 @@ package com.javaphilia.javatator;
  * 
  */
 
+import com.aoindustries.aoserv.client.PostgresServer;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -1633,5 +1634,12 @@ public class PgSQLConnector extends JDBCConnector {
 		} finally {
 			DatabasePool.releaseConnection(conn);
 		}
+	}
+
+	@Override
+	public boolean isKeyword(String identifier) {
+		return
+			PostgresServer.ReservedWord.isReservedWord(identifier)
+		;
 	}
 }

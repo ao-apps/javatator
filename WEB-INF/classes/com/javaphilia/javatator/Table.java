@@ -1394,8 +1394,13 @@ public class Table {
 								(S == null) ? ""
 								: (S.length() == 0) ? "&nbsp;"
 								: (importedKeyIDs.get(column) < 0) ? Util.escapeHTML(S)
-								: "<A href=\"javascript:select('" + Util.escapeJavaScript(importedKeys.getPrimaryTable(importedKeyIDs.get(column))) + "','" + Util.escapeJavaScript(
-								importedKeys.getPrimaryKey(importedKeyIDs.get(column)) + "='" + Util.escapeJavaScript(S) + '\'') + "');\">" + Util.escapeHTML(S) + "</A>",
+								: "<A href=\"javascript:select('"
+									+ Util.escapeJavaScript(
+										importedKeys.getPrimaryTable(importedKeyIDs.get(column))
+									) + "','" + Util.escapeJavaScript(
+										conn.quoteColumn(importedKeys.getPrimaryKey(importedKeyIDs.get(column)))
+										+ "='" + Util.escapeJavaScript(S) + '\''
+									) + "');\">" + Util.escapeHTML(S) + "</A>",
 								("DATE".equalsIgnoreCase(columnTypes.get(column))) ? "nowrap"
 								: ("TIME".equalsIgnoreCase(columnTypes.get(column))) ? "nowrap"
 								: ("DATETIME".equalsIgnoreCase(columnTypes.get(column))) ? "nowrap"
@@ -1425,15 +1430,20 @@ public class Table {
 											+ conn.quoteTable(fTable) + "\n"
 											+ "WHERE\n"
 											+ "  " + conn.quoteColumn(fKey) + "='" + Util.escapeSQL(S) + "'";
-										ResultSet results2 = stmt2.executeQuery(sql);
 										try {
-											if (results2.next()) {
-												tmp = results2.getInt(1);
-											} else {
-												tmp = -1;
+											ResultSet results2 = stmt2.executeQuery(sql);
+											try {
+												if (results2.next()) {
+													tmp = results2.getInt(1);
+												} else {
+													tmp = -1;
+												}
+											} finally {
+												results2.close();
 											}
-										} finally {
-											results2.close();
+										} catch(SQLException e) {
+											System.err.println("sql = " + sql);
+											throw e;
 										}
 									} finally {
 										stmt2.close();
@@ -1441,7 +1451,14 @@ public class Table {
 								}
 
 								out.printTD(
-										(tmp > 0) ? "<A href=\"javascript:select('" + Util.escapeJavaScript(exportedKeys.getForeignTable(exportedIDs.get(column).get(c))) + "','" + Util.escapeJavaScript(exportedKeys.getForeignKey(exportedIDs.get(column).get(c)) + "='" + Util.escapeJavaScript(S) + '\'') + "');\">" + tmp + "</A>"
+										(tmp > 0) ? "<A href=\"javascript:select('"
+											+ Util.escapeJavaScript(exportedKeys.getForeignTable(exportedIDs.get(column).get(c)))
+											+ "','"
+											+ Util.escapeJavaScript(
+												conn.quoteColumn(exportedKeys.getForeignKey(exportedIDs.get(column).get(c)))
+												+ "='" + Util.escapeJavaScript(S) + '\''
+											)
+											+ "');\">" + tmp + "</A>"
 										: "",
 										"align=center");
 							}

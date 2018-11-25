@@ -24,6 +24,8 @@ package com.javaphilia.javatator;
  * 
  */
 
+import com.aoindustries.aoserv.client.MySQLServer;
+import com.aoindustries.aoserv.client.PostgresServer;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
@@ -1617,17 +1619,27 @@ public class JDBCConnector {
 	}
 
 	/**
+	 * Checks if is a SQL keyword.
+	 */
+	public boolean isKeyword(String identifier) {
+		return
+			MySQLServer.ReservedWord.isReservedWord(identifier)
+			|| PostgresServer.ReservedWord.isReservedWord(identifier)
+		;
+	}
+
+	/**
 	 * By default, surrounds with '"' if is not all lower-case
 	 * alphanumeric.
 	 */
-	// TODO: Throw exception one way-off characters?
-	protected static String defaultQuote(String pre, String doubleQuote, String post, String identifier) {
+	// TODO: Throw exception on way-off special characters?
+	protected final String defaultQuote(String pre, String doubleQuote, String post, String identifier) {
 		if(identifier == null) throw new NullPointerException();
 		int len = identifier.length();
 		if(len == 0) return pre + post;
 		StringBuilder quoted = new StringBuilder(len + pre.length() + post.length());
 		quoted.append(pre);
-		boolean quotesNeeded = false;
+		boolean quotesNeeded = isKeyword(identifier);
 		for(int i = 0; i < len; i++) {
 			char ch = identifier.charAt(i);
 			if(

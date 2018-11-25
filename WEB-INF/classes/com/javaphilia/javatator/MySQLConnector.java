@@ -24,6 +24,7 @@ package com.javaphilia.javatator;
  * 
  */
 
+import com.aoindustries.aoserv.client.MySQLServer;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -333,6 +334,13 @@ public class MySQLConnector extends JDBCConnector {
 	@Override
 	public boolean supportsForeignKeys() {
 		return false;
+	}
+
+	@Override
+	public boolean isKeyword(String identifier) {
+		return
+			MySQLServer.ReservedWord.isReservedWord(identifier)
+		;
 	}
 
 	// TODO: How to scape ' in table name?

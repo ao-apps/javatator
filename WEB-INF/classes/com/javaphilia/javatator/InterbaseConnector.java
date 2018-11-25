@@ -341,6 +341,11 @@ public class InterbaseConnector extends JDBCConnector {
 	}
 
 	@Override
+	public boolean isKeyword(String identifier) {
+		return false;
+	}
+
+	@Override
 	public String quoteTable(String table) {
 		return table;
 	}
