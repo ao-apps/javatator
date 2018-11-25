@@ -49,43 +49,43 @@ final public class DatabaseConfiguration {
 	 */
 	private DatabaseConfiguration() {}
 
-    /**
-     * Gets the list of hosts that may be accessed for the specified dbProduct.
-     */
-    public static List<String> getAllowedHosts(String dbProduct) throws IOException {
-        String hostList=getProperty("hostname", dbProduct);
-        if(hostList==null) return Collections.emptyList();
-        return splitStringCommaSpace(hostList);
-    }
+	/**
+	 * Gets the list of hosts that may be accessed for the specified dbProduct.
+	 */
+	public static List<String> getAllowedHosts(String dbProduct) throws IOException {
+		String hostList=getProperty("hostname", dbProduct);
+		if(hostList==null) return Collections.emptyList();
+		return splitStringCommaSpace(hostList);
+	}
 
-    /**
+	/**
 	 * Gets the list of databases that may be selected.
 	 */
 	public static List<String> getAvailableDatabaseProducts() throws IOException {
-        List<String> products=new ArrayList<String>();
-        String dbproduct=getProperty("dbproduct");
-        if(dbproduct!=null && dbproduct.length()>0) products.add(dbproduct);
-        else {
-            Enumeration E=props.propertyNames();
-            while(E.hasMoreElements()) {
-                String tmp=(String)E.nextElement();
-                if(tmp.startsWith("db.") && tmp.endsWith(".name")) products.add(tmp.substring(3, tmp.length()-5));
-            }
-        }
-        return products;
+		List<String> products=new ArrayList<String>();
+		String dbproduct=getProperty("dbproduct");
+		if(dbproduct!=null && dbproduct.length()>0) products.add(dbproduct);
+		else {
+			Enumeration E=props.propertyNames();
+			while(E.hasMoreElements()) {
+				String tmp=(String)E.nextElement();
+				if(tmp.startsWith("db.") && tmp.endsWith(".name")) products.add(tmp.substring(3, tmp.length()-5));
+			}
+		}
+		return products;
 	}
 
-    /**
+	/**
 	 * Gets the specified property from the file.  If <code>db.name</code> exists, returns the value.
 	 */
 	public static String getProperty(String name) throws IOException {
-        loadIfNeeded();
+		loadIfNeeded();
 
-        // Look for db.name
-        return props.getProperty("db."+name);
+		// Look for db.name
+		return props.getProperty("db."+name);
 	}
 
-    /**
+	/**
 	 * Gets the specified property from the properties file, using the database product string.
 	 * If <code>db.databaseProduct.name</code> is defined in the properties file, then that is returned.
 	 * If <code>db.*.name</code> is defined in the properties file, then that is returned.
@@ -94,52 +94,60 @@ final public class DatabaseConfiguration {
 	 * @param databaseProduct the name of the database product being used.
 	 */
 	public static String getProperty(String name, String databaseProduct) throws IOException {
-        loadIfNeeded();
+		loadIfNeeded();
 
-        // Look for db.dbproduct.name
-        String S=props.getProperty("db."+databaseProduct+'.'+name);
-        if(S!=null) return S;
+		// Look for db.dbproduct.name
+		String S=props.getProperty("db."+databaseProduct+'.'+name);
+		if(S!=null) return S;
 
-        // Look for db.*.name
-        return props.getProperty("db.*."+name);
+		// Look for db.*.name
+		return props.getProperty("db.*."+name);
 	}
 
-    /**
-     * Loads the properties if not already loaded.
-     */
-    private static void loadIfNeeded() throws IOException {
-        synchronized(DatabaseConfiguration.class) {
-            if(props==null) {
-                InputStream in=DatabaseConfiguration.class.getResourceAsStream("database.properties");
-                        Properties newProps=new Properties();
-                        try {
-                            newProps.load(in);
-                        } finally {
-                            in.close();
-                        }
-                props=newProps;
-            }
-        }
-    }
+	public static Boolean getBooleanProperty(String name, String databaseProduct) throws IOException {
+		String S = getProperty(name, databaseProduct);
+		if(S == null || S.isEmpty()) return null;
+		if("true".equalsIgnoreCase(S)) return true;
+		if("false".equalsIgnoreCase(S)) return false;
+		throw new IOException("Unable to parse boolean: " + S);
+	}
 
-    /**
-     * Splits a string into multiple words on either whitespace or commas
-     * @return java.lang.String[]
-     * @param line java.lang.String
-     */
-    public static List<String> splitStringCommaSpace(String line) {
-        List<String> words=new ArrayList<String>();
-        int len=line.length();
-        int pos=0;
-        while(pos<len) {
-            // Skip past blank space
-            char ch;
-            while(pos<len && ((ch=line.charAt(pos))<=' ' || ch==',')) pos++;
-            int start=pos;
-            // Skip to the next blank space
-            while(pos<len && (ch=line.charAt(pos))>' ' && ch!=',') pos++;
-            if(pos>start) words.add(line.substring(start,pos));
-        }
-        return words;
-    }
+	/**
+	 * Loads the properties if not already loaded.
+	 */
+	private static void loadIfNeeded() throws IOException {
+		synchronized(DatabaseConfiguration.class) {
+			if(props==null) {
+				InputStream in=DatabaseConfiguration.class.getResourceAsStream("database.properties");
+						Properties newProps=new Properties();
+						try {
+							newProps.load(in);
+						} finally {
+							in.close();
+						}
+				props=newProps;
+			}
+		}
+	}
+
+	/**
+	 * Splits a string into multiple words on either whitespace or commas
+	 * @return java.lang.String[]
+	 * @param line java.lang.String
+	 */
+	public static List<String> splitStringCommaSpace(String line) {
+		List<String> words=new ArrayList<String>();
+		int len=line.length();
+		int pos=0;
+		while(pos<len) {
+			// Skip past blank space
+			char ch;
+			while(pos<len && ((ch=line.charAt(pos))<=' ' || ch==',')) pos++;
+			int start=pos;
+			// Skip to the next blank space
+			while(pos<len && (ch=line.charAt(pos))>' ' && ch!=',') pos++;
+			if(pos>start) words.add(line.substring(start,pos));
+		}
+		return words;
+	}
 }

@@ -9,6 +9,8 @@ db.psql.url=jdbc:postgresql://%h:%p/%d
 db.psql.host.deny=127.0.0.1
 db.psql.defaultport=5432
 db.psql.port=5432
+db.psql.defaultssl=true
+db.psql.ssl=true
 
 ######################################
 # Config for MySQL                   #
@@ -21,6 +23,8 @@ db.mysql.url=jdbc:mysql://%h:%p/%d
 db.mysql.host.deny=
 db.mysql.defaultport=3306
 db.mysql.port=3306
+db.mysql.defaultssl=true
+db.mysql.ssl=true
 
 ######################################
 # Config for Interbase               #
@@ -33,6 +37,8 @@ db.interbase.url=jdbc:interbase://%h/%d
 db.interbase.host.deny=
 db.interbase.defaultport=3060
 db.interbase.port=3060
+db.interbase.defaultssl=false
+db.interbase.ssl=false
 
 ######################################
 # Global Config options              #

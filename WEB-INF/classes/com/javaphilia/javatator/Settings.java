@@ -39,341 +39,384 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class Settings {
 
-	private HttpServletRequest request;
+	final private HttpServletRequest request;
 
-	private String databaseProduct;
+	final private String databaseProduct;
 	private String hostname;
-	private int port=-1;
-	private String username;
-	private String password;
-	private String database;
-	private String table;
-	private String column;
-	private String action;
-	private String sortColumn;
-	private String sortOrder;
+	final private int port;
+	final private boolean ssl;
+	final private String username;
+	final private String password;
+	final private String database;
+	final private String table;
+	final private String column;
+	final private String action;
+	final private String sortColumn;
+	final private String sortOrder;
 	private int numrows=30;
 	private int fkeyrows=100;
 	private boolean useMultiLine=true;
 
 	private String error;
 
-/**
- * Constructs this <code>Settings</code> object by pulling its values from
- * a <code>HttpServletRequest</code>.  If any value is provided in the
- * configuration, then the value in the form is ignored.
- */
-public Settings(HttpServletRequest request) throws IOException {
-    this.request = request;
+	/**
+	 * Constructs this <code>Settings</code> object by pulling its values from
+	 * a <code>HttpServletRequest</code>.  If any value is provided in the
+	 * configuration, then the value in the form is ignored.
+	 */
+	public Settings(HttpServletRequest request) throws IOException {
+		this.request = request;
 
-    // These values may by set in the configuration
-    databaseProduct = getSetting(request, "dbproduct");
-    hostname = getClientSetting(request, "hostname");
+		// These values may by set in the configuration
+		databaseProduct = getSetting(request, "dbproduct");
+		hostname = getClientSetting(request, "hostname");
 
-    List<String> allowedHosts = DatabaseConfiguration.getAllowedHosts(databaseProduct);
-    int allowedLen = allowedHosts.size();
-    if (allowedLen == 1)
-        hostname = allowedHosts.get(0);
+		List<String> allowedHosts = DatabaseConfiguration.getAllowedHosts(databaseProduct);
+		int allowedLen = allowedHosts.size();
+		if (allowedLen == 1)
+			hostname = allowedHosts.get(0);
 
-    // Make sure hostname is a valid format
-    int len = hostname.length();
-    for (int c = 0; c < len; c++) {
-        char ch = hostname.charAt(c);
-        if ((ch < 'a' || ch > 'z') && (ch < 'A' || ch > 'Z') && (ch < '0' || ch > '9') && ch != '-' && ch != '.') {
-            error = "Invalid character in hostname: " + ch;
-            hostname = "";
-            break;
-        }
-    }
+		// Make sure hostname is a valid format
+		int len = hostname.length();
+		for (int c = 0; c < len; c++) {
+			char ch = hostname.charAt(c);
+			if ((ch < 'a' || ch > 'z') && (ch < 'A' || ch > 'Z') && (ch < '0' || ch > '9') && ch != '-' && ch != '.') {
+				error = "Invalid character in hostname: " + ch;
+				hostname = "";
+				break;
+			}
+		}
 
-    // Make sure is part of allowed hostnames
-    if (hostname.length() > 0) {
-	    if (allowedLen == 0) {
-            // Remove hostname if denied in config
-            String S = DatabaseConfiguration.getProperty("host.deny", databaseProduct);
-            if (S != null && (S = S.trim()).length() > 0) {
-                StringTokenizer hosts = new StringTokenizer(S, ",");
-                while (hosts.hasMoreTokens()) {
-                    String host = hosts.nextToken().trim().toLowerCase();
-                    if (host.length() > 0) {
-                        InetAddress IA1 = InetAddress.getByName(host);
-                        InetAddress IA2 = InetAddress.getByName(hostname);
-                        if (IA1 == null ? (IA2 == null) : (IA1.equals(IA2))) {
-                            error = "Access to " + hostname + " is denied.";
-                            hostname = "";
-                        }
-                    }
-                }
-            }
-	    } else if(allowedLen>1) {
-            boolean found = false;
-            for (int c = 0; c < allowedLen; c++) {
-                String host = allowedHosts.get(c);
-                if (host.equals(hostname)) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                error = "Access to " + hostname + " is not allowed.";
-                hostname = "";
-            }
-        }
-    }
-    port = getIntSetting(request, databaseProduct, "port");
-    username = getSetting(request, databaseProduct, "username");
-    password = getSetting(request, databaseProduct, "password");
-    database = getSetting(request, databaseProduct, "database");
+		// Make sure is part of allowed hostnames
+		if (hostname.length() > 0) {
+			if (allowedLen == 0) {
+				// Remove hostname if denied in config
+				String S = DatabaseConfiguration.getProperty("host.deny", databaseProduct);
+				if (S != null && (S = S.trim()).length() > 0) {
+					StringTokenizer hosts = new StringTokenizer(S, ",");
+					while (hosts.hasMoreTokens()) {
+						String host = hosts.nextToken().trim().toLowerCase();
+						if (host.length() > 0) {
+							InetAddress IA1 = InetAddress.getByName(host);
+							InetAddress IA2 = InetAddress.getByName(hostname);
+							if (IA1 == null ? (IA2 == null) : (IA1.equals(IA2))) {
+								error = "Access to " + hostname + " is denied.";
+								hostname = "";
+							}
+						}
+					}
+				}
+			} else if(allowedLen>1) {
+				boolean found = false;
+				for (int c = 0; c < allowedLen; c++) {
+					String host = allowedHosts.get(c);
+					if (host.equals(hostname)) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					error = "Access to " + hostname + " is not allowed.";
+					hostname = "";
+				}
+			}
+		}
+		port = getIntSetting(request, databaseProduct, "port");
+		ssl = getBooleanSetting(request, databaseProduct, "ssl");
+		username = getSetting(request, databaseProduct, "username");
+		password = getSetting(request, databaseProduct, "password");
+		database = getSetting(request, databaseProduct, "database");
 
-    // These values are always obtained from the client
-    table = getClientSetting(request, "table");
-    column = getClientSetting(request, "column");
-    action = getClientSetting(request, "action");
-    sortColumn = getClientSetting(request, "sortcolumn");
-    sortOrder = getClientSetting(request, "sortorder");
-    String S = request.getParameter("numrows");
-    if (S != null && S.length() > 0)
-        numrows = Integer.parseInt(S);
-    S = request.getParameter("fkeyrows");
-    if (S != null && S.length() > 0)
-        fkeyrows = Integer.parseInt(S);
-    useMultiLine = "true".equals(request.getParameter("usemultiline"));
-}
-	private Settings(
-		     HttpServletRequest request,
-		     String databaseProduct,
-		     String hostname,
-		     int port,
-		     String username,
-		     String password,
-		     String database,
-		     String table,
-		     String column,
-		     String action,
-		     String sortColumn,
-		     String sortOrder,
-		     int numrows,
-		     int fkeyrows,
-		     boolean useMultiLine
-		     ) {
-	this.request=request;
-	this.databaseProduct=databaseProduct;
-	this.hostname=hostname;
-	this.port=port;
-	this.username=username;
-	this.password=password;
-	this.database=database;
-	this.table=table;
-	this.column=column;
-	this.action=action;
-	this.sortColumn=sortColumn;
-	this.sortOrder=sortOrder;
-	this.numrows=numrows;
-	this.fkeyrows=fkeyrows;
-	this.useMultiLine=useMultiLine;
+		// These values are always obtained from the client
+		table = getClientSetting(request, "table");
+		column = getClientSetting(request, "column");
+		action = getClientSetting(request, "action");
+		sortColumn = getClientSetting(request, "sortcolumn");
+		sortOrder = getClientSetting(request, "sortorder");
+		String S = request.getParameter("numrows");
+		if (S != null && S.length() > 0)
+			numrows = Integer.parseInt(S);
+		S = request.getParameter("fkeyrows");
+		if (S != null && S.length() > 0)
+			fkeyrows = Integer.parseInt(S);
+		useMultiLine = "true".equals(request.getParameter("usemultiline"));
 	}
+
+	private Settings(
+		HttpServletRequest request,
+		String databaseProduct,
+		String hostname,
+		int port,
+		boolean ssl,
+		String username,
+		String password,
+		String database,
+		String table,
+		String column,
+		String action,
+		String sortColumn,
+		String sortOrder,
+		int numrows,
+		int fkeyrows,
+		boolean useMultiLine
+	) {
+		this.request=request;
+		this.databaseProduct=databaseProduct;
+		this.hostname=hostname;
+		this.port=port;
+		this.ssl = ssl;
+		this.username=username;
+		this.password=password;
+		this.database=database;
+		this.table=table;
+		this.column=column;
+		this.action=action;
+		this.sortColumn=sortColumn;
+		this.sortOrder=sortOrder;
+		this.numrows=numrows;
+		this.fkeyrows=fkeyrows;
+		this.useMultiLine=useMultiLine;
+	}
+
 	/**
 	 * Gets the action currently being performed or <code>null</code> if not set.
 	 */
 	public String getAction() {
-	return action.length()==0?null:action;
+		return action.length()==0?null:action;
 	}
+
 	/**
 	 * Gets a setting without checking the config.
 	 */
 	private static String getClientSetting(HttpServletRequest req, String name) {
-	String S=req.getParameter(name);
-	return (S==null)?"":S;
+		String S=req.getParameter(name);
+		return (S==null)?"":S;
 	}
+
 	/**
 	 * Gets the column currently being accessed or <code>null</code> if not set.
 	 */
 	public String getColumn() {
-	return column.length()==0?null:column;
+		return column.length()==0?null:column;
 	}
+
 	/**
 	 * Gets the database currently being accessed or <code>null</code> if not set.
 	 */
 	public String getDatabase() {
-	return database.length()==0?null:database;
+		return database.length()==0?null:database;
 	}
+
 	/**
 	 * Gets the database product in use or <code>null</code> if not set.
 	 */
 	public String getDatabaseProduct() {
-	return databaseProduct.length()==0?null:databaseProduct;
+		return databaseProduct.length()==0?null:databaseProduct;
 	}
+
 	/**
 	 * Gets any error that occured during the creation of this <code>Settings</code> object.
 	 *
 	 * @return  a description of the error or <code>null</code> for none.
 	 */
 	public String getError() {
-	return error;
+		return error;
 	}
+
 	/**
 	 * Gets the number of rows for a foreign key choice.
 	 */
 	public int getForeignKeyRows() {
-	return fkeyrows;
+		return fkeyrows;
 	}
+
 	/**
 	 * Gets the hostname of the database server being connected to
 	 * or <code>null</code> if not set.
 	 */
 	public String getHostname() {
-	return hostname.length()==0?null:hostname;
+		return hostname.length()==0?null:hostname;
 	}
+
 	/**
 	 * Gets a numerical setting from a <code>HttpServletRequest</code>.
 	 * If the setting is provided in the configuration for the database
 	 * product, then the configuration value is used.
 	 */
 	private static int getIntSetting(HttpServletRequest req, String databaseProduct, String name) throws IOException {
-	// The configuration overrides the client values
-	String config=DatabaseConfiguration.getProperty(name, databaseProduct);
-	if(config!=null && config.length()>0) return Integer.parseInt(config);
+		// The configuration overrides the client values
+		String config=DatabaseConfiguration.getProperty(name, databaseProduct);
+		if(config!=null && config.length()>0) return Integer.parseInt(config);
 
-	String S=req.getParameter(name);
-	return (S==null)?-1:Integer.parseInt(S);
+		String S=req.getParameter(name);
+		return (S==null)?-1:Integer.parseInt(S);
 	}
-    /**
-     * Gets a <code>JDBCConnector</code> for these <code>Settings</code>.
-     */
-    public JDBCConnector getJDBCConnector() throws IOException {
-	try {
-	    return JDBCConnector.getInstance(this);
-	} catch(ClassNotFoundException err) {
-            IOException ioErr=new IOException();
-            ioErr.initCause(err);
-            throw ioErr;
-	} catch(NoSuchMethodException err) {
-            IOException ioErr=new IOException();
-            ioErr.initCause(err);
-            throw ioErr;
-	} catch(InstantiationException err) {
-            IOException ioErr=new IOException();
-            ioErr.initCause(err);
-            throw ioErr;
-	} catch(IllegalAccessException err) {
-            IOException ioErr=new IOException();
-            ioErr.initCause(err);
-            throw ioErr;
-	} catch(InvocationTargetException err) {
-            IOException ioErr=new IOException();
-            ioErr.initCause(err);
-            throw ioErr;
+
+	private static boolean getBooleanSetting(HttpServletRequest req, String databaseProduct, String name) throws IOException {
+		// The configuration overrides the client values
+		String config=DatabaseConfiguration.getProperty(name, databaseProduct);
+		if(config!=null && config.length()>0) return Boolean.parseBoolean(config);
+
+		String S=req.getParameter(name);
+		return (S==null)?false:Boolean.parseBoolean(S);
 	}
-    }
 
-    /**
-     * Gets the number of rows to display at once.
-     */
-    public int getNumRows() {
-	return numrows;
-    }
+	/**
+	 * Gets a <code>JDBCConnector</code> for these <code>Settings</code>.
+	 */
+	public JDBCConnector getJDBCConnector() throws IOException {
+		try {
+			return JDBCConnector.getInstance(this);
+		} catch(ClassNotFoundException err) {
+			IOException ioErr=new IOException();
+			ioErr.initCause(err);
+			throw ioErr;
+		} catch(NoSuchMethodException err) {
+			IOException ioErr=new IOException();
+			ioErr.initCause(err);
+			throw ioErr;
+		} catch(InstantiationException err) {
+			IOException ioErr=new IOException();
+			ioErr.initCause(err);
+			throw ioErr;
+		} catch(IllegalAccessException err) {
+			IOException ioErr=new IOException();
+			ioErr.initCause(err);
+			throw ioErr;
+		} catch(InvocationTargetException err) {
+			IOException ioErr=new IOException();
+			ioErr.initCause(err);
+			throw ioErr;
+		}
+	}
 
-    /**
-     * Gets an arbitrary value from the request.  The is the value
-     * as provided by the client.  Any overridden configuration
-     * values are not returned.
-     */
-    public String getParameter(String name) {
-	return request.getParameter(name);
-    }
+	/**
+	 * Gets the number of rows to display at once.
+	 */
+	public int getNumRows() {
+		return numrows;
+	}
 
-    /**
-     * Gets an arbitrary set of values from the request.  The is the
-     * value as provided by the client.  Any overridden configuration
-     * values are not returned.
-     */
-    public String[] getParameterValues(String name) {
-	return request.getParameterValues(name);
-    }
+	/**
+	 * Gets an arbitrary value from the request.  The is the value
+	 * as provided by the client.  Any overridden configuration
+	 * values are not returned.
+	 */
+	public String getParameter(String name) {
+		return request.getParameter(name);
+	}
 
-    /**
-     * Gets the password or <code>null</code> if not set.
-     */
-    public String getPassword() {
-	return password.length()==0?null:password;
-    }
+	public Boolean getBooleanParameter(String name) {
+		String param = getParameter(name);
+		return param==null || param.isEmpty() ? null : Boolean.parseBoolean(param);
+	}
 
-    /**
-     * Gets the port of the database product being connected to.
-     *
-     * @return  <code>-1</code> if not defined or the port number
-     */
-    public int getPort() {
-	return port;
-    }
+	/**
+	 * Gets an arbitrary set of values from the request.  The is the
+	 * value as provided by the client.  Any overridden configuration
+	 * values are not returned.
+	 */
+	public String[] getParameterValues(String name) {
+		return request.getParameterValues(name);
+	}
 
-    /**
-     * Gets a setting from a <code>HttpServletRequest</code>.  If the
-     * setting is provided in the configuration, then the configuration
-     * value is used.
-     */
-    private static String getSetting(HttpServletRequest req, String name) throws IOException {
-	// The configuration overrides the client values
-	String config=DatabaseConfiguration.getProperty(name);
-	if(config!=null && config.length()>0) return config;
+	/**
+	 * Gets the password or <code>null</code> if not set.
+	 */
+	public String getPassword() {
+		return password.length()==0?null:password;
+	}
 
-	String S=req.getParameter(name);
-	return (S==null)?"":S;
-    }
+	/**
+	 * Gets the port of the database product being connected to.
+	 *
+	 * @return  <code>-1</code> if not defined or the port number
+	 */
+	public int getPort() {
+		return port;
+	}
+
+	public boolean getSsl() {
+		return ssl;
+	}
+
+	/**
+	 * Gets a setting from a <code>HttpServletRequest</code>.  If the
+	 * setting is provided in the configuration, then the configuration
+	 * value is used.
+	 */
+	private static String getSetting(HttpServletRequest req, String name) throws IOException {
+		// The configuration overrides the client values
+		String config=DatabaseConfiguration.getProperty(name);
+		if(config!=null && config.length()>0) return config;
+
+		String S=req.getParameter(name);
+		return (S==null)?"":S;
+	}
+
 	/**
 	 * Gets a setting from a <code>HttpServletRequest</code>.  If the
 	 * setting is provided in the configuration for the database
 	 * product, then the configuration value is used.
 	 */
 	private static String getSetting(HttpServletRequest req, String databaseProduct, String name) throws IOException {
-	// The configuration overrides the client values
-	String config=DatabaseConfiguration.getProperty(name, databaseProduct);
-	if(config!=null && config.length()>0) return config;
+		// The configuration overrides the client values
+		String config=DatabaseConfiguration.getProperty(name, databaseProduct);
+		if(config!=null && config.length()>0) return config;
 
-	String S=req.getParameter(name);
-	return (S==null)?"":S;
+		String S=req.getParameter(name);
+		return (S==null)?"":S;
 	}
+
 	/**
 	 * Gets the column name to be ordered by or <code>null</code> if not set.
 	 */
 	public String getSortColumn() {
-	return sortColumn.length()==0?null:sortColumn;
+		return sortColumn.length()==0?null:sortColumn;
 	}
+
 	/**
 	 * Gets the sorting order or <code>null</code> if not set.
 	 */
 	public String getSortOrder() {
-	return sortOrder.length()==0?null:sortOrder;
+		return sortOrder.length()==0?null:sortOrder;
 	}
+
 	/**
 	 * Gets the table currently being accessed or <code>null</code> if not set.
 	 */
 	public String getTable() {
-	return table.length()==0?null:table;
+		return table.length()==0?null:table;
 	}
+
 	/**
 	 * Generates the proper URL based on the settings and configuration.
 	 */
 	public String getURL() throws IOException {
-	String url=DatabaseConfiguration.getProperty("url", databaseProduct);
-	if(url.length()==0) throw new IOException("Unable to find URL for databaseProduct="+databaseProduct);
+		String url=DatabaseConfiguration.getProperty("url", databaseProduct);
+		if(url.length()==0) throw new IOException("Unable to find URL for databaseProduct="+databaseProduct);
 
-	// Replace all %h with the host
-	if(hostname.length()==0) throw new IOException("hostname not set");
-	if(hostname.indexOf("%h")>=0) throw new IOException("hostname may not contain %h: "+hostname);
-	int pos;
-	while((pos=url.indexOf("%h"))>=0) url=url.substring(0, pos)+hostname+url.substring(pos+2);
+		// Replace all %h with the host
+		if(hostname.length()==0) throw new IOException("hostname not set");
+		if(hostname.indexOf("%h")>=0) throw new IOException("hostname may not contain %h: "+hostname);
+		int pos;
+		while((pos=url.indexOf("%h"))>=0) url=url.substring(0, pos)+hostname+url.substring(pos+2);
 
-	// Replace the %p with the port
-	if(port<1 || port>65535) throw new IOException("Invalid port: "+port);
-	while((pos=url.indexOf("%p"))>=0) url=url.substring(0, pos)+port+url.substring(pos+2);
+		// Replace the %p with the port
+		if(port<1 || port>65535) throw new IOException("Invalid port: "+port);
+		while((pos=url.indexOf("%p"))>=0) url=url.substring(0, pos)+port+url.substring(pos+2);
 
-	// Replace the %d with the database
-	if(database.length()==0) throw new IOException("database not set");
-	if(database.indexOf("%d")>=0) throw new IOException("database may not contain %d: "+database);
-	while((pos=url.indexOf("%d"))>=0) url=url.substring(0, pos)+database+url.substring(pos+2);
+		// Replace the %d with the database
+		if(database.length()==0) throw new IOException("database not set");
+		if(database.indexOf("%d")>=0) throw new IOException("database may not contain %d: "+database);
+		while((pos=url.indexOf("%d"))>=0) url=url.substring(0, pos)+database+url.substring(pos+2);
 
-	return url;
+		/* TODO:
+		if(ssl) {
+			url = url + (url.indexOf('?') == -1 ? '?' : '&') + "ssl=true";
+		}
+		 */
+		return url;
 	}
 	/**
 	 * Gets the username or <code>null</code> if not set.
@@ -389,6 +432,7 @@ public Settings(HttpServletRequest request) throws IOException {
 	printHiddenField(out, "dbproduct", databaseProduct);
 	printHiddenField(out, "hostname", hostname);
 	printHiddenField(out, "port", port);
+	printHiddenField(out, "ssl", Boolean.toString(ssl));
 	printHiddenField(out, "username", username);
 
 	// Only provide the password when not in the config
@@ -456,6 +500,8 @@ public Settings(HttpServletRequest request) throws IOException {
 	out.print('&');
 		printParam(out, "port", port);
 	out.print('&');
+		printParam(out, "ssl", Boolean.toString(ssl));
+	out.print('&');
 		printParam(out, "username", username);
 
 		// Only provide the password when not in the config
@@ -488,50 +534,54 @@ public Settings(HttpServletRequest request) throws IOException {
 	 * Gets a <code>Settings</code> for access to a new database.
 	 */
 	public Settings setDatabase(String database) {
-	return new Settings(
-			    request,
-			    databaseProduct,
-			    hostname,
-			    port,
-			    username,
-			    password,
-			    database,
-			    table,
-			    column,
-			    action,
-			    sortColumn,
-			    sortOrder,
-			    numrows,
-			    fkeyrows,
-			    useMultiLine
-			    );
+		return new Settings(
+			request,
+			databaseProduct,
+			hostname,
+			port,
+			ssl,
+			username,
+			password,
+			database,
+			table,
+			column,
+			action,
+			sortColumn,
+			sortOrder,
+			numrows,
+			fkeyrows,
+			useMultiLine
+		);
 	}
+
 	/**
 	 * Gets a <code>Settings</code> for access to a new table.
 	 */
 	public Settings setTable(String table) {
-	return new Settings(
-			    request,
-			    databaseProduct,
-			    hostname,
-			    port,
-			    username,
-			    password,
-			    database,
-			    table,
-			    column,
-			    action,
-			    sortColumn,
-			    sortOrder,
-			    numrows,
-			    fkeyrows,
-			    useMultiLine
-			    );
+		return new Settings(
+			request,
+			databaseProduct,
+			hostname,
+			port,
+			ssl,
+			username,
+			password,
+			database,
+			table,
+			column,
+			action,
+			sortColumn,
+			sortOrder,
+			numrows,
+			fkeyrows,
+			useMultiLine
+		);
 	}
+
 	/**
 	 * Should multiline textareas be used?
 	 */
 	public boolean useMultiLine() {
-	return useMultiLine;
+		return useMultiLine;
 	}
 }
