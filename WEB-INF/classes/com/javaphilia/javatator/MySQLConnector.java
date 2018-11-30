@@ -1,5 +1,3 @@
-package com.javaphilia.javatator;
-
 /**
  * Javatator - multi-database admin tool
  * 
@@ -23,8 +21,9 @@ package com.javaphilia.javatator;
  * jason@javaphilia.com
  * 
  */
+package com.javaphilia.javatator;
 
-import com.aoindustries.aoserv.client.MySQLServer;
+import com.aoindustries.aoserv.client.mysql.MySQLServer;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

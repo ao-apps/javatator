@@ -1,5 +1,3 @@
-package com.javaphilia.javatator;
-
 /**
  * Javatator - multi-database admin tool
  * 
@@ -23,9 +21,10 @@ package com.javaphilia.javatator;
  * jason@javaphilia.com
  * 
  */
+package com.javaphilia.javatator;
 
-import com.aoindustries.aoserv.client.MySQLServer;
-import com.aoindustries.aoserv.client.PostgresServer;
+import com.aoindustries.aoserv.client.mysql.MySQLServer;
+import com.aoindustries.aoserv.client.postgresql.PostgresServer;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
