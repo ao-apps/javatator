@@ -23,8 +23,7 @@
  */
 package com.javaphilia.javatator;
 
-import com.aoindustries.aoserv.client.mysql.MySQLServer;
-import com.aoindustries.aoserv.client.postgresql.PostgresServer;
+import com.aoindustries.aoserv.client.mysql.Server;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
@@ -1622,8 +1621,8 @@ public class JDBCConnector {
 	 */
 	public boolean isKeyword(String identifier) {
 		return
-			MySQLServer.ReservedWord.isReservedWord(identifier)
-			|| PostgresServer.ReservedWord.isReservedWord(identifier)
+			Server.ReservedWord.isReservedWord(identifier)
+			|| com.aoindustries.aoserv.client.postgresql.Server.ReservedWord.isReservedWord(identifier)
 		;
 	}
 

@@ -23,7 +23,7 @@
  */
 package com.javaphilia.javatator;
 
-import com.aoindustries.aoserv.client.mysql.MySQLServer;
+import com.aoindustries.aoserv.client.mysql.Server;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -338,7 +338,7 @@ public class MySQLConnector extends JDBCConnector {
 	@Override
 	public boolean isKeyword(String identifier) {
 		return
-			MySQLServer.ReservedWord.isReservedWord(identifier)
+			Server.ReservedWord.isReservedWord(identifier)
 		;
 	}
 

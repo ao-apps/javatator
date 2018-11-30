@@ -23,7 +23,7 @@
  */
 package com.javaphilia.javatator;
 
-import com.aoindustries.aoserv.client.postgresql.PostgresServer;
+import com.aoindustries.aoserv.client.postgresql.Server;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -1638,7 +1638,7 @@ public class PgSQLConnector extends JDBCConnector {
 	@Override
 	public boolean isKeyword(String identifier) {
 		return
-			PostgresServer.ReservedWord.isReservedWord(identifier)
+			Server.ReservedWord.isReservedWord(identifier)
 		;
 	}
 }
