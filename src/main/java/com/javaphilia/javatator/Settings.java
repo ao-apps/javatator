@@ -62,8 +62,8 @@ public class Settings {
 	private String error;
 
 	/**
-	 * Constructs this <code>Settings</code> object by pulling its values from
-	 * a <code>HttpServletRequest</code>.  If any value is provided in the
+	 * Constructs this {@link Settings} object by pulling its values from
+	 * a {@link HttpServletRequest}.  If any value is provided in the
 	 * configuration, then the value in the form is ignored.
 	 */
 	public Settings(HttpServletRequest request) throws IOException {
@@ -217,7 +217,7 @@ public class Settings {
 	}
 
 	/**
-	 * Gets any error that occured during the creation of this <code>Settings</code> object.
+	 * Gets any error that occured during the creation of this {@link Settings} object.
 	 *
 	 * @return  a description of the error or <code>null</code> for none.
 	 */
@@ -241,7 +241,7 @@ public class Settings {
 	}
 
 	/**
-	 * Gets a numerical setting from a <code>HttpServletRequest</code>.
+	 * Gets a numerical setting from a {@link HttpServletRequest}.
 	 * If the setting is provided in the configuration for the database
 	 * product, then the configuration value is used.
 	 */
@@ -264,7 +264,7 @@ public class Settings {
 	}
 
 	/**
-	 * Gets a <code>JDBCConnector</code> for these <code>Settings</code>.
+	 * Gets a {@link JDBCConnector} for these {@link Settings}.
 	 */
 	public JDBCConnector getJDBCConnector() throws IOException {
 		try {
@@ -343,7 +343,7 @@ public class Settings {
 	}
 
 	/**
-	 * Gets a setting from a <code>HttpServletRequest</code>.  If the
+	 * Gets a setting from a {@link HttpServletRequest}.  If the
 	 * setting is provided in the configuration, then the configuration
 	 * value is used.
 	 */
@@ -357,7 +357,7 @@ public class Settings {
 	}
 
 	/**
-	 * Gets a setting from a <code>HttpServletRequest</code>.  If the
+	 * Gets a setting from a {@link HttpServletRequest}.  If the
 	 * setting is provided in the configuration for the database
 	 * product, then the configuration value is used.
 	 */
@@ -429,8 +429,8 @@ public class Settings {
 	}
 
 	/**
-	 * Prints the contents of this <code>Settings</code> to a
-	 * <code>JavatatorWriter</code>.
+	 * Prints the contents of this {@link Settings} to a
+	 * {@link JavatatorWriter}.
 	 */
 	public void printForm(JavatatorWriter out) throws IOException {
 		printHiddenField(out, "dbproduct", databaseProduct);
@@ -453,8 +453,8 @@ public class Settings {
 	}
 
 	/**
-	 * Prints the global preferences of this <code>Settings</code> to a
-	 * <code>JavatatorWriter</code>.
+	 * Prints the global preferences of this {@link Settings} to a
+	 * {@link JavatatorWriter}.
 	 */
 	public void printGlobalForm(JavatatorWriter out) throws IOException {
 		printHiddenField(out, "sortcolumn", sortColumn);
@@ -500,7 +500,7 @@ public class Settings {
 	}
 
 	/**
-	 * Prints a URL with the <code>Settings</code> embedded in the URL string.
+	 * Prints a URL with the {@link Settings} embedded in the URL string.
 	 */
 	public void printURLParams(String url, JavatatorWriter out) throws IOException {
 		out.print(url);
@@ -543,7 +543,7 @@ public class Settings {
 	}
 
 	/**
-	 * Gets a <code>Settings</code> for access to a new database.
+	 * Gets a {@link Settings} for access to a new database.
 	 */
 	public Settings setDatabase(String database) {
 		return new Settings(
@@ -567,7 +567,7 @@ public class Settings {
 	}
 
 	/**
-	 * Gets a <code>Settings</code> for access to a new table.
+	 * Gets a {@link Settings} for access to a new table.
 	 */
 	public Settings setTable(String table) {
 		return new Settings(

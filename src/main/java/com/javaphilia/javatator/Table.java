@@ -47,7 +47,7 @@ public class Table {
 	private Settings settings;
 
 	/**
-	 * Instantiate a new <code>Table</code>.
+	 * Instantiate a new {@link Table}.
 	 */
 	public Table(Settings settings) {
 		this.settings=settings;
@@ -353,7 +353,7 @@ public class Table {
 	}
 
 	/**
-	 * Gets the startpos from the current <code>Settings</code>.
+	 * Gets the startpos from the current {@link Settings}.
 	 */
 	private int getStartPos() {
 		String S=settings.getParameter("startpos");
@@ -1078,7 +1078,7 @@ public class Table {
 	}
 
 	/**
-	 * Process the <code>Settings</code> object and decide what to do.
+	 * Process the {@link Settings} object and decide what to do.
 	 */
 	public Settings processRequest(JavatatorWriter out) throws SQLException, IOException {
 		String action=settings.getAction();

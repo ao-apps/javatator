@@ -49,7 +49,7 @@ public class Indexes {
 	final private List<String> columns;
 
 	/**
-	 * Instantiates a new <code>Indexes</code> object.
+	 * Instantiates a new {@link Indexes} object.
 	 *
 	 * @param names an array containing the index names.
 	 * @param areUnique which indexes are unique?

@@ -38,9 +38,9 @@ public class Column {
 	private Settings settings;
 
 	/**
-	 * Instantiate a new <code>Column</code>.
+	 * Instantiate a new {@link Column}.
 	 *
-	 * @param  settings  the <code>Settings</code> to use
+	 * @param  settings  the {@link Settings} to use
 	 */
 	public Column(Settings settings) {
 		this.settings=settings;
@@ -545,7 +545,7 @@ public class Column {
 	}
 
 	/**
-	 * Process the <code>Settings</code> object and decide what to do.
+	 * Process the {@link Settings} object and decide what to do.
 	 */
 	public Settings processRequest(JavatatorWriter out) throws SQLException, IOException {
 		String action=settings.getAction();

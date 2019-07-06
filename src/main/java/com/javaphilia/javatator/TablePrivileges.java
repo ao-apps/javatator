@@ -39,7 +39,7 @@ public class TablePrivileges {
 	final private List<JDBCConnector.Boolean> isGrantable;
 
 	/**
-	 * Instantiate a new <code>TablePrivileges</code> object.
+	 * Instantiate a new {@link TablePrivileges} object.
 	 *
 	 * @param grantors an array containing the users who have granted privileges to the table.
 	 * @param grantees an array containing the users who have been granted privileges to the table.

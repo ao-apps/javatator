@@ -39,7 +39,7 @@ public class DatabasePoolCleanup extends Thread {
 	private static DatabasePoolCleanup thread;
 
 	/**
-	 * A <code>DatabasePoolCleanup</code> starts itself as a daemon thread upon instantiation
+	 * A {@link DatabasePoolCleanup} starts itself as a daemon thread upon instantiation
 	 * and sets its priority to normal.
 	 */
 	private DatabasePoolCleanup() {
@@ -51,7 +51,7 @@ public class DatabasePoolCleanup extends Thread {
 
 	/**
 	 * Periodically polls every connection in the connection pool. If it finds a
-	 * connection is idle for more than the <code>DatabasePool.MAX_IDLE_TIME</code>,
+	 * connection is idle for more than the {@link DatabasePool#MAX_IDLE_TIME},
 	 * it closes the connection.
 	 */
 	@Override

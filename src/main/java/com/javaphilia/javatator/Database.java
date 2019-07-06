@@ -45,9 +45,9 @@ public class Database {
 	private Settings settings;
 
 	/**
-	 * Instantiate a new <code>Database</code>.
+	 * Instantiate a new {@link Database}.
 	 *
-	 * @param d the name of the database to use.
+	 * @param settings the {@link Settings} to use.
 	 */
 	public Database(Settings settings) {
 		this.settings=settings;
@@ -319,7 +319,7 @@ public class Database {
 	}
 
 	/**
-	 * Process the <code>Settings</code> object and decide what to do.
+	 * Process the {@link Settings} object and decide what to do.
 	 */
 	public Settings processRequest(JavatatorWriter out) throws SQLException, IOException {
 		String action=settings.getAction();

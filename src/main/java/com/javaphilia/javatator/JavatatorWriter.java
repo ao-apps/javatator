@@ -34,7 +34,7 @@ import java.io.PrintWriter;
 public class JavatatorWriter extends PrintWriter {
 
 	/**
-	 * Constructs this <code>JavatatorWriter</code>.
+	 * Constructs this {@link JavatatorWriter}.
 	 */
 	public JavatatorWriter(OutputStream out) {
 		super(out);

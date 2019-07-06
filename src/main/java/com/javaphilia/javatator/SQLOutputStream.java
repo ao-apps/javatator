@@ -45,9 +45,9 @@ public class SQLOutputStream extends OutputStream {
 	private final StringBuffer SB=new StringBuffer();
 
 	/**
-	 * Constructs this <code>SQLOutputStream</code>.
+	 * Constructs this {@link SQLOutputStream}.
 	 *
-	 * @param stmt the <code>Statement</code> for executing the query.
+	 * @param stmt the {@link Statement} for executing the query.
 	 */
 	public SQLOutputStream(Statement stmt) {
 		this.stmt=stmt;

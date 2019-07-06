@@ -51,22 +51,22 @@ public class JDBCConnector {
 
 	public enum Boolean {
 		/**
-		 * Expanded boolean <code>FALSE</code> is returned when something is known to be false.
+		 * Expanded boolean {@link #FALSE} is returned when something is known to be false.
 		 */
 		FALSE,
 
 		/**
-		 * Expanded boolean <code>TRUE</code> is returned when something is known to be true.
+		 * Expanded boolean {@link #TRUE} is returned when something is known to be true.
 		 */
 		TRUE,
 
 		/**
-		 * Expanded boolean <code>UNKNOWN</code> is returned when something is not known to be true or false.
+		 * Expanded boolean {@link #UNKNOWN} is returned when something is not known to be true or false.
 		 */
 		UNKNOWN,
 
 		/**
-		 * Expanded boolean <code>NA</code> is returned when something is known to not apply to this database.
+		 * Expanded boolean {@link #NA} is returned when something is known to not apply to this database.
 		 */
 		NA
 	}
@@ -79,14 +79,14 @@ public class JDBCConnector {
 	private final static Class[] paramTypes={Settings.class};
 
 	/**
-	 * The <code>Settings</code> store all the configuration parameters.
+	 * The {@link Settings} store all the configuration parameters.
 	 */
 	final protected Settings settings;
 
 	/**
 	 * Instantiate a new JDBCConnector.
 	 *
-	 * @param settings  the <code>Settings</code> to use.
+	 * @param settings  the {@link Settings} to use.
 	 */
 	public JDBCConnector(Settings settings) {
 		this.settings=settings;
@@ -431,7 +431,7 @@ public class JDBCConnector {
 	/**
 	 * Dumps the contents of the table.
 	 *
-	 * @param out a <code>Writer</code> to dump the SQL to.
+	 * @param out a {@link Writer} to dump the SQL to.
 	 */
 	public void dumpTableContents(Writer out) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
@@ -468,7 +468,7 @@ public class JDBCConnector {
 	/**
 	 * Dumps the structure of the table.
 	 *
-	 * @param out a <code>Writer</code> to dump the SQL to.
+	 * @param out a {@link Writer} to dump the SQL to.
 	 */
 	public void dumpTableStructure(Writer out) throws SQLException, IOException {
 		Columns columns=getColumns();
@@ -637,7 +637,7 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Executes a query and returns a <code>List</code> of <code>String</code> at index 1.
+	 * Executes a query and returns a {@link List} of {@link String} at index 1.
 	 */
 	final protected List<String> executeListQuery(String sql) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
@@ -661,7 +661,7 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Executes a query and returns a <code>Vector</code> of <code>String</code> at index 1.
+	 * Executes a query and returns a {@link List} of {@link String} at index 1.
 	 *
 	 * @param  sql    the SQL to execute
 	 * @param  param  the parameter to the SQL
@@ -689,7 +689,7 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Executes an update using a <code>PreparedStatement</code>
+	 * Executes an update using a {@link PreparedStatement}
 	 *
 	 * @param  sql    the SQL to execute
 	 *
@@ -710,7 +710,7 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Executes an update using a <code>PreparedStatement</code>
+	 * Executes an update using a {@link PreparedStatement}
 	 *
 	 * @param  sql    the SQL to execute
 	 * @param  param  the parameter to the SQL
@@ -733,7 +733,7 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Executes an update using a <code>PreparedStatement</code>
+	 * Executes an update using a {@link PreparedStatement}
 	 *
 	 * @param  sql     the SQL to execute
 	 * @param  param1  the first parameter to the SQL
@@ -758,7 +758,7 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Gets a <code>String</code> describing one of the
+	 * Gets a {@link String} describing one of the
 	 * expanded boolean values.
 	 */
 	public static String getBooleanString(Boolean i) throws SQLException {
@@ -876,7 +876,7 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Gets a <code>Vector</code> of <code>SchemaTable</code> to get one
+	 * Gets a {@link List} of {@link SchemaTable} to get one
 	 * data structure of the entire database schema.
 	 */
 	public List<SchemaTable> getDatabaseSchema() throws IOException, SQLException {
@@ -1130,9 +1130,9 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Gets a <code>JDBCConnector</code> of the provided classname and info.
+	 * Gets a {@link JDBCConnector} of the provided classname and info.
 	 *
-	 * @param classname  the classname to load
+	 * @param settings  the {@link Settings} to use
 	 */
 	public static JDBCConnector getInstance(Settings settings)
 	throws
@@ -1152,7 +1152,7 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Gets a int from a query given a String using a <code>PreparedStatement</code>.
+	 * Gets a int from a query given a String using a {@link PreparedStatement}.
 	 * Returns 0 if no results were returned.
 	 */
 	final protected int getIntQuery(String sql) throws SQLException, IOException {
@@ -1176,7 +1176,7 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Gets a int from a query given a String using a <code>PreparedStatement</code>.
+	 * Gets a int from a query given a String using a {@link PreparedStatement}.
 	 * Returns 0 if no results were returned.
 	 */
 	final protected int getIntQuery(String sql, String param) throws SQLException, IOException {
@@ -1240,7 +1240,7 @@ public class JDBCConnector {
 	/**
 	 * Gets the possible values for a column.  For a type <code>ENUM</code> in MySQL this
 	 * would return the valid values, for a foreign key in PostgreSQL this would return all
-	 * the foreign rows if less than <code>Settings.fkeyrows</code> exist.
+	 * the foreign rows if less than {@link Settings#fkeyrows} exist.
 	 *
 	 * @return the list of all possible values or <code>null</code> if not known
 	 */
@@ -1344,7 +1344,7 @@ public class JDBCConnector {
 	/**
 	 * Gets a description of the given foreign key rule.
 	 *
-	 * @param i the value of one of the <code>DatabaseMetaData</code> defined constants.
+	 * @param i the value of one of the {@link DatabaseMetaData} defined constants.
 	 */
 	public String getRuleDescription(int i) throws SQLException {
 		if(i==DatabaseMetaData.importedKeyNoAction) return "NO ACTION";
@@ -1389,7 +1389,7 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Gets the <code>Settings</code> of this <code>JDBCConnector</code>.
+	 * Gets the {@link Settings} of this {@link JDBCConnector}.
 	 */
 	final public Settings getSettings() {
 		return settings;
@@ -1429,7 +1429,7 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Returns a <code>Vector</code> containing all the tables in the database.
+	 * Returns a {@link List} containing all the tables in the database.
 	 */
 	public List<String> getTables() throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
@@ -1482,8 +1482,8 @@ public class JDBCConnector {
 	/**
 	 * Grants a user privileges on the current table.
 	 *
-	 * @param user the user to grant the privileges to.
-	 * @param an array of privileges which will be granted.
+	 * @param user        the user to grant the privileges to.
+	 * @param privileges  an array of privileges which will be granted.
 	 */
 	public void grantPrivileges(String user, String[] privileges) throws SQLException, IOException {
 		StringBuffer sql=new StringBuffer("GRANT ");
@@ -1504,9 +1504,9 @@ public class JDBCConnector {
 	/**
 	 * Inserts a new row into a table.
 	 *
-	 * @param column an array of <code>String</code> objects representing the names of the columns.
-	 * @param column an array of <code>String</code> objects representing functions to execute.
-	 * @param column an array of <code>String</code> objects representing the values to insert.
+	 * @param column    an array of {@link String} objects representing the names of the columns.
+	 * @param function  an array of {@link String} objects representing functions to execute.
+	 * @param value     an array of {@link String} objects representing the values to insert.
 	 */
 	public void insertRow(String[] column, String[] function, String[] value) throws SQLException, IOException {
 		// Build the SQL
@@ -1566,8 +1566,8 @@ public class JDBCConnector {
 	/**
 	 * Revokes privileges from a user on the current table.
 	 *
-	 * @param user the user to revoke the privileges from.
-	 * @param an array of privileges which will be revoked.
+	 * @param user        the user to revoke the privileges from.
+	 * @param privileges  an array of privileges which will be revoked.
 	 */
 	public void revokePrivileges(String user, String[] privileges) throws SQLException, IOException {
 		StringBuffer sql=new StringBuffer("REVOKE ");
@@ -1655,7 +1655,7 @@ public class JDBCConnector {
 	/**
 	 * Quotes an identifier used for a table name.
 	 *
-	 * @see  #defaultQuote(java.lang.String)
+	 * @see  #defaultQuote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public String quoteTable(String table) {
 		return defaultQuote("\"", "\"\"", "\"", table);
@@ -1664,7 +1664,7 @@ public class JDBCConnector {
 	/**
 	 * Quotes an identifier used for a column name.
 	 *
-	 * @see  #defaultQuote(java.lang.String)
+	 * @see  #defaultQuote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public String quoteColumn(String column) {
 		return defaultQuote("\"", "\"\"", "\"", column);

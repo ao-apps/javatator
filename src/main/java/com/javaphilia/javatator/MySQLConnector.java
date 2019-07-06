@@ -270,7 +270,7 @@ public class MySQLConnector extends JDBCConnector {
 	}
 
 	/**
-	 * Returns a <code>Vector</code> containing all the tables in the current database.
+	 * Returns a {@link List} containing all the tables in the current database.
 	 */
 	@Override
 	public List<String> getTables() throws SQLException, IOException {

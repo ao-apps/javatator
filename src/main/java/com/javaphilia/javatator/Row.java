@@ -38,14 +38,14 @@ import java.util.StringTokenizer;
 public class Row {
 
 	/**
-	 * The <code>Settings</code> currently in use.
+	 * The {@link Settings} currently in use.
 	 */
 	private Settings settings;
 
 	/**
-	 * Instantiate a new <code>Row</code>.
+	 * Instantiate a new {@link Row}.
 	 *
-	 * @param c the <code>JDBCConnector</code> object to use.
+	 * @param settings the {@link Settings} to use.
 	 */
 	public Row(Settings settings) {
 		this.settings=settings;
@@ -608,7 +608,7 @@ public class Row {
 	}
 
 	/**
-	 * Process the <code>Settings</code> object and decide what to do.
+	 * Process the {@link Settings} object and decide what to do.
 	 */
 	public Settings processRequest(JavatatorWriter out) throws SQLException, IOException {
 		String action=settings.getAction();
@@ -616,7 +616,7 @@ public class Row {
 	}
 
 	/**
-	 * Process the <code>Settings</code> object and decide what to do.
+	 * Process the {@link Settings} object and decide what to do.
 	 */
 	private Settings processRequest(JavatatorWriter out, String action) throws SQLException, IOException {
 		if("insert".equals(action)) return printInsert(out);

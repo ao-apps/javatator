@@ -60,7 +60,7 @@ public class ForeignKeys {
 	final private List<String> primaryTables;
 
 	/**
-	 * The number of foreign keys stored in this <code>ForeignKeys</code> object.
+	 * The number of foreign keys stored in this {@link ForeignKeys} object.
 	 */
 	final private int size;
 
