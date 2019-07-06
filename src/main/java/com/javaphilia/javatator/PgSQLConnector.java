@@ -1616,7 +1616,7 @@ public class PgSQLConnector extends JDBCConnector {
 				appendIsNull(SB, primaryKeys[i]);
 			} else {
 				String type = getCastType(columns.getType(columns.getID(primaryKeys[i])));
-				SB.append(quoteColumn(primaryKeys[i])).append("\"=?::").append(type);
+				SB.append(quoteColumn(primaryKeys[i])).append("=?::").append(type);
 			}
 		}
 		String sql = SB.toString();
