@@ -29,7 +29,6 @@ package com.javaphilia.javatator;
 import com.aoindustries.aoserv.client.mysql.Server;
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -199,21 +198,15 @@ public class JDBCConnector {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
 			StringBuilder SB=new StringBuilder();
-			ResultSet results=conn.getMetaData().getPrimaryKeys(null, null, settings.getTable());
-			try {
+			try (ResultSet results = conn.getMetaData().getPrimaryKeys(null, null, settings.getTable())) {
 				while(results.next()) {
 					SB.append(results.getString(4));
 					SB.append(", ");
 				}
 				SB.append(quoteColumn(column));
-			} finally {
-				results.close();
 			}
-			PreparedStatement pstmt=conn.prepareStatement("ALTER TABLE " + quoteTable(settings.getTable()) + " DROP PRIMARY KEY, ADD PRIMARY KEY(" + SB.toString() + ")");
-			try {
+			try (PreparedStatement pstmt = conn.prepareStatement("ALTER TABLE " + quoteTable(settings.getTable()) + " DROP PRIMARY KEY, ADD PRIMARY KEY(" + SB.toString() + ")")) {
 				pstmt.executeUpdate();
-			} finally {
-				pstmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -329,18 +322,15 @@ public class JDBCConnector {
 
 		Connection conn = DatabasePool.getConnection(settings);
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			try {
+			try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 				stmt.setEscapeProcessing(false);
 				int pos = 1;
-				for (int i = 0; i < primaryKeyValues.length; i++) {
-					if (primaryKeyValues[i] != null) {
-						stmt.setString(pos++, primaryKeyValues[i]);
+				for(String primaryKeyValue : primaryKeyValues) {
+					if(primaryKeyValue != null) {
+						stmt.setString(pos++, primaryKeyValue);
 					}
 				}
 				stmt.executeUpdate();
-			} finally {
-				stmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -387,16 +377,13 @@ public class JDBCConnector {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
 			StringBuilder SB=new StringBuilder();
-			ResultSet results=conn.getMetaData().getPrimaryKeys(null, null, settings.getTable());
-			try {
+			try (ResultSet results = conn.getMetaData().getPrimaryKeys(null, null, settings.getTable())) {
 				while(results.next()) {
 					if(!results.getString(4).equals(column)) {
 						if(SB.length()>0)SB.append(", ");
 						SB.append(results.getString(4));
 					}
 				}
-			} finally {
-				results.close();
 			}
 			StringBuilder sql=new StringBuilder("ALTER TABLE ").append(quoteTable(settings.getTable())).append(" DROP PRIMARY KEY");
 			if(SB.length()>0) {
@@ -405,11 +392,8 @@ public class JDBCConnector {
 				sql.append(")");
 			}
 
-			PreparedStatement pstmt=conn.prepareStatement(sql.toString());
-			try {
+			try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
 				pstmt.executeUpdate();
-			} finally {
-				pstmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -431,29 +415,24 @@ public class JDBCConnector {
 	public void dumpTableContents(Writer out) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			Statement stmt=conn.createStatement();
-			try {
-				String table=settings.getTable();
-				ResultSet R=stmt.executeQuery("SELECT * FROM " + quoteTable(table));
-				try {
-					int count=R.getMetaData().getColumnCount();
-					while(R.next()) {
-						out.write("INSERT INTO ");
-						out.write(quoteTable(table));
-						out.write(" VALUES (");
-						boolean hasBeen=false;
-						for(int i=1;i<=count;i++) {
-							if(hasBeen) out.write(',');
-							else hasBeen=true;
-							Util.printEscapedSQLValue(out, R.getString(i));
-						}
-						out.write(");\n");
+			String table=settings.getTable();
+			try (
+				Statement stmt = conn.createStatement();
+				ResultSet R = stmt.executeQuery("SELECT * FROM " + quoteTable(table))
+			) {
+				int count=R.getMetaData().getColumnCount();
+				while(R.next()) {
+					out.write("INSERT INTO ");
+					out.write(quoteTable(table));
+					out.write(" VALUES (");
+					boolean hasBeen=false;
+					for(int i=1;i<=count;i++) {
+						if(hasBeen) out.write(',');
+						else hasBeen=true;
+						Util.printEscapedSQLValue(out, R.getString(i));
 					}
-				} finally {
-					R.close();
+					out.write(");\n");
 				}
-			} finally {
-				stmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -601,8 +580,7 @@ public class JDBCConnector {
 		String sql = SB.toString();
 		Connection conn = DatabasePool.getConnection(settings);
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			try {
+			try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 				stmt.setEscapeProcessing(false);
 				int pos = 1;
 				for (int i = 0; i < column.length; i++) {
@@ -610,14 +588,12 @@ public class JDBCConnector {
 						stmt.setString(pos++, value[i]);
 					}
 				}
-				for (int i = 0; i < primaryKeyValues.length; i++) {
-					if (primaryKeyValues[i] != null) {
-						stmt.setString(pos++, primaryKeyValues[i]);
+				for(String primaryKeyValue : primaryKeyValues) {
+					if(primaryKeyValue != null) {
+						stmt.setString(pos++, primaryKeyValue);
 					}
 				}
 				stmt.executeUpdate();
-			} finally {
-				stmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -637,18 +613,13 @@ public class JDBCConnector {
 	final protected List<String> executeListQuery(String sql) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			Statement stmt=conn.createStatement();
-			try {
-				ResultSet results=stmt.executeQuery(sql);
-				try {
-					List<String> V=new ArrayList<String>();
-					while(results.next()) V.add(results.getString(1));
-					return V;
-				} finally {
-					results.close();
-				}
-			} finally {
-				stmt.close();
+			try (
+				Statement stmt = conn.createStatement();
+				ResultSet results = stmt.executeQuery(sql)
+			) {
+				List<String> V=new ArrayList<>();
+				while(results.next()) V.add(results.getString(1));
+				return V;
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -664,19 +635,13 @@ public class JDBCConnector {
 	final protected List<String> executeListQuery(String sql, String param) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			PreparedStatement pstmt=conn.prepareStatement(sql);
-			try {
+			try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 				pstmt.setString(1, param);
-				ResultSet results=pstmt.executeQuery();
-				try {
-					List<String> V=new ArrayList<String>();
+				try (ResultSet results = pstmt.executeQuery()) {
+					List<String> V=new ArrayList<>();
 					while(results.next()) V.add(results.getString(1));
 					return V;
-				} finally {
-					results.close();
 				}
-			} finally {
-				pstmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -693,11 +658,8 @@ public class JDBCConnector {
 	final protected int executeUpdate(String sql) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			PreparedStatement pstmt=conn.prepareStatement(sql);
-			try {
+			try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 				return pstmt.executeUpdate();
-			} finally {
-				pstmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -715,12 +677,9 @@ public class JDBCConnector {
 	final protected int executeUpdate(String sql, String param) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			PreparedStatement pstmt=conn.prepareStatement(sql);
-			try {
+			try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 				pstmt.setString(1, param);
 				return pstmt.executeUpdate();
-			} finally {
-				pstmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -739,13 +698,10 @@ public class JDBCConnector {
 	final protected int executeUpdate(String sql, String param1, String param2) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			PreparedStatement pstmt=conn.prepareStatement(sql);
-			try {
+			try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 				pstmt.setString(1, param1);
 				pstmt.setString(2, param2);
 				return pstmt.executeUpdate();
-			} finally {
-				pstmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -779,12 +735,9 @@ public class JDBCConnector {
 	private String getColumnMetaData(String column, int index) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			ResultSet R=conn.getMetaData().getColumns(null, null, settings.getTable(), column);
-			try {
+			try (ResultSet R = conn.getMetaData().getColumns(null, null, settings.getTable(), column)) {
 				if(R.next()) return R.getString(index);
 				else throw new SQLException("Column not found: "+column);
-			} finally {
-				R.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -799,17 +752,16 @@ public class JDBCConnector {
 	}
 
 	protected Columns getColumns(String table) throws SQLException, IOException {
-		List<String> names=new ArrayList<String>();
-		List<String> types=new ArrayList<String>();
-		List<String> lengths=new ArrayList<String>();
-		List<Boolean> areNullable=new ArrayList<Boolean>();
-		List<String> defaults=new ArrayList<String>();
-		List<String> remarks=new ArrayList<String>();
+		List<String> names=new ArrayList<>();
+		List<String> types=new ArrayList<>();
+		List<String> lengths=new ArrayList<>();
+		List<Boolean> areNullable=new ArrayList<>();
+		List<String> defaults=new ArrayList<>();
+		List<String> remarks=new ArrayList<>();
 
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			ResultSet R=conn.getMetaData().getColumns(null, null, table, "%");
-			try {
+			try (ResultSet R = conn.getMetaData().getColumns(null, null, table, "%")) {
 				while(R.next()) {
 					names.add(R.getString(4));
 					types.add(R.getString(6));
@@ -824,8 +776,6 @@ public class JDBCConnector {
 					String rem=R.getString(12);
 					remarks.add((rem!=null)?rem:"");
 				}
-			} finally {
-				R.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -854,13 +804,10 @@ public class JDBCConnector {
 		try {
 			DatabaseMetaData metaData=conn.getMetaData();
 			if(metaData.supportsCatalogsInDataManipulation()) {
-				ResultSet results=conn.getMetaData().getCatalogs();
-				try {
-					List<String> V=new ArrayList<String>();
+				try (ResultSet results = conn.getMetaData().getCatalogs()) {
+					List<String> V=new ArrayList<>();
 					while(results.next()) V.add(results.getString(1));
 					return V;
-				} finally {
-					results.close();
 				}
 			} else {
 				return Collections.emptyList();
@@ -877,7 +824,7 @@ public class JDBCConnector {
 	public List<SchemaTable> getDatabaseSchema() throws IOException, SQLException {
 		List<String> tableNames=getTables();
 		int size=tableNames.size();
-		List<SchemaTable> schemaTables=new ArrayList<SchemaTable>(size);
+		List<SchemaTable> schemaTables=new ArrayList<>(size);
 		for(int c=0;c<size;c++) {
 			String tableName=tableNames.get(c);
 			SchemaTable schemaTable=new SchemaTable(tableName);
@@ -961,14 +908,14 @@ public class JDBCConnector {
 				? conn.getMetaData().getImportedKeys(null, null, table)
 				: conn.getMetaData().getExportedKeys(null, null, table);
 			if(R!=null) {
-				List<String> foreignKeys=new ArrayList<String>();
-				List<String> foreignTables=new ArrayList<String>();
-				List<String> primaryKeys=new ArrayList<String>();
-				List<String> primaryTables=new ArrayList<String>();
-				List<String> constraintNames=new ArrayList<String>();
-				List<String> insertRules=new ArrayList<String>();
-				List<String> deleteRules=new ArrayList<String>();
-				List<String> updateRules=new ArrayList<String>();
+				List<String> foreignKeys=new ArrayList<>();
+				List<String> foreignTables=new ArrayList<>();
+				List<String> primaryKeys=new ArrayList<>();
+				List<String> primaryTables=new ArrayList<>();
+				List<String> constraintNames=new ArrayList<>();
+				List<String> insertRules=new ArrayList<>();
+				List<String> deleteRules=new ArrayList<>();
+				List<String> updateRules=new ArrayList<>();
 				while(R.next()) {
 					primaryTables.add(R.getString(3));
 					primaryKeys.add(R.getString(4));
@@ -982,8 +929,8 @@ public class JDBCConnector {
 				int size=constraintNames.size();
 				if(size<1) return null;
 				else {
-					List<Boolean> isDeferrable=new ArrayList<Boolean>(size);
-					List<Boolean> isInitiallyDeferred=new ArrayList<Boolean>(size);
+					List<Boolean> isDeferrable=new ArrayList<>(size);
+					List<Boolean> isInitiallyDeferred=new ArrayList<>(size);
 					for(int i=0;i<size;i++) {
 						isDeferrable.add(Boolean.UNKNOWN);
 						isInitiallyDeferred.add(Boolean.UNKNOWN);
@@ -1023,8 +970,8 @@ public class JDBCConnector {
 	public List<String> getFunctionList() throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			Set<String> SV=new HashSet<String>();
-			List<String> V=new ArrayList<String>();
+			Set<String> SV=new HashSet<>();
+			List<String> V=new ArrayList<>();
 			DatabaseMetaData metaData=conn.getMetaData();
 			StringTokenizer ST=new StringTokenizer(metaData.getNumericFunctions(),",");
 			while(ST.hasMoreTokens()) {
@@ -1087,20 +1034,17 @@ public class JDBCConnector {
 	 * Gets a list of indexes for the selected table.
 	 */
 	public Indexes getIndexes() throws SQLException, IOException {
-		List<String> names=new ArrayList<String>();
-		List<Boolean> areUnique=new ArrayList<Boolean>();
-		List<String> colNames=new ArrayList<String>();
+		List<String> names=new ArrayList<>();
+		List<Boolean> areUnique=new ArrayList<>();
+		List<String> colNames=new ArrayList<>();
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			ResultSet R=conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false);
-			try {
+			try (ResultSet R = conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false)) {
 				while(R.next()) {
 					names.add(R.getString(6));
 					areUnique.add(R.getBoolean(4)?Boolean.FALSE:Boolean.TRUE);
 					colNames.add(R.getString(9));
 				}
-			} finally {
-				R.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -1111,13 +1055,10 @@ public class JDBCConnector {
 	private List<String> getIndexInfo(int index) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			ResultSet R=conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false);
-			try {
-				List<String> V=new ArrayList<String>();
+			try (ResultSet R = conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false)) {
+				List<String> V=new ArrayList<>();
 				while(R.next()) V.add(R.getString(index));
 				return V;
-			} finally {
-				R.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -1148,17 +1089,12 @@ public class JDBCConnector {
 	final protected int getIntQuery(String sql) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			PreparedStatement pstmt=conn.prepareStatement(sql);
-			try {
-				ResultSet results=pstmt.executeQuery();
-				try {
-					if(results.next()) return results.getInt(1);
-					else return 0;
-				} finally {
-					results.close();
-				}
-			} finally {
-				pstmt.close();
+			try (
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet results = pstmt.executeQuery()
+			) {
+				if(results.next()) return results.getInt(1);
+				else return 0;
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -1172,18 +1108,12 @@ public class JDBCConnector {
 	final protected int getIntQuery(String sql, String param) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			PreparedStatement pstmt=conn.prepareStatement(sql);
-			try {
+			try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 				pstmt.setString(1, param);
-				ResultSet results=pstmt.executeQuery();
-				try {
+				try (ResultSet results = pstmt.executeQuery()) {
 					if(results.next()) return results.getInt(1);
 					else return 0;
-				} finally {
-					results.close();
 				}
-			} finally {
-				pstmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -1251,18 +1181,15 @@ public class JDBCConnector {
 	 * Gets a list of primary keys in the selected table.
 	 */
 	public PrimaryKeys getPrimaryKeys() throws SQLException, IOException {
-		List<String> columns=new ArrayList<String>();
-		List<String> names=new ArrayList<String>();
+		List<String> columns=new ArrayList<>();
+		List<String> names=new ArrayList<>();
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			ResultSet R=conn.getMetaData().getPrimaryKeys(null, null, settings.getTable());
-			try {
+			try (ResultSet R = conn.getMetaData().getPrimaryKeys(null, null, settings.getTable())) {
 				while(R.next()) {
 					columns.add(R.getString(4));
 					names.add(R.getString(6));
 				}
-			} finally {
-				R.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -1301,8 +1228,7 @@ public class JDBCConnector {
 		// Then perform the query
 		Connection conn = DatabasePool.getConnection(settings);
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			try {
+			try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 				pstmt.setEscapeProcessing(false);
 				int pos = 1;
 				for (int i = 0; i < primaryKeys.size(); i++) {
@@ -1310,9 +1236,8 @@ public class JDBCConnector {
 						pstmt.setString(pos++, primaryValues.get(i));
 					}
 				}
-				ResultSet results = pstmt.executeQuery();
-				try {
-					List<String> V = new ArrayList<String>();
+				try (ResultSet results = pstmt.executeQuery()) {
+					List<String> V = new ArrayList<>();
 					if (results.next()) {
 						int count = results.getMetaData().getColumnCount();
 						for (int i = 1; i <= count; i++) {
@@ -1320,11 +1245,7 @@ public class JDBCConnector {
 						}
 					}
 					return V;
-				} finally {
-					results.close();
 				}
-			} finally {
-				pstmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -1391,12 +1312,11 @@ public class JDBCConnector {
 	public TablePrivileges getTablePrivileges() throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			ResultSet R=conn.getMetaData().getTablePrivileges(null, null, settings.getTable());
-			try {
-				List<String> grantors=new ArrayList<String>();
-				List<String> grantees=new ArrayList<String>();
-				List<String> privileges=new ArrayList<String>();
-				List<Boolean> isGrantable=new ArrayList<Boolean>();
+			try (ResultSet R = conn.getMetaData().getTablePrivileges(null, null, settings.getTable())) {
+				List<String> grantors=new ArrayList<>();
+				List<String> grantees=new ArrayList<>();
+				List<String> privileges=new ArrayList<>();
+				List<Boolean> isGrantable=new ArrayList<>();
 				while(R.next()) {
 					grantors.add(R.getString(4));
 					grantees.add(R.getString(5));
@@ -1410,8 +1330,6 @@ public class JDBCConnector {
 					privileges,
 					isGrantable
 				);
-			} finally {
-				R.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -1424,13 +1342,10 @@ public class JDBCConnector {
 	public List<String> getTables() throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			ResultSet results=conn.getMetaData().getTables(null, null, "%", defaultTableTypes);
-			try {
-				List<String> V=new ArrayList<String>();
+			try (ResultSet results = conn.getMetaData().getTables(null, null, "%", defaultTableTypes)) {
+				List<String> V=new ArrayList<>();
 				while(results.next()) V.add(results.getString(3));
 				return V;
-			} finally {
-				results.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -1443,13 +1358,10 @@ public class JDBCConnector {
 	public List<String> getTypes() throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			ResultSet R=conn.getMetaData().getTypeInfo();
-			try {
-				List<String> V=new ArrayList<String>();
+			try (ResultSet R = conn.getMetaData().getTypeInfo()) {
+				List<String> V=new ArrayList<>();
 				while(R.next()) V.add(R.getString(1));
 				return V;
-			} finally {
-				R.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -1519,16 +1431,13 @@ public class JDBCConnector {
 
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			PreparedStatement stmt=conn.prepareStatement(sql);
-			try {
+			try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 				stmt.setEscapeProcessing(false);
 				int pos=1;
 				for(int i=0;i<column.length;i++) {
 					if(function[i]==null || function[i].length()==0) stmt.setString(pos++,value[i]);
 				}
 				stmt.executeUpdate();
-			} finally {
-				stmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
