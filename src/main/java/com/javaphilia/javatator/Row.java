@@ -122,8 +122,8 @@ public class Row {
 		String[] primaryKeys=new String[keys.countTokens()];
 		String[] primaryKeyValues=new String[keys.countTokens()];
 		for(int i=0;keys.hasMoreTokens();i++) {
-			primaryKeys[i]=keys.nextToken();
-			primaryKeyValues[i]=values.nextToken();
+			primaryKeys[i]=keys.nextToken(); // TODO: encode/decode these?
+			primaryKeyValues[i]=values.nextToken(); // TODO: encode/decode these?
 			if(!"null".equals(primaryKeyValues[i]))primaryKeyValues[i]=primaryKeyValues[i].substring(1,primaryKeyValues[i].length()-1);
 			else primaryKeyValues[i]=null;
 		}
