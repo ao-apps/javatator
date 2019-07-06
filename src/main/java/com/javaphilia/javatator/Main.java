@@ -72,11 +72,11 @@ public class Main extends HttpServlet {
 			if (req.getParameter("blank") != null)
 				out.print("<html></html>");
 			else
-				printRightFrame(out, settings, action);
+				printRightFrame(req, out, settings, action);
 		} else if ("left".equals(frame)) {
-			printLeftFrame(out, settings, action);
+			printLeftFrame(req, out, settings, action);
 		} else if ("top".equals(frame)) {
-			printTopFrame(out, settings, action);
+			printTopFrame(req, out, settings, action);
 		} else {
 			printFrames(out, settings, action);
 		}
@@ -118,7 +118,7 @@ public class Main extends HttpServlet {
 	/**
 	 * Prints the contents of the left-hand frame.
 	 */
-	private void printLeftFrame(JavatatorWriter out, Settings settings, String action) throws IOException {
+	private void printLeftFrame(HttpServletRequest req, JavatatorWriter out, Settings settings, String action) throws IOException {
 		boolean isConnected =
 			settings.getDatabaseProduct()!=null
 			&& settings.getHostname()!=null
@@ -174,8 +174,8 @@ public class Main extends HttpServlet {
 			out.print("<html>\n"
 				+ "<head>\n"
 				+ "    <script language=javascript src='");
-			out.print(JavaScript.class.getName());
-			out.print("'></script>\n"
+			out.print(req.getContextPath());
+			out.print("/javatator.js'></script>\n"
 				+ "</head>\n"
 				+ "<body>\n"
 				+ "<script language=javascript>\n"
@@ -394,16 +394,16 @@ public class Main extends HttpServlet {
 	/**
 	 * Prints the contents of the right-hand frame.
 	 */
-	private void printRightFrame(JavatatorWriter out, Settings settings, String action) throws IOException {
+	private void printRightFrame(HttpServletRequest req, JavatatorWriter out, Settings settings, String action) throws IOException {
 		boolean isConnected = action != null && settings.getDatabaseProduct() != null && settings.getHostname() != null && settings.getPort() > 0 && settings.getUsername() != null && settings.getDatabase() != null;
 		out.print("<html>\n"
 			+ "  <head>\n"
 			+ "    <script language=javascript src='");
-		out.print(JavaScript.class.getName());
-		out.print("'></script>\n"
+		out.print(req.getContextPath());
+		out.print("/javatator.js'></script>\n"
 			+ "    <link rel=stylesheet type='text/css' href='");
-		out.print(CSS.class.getName());
-		out.print("'>\n"
+		out.print(req.getContextPath());
+		out.print("/javatator.css'>\n"
 			+ "  </head>\n"
 			+ "<body class='ALTBODY'>\n");
 		if (isConnected) {
@@ -440,7 +440,7 @@ public class Main extends HttpServlet {
 	/**
 	 * Prints the contents of the top frame.
 	 */
-	private void printTopFrame(JavatatorWriter out, Settings settings, String action) throws IOException {
+	private void printTopFrame(HttpServletRequest req, JavatatorWriter out, Settings settings, String action) throws IOException {
 		boolean isConnected =
 			settings.getDatabaseProduct()!=null
 			&& settings.getHostname()!=null
@@ -450,11 +450,11 @@ public class Main extends HttpServlet {
 		out.print("<html>\n"
 			+ "<head>"
 			+ "    <script language=javascript src='");
-		out.print(JavaScript.class.getName());
-		out.print("'></script>\n"
+		out.print(req.getContextPath());
+		out.print("/javatator.js'></script>\n"
 			+ "    <link rel=stylesheet type='text/css' href='");
-		out.print(CSS.class.getName());
-		out.print("'>\n");
+		out.print(req.getContextPath());
+		out.print("/javatator.css'>\n");
 		if(isConnected) {
 			try {
 				JDBCConnector conn=settings.getJDBCConnector();
@@ -513,8 +513,8 @@ public class Main extends HttpServlet {
 			+ "<a href='");
 		out.print(getClass().getName());
 		out.print("' target='_top'><img src='");
-		out.print(Images.class.getName());
-		out.print("?file=2.gif' alt='Javatator Admin' border=0 align=left width=345 height=72></a>\n");
+		out.print(req.getContextPath());
+		out.print("/images/2.gif' alt='Javatator Admin' border=0 align=left width=345 height=72></a>\n");
 
 		out.startTable(null);
 		out.startTR();
