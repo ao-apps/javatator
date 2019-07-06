@@ -30,11 +30,11 @@ package com.javaphilia.javatator;
  */
 public class SchemaForeignKey {
 
-	private SchemaRow row;
+	private final SchemaRow row;
 
-	private String foreignTableName;
+	private final String foreignTableName;
 
-	private String foreignRowName;
+	private final String foreignRowName;
 
 	public SchemaForeignKey(
 		SchemaRow row,

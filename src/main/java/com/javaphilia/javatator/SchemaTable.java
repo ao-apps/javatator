@@ -53,7 +53,7 @@ public class SchemaTable {
 
 	final private String name;
 
-	final private List<SchemaRow> rows = new ArrayList<SchemaRow>();
+	final private List<SchemaRow> rows = new ArrayList<>();
 
 	public SchemaTable(String name) {
 		this.name=name;
@@ -73,8 +73,8 @@ public class SchemaTable {
 		G.drawString(name, x+(width-nameWidth)/2, y+metrics.getHeight()-metrics.getDescent());
 
 		// Draw all the rows
-		x=x+1;
-		y=y+metrics.getHeight()+1;
+		x += 1;
+		y += metrics.getHeight()+1;
 		int len=rows.size();
 		for(int c=0;c<len;c++) {
 			SchemaRow row=rows.get(c);

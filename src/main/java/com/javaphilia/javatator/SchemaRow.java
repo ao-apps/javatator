@@ -42,7 +42,7 @@ public class SchemaRow {
 
 	final private String name;
 
-	final private List<SchemaForeignKey> foreignKeys=new ArrayList<SchemaForeignKey>();
+	final private List<SchemaForeignKey> foreignKeys=new ArrayList<>();
 
 	public SchemaRow(
 		SchemaTable table,

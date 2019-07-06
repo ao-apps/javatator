@@ -44,7 +44,7 @@ public class Table {
 	/**
 	 * The current settings.
 	 */
-	private Settings settings;
+	private final Settings settings;
 
 	/**
 	 * Instantiate a new {@link Table}.
@@ -976,6 +976,7 @@ public class Table {
 					out.endTR();
 
 					if(importedSize>0) {
+						assert importedKeys != null;
 						List<String> constraintNames=importedKeys.getConstraintNames();
 						List<String> foreignTables=importedKeys.getForeignTables();
 						List<String> foreignKeys=importedKeys.getForeignKeys();
@@ -1007,6 +1008,7 @@ public class Table {
 					}
 
 					if(exportedSize>0) {
+						assert exportedKeys != null;
 						List<String> constraintNames=exportedKeys.getConstraintNames();
 						List<String> foreignTables=exportedKeys.getForeignTables();
 						List<String> foreignKeys=exportedKeys.getForeignKeys();
@@ -1154,7 +1156,6 @@ public class Table {
 		String fullQuery;                   // The result of the SQL generation
 		{
 			int count = 0;
-			String[] selectColNames = null;
 			String limitClause = conn.getLimitClause(startPos, numrows);
 			String sortColumn = settings.getSortColumn();
 
@@ -1174,7 +1175,7 @@ public class Table {
 				}
 				likeComparators[i] = settings.getParameter("like" + i) != null;
 			}
-			selectColNames = settings.getParameterValues("columns");
+			String[] selectColNames = settings.getParameterValues("columns");
 
 			if (count > 0 && "doselect".equals(settings.getAction())) {
 				StringBuilder SB = new StringBuilder();
@@ -1291,92 +1292,82 @@ public class Table {
 				// The number of results that are returned
 				int resultSize;
 
-				Statement stmt = dbcon.createStatement();
-				try {
-					ResultSet results = stmt.executeQuery(fullQuery);
-					try {
-						out.startTR();
-
-						// Compile the meta data about the table and print the table header
-						ResultSetMetaData metaData = results.getMetaData();
-						columnCount = metaData.getColumnCount();
-						importedKeyIDs = new ArrayList<Integer>(columnCount);
-						exportedIDs = new ArrayList<List<Integer>>(columnCount);
-						columnTypes = new ArrayList<String>(columnCount);
-						columnNames = new ArrayList<String>(columnCount);
-						resultCopies = new ArrayList<List<String>>(columnCount);
-
-						for (int i = 1; i <= columnCount; i++) {
-							String col = metaData.getColumnName(i);
-							columnTypes.add(metaData.getColumnTypeName(i));
-							columnNames.add(metaData.getColumnName(i));
-							String order = "asc";
-							if (col.equals(settings.getSortColumn()) && "asc".equals(settings.getSortOrder())) {
-								order = "desc";
+				try (
+					Statement stmt = dbcon.createStatement();
+					ResultSet results = stmt.executeQuery(fullQuery)
+				) {
+					out.startTR();
+					// Compile the meta data about the table and print the table header
+					ResultSetMetaData metaData = results.getMetaData();
+					columnCount = metaData.getColumnCount();
+					importedKeyIDs = new ArrayList<>(columnCount);
+					exportedIDs = new ArrayList<>(columnCount);
+					columnTypes = new ArrayList<>(columnCount);
+					columnNames = new ArrayList<>(columnCount);
+					resultCopies = new ArrayList<>(columnCount);
+					for (int i = 1; i <= columnCount; i++) {
+						String col = metaData.getColumnName(i);
+						columnTypes.add(metaData.getColumnTypeName(i));
+						columnNames.add(metaData.getColumnName(i));
+						String order = "asc";
+						if (col.equals(settings.getSortColumn()) && "asc".equals(settings.getSortOrder())) {
+							order = "desc";
+						}
+						out.printTH("<A href=\"javascript:setSortColumn('" + Util.escapeJavaScript(col) + "');setSortOrder('" + order + "');selectAction('doselect');\">" + Util.escapeHTML(col) + "</A>");
+						
+						// Build up the list of primary key columns as we iterate through the columns
+						if (primaryKeyCols.isEmpty() || primaryKeyCols.contains(col)) {
+							if (primaryKeysSB.length() > 0) {
+								primaryKeysSB.append(',');
 							}
-							out.printTH("<A href=\"javascript:setSortColumn('" + Util.escapeJavaScript(col) + "');setSortOrder('" + order + "');selectAction('doselect');\">" + Util.escapeHTML(col) + "</A>");
-
-							// Build up the list of primary key columns as we iterate through the columns
-							if (primaryKeyCols.size() == 0 || primaryKeyCols.contains(col)) {
-								if (primaryKeysSB.length() > 0) {
-									primaryKeysSB.append(',');
-								}
-								primaryKeysSB.append(col);
-							}
-
-							if (importedKeys != null) {
-								importedKeyIDs.add(importedKeys.getForeignID(col));
-							} else {
-								importedKeyIDs.add(-1);
-							}
-							if (exportedKeys != null) {
-								exportedIDs.add(exportedKeys.getForeignIDs(col));
-								int eSize = exportedIDs.get(i - 1).size();
-								if (eSize > 0) {
-									for (int c = 0; c < eSize; c++) {
-										List<Integer> ids = exportedIDs.get(i - 1);
-										int z = ids.get(c);
-										String fTable = exportedKeys.getForeignTable(z);
-										// Also add the column name if this table is referenced more than once
-										boolean foundOther = false;
-										for(int d = 0; d < eSize; d++) {
-											if(d!=c) {
-												int y = ids.get(d);
-												if(fTable.equals(exportedKeys.getForeignTable(y))) {
-													foundOther = true;
-													break;
-												}
+							primaryKeysSB.append(col);
+						}
+						
+						if (importedKeys != null) {
+							importedKeyIDs.add(importedKeys.getForeignID(col));
+						} else {
+							importedKeyIDs.add(-1);
+						}
+						if (exportedKeys != null) {
+							exportedIDs.add(exportedKeys.getForeignIDs(col));
+							int eSize = exportedIDs.get(i - 1).size();
+							if (eSize > 0) {
+								for (int c = 0; c < eSize; c++) {
+									List<Integer> ids = exportedIDs.get(i - 1);
+									int z = ids.get(c);
+									String fTable = exportedKeys.getForeignTable(z);
+									// Also add the column name if this table is referenced more than once
+									boolean foundOther = false;
+									for(int d = 0; d < eSize; d++) {
+										if(d!=c) {
+											int y = ids.get(d);
+											if(fTable.equals(exportedKeys.getForeignTable(y))) {
+												foundOther = true;
+												break;
 											}
 										}
-										if(foundOther) out.printTH(fTable+"<br>."+exportedKeys.getForeignKey(z));
-										else out.printTH(fTable);
 									}
+									if(foundOther) out.printTH(fTable+"<br>."+exportedKeys.getForeignKey(z));
+									else out.printTH(fTable);
 								}
-							} else {
-								List<Integer> emptyList = Collections.emptyList();
-								exportedIDs.add(emptyList);
 							}
-							resultCopies.add(new ArrayList<String>());
+						} else {
+							List<Integer> emptyList = Collections.emptyList();
+							exportedIDs.add(emptyList);
 						}
-
-						out.printTH("Options");
-						out.endTR();
-
-						primaryKeysString = Util.escapeJavaScript(primaryKeysSB.toString());
-
-						resultSize = 0;
-						while (resultSize < numrows && results.next()) {
-							resultSize++;
-							for (int i = 1; i <= columnCount; i++) {
-								String S = results.getString(i);
-								resultCopies.get(i - 1).add(S);
-							}
-						}
-					} finally {
-						results.close();
+						resultCopies.add(new ArrayList<String>());
 					}
-				} finally {
-					stmt.close();
+					out.printTH("Options");
+					out.endTR();
+					primaryKeysString = Util.escapeJavaScript(primaryKeysSB.toString());
+					resultSize = 0;
+					while (resultSize < numrows && results.next()) {
+						resultSize++;
+						for (int i = 1; i <= columnCount; i++) {
+							String S = results.getString(i);
+							resultCopies.get(i - 1).add(S);
+						}
+					}
 				}
 
 				// This pass displays the results
@@ -1406,6 +1397,7 @@ public class Table {
 						// Get the number of columns that reference this column
 						int eSize = exportedIDs.get(column).size();
 						if (eSize > 0) {
+							assert exportedKeys != null;
 							for (int c = 0; c < eSize; c++) {
 								int z = exportedIDs.get(column).get(c);
 								String fTable = exportedKeys.getForeignTable(z);
@@ -1415,34 +1407,27 @@ public class Table {
 								if (S == null) {
 									tmp = -1;
 								} else {
-									Statement stmt2 = dbcon.createStatement();
-									try {
-										// TODO: Could put this into a single query to avoid round-trips
-										String sql =
-											"SELECT\n"
-											+ "  COUNT(*)\n"
-											+ "FROM\n"
-											+ "  "
-											+ conn.quoteTable(fTable) + "\n"
-											+ "WHERE\n"
-											+ "  " + conn.quoteColumn(fKey) + "='" + Util.escapeSQL(S) + "'";
-										try {
-											ResultSet results2 = stmt2.executeQuery(sql);
-											try {
-												if (results2.next()) {
-													tmp = results2.getInt(1);
-												} else {
-													tmp = -1;
-												}
-											} finally {
-												results2.close();
-											}
-										} catch(SQLException e) {
-											System.err.println("sql = " + sql);
-											throw e;
+									// TODO: Could put this into a single query to avoid round-trips
+									String sql =
+										"SELECT\n"
+										+ "  COUNT(*)\n"
+										+ "FROM\n"
+										+ "  "
+										+ conn.quoteTable(fTable) + "\n"
+										+ "WHERE\n"
+										+ "  " + conn.quoteColumn(fKey) + "='" + Util.escapeSQL(S) + "'";
+									try (
+										Statement stmt2 = dbcon.createStatement();
+										ResultSet results2 = stmt2.executeQuery(sql)
+									) {
+										if (results2.next()) {
+											tmp = results2.getInt(1);
+										} else {
+											tmp = -1;
 										}
-									} finally {
-										stmt2.close();
+									} catch(SQLException e) {
+										System.err.println("sql = " + sql);
+										throw e;
 									}
 								}
 
@@ -1461,7 +1446,7 @@ public class Table {
 						}
 
 						// Build a list of primary key values
-						if (primaryKeyCols.size() == 0 || primaryKeyCols.contains(columnNames.get(column))) {
+						if (primaryKeyCols.isEmpty() || primaryKeyCols.contains(columnNames.get(column))) {
 							if (SB.length() > 0) {
 								SB.append(",");
 							}

@@ -71,29 +71,22 @@ public class InterbaseConnector extends JDBCConnector {
 			StringBuilder sql=new StringBuilder("ALTER TABLE ");
 			StringBuilder cols=new StringBuilder();
 			sql.append(table);
-			ResultSet results=conn.getMetaData().getPrimaryKeys(null,null,table);
-			try {
+			try (ResultSet results = conn.getMetaData().getPrimaryKeys(null,null,table)) {
 				if(results.next()) {
 					sql
-					.append(" DROP CONSTRAINT ")
-					.append(results.getString(6))
-					.append(", ")
-					;
+						.append(" DROP CONSTRAINT ")
+						.append(results.getString(6))
+						.append(", ");
 					cols.append(',').append(results.getString(4));
 				}
-			} finally {
-				results.close();
 			}
 			sql
 				.append(" ADD PRIMARY KEY(")
 				.append(column)
 				.append(cols)
 				.append(')');
-			PreparedStatement pstmt=conn.prepareStatement(sql.toString());
-			try {
+			try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
 				pstmt.executeUpdate();
-			} finally {
-				pstmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -307,9 +300,8 @@ public class InterbaseConnector extends JDBCConnector {
 
 		Connection conn=DatabasePool.getConnection(getSettings());
 		try {
-			PreparedStatement stmt=conn.prepareStatement(S);
-			try {
-				stmt.setEscapeProcessing(false);
+			try (PreparedStatement stmt = conn.prepareStatement(S)) {
+				stmt.setEscapeProcessing(false); // TODO: These are probably not appropriate on PreparedStatements
 				int num=1;
 				for(int i=0;i<colValues.size();i++) {
 					if(colNames.get(i).length()>0 && colValues.get(i)!=null) {
@@ -317,8 +309,6 @@ public class InterbaseConnector extends JDBCConnector {
 					}
 				}
 				return stmt.toString();
-			} finally {
-				stmt.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);

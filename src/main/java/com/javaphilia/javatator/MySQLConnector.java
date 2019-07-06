@@ -84,16 +84,15 @@ public class MySQLConnector extends JDBCConnector {
 
 	@Override
 	protected Columns getColumns(String table) throws SQLException, IOException {
-		List<String> names=new ArrayList<String>();
-		List<String> types=new ArrayList<String>();
-		List<String> lengths=new ArrayList<String>();
-		List<Boolean> areNullable=new ArrayList<Boolean>();
-		List<String> defaults=new ArrayList<String>();
-		List<String> remarks=new ArrayList<String>();
+		List<String> names=new ArrayList<>();
+		List<String> types=new ArrayList<>();
+		List<String> lengths=new ArrayList<>();
+		List<Boolean> areNullable=new ArrayList<>();
+		List<String> defaults=new ArrayList<>();
+		List<String> remarks=new ArrayList<>();
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			ResultSet R=conn.getMetaData().getColumns(null, null, table, "%");
-			try {
+			try (ResultSet R = conn.getMetaData().getColumns(null, null, table, "%")) {
 				while(R.next()) {
 					String column=R.getString(4);
 					names.add(column);
@@ -129,8 +128,6 @@ public class MySQLConnector extends JDBCConnector {
 					String rem=R.getString(12);
 					remarks.add((rem!=null)?rem:"");
 				}
-			} finally {
-				R.close();
 			}
 		} finally {
 			DatabasePool.releaseConnection(conn);
@@ -187,11 +184,9 @@ public class MySQLConnector extends JDBCConnector {
 		if(enum0) {
 			Connection conn=DatabasePool.getConnection(getSettings());
 			try {
-				PreparedStatement pstmt=conn.prepareStatement("SHOW COLUMNS FROM " + getSettings().getTable() + " LIKE ?");
-				try {
+				try (PreparedStatement pstmt = conn.prepareStatement("SHOW COLUMNS FROM " + getSettings().getTable() + " LIKE ?")) {
 					pstmt.setString(1, column);
-					ResultSet results=pstmt.executeQuery();
-					try {
+					try (ResultSet results = pstmt.executeQuery()) {
 						if(results.next()) {
 							String S=results.getString(2);
 							int len=S.length();
@@ -203,7 +198,7 @@ public class MySQLConnector extends JDBCConnector {
 								len-=9;
 							}
 							//Split up into tokens on ','
-							List<String> V=new ArrayList<String>();
+							List<String> V=new ArrayList<>();
 							int start=0;
 							for(int i=0;i<len;i++) {
 								if(S.charAt(i)=='\'' && S.charAt(i+1)==',' && S.charAt(i+2)=='\'') {
@@ -215,11 +210,7 @@ public class MySQLConnector extends JDBCConnector {
 							V.add(Util.escapeMySQLQuotes(S.substring(start)));
 							return V;
 						}
-					} finally {
-						results.close();
 					}
-				} finally {
-					pstmt.close();
 				}
 			} finally {
 				DatabasePool.releaseConnection(conn);

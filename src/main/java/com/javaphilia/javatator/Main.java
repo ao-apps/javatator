@@ -59,25 +59,24 @@ public class Main extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		resp.setContentType("text/html");
-		JavatatorWriter out = new JavatatorWriter(resp.getOutputStream());
-
-		Settings settings = new Settings(req);
-		String action = settings.getAction();
-		String frame = req.getParameter("frame");
-
-		if ("right".equals(frame)) {
-			if (req.getParameter("blank") != null)
-				out.print("<html></html>");
-			else
-				printRightFrame(req, out, settings, action);
-		} else if ("left".equals(frame)) {
-			printLeftFrame(req, out, settings, action);
-		} else if ("top".equals(frame)) {
-			printTopFrame(req, out, settings, action);
-		} else {
-			printFrames(out, settings, action);
+		try (JavatatorWriter out = new JavatatorWriter(resp.getOutputStream())) {
+			Settings settings = new Settings(req);
+			String action = settings.getAction();
+			String frame = req.getParameter("frame");
+			
+			if ("right".equals(frame)) {
+				if (req.getParameter("blank") != null)
+					out.print("<html></html>");
+				else
+					printRightFrame(req, out, settings, action);
+			} else if ("left".equals(frame)) {
+				printLeftFrame(req, out, settings, action);
+			} else if ("top".equals(frame)) {
+				printTopFrame(req, out, settings, action);
+			} else {
+				printFrames(out, settings, action);
+			}
 		}
-		out.close();
 	}
 
 	/**
