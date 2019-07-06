@@ -42,7 +42,7 @@ public class HTMLWriter extends FilterWriter {
 	private static final char[] BR=new char[] {'<','B','R','>'};
 
 	/**
-	 * Constructs this <code>HTMLWriter</code>.
+	 * Constructs this {@link HTMLWriter}.
 	 */
 	public HTMLWriter(Writer out) {
 		super(out);

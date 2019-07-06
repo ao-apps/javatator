@@ -26,6 +26,7 @@
  */
 package com.javaphilia.javatator;
 
+import com.javaphilia.javatator.JDBCConnector.Boolean;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class Columns {
 	/**
 	 * Is NULL allowed?
 	 */
-	final private List<JDBCConnector.Boolean> areNullable;
+	final private List<Boolean> areNullable;
 
 	/**
 	 * Default values.
@@ -64,22 +65,22 @@ public class Columns {
 	final private List<String> remarks;
 
 	/**
-	 * The number of columns stored in this <code>Columns</code> object.
+	 * The number of columns stored in this {@link Columns} object.
 	 */
 	final private int size;
 
 	/**
-	 * Instantiate a new <code>Column</code> object.
+	 * Instantiate a new {@link Column} object.
 	 *
 	 * @param names an array containing the names of the columns.
 	 * @param types an array of the columns' types.
 	 * @param lengths an array of the columns' lengths.
 	 * @param areNullable can the columns be NULL? 
-	 * Possible <code>Integer</code> values are:
+	 * Possible {@link Integer} values are:
 	 * <UL>
-	 * <LI>{@link JDBCConnector#TRUE} if NULL is allowed,
-	 * <LI>{@link JDBCConnector#FALSE} if NULL is not allowed,
-	 * <LI>{@link JDBCConnector#UNKNOWN} if unknown.
+	 * <LI>{@link Boolean#TRUE} if NULL is allowed,
+	 * <LI>{@link Boolean#FALSE} if NULL is not allowed,
+	 * <LI>{@link Boolean#UNKNOWN} if unknown.
 	 * </UL>
 	 * @param defaults an array containing the default values for the columns.
 	 * @param remarks an array of column remarks.
@@ -88,7 +89,7 @@ public class Columns {
 		List<String> names,
 		List<String> types,
 		List<String> lengths,
-		List<JDBCConnector.Boolean> areNullable,
+		List<Boolean> areNullable,
 		List<String> defaults,
 		List<String> remarks
 	) {
@@ -109,7 +110,7 @@ public class Columns {
 	/**
 	 * Can the columns contain NULL values?
 	 */
-	public List<JDBCConnector.Boolean> areNullable() {
+	public List<Boolean> areNullable() {
 		return areNullable;
 	}
 
@@ -194,7 +195,7 @@ public class Columns {
 	/**
 	 * Does the column at the specified index allow NULL values?
 	 */
-	public JDBCConnector.Boolean isNullable(int i) {
+	public Boolean isNullable(int i) {
 		return areNullable.get(i);
 	}
 }

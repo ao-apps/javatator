@@ -51,7 +51,7 @@ public class DatabasePool {
 	/**
 	 * Stores all the pools that have been created.  Pools are never deleted because that
 	 * would remove their statistics from the overall results.  Idle connections within
-	 * pools are closed by <code>DatabasePoolCleanup</code>.
+	 * pools are closed by {@link DatabasePoolCleanup}.
 	 */
 	private static final List<DatabasePool> pools=new ArrayList<DatabasePool>();
 
@@ -96,7 +96,7 @@ public class DatabasePool {
 	private final int numConnections;
 
 	/**
-	 * Instances of <code>Connection</code> to reuse i.e. the <code>Connection</code>
+	 * Instances of {@link Connection} to reuse i.e. the {@link Connection}
 	 * pool.
 	 *
 	 * @see  #getConnection
@@ -242,8 +242,8 @@ public class DatabasePool {
 	}
 
 	/**
-	 * Locates or creates the proper <code>DatabasePool</code> for a <code>Settings</code> and
-	 * retrieves a <code>Connection</code> from it.
+	 * Locates or creates the proper {@link DatabasePool} for a {@link Settings} and
+	 * retrieves a {@link Connection} from it.
 	 */
 	public static Connection getConnection(Settings settings) throws SQLException, IOException {
 		String databaseProduct = settings.getDatabaseProduct();
@@ -298,11 +298,11 @@ public class DatabasePool {
 	}
 
 	/**
-	 * Gets a connection to the database.  Multiple <code>Connection</code>s to the database
-	 * may exist at any moment. It checks the <code>Connection</code> pool for a not busy
-	 * <code>Connection</code> sequentially. If found, it returns that <code>Connection</code>
-	 * object, otherwise creates a new <code>connection</code>, adds it to the pool and also
-	 * returns the <code>Connection</code> object.  If all the connections in the pool are
+	 * Gets a connection to the database.  Multiple {@link Connection connections} to the database
+	 * may exist at any moment. It checks the {@link Connection} pool for a not busy
+	 * {@link Connection} sequentially. If found, it returns that {@link Connection}
+	 * object, otherwise creates a new {@link Connection connection}, adds it to the pool and also
+	 * returns the {@link Connection} object.  If all the connections in the pool are
 	 * busy, it waits till a connection becomes available.
 	 */
 	private Connection getConnection0() throws SQLException, IOException {
@@ -354,7 +354,7 @@ public class DatabasePool {
 	}
 
 	/**
-	 * Releases a <code>Connection</code> by calling release connection on
+	 * Releases a {@link Connection} by calling release connection on
 	 * all the pools until the correct pool is found.
 	 */
 	public static void releaseConnection(Connection conn) {

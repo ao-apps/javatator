@@ -78,7 +78,7 @@ public class Util {
 	}
 
 	/**
-	 * Escapes HTML so that it can be put in between <code>&lt;TEXTAREA>&lt;/TEXTAREA></code> etc.
+	 * Escapes HTML so that it can be put in between <code>&lt;TEXTAREA&gt;&lt;/TEXTAREA&gt;</code> etc.
 	 *
 	 * @param S the string to be escaped.
 	 */
@@ -100,7 +100,7 @@ public class Util {
 	}
 
 	/**
-	 * Escapes the specified <code>String</code> so that it can be put in a JavaScript string.
+	 * Escapes the specified {@link String} so that it can be put in a JavaScript string.
 	 *
 	 * @param S the string to be escaped.
 	 */
@@ -154,7 +154,7 @@ public class Util {
 	 * Escapes SQL so that it can be used safely in queries.
 	 *
 	 * @param S the string to be escaped.
-	 * @param B the <code>StringBuffer</code> to append to.
+	 * @param B the {@link StringBuffer} to append to.
 	 */
 	public static void escapeSQL(String S, StringBuffer B) {
 		int i;
@@ -185,7 +185,7 @@ public class Util {
 	}
 
 	/**
-	 * Gets comma-separated list from a <code>Vector</code> of <code>String</code>s.
+	 * Gets comma-separated list from a {@link List} of {@link String}.
 	 */
 	public static String getCommaList(List<String> V) {
 		StringBuffer SB=new StringBuffer();
@@ -202,9 +202,9 @@ public class Util {
 	}
 
 	/**
-	 * Escapes HTML for displaying in browsers and writes to the specified <code>JavatatorWriter</code>.
+	 * Escapes HTML for displaying in browsers and writes to the specified {@link JavatatorWriter}.
 	 *
-	 * @param out the <code>JavatatorWriter</code> to write to.
+	 * @param out the {@link JavatatorWriter} to write to.
 	 * @param S the string to be escaped.
 	 */
 	public static void printEscapedHTML(JavatatorWriter out, String S) {
@@ -223,9 +223,9 @@ public class Util {
 	}
 
 	/**
-	 * Escapes HTML for displaying in browsers and writes to the specified <code>JavatatorWriter</code>.
+	 * Escapes HTML for displaying in browsers and writes to the specified {@link JavatatorWriter}.
 	 *
-	 * @param out the <code>JavatatorWriter</code> to write to.
+	 * @param out the {@link JavatatorWriter} to write to.
 	 * @param S the string to be escaped.
 	 */
 	public static void printEscapedInputValue(JavatatorWriter out, String S) {
@@ -243,10 +243,10 @@ public class Util {
 	}
 
 	/**
-	 * Escapes the specified <code>String</code> so that it can be put in a JavaScript string.
-	 * Writes to the specified <code>JavatatorWriter</code>.
+	 * Escapes the specified {@link String} so that it can be put in a JavaScript string.
+	 * Writes to the specified {@link JavatatorWriter}.
 	 *
-	 * @param out the <code>JavatatorWriter</code> to write to.
+	 * @param out the {@link JavatatorWriter} to write to.
 	 * @param S the string to be escaped.
 	 */
 	public static void printEscapedJavaScript(JavatatorWriter out, String S) {
@@ -265,9 +265,9 @@ public class Util {
 
 	/**
 	 * Escapes SQL so that it can be used safely in queries.
-	 * Writes to the specified <code>JavatatorWriter</code>.
+	 * Writes to the specified {@link JavatatorWriter}.
 	 *
-	 * @param out the <code>JavatatorWriter</code> to write to.
+	 * @param out the {@link JavatatorWriter} to write to.
 	 * @param S the string to be escaped.
 	 */
 	public static void printEscapedSQL(Writer out, String S) throws IOException {
@@ -286,9 +286,9 @@ public class Util {
 
 	/**
 	 * Escapes a value to be put in an SQL query i.e. <code>'blah'</code>.
-	 * Writes to the specified <code>JavatatorWriter</code>.
+	 * Writes to the specified {@link JavatatorWriter}.
 	 *
-	 * @param out the <code>JavatatorWriter</code> to write to.
+	 * @param out the {@link JavatatorWriter} to write to.
 	 * @param S the string to be escaped.
 	 */
 	public static void printEscapedSQLValue(Writer out, String S) throws IOException {
