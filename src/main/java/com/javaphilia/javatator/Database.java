@@ -268,7 +268,7 @@ public class Database {
 	 */
 	public Settings printDefaultPage(JavatatorWriter out) {
 		out.print("<h2>Welcome to Javatator ");
-		out.print(Main.VERSION);
+		out.print(Maven.properties.get("project.version"));
 		out.print("</h2>"
 			+ "This database admin tool is currently under construction. "
 			+ "Suggestions/bug reports would be greatly appreciated.<br><br>\n"
