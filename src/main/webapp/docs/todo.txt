@@ -1,5 +1,20 @@
 TODO - things that need doing / BUGS that need fixing
 
+TODO: Create a filter that ensures authenticated to aoindustries.com before can use javatator.aoindustries.com?
+
+TODO: ssloptions like done for monitoring
+
+TODO: don't include default port 3306 / 5432 in JDBC urls
+	Don't use db.psql.url / db.mysql.url - or program defaults when these are not specified
+
+TODO: Run Javatator as a subdomain as a different user:
+	https://javatator.aoindustries.com/
+	Update aoindustries.com:
+		Change redirects
+		Add redirects from old
+TODO: Update email address bugs@javatator.com
+	and jason@javatator.com
+
 *** wishlist
 
 > Add option for turning off display of foreign key tables in explore and select
