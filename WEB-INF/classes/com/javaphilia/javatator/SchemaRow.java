@@ -46,18 +46,18 @@ public class SchemaRow {
 	final private List<SchemaForeignKey> foreignKeys=new ArrayList<SchemaForeignKey>();
 
 	public SchemaRow(
-        SchemaTable table,
-        String name
-    ) {
-        this.table=table;
-        this.name=name;
+		SchemaTable table,
+		String name
+	) {
+		this.table=table;
+		this.name=name;
 	}
 
-    public void addForeignKey(String table, String row) {
-        foreignKeys.add(new SchemaForeignKey(this, table, row));
+	public void addForeignKey(String table, String row) {
+		foreignKeys.add(new SchemaForeignKey(this, table, row));
 	}
 
-    public void draw(Graphics G, FontMetrics metrics, int x, int y) {
+	public void draw(Graphics G, FontMetrics metrics, int x, int y) {
 		int width=getWidth(metrics);
 
 		G.setColor(nameColor);
@@ -65,23 +65,23 @@ public class SchemaRow {
 		G.drawString(name, x+(width-nameWidth)/2, y+metrics.getHeight()-metrics.getDescent());
 	}
 
-    public List<SchemaForeignKey> getForeignKeys() {
-        return foreignKeys;
+	public List<SchemaForeignKey> getForeignKeys() {
+		return foreignKeys;
 	}
 
-    public int getHeight(FontMetrics FM) {
-        return FM.getHeight();
+	public int getHeight(FontMetrics FM) {
+		return FM.getHeight();
 	}
 
-    public String getName() {
-        return name;
+	public String getName() {
+		return name;
 	}
 
-    public SchemaTable getTable() {
-        return table;
+	public SchemaTable getTable() {
+		return table;
 	}
 
-    public int getWidth(FontMetrics FM) {
-        return FM.stringWidth(name)+4;
+	public int getWidth(FontMetrics FM) {
+		return FM.stringWidth(name)+4;
 	}
 }

@@ -418,118 +418,128 @@ public class Settings {
 		 */
 		return url;
 	}
+
 	/**
 	 * Gets the username or <code>null</code> if not set.
 	 */
 	public String getUsername() {
-	return username.length()==0?null:username;
+		return username.length()==0?null:username;
 	}
+
 	/**
 	 * Prints the contents of this <code>Settings</code> to a
 	 * <code>JavatatorWriter</code>.
 	 */
 	public void printForm(JavatatorWriter out) throws IOException {
-	printHiddenField(out, "dbproduct", databaseProduct);
-	printHiddenField(out, "hostname", hostname);
-	printHiddenField(out, "port", port);
-	printHiddenField(out, "ssl", Boolean.toString(ssl));
-	printHiddenField(out, "username", username);
+		printHiddenField(out, "dbproduct", databaseProduct);
+		printHiddenField(out, "hostname", hostname);
+		printHiddenField(out, "port", port);
+		printHiddenField(out, "ssl", Boolean.toString(ssl));
+		printHiddenField(out, "username", username);
 
-	// Only provide the password when not in the config
-	String config=DatabaseConfiguration.getProperty("password", databaseProduct);
-	if(config==null || config.length()==0) printHiddenField(out, "password", password);
-	else printHiddenField(out, "password", "XXXXXXXX");
+		// Only provide the password when not in the config
+		String config=DatabaseConfiguration.getProperty("password", databaseProduct);
+		if(config==null || config.length()==0) printHiddenField(out, "password", password);
+		else printHiddenField(out, "password", "XXXXXXXX");
 
-	printHiddenField(out, "database", database);
-	printHiddenField(out, "table", table);
-	printHiddenField(out, "column", column);
-	printHiddenField(out, "action", action);
+		printHiddenField(out, "database", database);
+		printHiddenField(out, "table", table);
+		printHiddenField(out, "column", column);
+		printHiddenField(out, "action", action);
 
-	printGlobalForm(out);
+		printGlobalForm(out);
 	}
+
 	/**
 	 * Prints the global preferences of this <code>Settings</code> to a
 	 * <code>JavatatorWriter</code>.
 	 */
 	public void printGlobalForm(JavatatorWriter out) throws IOException {
-	printHiddenField(out, "sortcolumn", sortColumn);
-	printHiddenField(out, "sortorder", sortOrder);
-	printHiddenField(out, "numrows", numrows);
-	printHiddenField(out, "fkeyrows", fkeyrows);
-	printHiddenField(out, "usemultiline", useMultiLine?"true":"false");
+		printHiddenField(out, "sortcolumn", sortColumn);
+		printHiddenField(out, "sortorder", sortOrder);
+		printHiddenField(out, "numrows", numrows);
+		printHiddenField(out, "fkeyrows", fkeyrows);
+		printHiddenField(out, "usemultiline", useMultiLine?"true":"false");
 	}
+
 	/**
 	 * Prints a hidden field.
 	 */
 	private static void printHiddenField(JavatatorWriter out, String name, int value) {
-	out.print("<INPUT type='hidden' name='");
-	out.print(name);
-	out.print("' value='");
-	out.print(value);
-	out.print("'>\n");
+		out.print("<INPUT type='hidden' name='");
+		out.print(name);
+		out.print("' value='");
+		out.print(value);
+		out.print("'>\n");
 	}
+
 	/**
 	 * Prints a hidden field.
 	 */
+	// TODO: Encode name and value
 	private static void printHiddenField(JavatatorWriter out, String name, String value) {
-	out.print("<INPUT type='hidden' name='");
-	out.print(name);
-	out.print("' value='");
-	out.print(value);
-	out.print("'>\n");
+		out.print("<INPUT type='hidden' name='");
+		out.print(name);
+		out.print("' value='");
+		out.print(value);
+		out.print("'>\n");
 	}
+
 	private void printParam(JavatatorWriter out, String name, int value) throws IOException {
-	out.print(name);
-	out.print('=');
-	out.print(value);
+		out.print(name);
+		out.print('=');
+		out.print(value);
 	}
+
 	private void printParam(JavatatorWriter out, String name, String value) throws IOException {
-	out.print(name);
-	out.print('=');
-	Util.printEscapedURLValue(out, value);
+		out.print(name);
+		out.print('=');
+		Util.printEscapedURLValue(out, value);
 	}
+
 	/**
 	 * Prints a URL with the <code>Settings</code> embedded in the URL string.
 	 */
 	public void printURLParams(String url, JavatatorWriter out) throws IOException {
-	out.print(url);
-	out.print('?');
+		out.print(url);
+		out.print('?');
 		printParam(out, "dbproduct", databaseProduct);
-	out.print('&');
+		out.print('&');
 		printParam(out, "hostname", hostname);
-	out.print('&');
+		out.print('&');
 		printParam(out, "port", port);
-	out.print('&');
+		out.print('&');
 		printParam(out, "ssl", Boolean.toString(ssl));
-	out.print('&');
+		out.print('&');
 		printParam(out, "username", username);
 
 		// Only provide the password when not in the config
-	out.print('&');
+		out.print('&');
 		String config=DatabaseConfiguration.getProperty("password", databaseProduct);
 		if(config==null || config.length()==0) printParam(out, "password", password);
-	else printParam(out, "password", "XXXXXXXX");
+		else printParam(out, "password", "XXXXXXXX");
 
-	out.print('&');
+		out.print('&');
 		printParam(out, "database", database);
-	out.print('&');
+		out.print('&');
 		printParam(out, "table", table);
-	out.print('&');
+		out.print('&');
 		printParam(out, "column", column);
-	out.print('&');
+		out.print('&');
 		printParam(out, "action", action);
 
-	out.print('&');
+		out.print('&');
 		printParam(out, "sortcolumn", sortColumn);
-	out.print('&');
+		out.print('&');
 		printParam(out, "sortorder", sortOrder);
-	out.print('&');
+		out.print('&');
 		printParam(out, "numrows", numrows);
-	out.print('&');
+		out.print('&');
 		printParam(out, "fkeyrows", fkeyrows);
-	out.print('&');
+		out.print('&');
 		printParam(out, "usemultiline", useMultiLine?"true":"false");
 	}
+
 	/**
 	 * Gets a <code>Settings</code> for access to a new database.
 	 */

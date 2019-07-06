@@ -71,23 +71,22 @@ public class InterbaseConnector extends JDBCConnector {
 			sql.append(table);
 			ResultSet results=conn.getMetaData().getPrimaryKeys(null,null,table);
 			try {
-			if(results.next()) {
-				sql
-				.append(" DROP CONSTRAINT ")
-				.append(results.getString(6))
-				.append(", ")
-				;
-				cols.append(',').append(results.getString(4));
-			}
+				if(results.next()) {
+					sql
+					.append(" DROP CONSTRAINT ")
+					.append(results.getString(6))
+					.append(", ")
+					;
+					cols.append(',').append(results.getString(4));
+				}
 			} finally {
-			results.close();
+				results.close();
 			}
 			sql
 				.append(" ADD PRIMARY KEY(")
 				.append(column)
 				.append(cols)
-				.append(')')
-			;
+				.append(')');
 			PreparedStatement pstmt=conn.prepareStatement(sql.toString());
 			try {
 				pstmt.executeUpdate();
@@ -191,8 +190,7 @@ public class InterbaseConnector extends JDBCConnector {
 			sql
 				.append(settings.getTable())
 				.append(" DROP CONSTRAINT ")
-				.append(primaryKeys.getNames().get(i))
-			;
+				.append(primaryKeys.getNames().get(i));
 			int size=columns.size();
 			if(size>1) {
 				sql.append(", ADD PRIMARY KEY(");
@@ -228,23 +226,20 @@ public class InterbaseConnector extends JDBCConnector {
 		StringBuffer sql=new StringBuffer();
 		sql
 			.append("ALTER TABLE ")
-			.append(settings.getTable())
-			;
+			.append(settings.getTable());
 		if(!column.equals(newColumn)) {
 			sql
-			.append(" ALTER COLUMN ")
-			.append(column)
-			.append(" TO ")
-			.append(newColumn)
-			.append(',')
-			;
+				.append(" ALTER COLUMN ")
+				.append(column)
+				.append(" TO ")
+				.append(newColumn)
+				.append(',');
 		}
 		sql
 			.append(" ALTER COLUMN ")
 			.append(newColumn)
 			.append(" TYPE ")
-			.append(newType)
-			;
+			.append(newType);
 		executeUpdate(sql.toString());
 	}
 
@@ -286,8 +281,7 @@ public class InterbaseConnector extends JDBCConnector {
 		}
 		sql
 			.append(" FROM ")
-			.append(getSettings().getTable())
-		;
+			.append(getSettings().getTable());
 		boolean hasBeen=false;
 		for(int i=0;i<colNames.size();i++) {
 			if(colNames.get(i).length()>0) {
@@ -299,8 +293,7 @@ public class InterbaseConnector extends JDBCConnector {
 				if(colValues.get(i)==null) {
 					sql
 					.append(colNames.get(i))
-					.append(" ISNULL")
-					;
+					.append(" ISNULL");
 				} else {
 					sql
 					.append(colNames.get(i))

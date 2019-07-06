@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class Indexes {
 
-    /**
+	/**
 	 * The index names.
 	 */
 	final private List<String> names;
@@ -56,33 +56,33 @@ public class Indexes {
 	 * @param columns an array of the column names.
 	 */
 	public Indexes(
-        List<String> names,
-        List<JDBCConnector.Boolean> areUnique,
-        List<String> columns
-    ) {
-        this.names=names;
-        this.areUnique=areUnique;
-        this.columns=columns;
+		List<String> names,
+		List<JDBCConnector.Boolean> areUnique,
+		List<String> columns
+	) {
+		this.names=names;
+		this.areUnique=areUnique;
+		this.columns=columns;
 	}
 
-    /**
+	/**
 	 * Are the indexes UNIQUE?
 	 */
 	public List<JDBCConnector.Boolean> areUnique() {
-        return areUnique;
+		return areUnique;
 	}
 
-    /**
+	/**
 	 * Gets the names of the columns.
 	 */
 	public List<String> getColumns() {
-        return columns;
+		return columns;
 	}
 
-    /**
+	/**
 	 * Gets the names of the indexes.
 	 */
 	public List<String> getNames() {
-        return names;
+		return names;
 	}
 }

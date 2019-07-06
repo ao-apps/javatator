@@ -39,23 +39,23 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class JavaScript extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	private static final String RESOURCE="javatator.js";
 
-    @Override
+	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        resp.setContentType("application/x-javascript");
-        InputStream in=new BufferedInputStream(getClass().getResourceAsStream(RESOURCE));
-        OutputStream out=new BufferedOutputStream(resp.getOutputStream());
-        int b;
-        while((b=in.read())>=0) out.write(b);
-        in.close();
-        out.close();
+		resp.setContentType("application/x-javascript");
+		InputStream in=new BufferedInputStream(getClass().getResourceAsStream(RESOURCE));
+		OutputStream out=new BufferedOutputStream(resp.getOutputStream());
+		int b;
+		while((b=in.read())>=0) out.write(b);
+		in.close();
+		out.close();
 	}
 
-    @Override
-    protected long getLastModified(HttpServletRequest req) {
-        return Main.UPTIME;
+	@Override
+	protected long getLastModified(HttpServletRequest req) {
+		return Main.UPTIME;
 	}
 }

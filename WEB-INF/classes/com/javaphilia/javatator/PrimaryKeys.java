@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class PrimaryKeys {
 
-    /**
+	/**
 	 * The names of the columns.
 	 */
 	final private List<String> columns;
@@ -44,21 +44,21 @@ public class PrimaryKeys {
 	final private List<String> names;
 
 	public PrimaryKeys(List<String> columns, List<String> names) {
-        this.columns=columns;
-        this.names=names;
+		this.columns=columns;
+		this.names=names;
 	}
 
-    /**
+	/**
 	 * Gets the column names.
 	 */
 	public List<String> getColumns() {
-        return columns;
+		return columns;
 	}
 
-    /**
+	/**
 	 * Gets the primary key names.
 	 */
 	public List<String> getNames() {
-        return names;
+		return names;
 	}
 }

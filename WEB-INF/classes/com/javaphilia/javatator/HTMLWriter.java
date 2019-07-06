@@ -41,14 +41,14 @@ public class HTMLWriter extends FilterWriter {
 	private static final char[] SQ=new char[] {'&','#','3','9',';'};
 	private static final char[] BR=new char[] {'<','B','R','>'};
 
-    /**
+	/**
 	 * Constructs this <code>HTMLWriter</code>.
 	 */
 	public HTMLWriter(Writer out) {
-        super(out);
+		super(out);
 	}
 
-    /**
+	/**
 	 * Write a portion of an array of characters.
 	 *
 	 * @param  cbuf  Buffer of characters to be written
@@ -57,34 +57,34 @@ public class HTMLWriter extends FilterWriter {
 	 *
 	 * @exception  IOException  If an I/O error occurs
 	 */
-    @Override
+	@Override
 	public void write(char cbuf[], int off, int len) throws IOException {
-        for(int i=off;i<len;i++) {
-            if(cbuf[i]=='<') out.write(LT);
-            else if(cbuf[i]=='&') out.write(AMP);
-            else if(cbuf[i]=='"') out.write(DQ);
-            else if(cbuf[i]=='\'') out.write(SQ);
-            else if(cbuf[i]=='\n') out.write(BR);
-            else out.write(cbuf[i]);
-        }
+		for(int i=off;i<len;i++) {
+			if(cbuf[i]=='<') out.write(LT);
+			else if(cbuf[i]=='&') out.write(AMP);
+			else if(cbuf[i]=='"') out.write(DQ);
+			else if(cbuf[i]=='\'') out.write(SQ);
+			else if(cbuf[i]=='\n') out.write(BR);
+			else out.write(cbuf[i]);
+		}
 	}
 
-    /**
+	/**
 	 * Write a single character.
 	 *
 	 * @exception  IOException  If an I/O error occurs
 	 */
-    @Override
+	@Override
 	public void write(int c) throws IOException {
-        if(c=='<') out.write(LT);
-        else if(c=='&') out.write(AMP);
-        else if(c=='"') out.write(DQ);
-        else if(c=='\'') out.write(SQ);
-        else if(c=='\n') out.write(BR);
-        else out.write(c);
+		if(c=='<') out.write(LT);
+		else if(c=='&') out.write(AMP);
+		else if(c=='"') out.write(DQ);
+		else if(c=='\'') out.write(SQ);
+		else if(c=='\n') out.write(BR);
+		else out.write(c);
 	}
 
-    /**
+	/**
 	 * Write a portion of a string.
 	 *
 	 * @param  str  String to be written
@@ -93,8 +93,8 @@ public class HTMLWriter extends FilterWriter {
 	 *
 	 * @exception  IOException  If an I/O error occurs
 	 */
-    @Override
+	@Override
 	public void write(String str, int off, int len) throws IOException {
-        write(str.toCharArray(), off, len);
+		write(str.toCharArray(), off, len);
 	}
 }

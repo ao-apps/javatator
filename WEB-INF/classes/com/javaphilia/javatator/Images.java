@@ -39,28 +39,28 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Images extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	private static final String RESOURCE_DIR="images/";
 
-    @Override
+	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        String file=req.getParameter("file");
-        String lfile=file.toLowerCase();
-        if(lfile.endsWith(".gif")) resp.setContentType("image/gif");
-        else if(lfile.endsWith(".jpg") || lfile.endsWith(".jpeg")) resp.setContentType("image/jpeg");
-        else throw new ServletException("Invalid file type: "+file);
+		String file=req.getParameter("file");
+		String lfile=file.toLowerCase();
+		if(lfile.endsWith(".gif")) resp.setContentType("image/gif");
+		else if(lfile.endsWith(".jpg") || lfile.endsWith(".jpeg")) resp.setContentType("image/jpeg");
+		else throw new ServletException("Invalid file type: "+file);
 		// TODO: Verify this against a specific set of allowed files, or just serve directly not through servlet
-        InputStream in=new BufferedInputStream(getClass().getResourceAsStream(RESOURCE_DIR+file));
-        OutputStream out=new BufferedOutputStream(resp.getOutputStream());
-        int b;
-        while((b=in.read())>=0) out.write(b);
-        in.close();
-        out.close();
+		InputStream in=new BufferedInputStream(getClass().getResourceAsStream(RESOURCE_DIR+file));
+		OutputStream out=new BufferedOutputStream(resp.getOutputStream());
+		int b;
+		while((b=in.read())>=0) out.write(b);
+		in.close();
+		out.close();
 	}
 
-    @Override
-    protected long getLastModified(HttpServletRequest req) {
-        return Main.UPTIME;
+	@Override
+	protected long getLastModified(HttpServletRequest req) {
+		return Main.UPTIME;
 	}
 }

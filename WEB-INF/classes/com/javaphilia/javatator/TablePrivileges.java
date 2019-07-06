@@ -47,30 +47,30 @@ public class TablePrivileges {
 	 * @param isGrantable
 	 */
 	public TablePrivileges(
-        List<String> grantors,
-        List<String> grantees,
-        List<String> privileges,
-        List<JDBCConnector.Boolean> isGrantable
-    ) {
-        this.grantors=grantors;
-        this.grantees=grantees;
-        this.privileges=privileges;
-        this.isGrantable=isGrantable;
+		List<String> grantors,
+		List<String> grantees,
+		List<String> privileges,
+		List<JDBCConnector.Boolean> isGrantable
+	) {
+		this.grantors=grantors;
+		this.grantees=grantees;
+		this.privileges=privileges;
+		this.isGrantable=isGrantable;
 	}
 
-    public List<String> getGrantees() {
-        return grantees;
+	public List<String> getGrantees() {
+		return grantees;
 	}
 
-    public List<String> getGrantors() {
-        return grantors;
+	public List<String> getGrantors() {
+		return grantors;
 	}
 
-    public List<JDBCConnector.Boolean> getIsGrantable() {
-        return isGrantable;
+	public List<JDBCConnector.Boolean> getIsGrantable() {
+		return isGrantable;
 	}
 
-    public List<String> getPrivileges() {
-        return privileges;
+	public List<String> getPrivileges() {
+		return privileges;
 	}
 }

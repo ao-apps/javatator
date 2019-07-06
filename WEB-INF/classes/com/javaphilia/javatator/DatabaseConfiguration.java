@@ -119,12 +119,13 @@ final public class DatabaseConfiguration {
 		synchronized(DatabaseConfiguration.class) {
 			if(props==null) {
 				InputStream in=DatabaseConfiguration.class.getResourceAsStream("database.properties");
-						Properties newProps=new Properties();
-						try {
-							newProps.load(in);
-						} finally {
-							in.close();
-						}
+				// TODO: Check if in == null and throw useful message about database.properties not found
+				Properties newProps=new Properties();
+				try {
+					newProps.load(in);
+				} finally {
+					in.close();
+				}
 				props=newProps;
 			}
 		}

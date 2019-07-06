@@ -38,24 +38,24 @@ public class SchemaForeignKey {
 	private String foreignRowName;
 
 	public SchemaForeignKey(
-        SchemaRow row,
-        String tableName,
-        String rowName
-    ) {
-        this.row=row;
-        this.foreignTableName=tableName;
-        this.foreignRowName=rowName;
+		SchemaRow row,
+		String tableName,
+		String rowName
+	) {
+		this.row=row;
+		this.foreignTableName=tableName;
+		this.foreignRowName=rowName;
 	}
 
-    public String getForeignRowName() {
-        return foreignRowName;
+	public String getForeignRowName() {
+		return foreignRowName;
 	}
 
-    public String getForeignTableName() {
-        return foreignTableName;
+	public String getForeignTableName() {
+		return foreignTableName;
 	}
 
-    public SchemaRow getRow() {
-        return row;
+	public SchemaRow getRow() {
+		return row;
 	}
 }

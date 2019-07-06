@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class CheckConstraints {
 
-    /**
+	/**
 	 * The constraint names.
 	 */
 	final private List<String> names;
@@ -44,21 +44,21 @@ public class CheckConstraints {
 	final private List<String> checkClauses;
 
 	public CheckConstraints(List<String> names, List<String> checkClauses) {
-        this.names=names;
-        this.checkClauses=checkClauses;
+		this.names=names;
+		this.checkClauses=checkClauses;
 	}
 
-    /**
+	/**
 	 * Gets the CHECK clauses.
 	 */
 	public List<String> getCheckClauses() {
-        return checkClauses;
+		return checkClauses;
 	}
 
-    /**
+	/**
 	 * Gets the names of the CHECK constraints.
 	 */
 	public List<String> getNames() {
-        return names;
+		return names;
 	}
 }

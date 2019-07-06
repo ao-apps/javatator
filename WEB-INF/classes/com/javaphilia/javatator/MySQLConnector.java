@@ -105,21 +105,21 @@ public class MySQLConnector extends JDBCConnector {
 							SB
 								.append('\'')
 								.append(V.get(i))
-								.append('\'')
-							;
+								.append('\'');
 						}
 						lengths.add(SB.toString());
 					} else lengths.add(R.getString(7));
 					int nullable=R.getInt(11);
-					areNullable.add((nullable==DatabaseMetaData.columnNoNulls)?Boolean.FALSE
-							   :(nullable==DatabaseMetaData.columnNullable)?Boolean.TRUE
-							   :Boolean.UNKNOWN);
+					areNullable.add(
+						(nullable==DatabaseMetaData.columnNoNulls) ? Boolean.FALSE
+						: (nullable==DatabaseMetaData.columnNullable) ? Boolean.TRUE
+						: Boolean.UNKNOWN);
 					String def=R.getString(13);
 					int defLen=def.length();
 					if(
-					   defLen>=2
-					   && def.charAt(0)=='\''
-					   && def.charAt(defLen-1)=='\''
+						defLen>=2
+						&& def.charAt(0)=='\''
+						&& def.charAt(defLen-1)=='\''
 					) defaults.add('V'+def.substring(1, defLen-1));
 					else if(defLen>0) defaults.add('V'+def);
 					else defaults.add(null);
@@ -169,9 +169,9 @@ public class MySQLConnector extends JDBCConnector {
 			.append(startPos)
 			.append(',')
 			.append(numRows)
-			.toString()
-			;
+			.toString();
 	}
+
 	/**
 	 * Gets the possible values for a column.  For an <code>ENUM</code> or <code>SET</code> type return all
 	 * the possible values, for any other return <code>null</code>.
@@ -252,16 +252,14 @@ public class MySQLConnector extends JDBCConnector {
 					sql
 						.append(" ISNULL(")
 						.append(colNames[i])
-						.append(')')
-					;
+						.append(')');
 				} else if(!"".equals(colValues[i])) {
 					if(hasBeen) sql.append(" AND ");
 					else hasBeen=true;
 					sql
 						.append(colNames[i])
 						.append(" LIKE ")
-						.append(Util.escapeSQLValue(colValues[i]))
-					;
+						.append(Util.escapeSQLValue(colValues[i]));
 				}
 			}
 		}
@@ -337,9 +335,7 @@ public class MySQLConnector extends JDBCConnector {
 
 	@Override
 	public boolean isKeyword(String identifier) {
-		return
-			Server.ReservedWord.isReservedWord(identifier)
-		;
+		return Server.ReservedWord.isReservedWord(identifier);
 	}
 
 	// TODO: How to scape ' in table name?

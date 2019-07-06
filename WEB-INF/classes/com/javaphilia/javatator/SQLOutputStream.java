@@ -50,58 +50,58 @@ public class SQLOutputStream extends OutputStream {
 	 * @param stmt the <code>Statement</code> for executing the query.
 	 */
 	public SQLOutputStream(Statement stmt) {
-        this.stmt=stmt;
+		this.stmt=stmt;
 	}
 
-    @Override
+	@Override
 	public void close() throws IOException {
-        SB.setLength(0);
+		SB.setLength(0);
 	}
 
-    /**
-     * Executes the specified SQL query.
-     */
-    private void executeSQL(String sql) throws IOException {
-        try {
-            stmt.executeUpdate(sql);
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	/**
+	 * Executes the specified SQL query.
+	 */
+	private void executeSQL(String sql) throws IOException {
+		try {
+			stmt.executeUpdate(sql);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    public void flush() throws IOException {
-        super.flush();
-    }
+	@Override
+	public void flush() throws IOException {
+		super.flush();
+	}
 
-    @Override
-    public void write(byte[] b) throws IOException {
-        write(b, 0, b.length);
-    }
+	@Override
+	public void write(byte[] b) throws IOException {
+		write(b, 0, b.length);
+	}
 
-    /**
+	/**
 	 * Writes to the stream.
 	 */
-    @Override
+	@Override
 	public void write(byte[] b, int off, int len) throws IOException {
-        int I=check+count-off;
-        for(int i=off;i<len;i++) {
-            SB.append(b[i]);
-            if(i>I) {
-            if(b[i]=='\\') check=count+i+1-off;
-            else if(!singleQuotes && b[i]=='"') doubleQuotes=!doubleQuotes;
-            else if(!doubleQuotes && b[i]=='\'') singleQuotes=!singleQuotes;
-            else if(!singleQuotes && !doubleQuotes && b[i]==';') {
-                executeSQL(SB.toString());
-                SB.setLength(0);
-                check=-1;
-                count=0;
-            }
-            }
-        }
+		int I=check+count-off;
+		for(int i=off;i<len;i++) {
+			SB.append(b[i]);
+			if(i>I) {
+				if(b[i]=='\\') check=count+i+1-off;
+				else if(!singleQuotes && b[i]=='"') doubleQuotes=!doubleQuotes;
+				else if(!doubleQuotes && b[i]=='\'') singleQuotes=!singleQuotes;
+				else if(!singleQuotes && !doubleQuotes && b[i]==';') {
+					executeSQL(SB.toString());
+					SB.setLength(0);
+					check=-1;
+					count=0;
+				}
+			}
+		}
 	}
 
-    public void write(int b) throws IOException {
-        write(new byte[]{(byte)b}, 0, 1);
+	public void write(int b) throws IOException {
+		write(new byte[]{(byte)b}, 0, 1);
 	}
 }

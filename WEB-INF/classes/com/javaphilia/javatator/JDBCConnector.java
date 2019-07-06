@@ -124,15 +124,13 @@ public class JDBCConnector {
 			.append(quoteColumn(name))
 			.append(' ')
 			.append(type)
-			.append(' ')
-			;
+			.append(' ');
 		boolean hasLength=!type.toUpperCase().endsWith("TEXT");
 		if(hasLength && length!=null && length.length()>0)
 			sql
-			.append('(')
-			.append(length)
-			.append(')')
-			;
+				.append('(')
+				.append(length)
+				.append(')');
 		if(dfault!=null) {
 			sql.append(" DEFAULT ");
 			if(dfault.charAt(0)=='F') sql.append(dfault.substring(1));
@@ -142,8 +140,7 @@ public class JDBCConnector {
 			.append(' ')
 			.append(nullClause)
 			.append(' ')
-			.append(remarks)
-			;
+			.append(remarks);
 		executeUpdate(sql.toString());
 	}
 
@@ -175,8 +172,7 @@ public class JDBCConnector {
 			.append(foreignTable)
 			.append(" (")
 			.append(foreignKey)
-			.append(")")
-			;
+			.append(")");
 		if(matchType!=null) sql.append(" MATCH ").append(matchType);
 		sql
 			.append(" ON DELETE ")
@@ -185,8 +181,7 @@ public class JDBCConnector {
 			.append(onUpdate)
 			.append(isDeferrable?" DEFERRABLE":" NOT DEFERRABLE")
 			.append(" INITIALLY ")
-			.append(initially)
-			;
+			.append(initially);
 		executeUpdate(sql.toString());
 	}
 
@@ -364,10 +359,12 @@ public class JDBCConnector {
 	 * @param behaviour the behaviour when dropping.
 	 */
 	public void dropConstraint(String constraint, String behaviour) throws SQLException, IOException {
-		executeUpdate("ALTER TABLE "
-				  + quoteTable(settings.getTable())
-				  + " DROP CONSTRAINT "
-				  + constraint+' '+behaviour);
+		executeUpdate(
+			"ALTER TABLE "
+			+ quoteTable(settings.getTable())
+			+ " DROP CONSTRAINT "
+			+ constraint+' '+behaviour
+		);
 	}
 
 	/**
@@ -549,14 +546,14 @@ public class JDBCConnector {
 			.append(' ')
 			.append(quoteColumn(newColumn))
 			.append(' ')
-			.append(newType)
-			;
+			.append(newType);
 		boolean hasLength=!newType.toUpperCase().endsWith("TEXT");
-		if(hasLength) sql
-				  .append('(')
-				  .append(newLength)
-				  .append(')')
-				  ;
+		if(hasLength) {
+			sql
+				.append('(')
+				.append(newLength)
+				.append(')');
+		}
 		if(newDefault!=null) {
 			sql.append(" DEFAULT ");
 			if(newDefault.charAt(0)=='F') sql.append(newDefault.substring(1));
@@ -566,8 +563,7 @@ public class JDBCConnector {
 			.append(' ')
 			.append(newNull)
 			.append(' ')
-			.append(newRemarks)
-			;
+			.append(newRemarks);
 		executeUpdate(sql.toString());
 	}
 
@@ -824,9 +820,10 @@ public class JDBCConnector {
 					types.add(R.getString(6));
 					lengths.add(R.getString(7));
 					int nullable=R.getInt(11);
-					areNullable.add((nullable==DatabaseMetaData.columnNoNulls)?Boolean.FALSE
-							   :(nullable==DatabaseMetaData.columnNullable)?Boolean.TRUE
-							   :Boolean.UNKNOWN);
+					areNullable.add(
+						(nullable==DatabaseMetaData.columnNoNulls) ? Boolean.FALSE
+						: (nullable==DatabaseMetaData.columnNullable) ? Boolean.TRUE
+						: Boolean.UNKNOWN);
 					String def=R.getString(13);
 					defaults.add((def!=null)?'V'+def:null);
 					String rem=R.getString(12);
@@ -967,8 +964,7 @@ public class JDBCConnector {
 		try {
 			ResultSet R=(isImported)
 				? conn.getMetaData().getImportedKeys(null, null, table)
-				: conn.getMetaData().getExportedKeys(null, null, table)
-			;
+				: conn.getMetaData().getExportedKeys(null, null, table);
 			if(R!=null) {
 				List<String> foreignKeys=new ArrayList<String>();
 				List<String> foreignTables=new ArrayList<String>();
@@ -1152,8 +1148,7 @@ public class JDBCConnector {
 			(JDBCConnector)Class
 			.forName(DatabaseConfiguration.getProperty("connector", settings.getDatabaseProduct()))
 			.getConstructor(paramTypes)
-			.newInstance(initArgs)
-			;
+			.newInstance(initArgs);
 	}
 
 	/**
@@ -1386,8 +1381,7 @@ public class JDBCConnector {
 					sql
 						.append(quoteColumn(colNames[i]))
 						.append(" LIKE ")
-						.append(Util.escapeSQLValue(colValues[i]))
-					;
+						.append(Util.escapeSQLValue(colValues[i]));
 				}
 			}
 		}
@@ -1503,8 +1497,7 @@ public class JDBCConnector {
 			.append(" ON ")
 			.append(quoteTable(settings.getTable()))
 			.append(" TO ")
-			.append(user)
-		;
+			.append(user);
 		executeUpdate(sql.toString());
 	}
 
@@ -1588,8 +1581,7 @@ public class JDBCConnector {
 			.append(" ON ")
 			.append(quoteTable(settings.getTable()))
 			.append(" FROM ")
-			.append(user)
-			;
+			.append(user);
 		executeUpdate(sql.toString());
 	}
 
@@ -1622,8 +1614,7 @@ public class JDBCConnector {
 	public boolean isKeyword(String identifier) {
 		return
 			Server.ReservedWord.isReservedWord(identifier)
-			|| com.aoindustries.aoserv.client.postgresql.Server.ReservedWord.isReservedWord(identifier)
-		;
+			|| com.aoindustries.aoserv.client.postgresql.Server.ReservedWord.isReservedWord(identifier);
 	}
 
 	/**

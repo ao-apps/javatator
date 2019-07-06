@@ -57,34 +57,34 @@ public class SchemaTable {
 	final private List<SchemaRow> rows = new ArrayList<SchemaRow>();
 
 	public SchemaTable(String name) {
-        this.name=name;
+		this.name=name;
 	}
 
-    public void draw(Graphics G, FontMetrics metrics, int x, int y) {
-        G.setColor(background);
-        int width=getWidth(metrics);
-        int height=getHeight(metrics);
-        G.fillRect(x, y, width, height);
-        G.setColor(borderColor);
-        G.drawRect(x, y, width-1, height-1);
-        G.drawLine(x, y+metrics.getHeight(), x+width-1, y+metrics.getHeight());
+	public void draw(Graphics G, FontMetrics metrics, int x, int y) {
+		G.setColor(background);
+		int width=getWidth(metrics);
+		int height=getHeight(metrics);
+		G.fillRect(x, y, width, height);
+		G.setColor(borderColor);
+		G.drawRect(x, y, width-1, height-1);
+		G.drawLine(x, y+metrics.getHeight(), x+width-1, y+metrics.getHeight());
 
-        G.setColor(nameColor);
-        int nameWidth=metrics.stringWidth(name);
-        G.drawString(name, x+(width-nameWidth)/2, y+metrics.getHeight()-metrics.getDescent());
+		G.setColor(nameColor);
+		int nameWidth=metrics.stringWidth(name);
+		G.drawString(name, x+(width-nameWidth)/2, y+metrics.getHeight()-metrics.getDescent());
 
-        // Draw all the rows
-        x=x+1;
-        y=y+metrics.getHeight()+1;
-        int len=rows.size();
-        for(int c=0;c<len;c++) {
-            SchemaRow row=rows.get(c);
-            row.draw(G, metrics, x, y);
-            y+=row.getHeight(metrics);
-        }
+		// Draw all the rows
+		x=x+1;
+		y=y+metrics.getHeight()+1;
+		int len=rows.size();
+		for(int c=0;c<len;c++) {
+			SchemaRow row=rows.get(c);
+			row.draw(G, metrics, x, y);
+			y+=row.getHeight(metrics);
+		}
 	}
 
-    public int getHeight(FontMetrics metrics) {
+	public int getHeight(FontMetrics metrics) {
 		int height=3+metrics.getHeight();
 		int size=rows.size();
 		for(int c=0;c<size;c++) {
@@ -93,51 +93,51 @@ public class SchemaTable {
 		return height;
 	}
 
-    public String getName() {
-        return name;
+	public String getName() {
+		return name;
 	}
 
-    synchronized public SchemaRow getRow(String rowName) {
-        int size=rows.size();
-        for(int c=0;c<size;c++) {
-            SchemaRow row=rows.get(c);
-            if(row.getName().equals(rowName)) return row;
-        }
-        SchemaRow row=new SchemaRow(this, rowName);
-        rows.add(row);
-        return row;
+	synchronized public SchemaRow getRow(String rowName) {
+		int size=rows.size();
+		for(int c=0;c<size;c++) {
+			SchemaRow row=rows.get(c);
+			if(row.getName().equals(rowName)) return row;
+		}
+		SchemaRow row=new SchemaRow(this, rowName);
+		rows.add(row);
+		return row;
 	}
 
-    /**
+	/**
 	 * Gets the y position of the center of a row, relative to top of table.
 	 */
 	public int getRowLinkY(String rowName, FontMetrics metrics) {
-        int size=rows.size();
-        int ypos=2+metrics.getHeight();
-        for(int c=0;c<size;c++) {
-            SchemaRow row=rows.get(c);
-            int rowHeight=row.getHeight(metrics);
-            if(row.getName().equals(rowName)) {
-                // Find center and return
-                return ypos+rowHeight/2-1;
-            }
-            ypos+=rowHeight;
-        }
-        // Row not found, throw error
-        throw new NullPointerException("Row not found: "+rowName);
+		int size=rows.size();
+		int ypos=2+metrics.getHeight();
+		for(int c=0;c<size;c++) {
+			SchemaRow row=rows.get(c);
+			int rowHeight=row.getHeight(metrics);
+			if(row.getName().equals(rowName)) {
+				// Find center and return
+				return ypos+rowHeight/2-1;
+			}
+			ypos+=rowHeight;
+		}
+		// Row not found, throw error
+		throw new NullPointerException("Row not found: "+rowName);
 	}
 
-    public List<SchemaRow> getRows() {
-        return rows;
+	public List<SchemaRow> getRows() {
+		return rows;
 	}
 
-    public int getWidth(FontMetrics metrics) {
-        int widest=metrics.stringWidth(name)+4;
-        int size=rows.size();
-        for(int c=0;c<size;c++) {
-            int rowWidth=rows.get(c).getWidth(metrics);
-            if(rowWidth>widest) widest=rowWidth;
-        }
-        return widest+2;
+	public int getWidth(FontMetrics metrics) {
+		int widest=metrics.stringWidth(name)+4;
+		int size=rows.size();
+		for(int c=0;c<size;c++) {
+			int rowWidth=rows.get(c).getWidth(metrics);
+			if(rowWidth>widest) widest=rowWidth;
+		}
+		return widest+2;
 	}
 }

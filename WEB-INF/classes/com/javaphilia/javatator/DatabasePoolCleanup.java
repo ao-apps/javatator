@@ -30,6 +30,7 @@ package com.javaphilia.javatator;
  *
  * @author  Dan Armstrong
  */
+// TODO: Make a servlet context listener and close all on context destroyed
 public class DatabasePoolCleanup extends Thread {
 
 	/**
