@@ -520,9 +520,9 @@ public class JDBCConnector {
 	 * @param newLength the new length/set of the column.
 	 * @param newDefault the new default value for the column
 	 *                   <ul>
-	 *                     <code>null</code> - no default<br>
-	 *                     <code>F*</code> - a function<br>
-	 *                     <code>V*</code> - a value
+	 *                     <li>{@code null} - no default</li>
+	 *                     <li>{@code "F*"} - a function</li>
+	 *                     <li>{@code "V*"} - a value</li>
 	 *                   </ul>
 	 * @param newNull "not null" or "null" - whether the column is nullable.
 	 * @param newRemarks extra info added to the end of the statement.
@@ -918,8 +918,8 @@ public class JDBCConnector {
 	 * @param column the name of the column.
 	 *
 	 * @return  the default value or function for the column.  A value will
-	 *          start with a <code>'V'</code> and a function will start
-	 *          with a <code>'F'</code>.
+	 *          start with a {@code 'V'} and a function will start
+	 *          with a {@code 'F'}.
 	 */
 	public String getDefault(String column) throws SQLException, IOException {
 		String def=getColumnMetaData(column, 13);
@@ -1242,7 +1242,7 @@ public class JDBCConnector {
 	 * would return the valid values, for a foreign key in PostgreSQL this would return all
 	 * the foreign rows if less than {@link Settings#fkeyrows} exist.
 	 *
-	 * @return the list of all possible values or <code>null</code> if not known
+	 * @return the list of all possible values or {@code null} if not known
 	 */
 	public List<String> getPossibleValues(String column, String type) throws SQLException, IOException {
 		return null;

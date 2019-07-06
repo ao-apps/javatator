@@ -181,7 +181,7 @@ public class Settings {
 	}
 
 	/**
-	 * Gets the action currently being performed or <code>null</code> if not set.
+	 * Gets the action currently being performed or {@code null} if not set.
 	 */
 	public String getAction() {
 		return action.length()==0?null:action;
@@ -196,21 +196,21 @@ public class Settings {
 	}
 
 	/**
-	 * Gets the column currently being accessed or <code>null</code> if not set.
+	 * Gets the column currently being accessed or {@code null} if not set.
 	 */
 	public String getColumn() {
 		return column.length()==0?null:column;
 	}
 
 	/**
-	 * Gets the database currently being accessed or <code>null</code> if not set.
+	 * Gets the database currently being accessed or {@code null} if not set.
 	 */
 	public String getDatabase() {
 		return database.length()==0?null:database;
 	}
 
 	/**
-	 * Gets the database product in use or <code>null</code> if not set.
+	 * Gets the database product in use or {@code null} if not set.
 	 */
 	public String getDatabaseProduct() {
 		return databaseProduct.length()==0?null:databaseProduct;
@@ -219,7 +219,7 @@ public class Settings {
 	/**
 	 * Gets any error that occured during the creation of this {@link Settings} object.
 	 *
-	 * @return  a description of the error or <code>null</code> for none.
+	 * @return  a description of the error or {@code null} for none.
 	 */
 	public String getError() {
 		return error;
@@ -234,7 +234,7 @@ public class Settings {
 
 	/**
 	 * Gets the hostname of the database server being connected to
-	 * or <code>null</code> if not set.
+	 * or {@code null} if not set.
 	 */
 	public String getHostname() {
 		return hostname.length()==0?null:hostname;
@@ -323,7 +323,7 @@ public class Settings {
 	}
 
 	/**
-	 * Gets the password or <code>null</code> if not set.
+	 * Gets the password or {@code null} if not set.
 	 */
 	public String getPassword() {
 		return password.length()==0?null:password;
@@ -332,7 +332,7 @@ public class Settings {
 	/**
 	 * Gets the port of the database product being connected to.
 	 *
-	 * @return  <code>-1</code> if not defined or the port number
+	 * @return  {@code -1} if not defined or the port number
 	 */
 	public int getPort() {
 		return port;
@@ -371,21 +371,21 @@ public class Settings {
 	}
 
 	/**
-	 * Gets the column name to be ordered by or <code>null</code> if not set.
+	 * Gets the column name to be ordered by or {@code null} if not set.
 	 */
 	public String getSortColumn() {
 		return sortColumn.length()==0?null:sortColumn;
 	}
 
 	/**
-	 * Gets the sorting order or <code>null</code> if not set.
+	 * Gets the sorting order or {@code null} if not set.
 	 */
 	public String getSortOrder() {
 		return sortOrder.length()==0?null:sortOrder;
 	}
 
 	/**
-	 * Gets the table currently being accessed or <code>null</code> if not set.
+	 * Gets the table currently being accessed or {@code null} if not set.
 	 */
 	public String getTable() {
 		return table.length()==0?null:table;
@@ -422,7 +422,7 @@ public class Settings {
 	}
 
 	/**
-	 * Gets the username or <code>null</code> if not set.
+	 * Gets the username or {@code null} if not set.
 	 */
 	public String getUsername() {
 		return username.length()==0?null:username;

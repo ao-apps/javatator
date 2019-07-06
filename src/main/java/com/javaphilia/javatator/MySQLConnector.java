@@ -177,9 +177,9 @@ public class MySQLConnector extends JDBCConnector {
 
 	/**
 	 * Gets the possible values for a column.  For an <code>ENUM</code> or <code>SET</code> type return all
-	 * the possible values, for any other return <code>null</code>.
+	 * the possible values, for any other return {@code null}.
 	 *
-	 * @return the list of all possible values or <code>null</code> if not known
+	 * @return the list of all possible values or {@code null} if not known
 	 */
 	@Override
 	public List<String> getPossibleValues(String column, String type) throws SQLException, IOException {
