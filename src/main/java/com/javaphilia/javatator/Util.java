@@ -32,8 +32,6 @@ import java.util.List;
 
 /**
  * Utility class.
- *
- * @author Jason Davies
  */
 public class Util {
 

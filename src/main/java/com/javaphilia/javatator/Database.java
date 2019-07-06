@@ -36,8 +36,6 @@ import java.util.List;
 
 /**
  * Various methods for manipulating databases.
- *
- * @author Jason Davies
  */
 public class Database {
 

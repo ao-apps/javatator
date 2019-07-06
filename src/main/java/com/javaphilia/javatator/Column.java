@@ -32,8 +32,6 @@ import java.util.List;
 
 /**
  * Various methods for manipulating columns
- *
- * @author Jason Davies
  */
 public class Column {
 

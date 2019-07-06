@@ -29,8 +29,6 @@ package com.javaphilia.javatator;
 /**
  * The DatabasePoolCleanup periodically calls the clean up functions to disconnect
  * any database connection that has been idle too long.
- *
- * @author  Dan Armstrong
  */
 // TODO: Make a servlet context listener and close all on context destroyed
 public class DatabasePoolCleanup extends Thread {

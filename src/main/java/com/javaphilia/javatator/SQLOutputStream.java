@@ -33,8 +33,6 @@ import java.sql.Statement;
 
 /**
  * Executes SQL on-the-fly from a stream.
- *
- * @author Jason Davies
  */
 public class SQLOutputStream extends OutputStream {
 

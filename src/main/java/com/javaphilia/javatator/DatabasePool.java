@@ -35,8 +35,6 @@ import java.util.List;
 
 /**
  * Database connection pool.
- *
- * @author Jason Davies
  */
 public class DatabasePool {
 
