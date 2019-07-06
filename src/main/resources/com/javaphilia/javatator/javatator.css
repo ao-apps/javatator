@@ -1,0 +1,41 @@
+A {color:green;}
+BODY {
+	background-color:#ffffff;
+	font-family:arial,sans-serif;
+	color:#6f6f6f;
+}
+CODE {font-family:monospace;}
+INPUT {font-family:monospace;}
+PRE {font-family:monospace;}
+TD {
+	font-family:arial,sans-serif;
+	background-color:#ebffed;
+	color:#6f6f6f;
+}
+TEXTAREA {font-family:monospace;}
+TH {
+	font-family:arial,sans-serif;
+	font-weight: bold;
+	background-color:#ebffed;
+	color:#6f6f6f;
+}
+
+.ALTBG {background-color:#ecf8ff;}
+.ALTBODY {
+	background-color:#ecf8ff;
+	font-family:arial,sans-serif;
+	color:#6f6f6f;
+}
+.ALTBORDER {background-color:#b4d0dc;}
+.DEFAULTBG {background-color:#ffffff;}
+.ERROR {
+	font-family:arial,sans-serif;
+	font-weight:bold;
+	color:red;
+}
+.HEADER {
+	text-align:center;
+	font-size:large;
+}
+.NORMBORDER {background-color:#a8dda0;}
+.TABLELINK {color:#333399;}
