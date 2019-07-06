@@ -1,7 +1,7 @@
 # [<img src="javatator-logo.gif" alt="Javatator Logo" width="345" height="72">](https://github.com/aoindustries/javatator)
 <p>
-	<a href="https://aoindustries.com/life-cycle#project-current-stable">
-		<img src="https://aoindustries.com/ao-badges/project-current-stable.svg" alt="project: current stable" />
+	<a href="https://aoindustries.com/life-cycle#project-beta">
+		<img src="https://aoindustries.com/ao-badges/project-beta.svg" alt="project: beta" />
 	</a>
 	<a href="https://aoindustries.com/life-cycle#management-production">
 		<img src="https://aoindustries.com/ao-badges/management-production.svg" alt="management: production" />
