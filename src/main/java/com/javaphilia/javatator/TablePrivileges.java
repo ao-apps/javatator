@@ -30,8 +30,6 @@ import java.util.List;
 
 /**
  * Object representation of table privileges.
- *
- * @author Jason Davies
  */
 public class TablePrivileges {
 

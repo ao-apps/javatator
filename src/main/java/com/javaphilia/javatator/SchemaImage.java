@@ -1,9 +1,8 @@
 /*
  * javatator - Multi-database admin tool.
  *
- * Copyright (C) 2001  Jason Davies.
- *     If you want to help or want to report any bugs, please email me:
- *     jason@javaphilia.com
+ * Copyright (C) 2001  Dan Armstrong.
+ *     dan@dans-home.com
  *
  * Copyright (C) 2015, 2019  AO Industries, Inc.
  *     support@aoindustries.com
@@ -49,8 +48,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * A servlet that generates a GIF image of the database schema.
- *
- * @author Dan Armstrong
  */
 public class SchemaImage extends HttpServlet {
 

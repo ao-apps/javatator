@@ -38,8 +38,6 @@ import java.util.List;
 
 /**
  * Methods to view and manipulate database tables.
- *
- * @author Jason Davies
  */
 public class Table {
 

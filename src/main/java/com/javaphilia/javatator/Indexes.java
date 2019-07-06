@@ -30,8 +30,6 @@ import java.util.List;
 
 /**
  * Object representation of the indexes in a table.
- *
- * @author Jason Davies
  */
 public class Indexes {
 

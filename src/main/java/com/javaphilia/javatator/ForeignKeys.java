@@ -31,8 +31,6 @@ import java.util.List;
 
 /**
  * Object representation of foreign key data for a table.
- *
- * @author Jason Davies
  */
 public class ForeignKeys {
 

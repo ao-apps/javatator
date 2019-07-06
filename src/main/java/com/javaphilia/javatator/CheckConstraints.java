@@ -30,8 +30,6 @@ import java.util.List;
 
 /**
  * Object representation of the check constraints in a table.
- *
- * @author Jason Davies
  */
 public class CheckConstraints {
 

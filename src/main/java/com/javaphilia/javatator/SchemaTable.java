@@ -1,9 +1,8 @@
 /*
  * javatator - Multi-database admin tool.
  *
- * Copyright (C) 2001  Jason Davies.
- *     If you want to help or want to report any bugs, please email me:
- *     jason@javaphilia.com
+ * Copyright (C) 2001  Dan Armstrong.
+ *     dan@dans-home.com
  *
  * Copyright (C) 2019  AO Industries, Inc.
  *     support@aoindustries.com
@@ -34,8 +33,6 @@ import java.util.List;
 
 /**
  * Object hierarchical representation of the foreign key relationships.
- *
- * @author Dan Armstrong
  */
 public class SchemaTable {
 

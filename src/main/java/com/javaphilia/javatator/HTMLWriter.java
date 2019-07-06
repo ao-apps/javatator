@@ -32,8 +32,6 @@ import java.io.Writer;
 
 /**
  * Provides additional print methods for writing tables.
- *
- * @author Jason Davies
  */
 public class HTMLWriter extends FilterWriter {
 

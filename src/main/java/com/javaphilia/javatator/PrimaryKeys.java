@@ -30,8 +30,6 @@ import java.util.List;
 
 /**
  * Object representation of primary key data for a table.
- *
- * @author Jason Davies
  */
 public class PrimaryKeys {
 

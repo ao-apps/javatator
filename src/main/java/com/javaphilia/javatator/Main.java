@@ -35,8 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Javatator database admin tool - main page.
- *
- * @author Jason Davies
  */
 public class Main extends HttpServlet {
 

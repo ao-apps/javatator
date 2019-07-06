@@ -30,8 +30,6 @@ import java.util.List;
 
 /**
  * Object representation of a table's columns.
- *
- * @author Jason Davies
  */
 public class Columns {
 

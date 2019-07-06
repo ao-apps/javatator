@@ -36,8 +36,6 @@ import java.util.Properties;
 
 /**
  * The configuration for the database is stored in a properties file
- *
- * @author Jason Davies
  */
 final public class DatabaseConfiguration {
 

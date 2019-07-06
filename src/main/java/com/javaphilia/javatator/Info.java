@@ -33,8 +33,6 @@ import java.sql.SQLException;
 
 /**
  * Shows info about the database product.
- *
- * @author Jason Davies
  */
 public class Info {
 

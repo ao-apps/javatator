@@ -34,8 +34,6 @@ import java.util.StringTokenizer;
 
 /**
  * Various methods for manipulating rows.
- *
- * @author Jason Davies
  */
 public class Row {
 

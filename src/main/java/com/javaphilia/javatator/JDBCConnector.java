@@ -46,9 +46,6 @@ import java.util.StringTokenizer;
 /**
  * Contains all the default JDBC methods to connect to a database.
  * Override methods as needed if the driver has not implemented everything.
- *
- * @author Jason Davies
- * @version 0.2
  */
 public class JDBCConnector {
 
