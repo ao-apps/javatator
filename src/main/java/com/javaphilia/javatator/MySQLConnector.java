@@ -90,47 +90,45 @@ public class MySQLConnector extends JDBCConnector {
 		List<Boolean> areNullable=new ArrayList<>();
 		List<String> defaults=new ArrayList<>();
 		List<String> remarks=new ArrayList<>();
-		Connection conn=DatabasePool.getConnection(settings);
-		try {
-			try (ResultSet R = conn.getMetaData().getColumns(null, null, table, "%")) {
-				while(R.next()) {
-					String column=R.getString(4);
-					names.add(column);
-					String type=R.getString(6);
-					types.add(type);
-					if("ENUM".equalsIgnoreCase(type) || "SET".equalsIgnoreCase(type)) {
-						List<String> V=getPossibleValues(column, type);
-						int size=V.size();
-						StringBuilder SB=new StringBuilder();
-						for(int i=0;i<size;i++) {
-							if(i>0) SB.append(',');
-							SB
-								.append('\'')
-								.append(V.get(i))
-								.append('\'');
-						}
-						lengths.add(SB.toString());
-					} else lengths.add(R.getString(7));
-					int nullable=R.getInt(11);
-					areNullable.add(
-						(nullable==DatabaseMetaData.columnNoNulls) ? Boolean.FALSE
+		try (
+			Connection conn = DatabasePool.getConnection(settings);
+			ResultSet R = conn.getMetaData().getColumns(null, null, table, "%")
+		) {
+			while(R.next()) {
+				String column=R.getString(4);
+				names.add(column);
+				String type=R.getString(6);
+				types.add(type);
+				if("ENUM".equalsIgnoreCase(type) || "SET".equalsIgnoreCase(type)) {
+					List<String> V=getPossibleValues(column, type);
+					int size=V.size();
+					StringBuilder SB=new StringBuilder();
+					for(int i=0;i<size;i++) {
+						if(i>0) SB.append(',');
+						SB
+							.append('\'')
+							.append(V.get(i))
+							.append('\'');
+					}
+					lengths.add(SB.toString());
+				} else lengths.add(R.getString(7));
+				int nullable=R.getInt(11);
+				areNullable.add(
+					(nullable==DatabaseMetaData.columnNoNulls) ? Boolean.FALSE
 						: (nullable==DatabaseMetaData.columnNullable) ? Boolean.TRUE
-						: Boolean.UNKNOWN);
-					String def=R.getString(13);
-					int defLen=def.length();
-					if(
-						defLen>=2
-						&& def.charAt(0)=='\''
-						&& def.charAt(defLen-1)=='\''
+							: Boolean.UNKNOWN);
+				String def=R.getString(13);
+				int defLen=def.length();
+				if(
+					defLen>=2
+					&& def.charAt(0)=='\''
+					&& def.charAt(defLen-1)=='\''
 					) defaults.add('V'+def.substring(1, defLen-1));
-					else if(defLen>0) defaults.add('V'+def);
-					else defaults.add(null);
-					String rem=R.getString(12);
-					remarks.add((rem!=null)?rem:"");
-				}
+				else if(defLen>0) defaults.add('V'+def);
+				else defaults.add(null);
+				String rem=R.getString(12);
+				remarks.add((rem!=null)?rem:"");
 			}
-		} finally {
-			DatabasePool.releaseConnection(conn);
 		}
 		return new Columns(names, types, lengths, areNullable, defaults, remarks);
 	}
@@ -182,38 +180,36 @@ public class MySQLConnector extends JDBCConnector {
 	public List<String> getPossibleValues(String column, String type) throws SQLException, IOException {
 		boolean enum0="ENUM".equalsIgnoreCase(type) || "SET".equalsIgnoreCase(type);
 		if(enum0) {
-			Connection conn=DatabasePool.getConnection(getSettings());
-			try {
-				try (PreparedStatement pstmt = conn.prepareStatement("SHOW COLUMNS FROM " + getSettings().getTable() + " LIKE ?")) {
-					pstmt.setString(1, column);
-					try (ResultSet results = pstmt.executeQuery()) {
-						if(results.next()) {
-							String S=results.getString(2);
-							int len=S.length();
-							if(enum0) {
-								S=S.substring(6,len-2);
-								len-=10;
-							} else {
-								S=S.substring(5,len-2);
-								len-=9;
-							}
-							//Split up into tokens on ','
-							List<String> V=new ArrayList<>();
-							int start=0;
-							for(int i=0;i<len;i++) {
-								if(S.charAt(i)=='\'' && S.charAt(i+1)==',' && S.charAt(i+2)=='\'') {
-									V.add(Util.escapeMySQLQuotes(S.substring(start,i)));
-									start=i+3;
-									i+=3;
-								}
-							}
-							V.add(Util.escapeMySQLQuotes(S.substring(start)));
-							return V;
+			try (
+				Connection conn = DatabasePool.getConnection(getSettings());
+				PreparedStatement pstmt = conn.prepareStatement("SHOW COLUMNS FROM " + getSettings().getTable() + " LIKE ?")
+			) {
+				pstmt.setString(1, column);
+				try (ResultSet results = pstmt.executeQuery()) {
+					if(results.next()) {
+						String S=results.getString(2);
+						int len=S.length();
+						if(enum0) {
+							S=S.substring(6,len-2);
+							len-=10;
+						} else {
+							S=S.substring(5,len-2);
+							len-=9;
 						}
+						//Split up into tokens on ','
+						List<String> V=new ArrayList<>();
+						int start=0;
+						for(int i=0;i<len;i++) {
+							if(S.charAt(i)=='\'' && S.charAt(i+1)==',' && S.charAt(i+2)=='\'') {
+								V.add(Util.escapeMySQLQuotes(S.substring(start,i)));
+								start=i+3;
+								i+=3;
+							}
+						}
+						V.add(Util.escapeMySQLQuotes(S.substring(start)));
+						return V;
 					}
 				}
-			} finally {
-				DatabasePool.releaseConnection(conn);
 			}
 		}
 		return null;

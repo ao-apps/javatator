@@ -1257,8 +1257,7 @@ public class Table {
 		// Print the table of results
 		out.startTable(null, "cellspacing=1");
 		try {
-			Connection dbcon = DatabasePool.getConnection(settings);
-			try {
+			try (Connection dbcon = DatabasePool.getConnection(settings)) {
 				// Get the list of all primary keys for this database/table
 				List<String> primaryKeyCols = conn.getPrimaryKeys().getColumns();
 				StringBuilder primaryKeysSB = new StringBuilder();
@@ -1476,8 +1475,6 @@ public class Table {
 
 					out.endTR();
 				}
-			} finally {
-				DatabasePool.releaseConnection(dbcon);
 			}
 		} finally {
 			out.endTable();

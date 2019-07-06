@@ -106,49 +106,45 @@ public class Database {
 
 		out.startTable(null, "cellspacing=1");
 		try {
-			Connection dbconn=DatabasePool.getConnection(settings);
-			try {
-				try (
-					Statement stmt = dbconn.createStatement();
-					ResultSet results = stmt.executeQuery(sql)
-				) {
-					ResultSetMetaData resultMetaData = results.getMetaData();
-					int numberOfColumns=resultMetaData.getColumnCount();
-					out.startTR();
-					if(numberOfColumns>0) {
-						for(int i=1;i<=numberOfColumns;i++) {
-							String col=resultMetaData.getColumnName(i);
-							String order="asc";
-							if(col.equals(settings.getSortColumn()) && "asc".equals(settings.getSortOrder())) order="desc";
-							out.printTH("<A href=\"javascript:setSortColumn('"+col+"');"
-								+ "setSortOrder('"+order+"');"
-									+ "selectAction('dosql');"
-									+ "\">"
-								+ Util.escapeHTML(col)
-								+ "</A>");
-						}
-						out.printTH("Options");
-						out.endTR();
-						for(numberOfRows=0;results.next();numberOfRows++) {
-							if(countRows || (numberOfRows>=startPos && numberOfRows<startPos+numrows)) {
-								out.startTR();
-								for(int i=1;i<=numberOfColumns;i++) {
-									String value=results.getString(i);
-									out.printTD(
-										(value==null)?""
-											: (value.length()==0)?"&nbsp;"
-												: Util.escapeHTML(value));
-								}
-								out.endTR();
-							}
-						}
-					} else {
-						out.printTH("Query executed successfully. No data returned.");
-						out.endTR();
+			try (
+				Connection dbconn = DatabasePool.getConnection(settings);
+				Statement stmt = dbconn.createStatement();
+				ResultSet results = stmt.executeQuery(sql)
+			) {
+				ResultSetMetaData resultMetaData = results.getMetaData();
+				int numberOfColumns=resultMetaData.getColumnCount();
+				out.startTR();
+				if(numberOfColumns>0) {
+					for(int i=1;i<=numberOfColumns;i++) {
+						String col=resultMetaData.getColumnName(i);
+						String order="asc";
+						if(col.equals(settings.getSortColumn()) && "asc".equals(settings.getSortOrder())) order="desc";
+						out.printTH("<A href=\"javascript:setSortColumn('"+col+"');"
+							+ "setSortOrder('"+order+"');"
+								+ "selectAction('dosql');"
+								+ "\">"
+							+ Util.escapeHTML(col)
+							+ "</A>");
 					}
+					out.printTH("Options");
+					out.endTR();
+					for(numberOfRows=0;results.next();numberOfRows++) {
+						if(countRows || (numberOfRows>=startPos && numberOfRows<startPos+numrows)) {
+							out.startTR();
+							for(int i=1;i<=numberOfColumns;i++) {
+								String value=results.getString(i);
+								out.printTD(
+									(value==null)?""
+										: (value.length()==0)?"&nbsp;"
+											: Util.escapeHTML(value));
+							}
+							out.endTR();
+						}
+					}
+				} else {
+					out.printTH("Query executed successfully. No data returned.");
+					out.endTR();
 				}
-			} finally {
-				DatabasePool.releaseConnection(dbconn);
 			}
 		} finally {
 			out.endTable();

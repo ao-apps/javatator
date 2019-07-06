@@ -26,6 +26,7 @@
  */
 package com.javaphilia.javatator;
 
+import com.aoindustries.sql.ConnectionWrapper;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -246,6 +247,7 @@ public class DatabasePool {
 	 * retrieves a {@link Connection} from it.
 	 */
 	public static Connection getConnection(Settings settings) throws SQLException, IOException {
+		// TODO: Could use ao-net-types for more validation here
 		String databaseProduct = settings.getDatabaseProduct();
 		if(databaseProduct == null || (databaseProduct = databaseProduct.trim()).length() == 0) throw new SQLException("databaseProduct not set");
 		String hostname = settings.getHostname();
@@ -298,6 +300,38 @@ public class DatabasePool {
 	}
 
 	/**
+	 * Calls {@link #releaseConnection0(java.sql.Connection)} when this
+	 * connection is closed.
+	 * <p>
+	 * TODO: A future improvement would be to close a connection that has
+	 * experienced a fatal SQLException, or refactor to use a different
+	 * and more standard connection pooling implementation.
+	 * </p>
+	 */
+	private class ReleaseOnCloseConnection extends ConnectionWrapper {
+
+		private final Connection conn;
+
+		private ReleaseOnCloseConnection(Connection conn) {
+			this.conn = conn;
+		}
+
+		/**
+		 * Calls {@link #releaseConnection0(java.sql.Connection)}, the connection
+		 * itself is not closed.
+		 */
+		@Override
+		public void close() throws SQLException {
+			releaseConnection0(conn);
+		}
+
+		@Override
+		protected Connection getWrappedConnection() {
+			return conn;
+		}
+	}
+
+	/**
 	 * Gets a connection to the database.  Multiple {@link Connection connections} to the database
 	 * may exist at any moment. It checks the {@link Connection} pool for a not busy
 	 * {@link Connection} sequentially. If found, it returns that {@link Connection}
@@ -305,7 +339,7 @@ public class DatabasePool {
 	 * returns the {@link Connection} object.  If all the connections in the pool are
 	 * busy, it waits till a connection becomes available.
 	 */
-	private Connection getConnection0() throws SQLException, IOException {
+	private ReleaseOnCloseConnection getConnection0() throws SQLException, IOException {
 		synchronized(connectLock) {
 			while(true) {
 				for(int c = 0; c < numConnections; c++) {
@@ -331,7 +365,7 @@ public class DatabasePool {
 						busyConnections[c] = true;
 						releaseTimes[c] = 0;
 						connectionUses[c]++;
-						return conn;
+						return new ReleaseOnCloseConnection(conn);
 					}
 				}
 				try {
@@ -339,19 +373,6 @@ public class DatabasePool {
 				} catch(InterruptedException err) {
 					err.printStackTrace();
 				}
-			}
-		}
-	}
-
-	/**
-	 * Releases a {@link Connection} by calling release connection on
-	 * all the pools until the correct pool is found.
-	 */
-	public static void releaseConnection(Connection conn) {
-		synchronized(pools) {
-			int size = pools.size();
-			for(int c = 0; c < size; c++) {
-				if(pools.get(c).releaseConnection0(conn)) break;
 			}
 		}
 	}
