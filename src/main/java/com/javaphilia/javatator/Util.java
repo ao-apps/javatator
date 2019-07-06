@@ -45,7 +45,7 @@ public class Util {
 	 */
 	public static String addSpaceToCommas(String S) {
 		int len=S.length();
-		StringBuffer SB=new StringBuffer(len);
+		StringBuilder SB=new StringBuilder(len);
 		for(int c=0;c<len;c++) {
 			char ch=S.charAt(c);
 			if(ch==',') SB.append(", ");
@@ -62,7 +62,7 @@ public class Util {
 	public static String escapeHTML(String S) {
 		if(S!=null) {
 			int len=S.length();
-			StringBuffer SB=new StringBuffer(len);
+			StringBuilder SB=new StringBuilder(len);
 			for(int c=0;c<len;c++) {
 				char ch=S.charAt(c);
 				if(ch=='<') SB.append("&#60;");
@@ -85,7 +85,7 @@ public class Util {
 	public static String escapeInputValue(String S) {
 		if(S!=null) {
 			int len=S.length();
-			StringBuffer SB=new StringBuffer(len);
+			StringBuilder SB=new StringBuilder(len);
 			for(int c=0;c<len;c++) {
 				char ch=S.charAt(c);
 				if(ch=='<') SB.append("&#60;");
@@ -107,7 +107,7 @@ public class Util {
 	public static String escapeJavaScript(String S) {
 		if(S!=null) {
 			int len=S.length();
-			StringBuffer SB=new StringBuffer(len);
+			StringBuilder SB=new StringBuilder(len);
 			for(int c=0;c<len;c++) {
 				char ch=S.charAt(c);
 				if(ch=='"') SB.append("&quot;"); // TODO: Use ao-encoding and onclick scripts: SB.append("\\\"");
@@ -127,7 +127,7 @@ public class Util {
 	public static String escapeMySQLQuotes(String S) {
 		int len=S.length();
 		int len2=len-1;
-		StringBuffer SB=new StringBuffer();
+		StringBuilder SB=new StringBuilder();
 		for(int i=0;i<len;i++) {
 			char c=S.charAt(i);
 			if(i<len2 && c=='\'' && S.charAt(i+1)=='\'') {
@@ -145,7 +145,7 @@ public class Util {
 	 */
 	public static String escapeSQL(String S) {
 		int i;
-		StringBuffer B=new StringBuffer();
+		StringBuilder B=new StringBuilder();
 		escapeSQL(S, B);
 		return B.toString();
 	}
@@ -154,9 +154,9 @@ public class Util {
 	 * Escapes SQL so that it can be used safely in queries.
 	 *
 	 * @param S the string to be escaped.
-	 * @param B the {@link StringBuffer} to append to.
+	 * @param B the {@link StringBuilder} to append to.
 	 */
-	public static void escapeSQL(String S, StringBuffer B) {
+	public static void escapeSQL(String S, StringBuilder B) {
 		int i;
 		for (i=0;i<S.length();i++) {
 			char c = S.charAt(i);
@@ -177,7 +177,7 @@ public class Util {
 		if(S==null) {
 			return "null";
 		} else {
-			StringBuffer B=new StringBuffer();
+			StringBuilder B=new StringBuilder();
 			B.append('\'');
 			escapeSQL(S, B);
 			return B.append('\'').toString();
@@ -188,7 +188,7 @@ public class Util {
 	 * Gets comma-separated list from a {@link List} of {@link String}.
 	 */
 	public static String getCommaList(List<String> V) {
-		StringBuffer SB=new StringBuffer();
+		StringBuilder SB=new StringBuilder();
 		int size=V.size();
 		for(int i=0;i<size;i++) {
 			if(SB.length()>0) SB.append(',');
