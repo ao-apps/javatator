@@ -117,7 +117,7 @@ public class JDBCConnector {
 		String nullClause,
 		String remarks
 	) throws SQLException, IOException {
-		StringBuffer sql=new StringBuffer("ALTER TABLE ");
+		StringBuilder sql=new StringBuilder("ALTER TABLE ");
 		sql
 			.append(quoteTable(settings.getTable()))
 			.append(" ADD ")
@@ -161,7 +161,7 @@ public class JDBCConnector {
 		boolean isDeferrable,
 		String initially
 	) throws SQLException, IOException {
-		StringBuffer sql=new StringBuffer("ALTER TABLE ");
+		StringBuilder sql=new StringBuilder("ALTER TABLE ");
 		sql
 			.append(quoteTable(settings.getTable()))
 			.append(" ADD CONSTRAINT ")
@@ -203,7 +203,7 @@ public class JDBCConnector {
 	public void addPrimaryKey(String column) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			StringBuffer SB=new StringBuffer();
+			StringBuilder SB=new StringBuilder();
 			ResultSet results=conn.getMetaData().getPrimaryKeys(null, null, settings.getTable());
 			try {
 				while(results.next()) {
@@ -235,7 +235,7 @@ public class JDBCConnector {
 		executeUpdate("ALTER TABLE " + quoteTable(settings.getTable()) + " ADD UNIQUE " + indexName + " (" + quoteColumn(column) + ')');
 	}
 
-	protected void appendIsNull(StringBuffer SB, String column) {
+	protected void appendIsNull(StringBuilder SB, String column) {
 		SB
 			.append("ISNULL(")
 			.append(quoteColumn(column))
@@ -284,7 +284,7 @@ public class JDBCConnector {
 		boolean[] uniqueKey
 	) throws SQLException, IOException {
 		// Build the SQL first
-		StringBuffer sql=new StringBuffer();
+		StringBuilder sql=new StringBuilder();
 		sql.append("CREATE TABLE ").append(quoteTable(settings.getTable())).append(" (");
 		for(int i=0;i<newColumn.length;i++) {
 			if(i>0) sql.append(", ");
@@ -321,7 +321,7 @@ public class JDBCConnector {
 		String[] primaryKeys,
 		String[] primaryKeyValues
 	) throws SQLException, IOException {
-		StringBuffer SB = new StringBuffer("DELETE FROM ").append(quoteTable(settings.getTable()));
+		StringBuilder SB = new StringBuilder("DELETE FROM ").append(quoteTable(settings.getTable()));
 		for (int i = 0; i < primaryKeys.length; i++) {
 			SB.append(i == 0 ? " WHERE " : " AND ");
 			if (primaryKeyValues[i] == null) {
@@ -391,7 +391,7 @@ public class JDBCConnector {
 	public void dropPrimaryKey(String column) throws SQLException, IOException {
 		Connection conn=DatabasePool.getConnection(settings);
 		try {
-			StringBuffer SB=new StringBuffer();
+			StringBuilder SB=new StringBuilder();
 			ResultSet results=conn.getMetaData().getPrimaryKeys(null, null, settings.getTable());
 			try {
 				while(results.next()) {
@@ -403,7 +403,7 @@ public class JDBCConnector {
 			} finally {
 				results.close();
 			}
-			StringBuffer sql=new StringBuffer("ALTER TABLE ").append(quoteTable(settings.getTable())).append(" DROP PRIMARY KEY");
+			StringBuilder sql=new StringBuilder("ALTER TABLE ").append(quoteTable(settings.getTable())).append(" DROP PRIMARY KEY");
 			if(SB.length()>0) {
 				sql.append(", ADD PRIMARY KEY(");
 				sql.append(SB.toString());
@@ -537,7 +537,7 @@ public class JDBCConnector {
 		String newRemarks
 	) throws SQLException, IOException {
 		// Build the SQL before allocating the connection
-		StringBuffer sql=new StringBuffer();
+		StringBuilder sql=new StringBuilder();
 		sql
 			.append("ALTER TABLE ")
 			.append(quoteTable(settings.getTable()))
@@ -583,7 +583,7 @@ public class JDBCConnector {
 		String[] primaryKeyValues
 	) throws SQLException, IOException {
 		// Build the SQL statement
-		StringBuffer SB = new StringBuffer("UPDATE ").append(quoteTable(settings.getTable())).append(" SET ");
+		StringBuilder SB = new StringBuilder("UPDATE ").append(quoteTable(settings.getTable())).append(" SET ");
 		for (int i = 0; i < column.length; i++) {
 			if (i > 0) {
 				SB.append(", ");
@@ -1297,7 +1297,7 @@ public class JDBCConnector {
 	 */
 	public List<String> getRow(List<String> primaryKeys, List<String> primaryValues) throws SQLException, IOException {
 		// Build the SQL first
-		StringBuffer SB = new StringBuffer("SELECT * FROM ").append(quoteTable(settings.getTable()));
+		StringBuilder SB = new StringBuilder("SELECT * FROM ").append(quoteTable(settings.getTable()));
 		for (int i = 0; i < primaryKeys.size(); i++) {
 			SB.append(i == 0 ? " WHERE " : " AND ");
 			if (primaryValues.get(i) == null) {
@@ -1367,7 +1367,7 @@ public class JDBCConnector {
 	 */
 	public String getSelectWhereClause(String[] colNames, String[] colValues) throws SQLException, IOException {
 		// Build the SQL
-		StringBuffer sql=new StringBuffer();
+		StringBuilder sql=new StringBuilder();
 		boolean hasBeen=false;
 		for(int i=0;i<colNames.length;i++) {
 			if(colNames[i].length()>0) {
@@ -1486,7 +1486,7 @@ public class JDBCConnector {
 	 * @param privileges  an array of privileges which will be granted.
 	 */
 	public void grantPrivileges(String user, String[] privileges) throws SQLException, IOException {
-		StringBuffer sql=new StringBuffer("GRANT ");
+		StringBuilder sql=new StringBuilder("GRANT ");
 		int size=privileges.length;
 		if(size<1) throw new SQLException("No privileges specified!");
 		sql.append(privileges[0]);
@@ -1510,7 +1510,7 @@ public class JDBCConnector {
 	 */
 	public void insertRow(String[] column, String[] function, String[] value) throws SQLException, IOException {
 		// Build the SQL
-		StringBuffer SB=new StringBuffer("INSERT INTO ").append(quoteTable(settings.getTable())).append(" (");
+		StringBuilder SB=new StringBuilder("INSERT INTO ").append(quoteTable(settings.getTable())).append(" (");
 		for(int i=0;i<column.length;i++) {
 			if(i>0) SB.append(", ");
 			SB.append(quoteColumn(column[i]));
@@ -1570,7 +1570,7 @@ public class JDBCConnector {
 	 * @param privileges  an array of privileges which will be revoked.
 	 */
 	public void revokePrivileges(String user, String[] privileges) throws SQLException, IOException {
-		StringBuffer sql=new StringBuffer("REVOKE ");
+		StringBuilder sql=new StringBuilder("REVOKE ");
 		int size=privileges.length;
 		if(size<1) throw new SQLException("No privileges specified!");
 		sql.append(privileges[0]);

@@ -102,7 +102,7 @@ public class MySQLConnector extends JDBCConnector {
 					if("ENUM".equalsIgnoreCase(type) || "SET".equalsIgnoreCase(type)) {
 						List<String> V=getPossibleValues(column, type);
 						int size=V.size();
-						StringBuffer SB=new StringBuffer();
+						StringBuilder SB=new StringBuilder();
 						for(int i=0;i<size;i++) {
 							if(i>0) SB.append(',');
 							SB
@@ -167,7 +167,7 @@ public class MySQLConnector extends JDBCConnector {
 	 */
 	@Override
 	public String getLimitClause(int startPos, int numRows) throws SQLException, IOException {
-		return new StringBuffer()
+		return new StringBuilder()
 			.append("limit ")
 			.append(startPos)
 			.append(',')
@@ -245,7 +245,7 @@ public class MySQLConnector extends JDBCConnector {
 	@Override
 	public String getSelectWhereClause(String[] colNames, String[] colValues) throws SQLException, IOException {
 		// Build the SQL
-		StringBuffer sql=new StringBuffer();
+		StringBuilder sql=new StringBuilder();
 		boolean hasBeen=false;
 		for(int i=0;i<colNames.length;i++) {
 			if(colNames[i].length()>0) {

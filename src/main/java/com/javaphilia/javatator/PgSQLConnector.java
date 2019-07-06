@@ -93,7 +93,7 @@ public class PgSQLConnector extends JDBCConnector {
 	}
 
 	@Override
-	protected void appendIsNull(StringBuffer SB, String column) {
+	protected void appendIsNull(StringBuilder SB, String column) {
 		SB.append(quoteColumn(column)).append(" IS NULL");
 	}
 
@@ -123,7 +123,7 @@ public class PgSQLConnector extends JDBCConnector {
 		boolean[] uniqueKey
 	) throws SQLException, IOException {
 		// Build the SQL first
-		StringBuffer sql=new StringBuffer();
+		StringBuilder sql=new StringBuilder();
 		sql.append("CREATE TABLE ").append(quoteTable(settings.getTable())).append(" (");
 		for(int i=0;i<newColumn.length;i++) {
 			if(i>0) sql.append(", ");
@@ -233,7 +233,7 @@ public class PgSQLConnector extends JDBCConnector {
 		String newRemarks
 	) throws SQLException, IOException {
 		// Build the SQL before allocating the connection
-		StringBuffer sql=new StringBuffer();
+		StringBuilder sql=new StringBuilder();
 		if(!column.equals(newColumn)) {
 			sql
 				.append("ALTER TABLE ")
@@ -973,7 +973,7 @@ public class PgSQLConnector extends JDBCConnector {
 	 */
 	@Override
 	public String getLimitClause(int startPos, int numRows) throws SQLException, IOException {
-		return new StringBuffer()
+		return new StringBuilder()
 			.append("limit ")
 			.append(numRows)
 			.append(" offset ")
@@ -1018,7 +1018,7 @@ public class PgSQLConnector extends JDBCConnector {
 				// Only return entries if less than or equal to fkeyrows possibilities
 				int count=getIntQuery("SELECT COUNT(" + quoteColumn(keyColumn) + ") FROM " + quoteTable(keyTable));
 				if(count<=fkeyrows) {
-					StringBuffer sql=new StringBuffer("SELECT ")
+					StringBuilder sql=new StringBuilder("SELECT ")
 						.append(quoteColumn(keyColumn))
 						.append(" FROM ")
 						.append(quoteTable(keyTable));
@@ -1171,7 +1171,7 @@ public class PgSQLConnector extends JDBCConnector {
 								n++;
 								i=S.indexOf('"',n);
 								String privs=S.substring(n,i);
-								StringBuffer P=new StringBuffer();
+								StringBuilder P=new StringBuilder();
 								if(privs.indexOf("arwR")>-1) P.append("ALL");
 								else {
 									if(privs.indexOf('r')>-1) P.append("SELECT");
@@ -1428,7 +1428,7 @@ public class PgSQLConnector extends JDBCConnector {
 		String table = settings.getTable();
 		Columns columns = getColumns(table);
 		// Build the SQL
-		StringBuffer SB=new StringBuffer("INSERT INTO ").append(quoteTable(table)).append(" (");
+		StringBuilder SB=new StringBuilder("INSERT INTO ").append(quoteTable(table)).append(" (");
 		for(int i=0;i<column.length;i++) {
 			if(i>0) SB.append(", ");
 			SB.append(quoteColumn(column[i]));
@@ -1490,7 +1490,7 @@ public class PgSQLConnector extends JDBCConnector {
 		String table = settings.getTable();
 		Columns columns = getColumns(table);
 
-		StringBuffer SB = new StringBuffer("DELETE FROM ").append(quoteTable(table));
+		StringBuilder SB = new StringBuilder("DELETE FROM ").append(quoteTable(table));
 		for (int i = 0; i < primaryKeys.length; i++) {
 			SB.append(i == 0 ? " WHERE " : " AND ");
 			if (primaryKeyValues[i] == null) {
@@ -1539,7 +1539,7 @@ public class PgSQLConnector extends JDBCConnector {
 		String table = settings.getTable();
 		Columns columns = getColumns(table);
 		// Build the SQL first
-		StringBuffer SB = new StringBuffer("SELECT * FROM ").append(quoteTable(table));
+		StringBuilder SB = new StringBuilder("SELECT * FROM ").append(quoteTable(table));
 		for (int i = 0; i < primaryKeys.size(); i++) {
 			SB.append(i == 0 ? " WHERE " : " AND ");
 			if (primaryValues.get(i) == null) {
@@ -1597,7 +1597,7 @@ public class PgSQLConnector extends JDBCConnector {
 		String table = settings.getTable();
 		Columns columns = getColumns(table);
 		// Build the SQL statement
-		StringBuffer SB = new StringBuffer("UPDATE ").append(quoteTable(table)).append(" SET ");
+		StringBuilder SB = new StringBuilder("UPDATE ").append(quoteTable(table)).append(" SET ");
 		for (int i = 0; i < column.length; i++) {
 			if (i > 0) {
 				SB.append(", ");

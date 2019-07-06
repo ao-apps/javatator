@@ -68,8 +68,8 @@ public class InterbaseConnector extends JDBCConnector {
 
 		Connection conn=DatabasePool.getConnection(getSettings());
 		try {
-			StringBuffer sql=new StringBuffer("ALTER TABLE ");
-			StringBuffer cols=new StringBuffer();
+			StringBuilder sql=new StringBuilder("ALTER TABLE ");
+			StringBuilder cols=new StringBuilder();
 			sql.append(table);
 			ResultSet results=conn.getMetaData().getPrimaryKeys(null,null,table);
 			try {
@@ -137,7 +137,7 @@ public class InterbaseConnector extends JDBCConnector {
 		boolean[] uniqueKey
 	) throws SQLException, IOException {
 		// Build the SQL first
-		StringBuffer sql=new StringBuffer();
+		StringBuilder sql=new StringBuilder();
 		sql.append("CREATE TABLE ").append(settings.getTable()).append(" (");
 		for(int i=0;i<newColumn.length;i++) {
 			if(i>0) sql.append(", ");
@@ -188,7 +188,7 @@ public class InterbaseConnector extends JDBCConnector {
 		List<String> columns=primaryKeys.getColumns();
 		int i=columns.indexOf(column);
 		if(i>-1) {
-			StringBuffer sql=new StringBuffer("ALTER TABLE ");
+			StringBuilder sql=new StringBuilder("ALTER TABLE ");
 			sql
 				.append(settings.getTable())
 				.append(" DROP CONSTRAINT ")
@@ -225,7 +225,7 @@ public class InterbaseConnector extends JDBCConnector {
 		String newNull,
 		String newRemarks
 	) throws SQLException, IOException {
-		StringBuffer sql=new StringBuffer();
+		StringBuilder sql=new StringBuilder();
 		sql
 			.append("ALTER TABLE ")
 			.append(settings.getTable());
@@ -276,7 +276,7 @@ public class InterbaseConnector extends JDBCConnector {
 		List<String> colValues
 	) throws SQLException, IOException {
 		// Build the SQL
-		StringBuffer sql=new StringBuffer("SELECT ");
+		StringBuilder sql=new StringBuilder("SELECT ");
 		for(int i=0;i<selectCols.size();i++) {
 			if(i>0) sql.append(',');
 			sql.append(selectCols.get(i));

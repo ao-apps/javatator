@@ -1177,7 +1177,7 @@ public class Table {
 			selectColNames = settings.getParameterValues("columns");
 
 			if (count > 0 && "doselect".equals(settings.getAction())) {
-				StringBuffer SB = new StringBuffer();
+				StringBuilder SB = new StringBuilder();
 				int size = (selectColNames == null) ? 0 : selectColNames.length;
 				for (int i = 0; i < size; i++) {
 					if (i > 0) {
@@ -1202,7 +1202,7 @@ public class Table {
 				selectCols = settings.getParameter("selectcols");
 				selectWhere = settings.getParameter("selectwhere");
 			}
-			StringBuffer query = new StringBuffer()
+			StringBuilder query = new StringBuilder()
 				.append("SELECT ")
 				.append((selectCols == null || "".equals(selectCols)) ?
 					"*" :
@@ -1260,7 +1260,7 @@ public class Table {
 			try {
 				// Get the list of all primary keys for this database/table
 				List<String> primaryKeyCols = conn.getPrimaryKeys().getColumns();
-				StringBuffer primaryKeysSB = new StringBuffer();
+				StringBuilder primaryKeysSB = new StringBuilder();
 				String primaryKeysString;
 
 				// The number of columns in the results
@@ -1380,7 +1380,7 @@ public class Table {
 				}
 
 				// This pass displays the results
-				StringBuffer SB = new StringBuffer();
+				StringBuilder SB = new StringBuilder();
 				for (int row = 0; row < resultSize; row++) {
 					SB.setLength(0);
 					out.startTR();

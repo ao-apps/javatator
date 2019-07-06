@@ -42,7 +42,7 @@ public class SQLOutputStream extends OutputStream {
 	private boolean singleQuotes=false;
 	private int check=-1;
 	private int count=0;
-	private final StringBuffer SB=new StringBuffer();
+	private final StringBuilder SB=new StringBuilder();
 
 	/**
 	 * Constructs this {@link SQLOutputStream}.
