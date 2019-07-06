@@ -1629,13 +1629,14 @@ public class JDBCConnector {
 		if(identifier == null) throw new NullPointerException();
 		int len = identifier.length();
 		if(len == 0) return pre + post;
-		StringBuilder quoted = new StringBuilder(len + pre.length() + post.length());
+		StringBuilder quoted = new StringBuilder(pre.length() + len + post.length());
 		quoted.append(pre);
 		boolean quotesNeeded = isKeyword(identifier);
 		for(int i = 0; i < len; i++) {
 			char ch = identifier.charAt(i);
 			if(
 				(ch >= 'a' && ch <= 'z')
+				|| ch == '_'
 				|| (i != 0 && ch >= '0' && ch <= '9')
 			) {
 				quoted.append(ch);
