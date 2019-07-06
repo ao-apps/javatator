@@ -74,11 +74,6 @@ public class JDBCConnector {
 	protected static final String[] defaultTableTypes=new String[]{"TABLE"};
 
 	/**
-	 * The parameters passed to the JDBCConnector constructor.
-	 */
-	private final static Class<?>[] paramTypes={Settings.class};
-
-	/**
 	 * The {@link Settings} store all the configuration parameters.
 	 */
 	final protected Settings settings;
@@ -1139,12 +1134,11 @@ public class JDBCConnector {
 		IOException,
 		ReflectiveOperationException
 	{
-		Object[] initArgs = {settings};
 		return
 			(JDBCConnector)Class
 			.forName(DatabaseConfiguration.getProperty("connector", settings.getDatabaseProduct()))
-			.getConstructor(paramTypes)
-			.newInstance(initArgs);
+			.getConstructor(Settings.class)
+			.newInstance(settings);
 	}
 
 	/**
