@@ -422,8 +422,8 @@ public class PgSQLConnector extends JDBCConnector {
 	 * Gets the default value or function for each column in the table.
 	 *
 	 * @return  the default values or functions for the columns.  A value will
-	 *          start with a <code>'V'</code> and a function will start
-	 *          with a <code>'F'</code>.
+	 *          start with a {@code 'V'} and a function will start
+	 *          with a {@code 'F'}.
 	 */
 	private List<String> getDefaults(List<String> columns) throws SQLException, IOException {
 		// Fetch the value from the database, release the connection, then
@@ -1128,7 +1128,7 @@ public class PgSQLConnector extends JDBCConnector {
 	 *
 	 * @param column the name of the column.
 	 *
-	 * @return the remark or <code>null</code> for none.
+	 * @return the remark or {@code null} for none.
 	 */
 	@Override
 	public String getRemark(String column) throws SQLException, IOException {
