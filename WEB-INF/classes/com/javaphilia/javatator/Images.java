@@ -3,7 +3,7 @@ package com.javaphilia.javatator;
 /**
  * Javatator - multi-database admin tool
  * 
- * Copyright (C) 2001  Jason Davies.
+ * Copyright (C) 2001, 2019  Jason Davies.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -50,6 +50,7 @@ public class Images extends HttpServlet {
         if(lfile.endsWith(".gif")) resp.setContentType("image/gif");
         else if(lfile.endsWith(".jpg") || lfile.endsWith(".jpeg")) resp.setContentType("image/jpeg");
         else throw new ServletException("Invalid file type: "+file);
+		// TODO: Verify this against a specific set of allowed files, or just serve directly not through servlet
         InputStream in=new BufferedInputStream(getClass().getResourceAsStream(RESOURCE_DIR+file));
         OutputStream out=new BufferedOutputStream(resp.getOutputStream());
         int b;
