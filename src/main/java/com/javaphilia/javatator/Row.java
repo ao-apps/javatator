@@ -425,9 +425,9 @@ public class Row {
 			out.endTable();
 		}
 		out.print("<br><br>\n"
-			+ "<input type='submit' value='Save!' onClick=\"return selectAction('doedit_row')\"> "
-			+ "<!input type='submit' value='Save and edit next row!' "
-			+ "onClick=\"setNextAction('edit_row');return selectAction('doedit_row');\">");
+			+ "<input type='submit' value='Save!' onClick=\"return selectAction('doedit_row')\">");
+			//+ " <input type='submit' value='Save and edit next row!' "
+			//+ "onClick=\"setNextAction('edit_row');return selectAction('doedit_row');\">");
 		return settings;
 	}
 
