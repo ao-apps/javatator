@@ -76,7 +76,7 @@ public class JDBCConnector {
 	/**
 	 * The parameters passed to the JDBCConnector constructor.
 	 */
-	private final static Class[] paramTypes={Settings.class};
+	private final static Class<?>[] paramTypes={Settings.class};
 
 	/**
 	 * The {@link Settings} store all the configuration parameters.
