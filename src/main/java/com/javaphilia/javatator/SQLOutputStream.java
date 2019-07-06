@@ -36,7 +36,7 @@ import java.sql.Statement;
  */
 public class SQLOutputStream extends OutputStream {
 
-	private Statement stmt;
+	private final Statement stmt;
 
 	private boolean doubleQuotes=false;
 	private boolean singleQuotes=false;
@@ -101,6 +101,7 @@ public class SQLOutputStream extends OutputStream {
 		}
 	}
 
+	@Override
 	public void write(int b) throws IOException {
 		write(new byte[]{(byte)b}, 0, 1);
 	}

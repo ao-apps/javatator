@@ -1137,11 +1137,7 @@ public class JDBCConnector {
 	public static JDBCConnector getInstance(Settings settings)
 	throws
 		IOException,
-		ClassNotFoundException,
-		NoSuchMethodException,
-		InstantiationException,
-		IllegalAccessException,
-		InvocationTargetException
+		ReflectiveOperationException
 	{
 		Object[] initArgs = {settings};
 		return

@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class Column {
 
-	private Settings settings;
+	private final Settings settings;
 
 	/**
 	 * Instantiate a new {@link Column}.
@@ -506,6 +506,7 @@ public class Column {
 
 				// Add to end if not found in list of possible values (this should not happen)
 				if(!found) {
+					assert columnDefault != null;
 					out.print("<option value='");
 					Util.printEscapedInputValue(out, columnDefault);
 					out.print("' selected>");

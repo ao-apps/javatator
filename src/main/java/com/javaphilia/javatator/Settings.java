@@ -27,7 +27,6 @@
 package com.javaphilia.javatator;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -269,26 +268,8 @@ public class Settings {
 	public JDBCConnector getJDBCConnector() throws IOException {
 		try {
 			return JDBCConnector.getInstance(this);
-		} catch(ClassNotFoundException err) {
-			IOException ioErr=new IOException();
-			ioErr.initCause(err);
-			throw ioErr;
-		} catch(NoSuchMethodException err) {
-			IOException ioErr=new IOException();
-			ioErr.initCause(err);
-			throw ioErr;
-		} catch(InstantiationException err) {
-			IOException ioErr=new IOException();
-			ioErr.initCause(err);
-			throw ioErr;
-		} catch(IllegalAccessException err) {
-			IOException ioErr=new IOException();
-			ioErr.initCause(err);
-			throw ioErr;
-		} catch(InvocationTargetException err) {
-			IOException ioErr=new IOException();
-			ioErr.initCause(err);
-			throw ioErr;
+		} catch(ReflectiveOperationException err) {
+			throw new IOException(err);
 		}
 	}
 
@@ -400,7 +381,7 @@ public class Settings {
 
 		// Replace all %h with the host
 		if(hostname.length()==0) throw new IOException("hostname not set");
-		if(hostname.indexOf("%h")>=0) throw new IOException("hostname may not contain %h: "+hostname);
+		if(hostname.contains("%h")) throw new IOException("hostname may not contain %h: "+hostname);
 		int pos;
 		while((pos=url.indexOf("%h"))>=0) url=url.substring(0, pos)+hostname+url.substring(pos+2);
 
@@ -410,7 +391,7 @@ public class Settings {
 
 		// Replace the %d with the database
 		if(database.length()==0) throw new IOException("database not set");
-		if(database.indexOf("%d")>=0) throw new IOException("database may not contain %d: "+database);
+		if(database.contains("%d")) throw new IOException("database may not contain %d: "+database);
 		while((pos=url.indexOf("%d"))>=0) url=url.substring(0, pos)+database+url.substring(pos+2);
 
 		/* TODO:

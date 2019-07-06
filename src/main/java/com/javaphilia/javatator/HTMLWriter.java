@@ -60,12 +60,26 @@ public class HTMLWriter extends FilterWriter {
 	@Override
 	public void write(char cbuf[], int off, int len) throws IOException {
 		for(int i=off;i<len;i++) {
-			if(cbuf[i]=='<') out.write(LT);
-			else if(cbuf[i]=='&') out.write(AMP);
-			else if(cbuf[i]=='"') out.write(DQ);
-			else if(cbuf[i]=='\'') out.write(SQ);
-			else if(cbuf[i]=='\n') out.write(BR);
-			else out.write(cbuf[i]);
+			switch(cbuf[i]) {
+				case '<':
+					out.write(LT);
+					break;
+				case '&':
+					out.write(AMP);
+					break;
+				case '"':
+					out.write(DQ);
+					break;
+				case '\'':
+					out.write(SQ);
+					break;
+				case '\n':
+					out.write(BR);
+					break;
+				default:
+					out.write(cbuf[i]);
+					break;
+			}
 		}
 	}
 
@@ -76,12 +90,26 @@ public class HTMLWriter extends FilterWriter {
 	 */
 	@Override
 	public void write(int c) throws IOException {
-		if(c=='<') out.write(LT);
-		else if(c=='&') out.write(AMP);
-		else if(c=='"') out.write(DQ);
-		else if(c=='\'') out.write(SQ);
-		else if(c=='\n') out.write(BR);
-		else out.write(c);
+		switch(c) {
+			case '<':
+				out.write(LT);
+				break;
+			case '&':
+				out.write(AMP);
+				break;
+			case '"':
+				out.write(DQ);
+				break;
+			case '\'':
+				out.write(SQ);
+				break;
+			case '\n':
+				out.write(BR);
+				break;
+			default:
+				out.write(c);
+				break;
+		}
 	}
 
 	/**

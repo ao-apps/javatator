@@ -187,7 +187,7 @@ public class JavatatorWriter extends PrintWriter {
 			print("' ");
 		}
 		print("border=0 cellpadding=3 ");
-		if(attributes.indexOf("cellspacing")==-1) print("cellspacing=0 ");
+		if(!attributes.contains("cellspacing")) print("cellspacing=0 ");
 		print(attributes);
 		print(">\n");
 	}

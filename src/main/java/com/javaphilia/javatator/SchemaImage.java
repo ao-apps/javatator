@@ -131,9 +131,7 @@ public class SchemaImage extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		resp.setContentType("image/gif");
-		OutputStream out = resp.getOutputStream();
-
-		try {
+		try (OutputStream out = resp.getOutputStream()) {
 			Settings settings = new Settings(req);
 
 			List<SchemaTable> tables = settings.getJDBCConnector().getDatabaseSchema();
@@ -142,7 +140,7 @@ public class SchemaImage extends HttpServlet {
 			// Draw the image
 
 			// Get the font
-			Map<TextAttribute,Object> textAttributes = new HashMap<TextAttribute,Object>(9);
+			Map<TextAttribute,Object> textAttributes = new HashMap<>(9);
 			textAttributes.put(TextAttribute.FAMILY, "Helvetica");
 			textAttributes.put(TextAttribute.SIZE, new Float(14));
 			Font font = new Font(textAttributes);
@@ -278,7 +276,7 @@ public class SchemaImage extends HttpServlet {
 
 			// Draw the connections between all tables
 			G.setColor(connectorColor);
-			List<Point> points = new ArrayList<Point>();
+			List<Point> points = new ArrayList<>();
 			for (int c = 0; c < len; c++) {
 				SchemaTable table = tables.get(c);
 				List<SchemaRow> urows = table.getRows();
@@ -396,8 +394,6 @@ public class SchemaImage extends HttpServlet {
 		} catch (Exception err) {
 			// TODO: servlet.log instead of printStackTrace, or just throw in ServletException
 			err.printStackTrace();
-		} finally {
-			out.close();
 		}
 	}
 }

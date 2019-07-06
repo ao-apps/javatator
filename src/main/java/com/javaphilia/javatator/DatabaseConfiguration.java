@@ -62,11 +62,11 @@ final public class DatabaseConfiguration {
 	 * Gets the list of databases that may be selected.
 	 */
 	public static List<String> getAvailableDatabaseProducts() throws IOException {
-		List<String> products=new ArrayList<String>();
+		List<String> products=new ArrayList<>();
 		String dbproduct=getProperty("dbproduct");
 		if(dbproduct!=null && dbproduct.length()>0) products.add(dbproduct);
 		else {
-			Enumeration E=props.propertyNames();
+			Enumeration<?> E=props.propertyNames();
 			while(E.hasMoreElements()) {
 				String tmp=(String)E.nextElement();
 				if(tmp.startsWith("db.") && tmp.endsWith(".name")) products.add(tmp.substring(3, tmp.length()-5));
@@ -137,7 +137,7 @@ final public class DatabaseConfiguration {
 	 * @param line java.lang.String
 	 */
 	public static List<String> splitStringCommaSpace(String line) {
-		List<String> words=new ArrayList<String>();
+		List<String> words=new ArrayList<>();
 		int len=line.length();
 		int pos=0;
 		while(pos<len) {

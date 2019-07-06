@@ -65,12 +65,26 @@ public class Util {
 			StringBuilder SB=new StringBuilder(len);
 			for(int c=0;c<len;c++) {
 				char ch=S.charAt(c);
-				if(ch=='<') SB.append("&#60;");
-				else if(ch=='&') SB.append("&#38;");
-				else if(ch=='"') SB.append("&#34;");
-				else if(ch=='\'') SB.append("&#39;");
-				else if(ch=='\n') SB.append("<BR>");
-				else SB.append(ch);
+				switch(ch) {
+					case '<':
+						SB.append("&#60;");
+						break;
+					case '&':
+						SB.append("&#38;");
+						break;
+					case '"':
+						SB.append("&#34;");
+						break;
+					case '\'':
+						SB.append("&#39;");
+						break;
+					case '\n':
+						SB.append("<BR>"); // TODO: lower-case all HTML
+						break;
+					default:
+						SB.append(ch);
+						break;
+				}
 			}
 			return SB.toString();
 		}
@@ -88,11 +102,23 @@ public class Util {
 			StringBuilder SB=new StringBuilder(len);
 			for(int c=0;c<len;c++) {
 				char ch=S.charAt(c);
-				if(ch=='<') SB.append("&#60;");
-				else if(ch=='&') SB.append("&#38;");
-				else if(ch=='"') SB.append("&#34;");
-				else if(ch=='\'') SB.append("&#39;");
-				else SB.append(ch);
+				switch(ch) {
+					case '<':
+						SB.append("&#60;");
+						break;
+					case '&':
+						SB.append("&#38;");
+						break;
+					case '"':
+						SB.append("&#34;");
+						break;
+					case '\'':
+						SB.append("&#39;");
+						break;
+					default:
+						SB.append(ch);
+						break;
+				}
 			}
 			return SB.toString();
 		}
@@ -109,12 +135,25 @@ public class Util {
 			int len=S.length();
 			StringBuilder SB=new StringBuilder(len);
 			for(int c=0;c<len;c++) {
+				// TODO: Use ao-encoding and onclick scripts: SB.append("\\\"");
 				char ch=S.charAt(c);
-				if(ch=='"') SB.append("&quot;"); // TODO: Use ao-encoding and onclick scripts: SB.append("\\\"");
-				else if(ch=='\'') SB.append("\\'");
-				else if(ch=='\n') SB.append("\\n");
-				else if(ch=='\\') SB.append("\\\\");
-				else SB.append(ch);
+				switch(ch) {
+					case '"':
+						SB.append("&quot;");
+						break;
+					case '\'':
+						SB.append("\\'");
+						break;
+					case '\n':
+						SB.append("\\n");
+						break;
+					case '\\':
+						SB.append("\\\\");
+						break;
+					default:
+						SB.append(ch);
+						break;
+				}
 			}
 			return SB.toString();
 		}
@@ -212,12 +251,26 @@ public class Util {
 			int len=S.length();
 			for(int c=0;c<len;c++) {
 				char ch=S.charAt(c);
-				if(ch=='<') out.print("&#60;");
-				else if(ch=='&') out.print("&#38;");
-				else if(ch=='"') out.print("&#34;");
-				else if(ch=='\'') out.print("&#39;");
-				else if(ch=='\n') out.print("<BR>");
-				else out.print(ch);
+				switch(ch) {
+					case '<':
+						out.print("&#60;");
+						break;
+					case '&':
+						out.print("&#38;");
+						break;
+					case '"':
+						out.print("&#34;");
+						break;
+					case '\'':
+						out.print("&#39;");
+						break;
+					case '\n':
+						out.print("<BR>");
+						break;
+					default:
+						out.print(ch);
+						break;
+				}
 			}
 		}
 	}
@@ -233,11 +286,23 @@ public class Util {
 			int len=S.length();
 			for(int c=0;c<len;c++) {
 				char ch=S.charAt(c);
-				if(ch=='<') out.print("&#60;");
-				else if(ch=='&') out.print("&#38;");
-				else if(ch=='"') out.print("&#34;");
-				else if(ch=='\'') out.print("&#39;");
-				else out.print(ch);
+				switch(ch) {
+					case '<':
+						out.print("&#60;");
+						break;
+					case '&':
+						out.print("&#38;");
+						break;
+					case '"':
+						out.print("&#34;");
+						break;
+					case '\'':
+						out.print("&#39;");
+						break;
+					default:
+						out.print(ch);
+						break;
+				}
 			}
 		}
 	}
@@ -254,11 +319,23 @@ public class Util {
 			int len=S.length();
 			for(int c=0;c<len;c++) {
 				char ch=S.charAt(c);
-				if(ch=='"') out.print("\\\"");
-				else if(ch=='\'') out.print("\\'");
-				else if(ch=='\n') out.print("\\n");
-				else if(ch=='\t') out.print("\\t");
-				else out.print(ch);
+				switch(ch) {
+					case '"':
+						out.print("\\\"");
+						break;
+					case '\'':
+						out.print("\\'");
+						break;
+					case '\n':
+						out.print("\\n");
+						break;
+					case '\t':
+						out.print("\\t");
+						break;
+					default:
+						out.print(ch);
+						break;
+				}
 			}
 		}
 	}

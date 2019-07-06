@@ -317,18 +317,8 @@ public class DatabasePool {
 								try {
 									Class.forName(DatabaseConfiguration.getProperty("driver", databaseProduct)).newInstance();
 									driverLoaded = true;
-								} catch(ClassNotFoundException err) {
-									SQLException sqlErr = new SQLException();
-									sqlErr.initCause(err);
-									throw sqlErr;
-								} catch(InstantiationException err) {
-									SQLException sqlErr = new SQLException();
-									sqlErr.initCause(err);
-									throw sqlErr;
-								} catch(IllegalAccessException err) {
-									SQLException sqlErr = new SQLException();
-									sqlErr.initCause(err);
-									throw sqlErr;
+								} catch(ReflectiveOperationException err) {
+									throw new SQLException(err);
 								}
 							}
 							conn = connections[c] = DriverManager.getConnection(
