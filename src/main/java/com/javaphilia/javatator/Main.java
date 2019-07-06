@@ -42,14 +42,13 @@ public class Main extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	/**
+	/*
 	 * The version of this release.
+	 * TODO: Move to changelog.jspx in book
 	 * <p>
 	 * 0.5.0 - Added SSL support and quotes for PostgreSQL case-sensitivity.
 	 * </p>
 	 */
-	// TODO: Take from a Maven.properties once switched-over to Maven
-	public static final String VERSION="0.5.0";
 
 	/**
 	 * The time the class was loaded.
@@ -194,7 +193,7 @@ public class Main extends HttpServlet {
 	private static void printLoginForm(JavatatorWriter out, Settings settings) throws IOException {
 		out.print("<br>\n");
 		out.print("<span class='HEADER'>Welcome to Javatator ");
-		out.print(VERSION);
+		out.print(Maven.properties.get("project.version"));
 		out.print("</span><br><br>\n");
 		if(settings.getHostname()!=null) {
 			out.print("<script language=javascript><!--\n"
@@ -520,7 +519,7 @@ public class Main extends HttpServlet {
 		out.startTR();
 		out.startTD();
 		out.print("<b>Javatator version ");
-		out.print(VERSION);
+		out.print(Maven.properties.get("project.version"));
 		out.print("</b> running on ");
 		out.print(System.getProperty("os.name"));
 		out.print(" (");
