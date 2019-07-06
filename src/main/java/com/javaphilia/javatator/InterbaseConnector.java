@@ -66,8 +66,7 @@ public class InterbaseConnector extends JDBCConnector {
 	public void addPrimaryKey(String column) throws SQLException, IOException {
 		String table=settings.getTable();
 
-		Connection conn=DatabasePool.getConnection(getSettings());
-		try {
+		try (Connection conn = DatabasePool.getConnection(getSettings())) {
 			StringBuilder sql=new StringBuilder("ALTER TABLE ");
 			StringBuilder cols=new StringBuilder();
 			sql.append(table);
@@ -88,8 +87,6 @@ public class InterbaseConnector extends JDBCConnector {
 			try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
 				pstmt.executeUpdate();
 			}
-		} finally {
-			DatabasePool.releaseConnection(conn);
 		}
 	}
 
@@ -298,20 +295,18 @@ public class InterbaseConnector extends JDBCConnector {
 		}
 		String S=sql.toString();
 
-		Connection conn=DatabasePool.getConnection(getSettings());
-		try {
-			try (PreparedStatement stmt = conn.prepareStatement(S)) {
-				stmt.setEscapeProcessing(false); // TODO: These are probably not appropriate on PreparedStatements
-				int num=1;
-				for(int i=0;i<colValues.size();i++) {
-					if(colNames.get(i).length()>0 && colValues.get(i)!=null) {
-						stmt.setString(num++, colValues.get(i));
-					}
+		try (
+			Connection conn = DatabasePool.getConnection(getSettings());
+			PreparedStatement stmt = conn.prepareStatement(S)
+		) {
+			stmt.setEscapeProcessing(false); // TODO: These are probably not appropriate on PreparedStatements
+			int num=1;
+			for(int i=0;i<colValues.size();i++) {
+				if(colNames.get(i).length()>0 && colValues.get(i)!=null) {
+					stmt.setString(num++, colValues.get(i));
 				}
-				return stmt.toString();
 			}
-		} finally {
-			DatabasePool.releaseConnection(conn);
+			return stmt.toString();
 		}
 	}
 

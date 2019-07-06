@@ -45,8 +45,7 @@ public class Info {
 	 * @param settings  the database in use
 	 */
 	public static Settings printDatabaseInfo(JavatatorWriter out, Settings settings) throws SQLException, IOException {
-		Connection conn=DatabasePool.getConnection(settings);
-		try {
+		try (Connection conn = DatabasePool.getConnection(settings)) {
 			DatabaseMetaData metaData=conn.getMetaData();
 			out.print("<b>More database info:</b> Please note that these values result from querying the database driver "
 				+ "and some values may be incorrect.<br><br>\n");
@@ -169,8 +168,6 @@ public class Info {
 			} finally {
 				out.endTable();
 			}
-		} finally {
-			DatabasePool.releaseConnection(conn);
 		}
 		return settings;
 	}
