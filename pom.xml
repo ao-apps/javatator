@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Javatator - multi-database admin tool
+javatator - Multi-database admin tool.
+
+Copyright (C) 2001  Jason Davies.
+    If you want to help or want to report any bugs, please email me:
+    jason@javaphilia.com
 
 Copyright (C) 2019  AO Industries, Inc.
     support@aoindustries.com
@@ -34,7 +38,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 	<name>Javatator</name>
 	<url>https://aoindustries.com/${project.artifactId}/</url>
-	<description>Multi-database admin tool</description>
+	<description>Multi-database admin tool.</description>
 	<inceptionYear>2000</inceptionYear>
 
 	<licenses>
@@ -49,7 +53,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<developer>
 			<name>Jason Davies</name>
 			<email>jason@javaphilia.com</email>
-			<url>http://javaphilia.com/</url>
+			<url>http://www.javaphilia.com/</url>
 		</developer>
 		<developer>
 			<name>Dan Armstrong</name>
@@ -80,6 +84,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 			<url>file://${project.basedir}/repository</url>
 		</repository>
 	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<!-- TODO: Move to a new version of ao-oss-parent once this works, and add version to other web.xml files -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<useDefaultDelimiters>false</useDefaultDelimiters>
+					<delimiters>
+						<!-- ${*} is JSP EL and shell scripts, so avoiding it -->
+						<!-- #{*} is JSP EL deferred syntax, so avoiding it -->
+						<!-- @{*} selected over @*@, as it gives our developers a more
+							 consistent representation with JSP EL and shell scripts -->
+						<delimiter>@{*}</delimiter>
+					</delimiters>
+					<filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+					<!-- TODO: How to include unfiltered web.xml in a source jar -a? -->
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<profiles>
 		<profile>
