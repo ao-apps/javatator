@@ -63,7 +63,7 @@ function deleteTable(tb) {
 function drawAdminMenu(doc) {
 	with(doc) {
 		write("<html><head>\n");
-		write("<link rel=stylesheet type='text/css' href='../javatator.css'>\n");
+		write("<link rel=stylesheet type='text/css' href='javatator.css'>\n");
 		write("</head>\n");
 		write("<body class='ALTBODY'><center>\n");
 		write("<b>Admin menu</b><br><br><A href='mailto:bugs@javatator.com'>Report Bugs</A>\n");
@@ -75,7 +75,7 @@ function drawAdminMenu(doc) {
 function drawMenu(doc) {
 	with(doc) {
 		write("<html><head>\n");
-		write("<link rel=stylesheet type='text/css' href='../javatator.css'>\n");
+		write("<link rel=stylesheet type='text/css' href='javatator.css'>\n");
 		write("</head>\n");
 		write("<body class='ALTBODY'>\n");
 		write("<a href='javascript:top.top_frame.goHome();'>Home</a><br>\n");

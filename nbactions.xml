@@ -12,7 +12,7 @@
             </goals>
             <properties>
                 <netbeans.deploy>true</netbeans.deploy>
-                <netbeans.deploy.clientUrlPart>/servlet/com.javaphilia.javatator.Main</netbeans.deploy.clientUrlPart>
+                <netbeans.deploy.clientUrlPart></netbeans.deploy.clientUrlPart>
             </properties>
             <activatedProfiles>
                 <activatedProfile>skip-war</activatedProfile>
@@ -33,7 +33,7 @@
             <properties>
                 <netbeans.deploy.debugmode>true</netbeans.deploy.debugmode>
                 <netbeans.deploy>true</netbeans.deploy>
-                <netbeans.deploy.clientUrlPart>/servlet/com.javaphilia.javatator.Main</netbeans.deploy.clientUrlPart>
+                <netbeans.deploy.clientUrlPart></netbeans.deploy.clientUrlPart>
             </properties>
             <activatedProfiles>
                 <activatedProfile>skip-war</activatedProfile>
@@ -54,7 +54,7 @@
             <properties>
                 <netbeans.deploy>true</netbeans.deploy>
                 <netbeans.deploy.profilemode>true</netbeans.deploy.profilemode>
-                <netbeans.deploy.clientUrlPart>/servlet/com.javaphilia.javatator.Main</netbeans.deploy.clientUrlPart>
+                <netbeans.deploy.clientUrlPart></netbeans.deploy.clientUrlPart>
             </properties>
             <activatedProfiles>
                 <activatedProfile>skip-war</activatedProfile>

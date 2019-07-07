@@ -68,11 +68,11 @@ public class Main extends HttpServlet {
 				if (req.getParameter("blank") != null)
 					out.print("<html></html>");
 				else
-					printRightFrame(req, out, settings, action);
+					printRightFrame(out, settings, action);
 			} else if ("left".equals(frame)) {
-				printLeftFrame(req, out, settings, action);
+				printLeftFrame(out, settings, action);
 			} else if ("top".equals(frame)) {
-				printTopFrame(req, out, settings, action);
+				printTopFrame(out, settings, action);
 			} else {
 				printFrames(out, settings, action);
 			}
@@ -83,8 +83,8 @@ public class Main extends HttpServlet {
 	 * Handles the POST request.
 	 */
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		doGet(request, response);
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+		doGet(req, resp);
 	}
 
 	/**
@@ -97,15 +97,15 @@ public class Main extends HttpServlet {
 			+ "  </head>\n"
 			+ "  <frameset rows='110,*' border=1>\n"
 			+ "    <frame src='");
-		out.print(getClass().getName());
-		out.print("?frame=top' name='top_frame' frameborder=1 marginheight=0 marginwidth=0>\n"
+		out.print(settings.getRequest().getContextPath());
+		out.print("/?frame=top' name='top_frame' frameborder=1 marginheight=0 marginwidth=0>\n"
 			+ "    <frameset cols='200,*' border=1>\n"
 			+ "      <frame src='");
-		out.print(getClass().getName());
-		out.print("?frame=left' name='left_frame' frameborder=1>\n"
+		out.print(settings.getRequest().getContextPath());
+		out.print("/?frame=left' name='left_frame' frameborder=1>\n"
 			+ "      <frame src='");
-		out.print(getClass().getName());
-		out.print("?frame=right&blank=yes' name='right_frame' frameborder=1>\n"
+		out.print(settings.getRequest().getContextPath());
+		out.print("/?frame=right&blank=yes' name='right_frame' frameborder=1>\n"
 			+ "    </frameset>\n"
 			+ "  </frameset>\n"
 			+ "</html>\n");
@@ -114,7 +114,7 @@ public class Main extends HttpServlet {
 	/**
 	 * Prints the contents of the left-hand frame.
 	 */
-	private void printLeftFrame(HttpServletRequest req, JavatatorWriter out, Settings settings, String action) throws IOException {
+	private void printLeftFrame(JavatatorWriter out, Settings settings, String action) throws IOException {
 		boolean isConnected =
 			settings.getDatabaseProduct()!=null
 			&& settings.getHostname()!=null
@@ -170,7 +170,7 @@ public class Main extends HttpServlet {
 			out.print("<html>\n"
 				+ "<head>\n"
 				+ "    <script language=javascript src='");
-			out.print(req.getContextPath());
+			out.print(settings.getRequest().getContextPath());
 			out.print("/javatator.js'></script>\n"
 				+ "</head>\n"
 				+ "<body>\n"
@@ -195,8 +195,8 @@ public class Main extends HttpServlet {
 		if(settings.getHostname()!=null) {
 			out.print("<script language=javascript><!--\n"
 				+ "top.left_frame.location.href='");
-			out.print(Main.class.getName());
-			out.print("?frame=left';\n"
+			out.print(settings.getRequest().getContextPath());
+			out.print("/?frame=left';\n"
 				+ "//--></script>\n");
 		}
 
@@ -212,8 +212,8 @@ public class Main extends HttpServlet {
 				String dbProduct=dbProducts.get(c);
 				out.print("  <td align=center class=ALTBG>");
 				out.print("<form method=post action='");
-				out.print(Main.class.getName());
-				out.print("' target='top_frame'>\n"
+				out.print(settings.getRequest().getContextPath());
+				out.print("/' target='top_frame'>\n"
 					+ "<input type=hidden name=frame value=top>");
 				out.startTable(null);
 
@@ -391,22 +391,22 @@ public class Main extends HttpServlet {
 	/**
 	 * Prints the contents of the right-hand frame.
 	 */
-	private void printRightFrame(HttpServletRequest req, JavatatorWriter out, Settings settings, String action) throws IOException {
+	private void printRightFrame(JavatatorWriter out, Settings settings, String action) throws IOException {
 		boolean isConnected = action != null && settings.getDatabaseProduct() != null && settings.getHostname() != null && settings.getPort() > 0 && settings.getUsername() != null && settings.getDatabase() != null;
 		out.print("<html>\n"
 			+ "  <head>\n"
 			+ "    <script language=javascript src='");
-		out.print(req.getContextPath());
+		out.print(settings.getRequest().getContextPath());
 		out.print("/javatator.js'></script>\n"
 			+ "    <link rel=stylesheet type='text/css' href='");
-		out.print(req.getContextPath());
+		out.print(settings.getRequest().getContextPath());
 		out.print("/javatator.css'>\n"
 			+ "  </head>\n"
 			+ "<body class='ALTBODY'>\n");
 		if (isConnected) {
 			out.print("<form method=post action='");
-			out.print(getClass().getName());
-			out.print("' name=theform target='left_frame'>\n"
+			out.print(settings.getRequest().getContextPath());
+			out.print("/' name=theform target='left_frame'>\n"
 				+ "<input type=hidden name=frame value=left>");
 		}
 		try {
@@ -437,7 +437,7 @@ public class Main extends HttpServlet {
 	/**
 	 * Prints the contents of the top frame.
 	 */
-	private void printTopFrame(HttpServletRequest req, JavatatorWriter out, Settings settings, String action) throws IOException {
+	private void printTopFrame(JavatatorWriter out, Settings settings, String action) throws IOException {
 		boolean isConnected =
 			settings.getDatabaseProduct()!=null
 			&& settings.getHostname()!=null
@@ -447,10 +447,10 @@ public class Main extends HttpServlet {
 		out.print("<html>\n"
 			+ "<head>"
 			+ "    <script language=javascript src='");
-		out.print(req.getContextPath());
+		out.print(settings.getRequest().getContextPath());
 		out.print("/javatator.js'></script>\n"
 			+ "    <link rel=stylesheet type='text/css' href='");
-		out.print(req.getContextPath());
+		out.print(settings.getRequest().getContextPath());
 		out.print("/javatator.css'>\n");
 		if(isConnected) {
 			try {
@@ -502,15 +502,15 @@ public class Main extends HttpServlet {
 		if(action==null || "db_details".equals(action)) out.print("document.theform.submit();");
 		out.print("'>\n"
 			+ "<form method=post name=theform target='right_frame' action='");
-		out.print(getClass().getName());
-		out.print("'>\n"
+		out.print(settings.getRequest().getContextPath());
+		out.print("/'>\n"
 			+ "<input type=hidden name=frame value=right>\n");
 		settings.printForm(out);
 		out.print("</form>\n"
 			+ "<a href='");
-		out.print(getClass().getName());
-		out.print("' target='_top'><img src='");
-		out.print(req.getContextPath());
+		out.print(settings.getRequest().getContextPath());
+		out.print("/' target='_top'><img src='");
+		out.print(settings.getRequest().getContextPath());
 		out.print("/images/2.gif' alt='Javatator Admin' border=0 align=left width=345 height=72></a>\n");
 
 		out.startTable(null);
