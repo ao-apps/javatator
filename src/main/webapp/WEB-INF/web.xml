@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   metadata-complete="true">
 	<display-name>@{project.name} @{project.version}</display-name>
 	<description>@{project.description}</description>
+	<!-- TODO: Review filters versus other projects -->
 	<!-- Filter to set request character encoding to UTF-8 -->
 	<filter>
 		<filter-name>Utf8RequestCharacterEncodingFilter</filter-name>

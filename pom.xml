@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.aoindustries</groupId><artifactId>ao-oss-parent</artifactId><version>1.3.1-POST-SNAPSHOT</version>
+		<groupId>com.aoindustries</groupId><artifactId>ao-oss-parent</artifactId><version>1.4.0-SNAPSHOT</version>
 		<relativePath>../ao-oss-parent/pom.xml</relativePath>
 	</parent>
 
@@ -80,28 +80,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 			<url>file://${project.basedir}/repository</url>
 		</repository>
 	</repositories>
-
-	<build>
-		<plugins>
-			<plugin>
-				<!-- TODO: Move to a new version of ao-oss-parent once this works, and add version to other web.xml files -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<useDefaultDelimiters>false</useDefaultDelimiters>
-					<delimiters>
-						<!-- ${*} is JSP EL and shell scripts, so avoiding it -->
-						<!-- #{*} is JSP EL deferred syntax, so avoiding it -->
-						<!-- @{*} selected over @*@, as it gives our developers a more
-							 consistent representation with JSP EL and shell scripts -->
-						<delimiter>@{*}</delimiter>
-					</delimiters>
-					<filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
-					<!-- TODO: How to include unfiltered web.xml in a source jar -a? -->
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 	<profiles>
 		<profile>
