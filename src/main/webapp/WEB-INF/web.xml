@@ -61,10 +61,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<servlet-name>SchemaImage</servlet-name>
 		<servlet-class>com.javaphilia.javatator.SchemaImage</servlet-class>
 	</servlet>
-	<servlet>
-		<servlet-name>Settings</servlet-name>
-		<servlet-class>com.javaphilia.javatator.Settings</servlet-class>
-	</servlet>
 	<servlet-mapping>
 		<servlet-name>Main</servlet-name>
 		<url-pattern>/servlet/com.javaphilia.javatator.Main</url-pattern>
@@ -72,10 +68,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	<servlet-mapping>
 		<servlet-name>SchemaImage</servlet-name>
 		<url-pattern>/schema.gif</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Settings</servlet-name>
-		<url-pattern>/servlet/com.javaphilia.javatator.Settings</url-pattern>
 	</servlet-mapping>
 	<listener>
 		<listener-class>com.javaphilia.javatator.DatabaseConfigurationContext</listener-class>
