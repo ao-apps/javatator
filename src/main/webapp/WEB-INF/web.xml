@@ -58,11 +58,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<servlet-class>com.javaphilia.javatator.Main</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>MainRedirect</servlet-name>
+		<servlet-class>com.javaphilia.javatator.MainRedirect</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>SchemaImage</servlet-name>
 		<servlet-class>com.javaphilia.javatator.SchemaImage</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Main</servlet-name>
+		<url-pattern></url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>MainRedirect</servlet-name>
 		<url-pattern>/servlet/com.javaphilia.javatator.Main</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
