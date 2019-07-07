@@ -28,12 +28,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-					  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
   version="3.0"
   metadata-complete="true">
 	<display-name>@{project.name} @{project.version}</display-name>
 	<description>@{project.description}</description>
 	<!-- TODO: Review filters versus other projects -->
+	<context-param>
+		<description>
+			Sets the filesystem path to the properties file to load for the
+			application database configuration.  When not set, will use the
+			bundled default database.properties.
+		</description>
+		<param-name>com.javaphilia.javatator.DatabaseConfiguration</param-name>
+		<param-value></param-value>
+	</context-param>
 	<!-- Filter to set request character encoding to UTF-8 -->
 	<filter>
 		<filter-name>Utf8RequestCharacterEncodingFilter</filter-name>
@@ -68,4 +77,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<servlet-name>Settings</servlet-name>
 		<url-pattern>/servlet/com.javaphilia.javatator.Settings</url-pattern>
 	</servlet-mapping>
+	<listener>
+		<listener-class>com.javaphilia.javatator.DatabaseConfigurationContext</listener-class>
+	</listener>
 </web-app>

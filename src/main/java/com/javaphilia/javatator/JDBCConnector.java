@@ -1031,7 +1031,7 @@ public class JDBCConnector {
 	{
 		return
 			(JDBCConnector)Class
-			.forName(DatabaseConfiguration.getProperty("connector", settings.getDatabaseProduct()))
+			.forName(settings.getDatabaseConfiguration().getProperty("connector", settings.getDatabaseProduct()))
 			.getConstructor(Settings.class)
 			.newInstance(settings);
 	}

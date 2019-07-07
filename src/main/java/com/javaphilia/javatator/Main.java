@@ -60,7 +60,7 @@ public class Main extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		resp.setContentType("text/html");
 		try (JavatatorWriter out = new JavatatorWriter(resp.getOutputStream())) {
-			Settings settings = new Settings(req);
+			Settings settings = new Settings(getServletContext(), req);
 			String action = settings.getAction();
 			String frame = req.getParameter("frame");
 			
@@ -200,8 +200,9 @@ public class Main extends HttpServlet {
 				+ "//--></script>\n");
 		}
 
+		DatabaseConfiguration databaseConfiguration = settings.getDatabaseConfiguration();
 		// For each product, display all the values, if not in config allow user to edit
-		List<String> dbProducts=DatabaseConfiguration.getAvailableDatabaseProducts();
+		List<String> dbProducts = databaseConfiguration.getAvailableDatabaseProducts();
 		int size=dbProducts.size();
 
 		out.print("<table width='100%' border=0 cellspacing=0 cellpadding=0>\n");
@@ -219,7 +220,7 @@ public class Main extends HttpServlet {
 				out.startTR();
 				out.startTD("colspan=3 align=center");
 				out.print("<b>");
-				out.print(DatabaseConfiguration.getProperty("name", dbProduct));
+				out.print(databaseConfiguration.getProperty("name", dbProduct));
 				out.print("</b>");
 				out.endTD();
 				out.endTR();
@@ -234,7 +235,7 @@ public class Main extends HttpServlet {
 				if(settingsHostname==null) settingsHostname=settings.getHostname();
 				if(settingsHostname==null) settingsHostname="";
 
-				List<String> configHostnames=DatabaseConfiguration.getAllowedHosts(dbProduct);
+				List<String> configHostnames = databaseConfiguration.getAllowedHosts(dbProduct);
 				int configHostnamesLen=configHostnames.size();
 				if(configHostnamesLen>1) {
 					out.print("<select name='hostname'>\n");
@@ -262,7 +263,7 @@ public class Main extends HttpServlet {
 				out.startTR();
 				out.printTD("Port:");
 				out.startTD();
-				String configPort=DatabaseConfiguration.getProperty("port", dbProduct);
+				String configPort = databaseConfiguration.getProperty("port", dbProduct);
 				if(configPort!=null && configPort.length()>0) {
 					out.print(configPort);
 				} else {
@@ -275,7 +276,7 @@ public class Main extends HttpServlet {
 						if(dbProduct.equals(settings.getDatabaseProduct())) port=settings.getPort();
 						if(port<=0) {
 							// Try to get from config
-							String portS=DatabaseConfiguration.getProperty("defaultport", dbProduct);
+							String portS = databaseConfiguration.getProperty("defaultport", dbProduct);
 							if(portS!=null && portS.length()>0) port=Integer.parseInt(portS);
 						}
 						if(port>0) out.print(port);
@@ -289,7 +290,7 @@ public class Main extends HttpServlet {
 				out.startTR();
 				out.printTD("SSL:");
 				out.startTD();
-				Boolean ssl = DatabaseConfiguration.getBooleanProperty("ssl", dbProduct);
+				Boolean ssl = databaseConfiguration.getBooleanProperty("ssl", dbProduct);
 				if(ssl != null) out.print(ssl ? "Enabled" : "Disabled");
 				else {
 					out.print("<input type=checkbox name=ssl value='true'");
@@ -302,7 +303,7 @@ public class Main extends HttpServlet {
 						if(dbProduct.equals(settings.getDatabaseProduct())) ssl = settings.getSsl();
 						if(ssl == null) {
 							// Try to get from config
-							ssl = DatabaseConfiguration.getBooleanProperty("defaultssl", dbProduct);
+							ssl = databaseConfiguration.getBooleanProperty("defaultssl", dbProduct);
 						}
 						if(ssl != null && ssl) out.print(" checked");
 					}
@@ -315,7 +316,7 @@ public class Main extends HttpServlet {
 				out.startTR();
 				out.printTD("Username:");
 				out.startTD();
-				String configUsername=DatabaseConfiguration.getProperty("username", dbProduct);
+				String configUsername = databaseConfiguration.getProperty("username", dbProduct);
 				if(configUsername!=null && configUsername.length()>0) out.print(configUsername);
 				else {
 					out.print("<input type=text name=username size=16 value='");
@@ -332,7 +333,7 @@ public class Main extends HttpServlet {
 				out.startTR();
 				out.printTD("Password:");
 				out.startTD();
-				String configPassword=DatabaseConfiguration.getProperty("password", dbProduct);
+				String configPassword = databaseConfiguration.getProperty("password", dbProduct);
 				if(configPassword!=null && configPassword.length()>0) out.print("XXXXXXXXXXXX");
 				else {
 					out.print("<input type=password name=password size=16 value='");
@@ -349,7 +350,7 @@ public class Main extends HttpServlet {
 				out.startTR();
 				out.printTD("Database:");
 				out.startTD();
-				String configDatabase=DatabaseConfiguration.getProperty("database", dbProduct);
+				String configDatabase = databaseConfiguration.getProperty("database", dbProduct);
 				if(configDatabase!=null && configDatabase.length()>0) out.print(configDatabase);
 				else {
 					out.print("<input type=text name=database size=16 value='");
@@ -549,6 +550,7 @@ public class Main extends HttpServlet {
 				out.print("</b> <a href=\"javascript:showOptions()\">Advanced Options</a>");
 			} catch(Exception e) {
 				out.print("<br><span class='ERROR'>Error: ");
+				// TODO: Encode
 				out.print(e.toString());
 				out.print("</span>\n");
 				e.printStackTrace();
