@@ -255,8 +255,10 @@ function checkDatabase(form) {
 function printDBSelect(db) {
 	with(top.left_frame.document) {
 		write("&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:top.top_frame.selectDatabase('");
+		// TODO: Encode
 		write(db);
 		write("');\">");
+		// TODO: Encode
 		write(db);
 		write("</a><br>\n");
 	}
@@ -265,6 +267,7 @@ function printDBSelect(db) {
 function printTableSelect(table) {
 	with(top.left_frame.document) {
 		write("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:top.top_frame.selectTable('");
+		// TODO: Encode
 		write(table);
 		write("','properties')\" class='TABLELINK'>");
 		write(table);

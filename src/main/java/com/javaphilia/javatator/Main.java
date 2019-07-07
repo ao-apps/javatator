@@ -66,6 +66,7 @@ public class Main extends HttpServlet {
 			
 			if ("right".equals(frame)) {
 				if (req.getParameter("blank") != null)
+					// TODO: Make a blank.html or blank.jsp?
 					out.print("<html></html>");
 				else
 					printRightFrame(out, settings, action);
@@ -90,6 +91,7 @@ public class Main extends HttpServlet {
 	/**
 	 * Prints the frameset.
 	 */
+	// TODO: Move to /frameset.inc.jsp, using HideJspFilter, too.  Add JSP and JSTL dependencies
 	private void printFrames(JavatatorWriter out, Settings settings, String action) throws IOException {
 		out.print("<html>\n"
 			+ "  <head>\n"
@@ -124,6 +126,7 @@ public class Main extends HttpServlet {
 		if(isConnected) {
 			try {
 				JDBCConnector conn=settings.getJDBCConnector();
+				// TODO: This has no <html> tag?
 				out.print("<script language=javascript><!--\n"
 					+ "var t=top.top_frame;\n"
 					+ "var db=new Array();\n"
@@ -167,6 +170,7 @@ public class Main extends HttpServlet {
 				err.printStackTrace();
 			}
 		} else {
+			// TODO: Move to /left.inc.jsp
 			out.print("<html>\n"
 				+ "<head>\n"
 				+ "    <script language=javascript src='");
@@ -393,6 +397,7 @@ public class Main extends HttpServlet {
 	 */
 	private void printRightFrame(JavatatorWriter out, Settings settings, String action) throws IOException {
 		boolean isConnected = action != null && settings.getDatabaseProduct() != null && settings.getHostname() != null && settings.getPort() > 0 && settings.getUsername() != null && settings.getDatabase() != null;
+		// TODO: Forward to a set of appropriate JSP views
 		out.print("<html>\n"
 			+ "  <head>\n"
 			+ "    <script language=javascript src='");
@@ -444,6 +449,7 @@ public class Main extends HttpServlet {
 			&& settings.getPort()>0
 			&& settings.getUsername()!=null
 			&& settings.getDatabase()!=null;
+		// TODO: Forward to a set of appropriate JSP views
 		out.print("<html>\n"
 			+ "<head>"
 			+ "    <script language=javascript src='");
