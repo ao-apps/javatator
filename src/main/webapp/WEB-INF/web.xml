@@ -71,7 +71,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>SchemaImage</servlet-name>
-		<url-pattern>/servlet/com.javaphilia.javatator.SchemaImage</url-pattern>
+		<url-pattern>/schema.gif</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Settings</servlet-name>
