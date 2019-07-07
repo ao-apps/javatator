@@ -190,6 +190,14 @@ public class Settings {
 		this.useMultiLine=useMultiLine;
 	}
 
+	public ServletContext getServletContext() {
+		return servletContext;
+	}
+
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
 	public DatabaseConfiguration getDatabaseConfiguration() {
 		return databaseConfiguration;
 	}

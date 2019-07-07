@@ -33,6 +33,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Various methods for manipulating databases.
@@ -319,7 +320,7 @@ public class Database {
 
 		if("db_details".equals(action)) return printDatabaseDetails(out);
 		else if("create_database".equals(action)) return createDatabase(out);
-		else if("view_schema".equals(action)) return viewSchema(out);
+		else if("view_schema".equals(action)) return viewSchema(settings.getRequest(), out);
 		else if("drop_database".equals(action)) return confirmDropDatabase(out);
 		else if("dodrop_database".equals(action)) return dropDatabase(out);
 		else if("dosql".equals(action)) return doSQL(out, settings.getParameter("sql"), startPos, settings.getNumRows());
@@ -335,12 +336,12 @@ public class Database {
 	/**
 	 * Views the schema for the database by generating a GIF file.
 	 */
-	public Settings viewSchema(JavatatorWriter out) throws SQLException, IOException {
+	public Settings viewSchema(HttpServletRequest req, JavatatorWriter out) throws SQLException, IOException {
 		out.print("<h2>Database ");
 		out.print(settings.getDatabase());
 		out.print("</h2>\n"
 			+"<img src='");
-		settings.printURLParams(SchemaImage.class.getName(), out);
+		settings.printURLParams(req.getContextPath() + "/schema.gif", out);
 		out.print("'>\n"
 			+ "<br><br>\n"
 			+ "<a href=\"javascript:selectAction('db_details');\">View properties</a>");
