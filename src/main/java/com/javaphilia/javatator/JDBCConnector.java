@@ -321,7 +321,7 @@ public class JDBCConnector {
 			Connection conn = DatabasePool.getConnection(settings);
 			PreparedStatement stmt = conn.prepareStatement(sql)
 		) {
-			stmt.setEscapeProcessing(false);
+			// stmt.setEscapeProcessing(false);
 			int pos = 1;
 			for(String primaryKeyValue : primaryKeyValues) {
 				if(primaryKeyValue != null) {
@@ -571,7 +571,7 @@ public class JDBCConnector {
 			Connection conn = DatabasePool.getConnection(settings);
 			PreparedStatement stmt = conn.prepareStatement(sql)
 		) {
-			stmt.setEscapeProcessing(false);
+			// stmt.setEscapeProcessing(false);
 			int pos = 1;
 			for (int i = 0; i < column.length; i++) {
 				if (function[i] == null || function[i].length() == 0) {
@@ -1176,7 +1176,7 @@ public class JDBCConnector {
 			Connection conn = DatabasePool.getConnection(settings);
 			PreparedStatement pstmt = conn.prepareStatement(sql)
 		) {
-			pstmt.setEscapeProcessing(false);
+			// pstmt.setEscapeProcessing(false);
 			int pos = 1;
 			for (int i = 0; i < primaryKeys.size(); i++) {
 				if (primaryValues.get(i) != null) {
@@ -1368,7 +1368,7 @@ public class JDBCConnector {
 			Connection conn = DatabasePool.getConnection(settings);
 			PreparedStatement stmt = conn.prepareStatement(sql)
 		) {
-			stmt.setEscapeProcessing(false);
+			// stmt.setEscapeProcessing(false);
 			int pos=1;
 			for(int i=0;i<column.length;i++) {
 				if(function[i]==null || function[i].length()==0) stmt.setString(pos++,value[i]);

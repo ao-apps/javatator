@@ -299,7 +299,7 @@ public class InterbaseConnector extends JDBCConnector {
 			Connection conn = DatabasePool.getConnection(getSettings());
 			PreparedStatement stmt = conn.prepareStatement(S)
 		) {
-			stmt.setEscapeProcessing(false); // TODO: These are probably not appropriate on PreparedStatements
+			// stmt.setEscapeProcessing(false);
 			int num=1;
 			for(int i=0;i<colValues.size();i++) {
 				if(colNames.get(i).length()>0 && colValues.get(i)!=null) {
