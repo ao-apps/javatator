@@ -26,6 +26,9 @@
  */
 package com.javaphilia.javatator;
 
+import com.aoindustries.util.StringUtility;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -37,31 +40,49 @@ import java.util.Properties;
 /**
  * The configuration for the database is stored in a properties file
  */
-final public class DatabaseConfiguration {
+public class DatabaseConfiguration {
 
 	/**
 	 * The properties are kept here.
 	 */
-	private static Properties props;
+	private final Properties props;
 
 	/**
-	 * Make no instances.
+	 * Loads the default configuration from the bundled database.properties file.
 	 */
-	private DatabaseConfiguration() {}
+	public DatabaseConfiguration() throws IOException {
+		Properties newProps = new Properties();
+		try (InputStream in = DatabaseConfiguration.class.getResourceAsStream("database.properties")) {
+			if(in == null) throw new IOException("database.properties not found as resource");
+			newProps.load(in);
+		}
+		props = newProps;
+	}
+
+	/**
+	 * Loads the default configuration from a provided file.
+	 */
+	public DatabaseConfiguration(File file) throws IOException {
+		Properties newProps = new Properties();
+		try (InputStream in = new FileInputStream(file)) {
+			newProps.load(in);
+		}
+		props = newProps;
+	}
 
 	/**
 	 * Gets the list of hosts that may be accessed for the specified dbProduct.
 	 */
-	public static List<String> getAllowedHosts(String dbProduct) throws IOException {
+	public List<String> getAllowedHosts(String dbProduct) {
 		String hostList=getProperty("hostname", dbProduct);
 		if(hostList==null) return Collections.emptyList();
-		return splitStringCommaSpace(hostList);
+		return StringUtility.splitStringCommaSpace(hostList);
 	}
 
 	/**
 	 * Gets the list of databases that may be selected.
 	 */
-	public static List<String> getAvailableDatabaseProducts() throws IOException {
+	public List<String> getAvailableDatabaseProducts() {
 		List<String> products=new ArrayList<>();
 		String dbproduct=getProperty("dbproduct");
 		if(dbproduct!=null && dbproduct.length()>0) products.add(dbproduct);
@@ -78,9 +99,7 @@ final public class DatabaseConfiguration {
 	/**
 	 * Gets the specified property from the file.  If <code>db.name</code> exists, returns the value.
 	 */
-	public static String getProperty(String name) throws IOException {
-		loadIfNeeded();
-
+	public String getProperty(String name) {
 		// Look for db.name
 		return props.getProperty("db."+name);
 	}
@@ -93,9 +112,7 @@ final public class DatabaseConfiguration {
 	 * @param name the name of the property to get.
 	 * @param databaseProduct the name of the database product being used.
 	 */
-	public static String getProperty(String name, String databaseProduct) throws IOException {
-		loadIfNeeded();
-
+	public String getProperty(String name, String databaseProduct) {
 		// Look for db.dbproduct.name
 		String S=props.getProperty("db."+databaseProduct+'.'+name);
 		if(S!=null) return S;
@@ -104,51 +121,11 @@ final public class DatabaseConfiguration {
 		return props.getProperty("db.*."+name);
 	}
 
-	public static Boolean getBooleanProperty(String name, String databaseProduct) throws IOException {
+	public Boolean getBooleanProperty(String name, String databaseProduct) {
 		String S = getProperty(name, databaseProduct);
 		if(S == null || S.isEmpty()) return null;
 		if("true".equalsIgnoreCase(S)) return true;
 		if("false".equalsIgnoreCase(S)) return false;
-		throw new IOException("Unable to parse boolean: " + S);
-	}
-
-	/**
-	 * Loads the properties if not already loaded.
-	 */
-	private static void loadIfNeeded() throws IOException {
-		synchronized(DatabaseConfiguration.class) {
-			if(props==null) {
-				InputStream in=DatabaseConfiguration.class.getResourceAsStream("database.properties");
-				// TODO: Check if in == null and throw useful message about database.properties not found
-				Properties newProps=new Properties();
-				try {
-					newProps.load(in);
-				} finally {
-					in.close();
-				}
-				props=newProps;
-			}
-		}
-	}
-
-	/**
-	 * Splits a string into multiple words on either whitespace or commas
-	 * @return java.lang.String[]
-	 * @param line java.lang.String
-	 */
-	public static List<String> splitStringCommaSpace(String line) {
-		List<String> words=new ArrayList<>();
-		int len=line.length();
-		int pos=0;
-		while(pos<len) {
-			// Skip past blank space
-			char ch;
-			while(pos<len && ((ch=line.charAt(pos))<=' ' || ch==',')) pos++;
-			int start=pos;
-			// Skip to the next blank space
-			while(pos<len && (ch=line.charAt(pos))>' ' && ch!=',') pos++;
-			if(pos>start) words.add(line.substring(start,pos));
-		}
-		return words;
+		throw new IllegalArgumentException("Unable to parse boolean: " + S);
 	}
 }

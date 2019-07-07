@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.List;
 import java.util.StringTokenizer;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -40,7 +41,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class Settings {
 
+	final private ServletContext servletContext;
 	final private HttpServletRequest request;
+
+	final private DatabaseConfiguration databaseConfiguration;
 
 	final private String databaseProduct;
 	private String hostname;
@@ -65,14 +69,17 @@ public class Settings {
 	 * a {@link HttpServletRequest}.  If any value is provided in the
 	 * configuration, then the value in the form is ignored.
 	 */
-	public Settings(HttpServletRequest request) throws IOException {
+	public Settings(ServletContext servletContext, HttpServletRequest request) throws IOException {
+		this.servletContext = servletContext;
 		this.request = request;
 
-		// These values may by set in the configuration
-		databaseProduct = getSetting(request, "dbproduct");
-		hostname = getClientSetting(request, "hostname");
+		databaseConfiguration = DatabaseConfigurationContext.getConfiguration(servletContext);
 
-		List<String> allowedHosts = DatabaseConfiguration.getAllowedHosts(databaseProduct);
+		// These values may by set in the configuration
+		databaseProduct = getSetting("dbproduct");
+		hostname = getClientSetting("hostname");
+
+		List<String> allowedHosts = databaseConfiguration.getAllowedHosts(databaseProduct);
 		int allowedLen = allowedHosts.size();
 		if (allowedLen == 1)
 			hostname = allowedHosts.get(0);
@@ -92,7 +99,7 @@ public class Settings {
 		if (hostname.length() > 0) {
 			if (allowedLen == 0) {
 				// Remove hostname if denied in config
-				String S = DatabaseConfiguration.getProperty("host.deny", databaseProduct);
+				String S = databaseConfiguration.getProperty("host.deny", databaseProduct);
 				if (S != null && (S = S.trim()).length() > 0) {
 					StringTokenizer hosts = new StringTokenizer(S, ",");
 					while (hosts.hasMoreTokens()) {
@@ -122,18 +129,18 @@ public class Settings {
 				}
 			}
 		}
-		port = getIntSetting(request, databaseProduct, "port");
-		ssl = getBooleanSetting(request, databaseProduct, "ssl");
-		username = getSetting(request, databaseProduct, "username");
-		password = getSetting(request, databaseProduct, "password");
-		database = getSetting(request, databaseProduct, "database");
+		port = getIntSetting(databaseProduct, "port");
+		ssl = getBooleanSetting(databaseProduct, "ssl");
+		username = getSetting(databaseProduct, "username");
+		password = getSetting(databaseProduct, "password");
+		database = getSetting(databaseProduct, "database");
 
 		// These values are always obtained from the client
-		table = getClientSetting(request, "table");
-		column = getClientSetting(request, "column");
-		action = getClientSetting(request, "action");
-		sortColumn = getClientSetting(request, "sortcolumn");
-		sortOrder = getClientSetting(request, "sortorder");
+		table = getClientSetting("table");
+		column = getClientSetting("column");
+		action = getClientSetting("action");
+		sortColumn = getClientSetting("sortcolumn");
+		sortOrder = getClientSetting("sortorder");
 		String S = request.getParameter("numrows");
 		if (S != null && S.length() > 0)
 			numrows = Integer.parseInt(S);
@@ -144,7 +151,9 @@ public class Settings {
 	}
 
 	private Settings(
+		ServletContext servletContext,
 		HttpServletRequest request,
+		DatabaseConfiguration databaseConfiguration,
 		String databaseProduct,
 		String hostname,
 		int port,
@@ -161,7 +170,9 @@ public class Settings {
 		int fkeyrows,
 		boolean useMultiLine
 	) {
+		this.servletContext = servletContext;
 		this.request=request;
+		this.databaseConfiguration = databaseConfiguration;
 		this.databaseProduct=databaseProduct;
 		this.hostname=hostname;
 		this.port=port;
@@ -179,6 +190,10 @@ public class Settings {
 		this.useMultiLine=useMultiLine;
 	}
 
+	public DatabaseConfiguration getDatabaseConfiguration() {
+		return databaseConfiguration;
+	}
+
 	/**
 	 * Gets the action currently being performed or {@code null} if not set.
 	 */
@@ -189,8 +204,8 @@ public class Settings {
 	/**
 	 * Gets a setting without checking the config.
 	 */
-	private static String getClientSetting(HttpServletRequest req, String name) {
-		String S=req.getParameter(name);
+	private String getClientSetting(String name) {
+		String S = request.getParameter(name);
 		return (S==null)?"":S;
 	}
 
@@ -244,21 +259,21 @@ public class Settings {
 	 * If the setting is provided in the configuration for the database
 	 * product, then the configuration value is used.
 	 */
-	private static int getIntSetting(HttpServletRequest req, String databaseProduct, String name) throws IOException {
+	private int getIntSetting(String databaseProduct, String name) throws IOException {
 		// The configuration overrides the client values
-		String config=DatabaseConfiguration.getProperty(name, databaseProduct);
+		String config = databaseConfiguration.getProperty(name, databaseProduct);
 		if(config!=null && config.length()>0) return Integer.parseInt(config);
 
-		String S=req.getParameter(name);
+		String S = request.getParameter(name);
 		return (S==null)?-1:Integer.parseInt(S);
 	}
 
-	private static boolean getBooleanSetting(HttpServletRequest req, String databaseProduct, String name) throws IOException {
+	private boolean getBooleanSetting(String databaseProduct, String name) throws IOException {
 		// The configuration overrides the client values
-		String config=DatabaseConfiguration.getProperty(name, databaseProduct);
+		String config = databaseConfiguration.getProperty(name, databaseProduct);
 		if(config!=null && config.length()>0) return Boolean.parseBoolean(config);
 
-		String S=req.getParameter(name);
+		String S = request.getParameter(name);
 		return (S==null)?false:Boolean.parseBoolean(S);
 	}
 
@@ -328,12 +343,12 @@ public class Settings {
 	 * setting is provided in the configuration, then the configuration
 	 * value is used.
 	 */
-	private static String getSetting(HttpServletRequest req, String name) throws IOException {
+	private String getSetting(String name) throws IOException {
 		// The configuration overrides the client values
-		String config=DatabaseConfiguration.getProperty(name);
+		String config = databaseConfiguration.getProperty(name);
 		if(config!=null && config.length()>0) return config;
 
-		String S=req.getParameter(name);
+		String S = request.getParameter(name);
 		return (S==null)?"":S;
 	}
 
@@ -342,12 +357,12 @@ public class Settings {
 	 * setting is provided in the configuration for the database
 	 * product, then the configuration value is used.
 	 */
-	private static String getSetting(HttpServletRequest req, String databaseProduct, String name) throws IOException {
+	private String getSetting(String databaseProduct, String name) throws IOException {
 		// The configuration overrides the client values
-		String config=DatabaseConfiguration.getProperty(name, databaseProduct);
+		String config = databaseConfiguration.getProperty(name, databaseProduct);
 		if(config!=null && config.length()>0) return config;
 
-		String S=req.getParameter(name);
+		String S = request.getParameter(name);
 		return (S==null)?"":S;
 	}
 
@@ -376,7 +391,7 @@ public class Settings {
 	 * Generates the proper URL based on the settings and configuration.
 	 */
 	public String getURL() throws IOException {
-		String url=DatabaseConfiguration.getProperty("url", databaseProduct);
+		String url = databaseConfiguration.getProperty("url", databaseProduct);
 		if(url.length()==0) throw new IOException("Unable to find URL for databaseProduct="+databaseProduct);
 
 		// Replace all %h with the host
@@ -421,7 +436,7 @@ public class Settings {
 		printHiddenField(out, "username", username);
 
 		// Only provide the password when not in the config
-		String config=DatabaseConfiguration.getProperty("password", databaseProduct);
+		String config = databaseConfiguration.getProperty("password", databaseProduct);
 		if(config==null || config.length()==0) printHiddenField(out, "password", password);
 		else printHiddenField(out, "password", "XXXXXXXX");
 
@@ -450,8 +465,10 @@ public class Settings {
 	 */
 	private static void printHiddenField(JavatatorWriter out, String name, int value) {
 		out.print("<INPUT type='hidden' name='");
+		// TODO: Encode
 		out.print(name);
 		out.print("' value='");
+		// TODO: Encode
 		out.print(value);
 		out.print("'>\n");
 	}
@@ -462,8 +479,10 @@ public class Settings {
 	// TODO: Encode name and value
 	private static void printHiddenField(JavatatorWriter out, String name, String value) {
 		out.print("<INPUT type='hidden' name='");
+		// TODO: Encode
 		out.print(name);
 		out.print("' value='");
+		// TODO: Encode
 		out.print(value);
 		out.print("'>\n");
 	}
@@ -498,7 +517,7 @@ public class Settings {
 
 		// Only provide the password when not in the config
 		out.print('&');
-		String config=DatabaseConfiguration.getProperty("password", databaseProduct);
+		String config = databaseConfiguration.getProperty("password", databaseProduct);
 		if(config==null || config.length()==0) printParam(out, "password", password);
 		else printParam(out, "password", "XXXXXXXX");
 
@@ -528,7 +547,9 @@ public class Settings {
 	 */
 	public Settings setDatabase(String database) {
 		return new Settings(
+			servletContext,
 			request,
+			databaseConfiguration,
 			databaseProduct,
 			hostname,
 			port,
@@ -552,7 +573,9 @@ public class Settings {
 	 */
 	public Settings setTable(String table) {
 		return new Settings(
+			servletContext,
 			request,
+			databaseConfiguration,
 			databaseProduct,
 			hostname,
 			port,

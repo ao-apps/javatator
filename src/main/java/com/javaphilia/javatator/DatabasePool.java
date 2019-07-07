@@ -56,6 +56,8 @@ public class DatabasePool {
 	 */
 	private static final List<DatabasePool> pools=new ArrayList<DatabasePool>();
 
+	private final DatabaseConfiguration databaseConfiguration;
+
 	/**
 	 * The database product this pool is for.
 	 */
@@ -147,6 +149,7 @@ public class DatabasePool {
 	 * The constructor is used internally only.
 	 */
 	private DatabasePool(
+		DatabaseConfiguration databaseConfiguration,
 		String databaseProduct,
 		String hostname,
 		int port,
@@ -155,6 +158,7 @@ public class DatabasePool {
 		String database,
 		String url
 	) throws IOException {
+		this.databaseConfiguration = databaseConfiguration;
 		this.databaseProduct = databaseProduct;
 		this.hostname = hostname;
 		this.port = port;
@@ -162,7 +166,7 @@ public class DatabasePool {
 		this.password = password;
 		this.database = database;
 		this.url = url;
-		numConnections = Integer.parseInt(DatabaseConfiguration.getProperty("connections", databaseProduct));
+		numConnections = Integer.parseInt(databaseConfiguration.getProperty("connections", databaseProduct));
 		connections = new Connection[numConnections];
 		busyConnections = new boolean[numConnections];
 		totalTimes = new long[numConnections];
@@ -283,6 +287,7 @@ public class DatabasePool {
 			// Create if not found
 			if(pool == null) {
 				pool = new DatabasePool(
+					settings.getDatabaseConfiguration(),
 					databaseProduct,
 					hostname,
 					port,
@@ -349,7 +354,7 @@ public class DatabasePool {
 						if(conn == null || conn.isClosed()) {
 							if(!driverLoaded) {
 								try {
-									Class.forName(DatabaseConfiguration.getProperty("driver", databaseProduct)).newInstance();
+									Class.forName(databaseConfiguration.getProperty("driver", databaseProduct)).newInstance();
 									driverLoaded = true;
 								} catch(ReflectiveOperationException err) {
 									throw new SQLException(err);

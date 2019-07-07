@@ -132,7 +132,7 @@ public class SchemaImage extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		resp.setContentType("image/gif");
 		try (OutputStream out = resp.getOutputStream()) {
-			Settings settings = new Settings(req);
+			Settings settings = new Settings(getServletContext(), req);
 
 			List<SchemaTable> tables = settings.getJDBCConnector().getDatabaseSchema();
 			int len = tables.size();
