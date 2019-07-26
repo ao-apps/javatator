@@ -1325,7 +1325,7 @@ public class PgSQLConnector extends JDBCConnector {
 				if("bool".equals(type) || "boolean".equals(type)) {
 					SB.append("?");
 				} else {
-					SB.append("?::").append(type);
+					SB.append("?::").append(quoteType(type));
 				}
 			}
 		}
@@ -1374,7 +1374,7 @@ public class PgSQLConnector extends JDBCConnector {
 				appendIsNull(SB, primaryKeys[i]);
 			} else {
 				String type = getCastType(columns.getType(columns.getID(primaryKeys[i])));
-				SB.append(quoteColumn(primaryKeys[i])).append("=?::").append(type);
+				SB.append(quoteColumn(primaryKeys[i])).append("=?::").append(quoteType(type));
 			}
 		}
 		String sql = SB.toString();
@@ -1418,7 +1418,7 @@ public class PgSQLConnector extends JDBCConnector {
 				appendIsNull(SB, primaryKeys.get(i));
 			} else {
 				String type = getCastType(columns.getType(columns.getID(primaryKeys.get(i))));
-				SB.append(quoteColumn(primaryKeys.get(i))).append("=?::").append(type);
+				SB.append(quoteColumn(primaryKeys.get(i))).append("=?::").append(quoteType(type));
 			}
 		}
 		String sql = SB.toString();
@@ -1471,7 +1471,7 @@ public class PgSQLConnector extends JDBCConnector {
 				SB.append(function[i]);
 			} else {
 				String type = getCastType(columns.getType(columns.getID(column[i])));
-				SB.append("?::").append(type);
+				SB.append("?::").append(quoteType(type));
 			}
 		}
 		for (int i = 0; i < primaryKeys.length; i++) {
@@ -1480,7 +1480,7 @@ public class PgSQLConnector extends JDBCConnector {
 				appendIsNull(SB, primaryKeys[i]);
 			} else {
 				String type = getCastType(columns.getType(columns.getID(primaryKeys[i])));
-				SB.append(quoteColumn(primaryKeys[i])).append("=?::").append(type);
+				SB.append(quoteColumn(primaryKeys[i])).append("=?::").append(quoteType(type));
 			}
 		}
 		String sql = SB.toString();

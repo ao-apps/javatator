@@ -1501,4 +1501,13 @@ public class JDBCConnector {
 	public String quoteColumn(String column) {
 		return defaultQuote("\"", "\"\"", "\"", column);
 	}
+
+	/**
+	 * Quotes an identifier used for a type name.
+	 *
+	 * @see  #defaultQuote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public String quoteType(String type) {
+		return defaultQuote("\"", "\"\"", "\"", type);
+	}
 }
