@@ -27,6 +27,7 @@
 package com.javaphilia.javatator;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -59,6 +60,7 @@ public class Main extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		resp.setContentType("text/html");
+		resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		try (JavatatorWriter out = new JavatatorWriter(resp.getOutputStream())) {
 			Settings settings = new Settings(getServletContext(), req);
 			String action = settings.getAction();
