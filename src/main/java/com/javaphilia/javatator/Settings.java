@@ -418,9 +418,7 @@ public class Settings {
 		while((pos=url.indexOf("%d"))>=0) url=url.substring(0, pos)+database+url.substring(pos+2);
 
 		/* TODO:
-		if(ssl) {
-			url = url + (url.indexOf('?') == -1 ? '?' : '&') + "ssl=true";
-		}
+		if(ssl) url = UrlUtils.addQuery(url, "ssl=true";
 		 */
 		return url;
 	}
@@ -473,7 +471,7 @@ public class Settings {
 	 */
 	private static void printHiddenField(JavatatorWriter out, String name, int value) {
 		out.print("<INPUT type='hidden' name='");
-		// TODO: Encode
+		// TODO: Encode, likely extending ChainWriter
 		out.print(name);
 		out.print("' value='");
 		// TODO: Encode
