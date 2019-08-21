@@ -22,7 +22,7 @@
  */
 package com.javaphilia.javatator;
 
-import com.aoindustries.servlet.http.ServletUtil;
+import com.aoindustries.servlet.http.HttpServletUtil;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -41,7 +41,7 @@ public class MainRedirect extends HttpServlet {
 	 */
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		ServletUtil.sendRedirect(req, resp, "/", HttpServletResponse.SC_MOVED_PERMANENTLY);
+		HttpServletUtil.sendRedirect(req, resp, "/", HttpServletResponse.SC_MOVED_PERMANENTLY);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class MainRedirect extends HttpServlet {
 	 */
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		ServletUtil.sendRedirect(req, resp, "/", HttpServletResponse.SC_MOVED_PERMANENTLY);
+		HttpServletUtil.sendRedirect(req, resp, "/", HttpServletResponse.SC_MOVED_PERMANENTLY);
 	}
 
 	@Override
