@@ -101,13 +101,16 @@ public class Main extends HttpServlet {
 			+ "  </head>\n"
 			+ "  <frameset rows='110,*' border=1>\n"
 			+ "    <frame src='");
+		// TODO: response encodeURL
 		out.print(settings.getRequest().getContextPath());
 		out.print("/?frame=top' name='top_frame' frameborder=1 marginheight=0 marginwidth=0>\n"
 			+ "    <frameset cols='200,*' border=1>\n"
 			+ "      <frame src='");
+		// TODO: response encodeURL
 		out.print(settings.getRequest().getContextPath());
 		out.print("/?frame=left' name='left_frame' frameborder=1>\n"
 			+ "      <frame src='");
+		// TODO: response encodeURL
 		out.print(settings.getRequest().getContextPath());
 		out.print("/?frame=right&blank=yes' name='right_frame' frameborder=1>\n"
 			+ "    </frameset>\n"
@@ -176,6 +179,7 @@ public class Main extends HttpServlet {
 			out.print("<html>\n"
 				+ "<head>\n"
 				+ "    <script language=javascript src='");
+			// TODO: response encodeURL
 			out.print(settings.getRequest().getContextPath());
 			out.print("/javatator.js'></script>\n"
 				+ "</head>\n"
@@ -201,6 +205,7 @@ public class Main extends HttpServlet {
 		if(settings.getHostname()!=null) {
 			out.print("<script language=javascript><!--\n"
 				+ "top.left_frame.location.href='");
+			// TODO: response encodeURL
 			out.print(settings.getRequest().getContextPath());
 			out.print("/?frame=left';\n"
 				+ "//--></script>\n");
@@ -218,6 +223,7 @@ public class Main extends HttpServlet {
 				String dbProduct=dbProducts.get(c);
 				out.print("  <td align=center class=ALTBG>");
 				out.print("<form method=post action='");
+				// TODO: response encodeURL
 				out.print(settings.getRequest().getContextPath());
 				out.print("/' target='top_frame'>\n"
 					+ "<input type=hidden name=frame value=top>");
@@ -403,15 +409,18 @@ public class Main extends HttpServlet {
 		out.print("<html>\n"
 			+ "  <head>\n"
 			+ "    <script language=javascript src='");
+		// TODO: response encodeURL
 		out.print(settings.getRequest().getContextPath());
 		out.print("/javatator.js'></script>\n"
 			+ "    <link rel=stylesheet type='text/css' href='");
+		// TODO: response encodeURL
 		out.print(settings.getRequest().getContextPath());
 		out.print("/javatator.css'>\n"
 			+ "  </head>\n"
 			+ "<body class='ALTBODY'>\n");
 		if (isConnected) {
 			out.print("<form method=post action='");
+			// TODO: response encodeURL
 			out.print(settings.getRequest().getContextPath());
 			out.print("/' name=theform target='left_frame'>\n"
 				+ "<input type=hidden name=frame value=left>");
@@ -455,9 +464,11 @@ public class Main extends HttpServlet {
 		out.print("<html>\n"
 			+ "<head>"
 			+ "    <script language=javascript src='");
+		// TODO: response encodeURL
 		out.print(settings.getRequest().getContextPath());
 		out.print("/javatator.js'></script>\n"
 			+ "    <link rel=stylesheet type='text/css' href='");
+		// TODO: response encodeURL
 		out.print(settings.getRequest().getContextPath());
 		out.print("/javatator.css'>\n");
 		if(isConnected) {
@@ -510,14 +521,17 @@ public class Main extends HttpServlet {
 		if(action==null || "db_details".equals(action)) out.print("document.theform.submit();");
 		out.print("'>\n"
 			+ "<form method=post name=theform target='right_frame' action='");
+		// TODO: response encodeURL
 		out.print(settings.getRequest().getContextPath());
 		out.print("/'>\n"
 			+ "<input type=hidden name=frame value=right>\n");
 		settings.printForm(out);
 		out.print("</form>\n"
 			+ "<a href='");
+		// TODO: response encodeURL
 		out.print(settings.getRequest().getContextPath());
 		out.print("/' target='_top'><img src='");
+		// TODO: response encodeURL
 		out.print(settings.getRequest().getContextPath());
 		out.print("/images/2.gif' alt='Javatator Admin' border=0 align=left width=345 height=72></a>\n");
 

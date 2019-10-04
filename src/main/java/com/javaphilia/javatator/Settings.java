@@ -509,6 +509,7 @@ public class Settings {
 	 * Prints a URL with the {@link Settings} embedded in the URL string.
 	 */
 	public void printURLParams(String url, JavatatorWriter out) throws IOException {
+		// TODO: response encodeURL
 		out.print(url);
 		out.print('?');
 		printParam(out, "dbproduct", databaseProduct);
