@@ -41,7 +41,7 @@ public class MainRedirect extends HttpServlet {
 	 */
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		HttpServletUtil.sendRedirect(req, resp, "/", HttpServletResponse.SC_MOVED_PERMANENTLY);
+		HttpServletUtil.sendRedirect(req, resp, "/", false, HttpServletResponse.SC_MOVED_PERMANENTLY);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class MainRedirect extends HttpServlet {
 	 */
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		HttpServletUtil.sendRedirect(req, resp, "/", HttpServletResponse.SC_MOVED_PERMANENTLY);
+		HttpServletUtil.sendRedirect(req, resp, "/", false, HttpServletResponse.SC_MOVED_PERMANENTLY);
 	}
 
 	@Override
