@@ -43,16 +43,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<param-name>com.javaphilia.javatator.DatabaseConfiguration</param-name>
 		<param-value></param-value>
 	</context-param>
-	<!-- Filter to set request character encoding to UTF-8 -->
-	<filter>
-		<filter-name>Utf8RequestCharacterEncodingFilter</filter-name>
-		<filter-class>com.aoindustries.servlet.filter.Utf8RequestCharacterEncodingFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>Utf8RequestCharacterEncodingFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-	</filter-mapping>
 	<servlet>
 		<servlet-name>Main</servlet-name>
 		<servlet-class>com.javaphilia.javatator.Main</servlet-class>
@@ -77,6 +67,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<servlet-name>SchemaImage</servlet-name>
 		<url-pattern>/schema.gif</url-pattern>
 	</servlet-mapping>
+	<!-- Sets request character encoding to UTF-8 when not provided by client -->
+	<listener>
+		<listener-class>com.aoindustries.servlet.filter.Utf8RequestCharacterEncodingListener</listener-class>
+	</listener>
 	<listener>
 		<listener-class>com.javaphilia.javatator.DatabaseConfigurationContext</listener-class>
 	</listener>
