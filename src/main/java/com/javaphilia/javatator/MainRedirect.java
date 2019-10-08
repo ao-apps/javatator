@@ -22,7 +22,9 @@
  */
 package com.javaphilia.javatator;
 
+import com.aoindustries.net.EmptyURIParameters;
 import com.aoindustries.servlet.http.HttpServletUtil;
+import com.aoindustries.servlet.http.LastModifiedServlet;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -41,7 +43,17 @@ public class MainRedirect extends HttpServlet {
 	 */
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		HttpServletUtil.sendRedirect(req, resp, "/", false, HttpServletResponse.SC_MOVED_PERMANENTLY);
+		HttpServletUtil.sendRedirect(
+			getServletContext(),
+			req,
+			resp,
+			"/",
+			EmptyURIParameters.getInstance(),
+			true,
+			false,
+			LastModifiedServlet.AddLastModifiedWhen.FALSE,
+			HttpServletResponse.SC_MOVED_PERMANENTLY
+		);
 	}
 
 	/**
@@ -49,7 +61,17 @@ public class MainRedirect extends HttpServlet {
 	 */
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		HttpServletUtil.sendRedirect(req, resp, "/", false, HttpServletResponse.SC_MOVED_PERMANENTLY);
+		HttpServletUtil.sendRedirect(
+			getServletContext(),
+			req,
+			resp,
+			"/",
+			EmptyURIParameters.getInstance(),
+			true,
+			false,
+			LastModifiedServlet.AddLastModifiedWhen.FALSE,
+			HttpServletResponse.SC_MOVED_PERMANENTLY
+		);
 	}
 
 	@Override
