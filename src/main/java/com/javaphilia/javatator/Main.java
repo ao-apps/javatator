@@ -95,7 +95,7 @@ public class Main extends HttpServlet {
 	 */
 	// TODO: Move to /frameset.inc.jsp, using HideJspFilter, too.  Add JSP and JSTL dependencies
 	private void printFrames(JavatatorWriter out, Settings settings, String action) throws IOException {
-		// TODO: Html.DocType.set(req, Html.DocType.strict);
+		// TODO: Doctype.set(req, Doctype.strict);
 		out.print("<html>\n"
 			+ "  <head>\n"
 			+ "    <title>Javatator Database Admin</title>\n"
