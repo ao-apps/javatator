@@ -2,7 +2,7 @@
 <!--
 javatator - Multi-database admin tool.
 
-Copyright (C) 2019  AO Industries, Inc.
+Copyright (C) 2019, 2020  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -145,7 +145,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 				<groupId>com.aoindustries</groupId><artifactId>ao-servlet-util</artifactId><version>2.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>aocode-public</artifactId><version>3.1.1${POST-SNAPSHOT}</version>
+				<groupId>com.aoindustries</groupId><artifactId>aocode-public</artifactId><version>3.2.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
 				<groupId>com.aoindustries</groupId><artifactId>aoserv-client</artifactId><version>1.83.2-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
