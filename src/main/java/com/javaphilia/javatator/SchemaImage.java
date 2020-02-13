@@ -4,7 +4,7 @@
  * Copyright (C) 2001  Dan Armstrong.
  *     dan@dans-home.com
  *
- * Copyright (C) 2015, 2019  AO Industries, Inc.
+ * Copyright (C) 2015, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -26,6 +26,7 @@
 package com.javaphilia.javatator;
 
 import Acme.JPM.Encoders.GifEncoder;
+import com.aoindustries.io.ContentType;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -130,7 +131,7 @@ public class SchemaImage extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		resp.setContentType("image/gif");
+		resp.setContentType(ContentType.GIF);
 		try (OutputStream out = resp.getOutputStream()) {
 			Settings settings = new Settings(getServletContext(), req);
 

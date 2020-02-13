@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -26,6 +26,7 @@
  */
 package com.javaphilia.javatator;
 
+import com.aoindustries.io.ContentType;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -59,7 +60,7 @@ public class Main extends HttpServlet {
 	 */
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		resp.setContentType("text/html");
+		resp.setContentType(ContentType.HTML);
 		resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		try (JavatatorWriter out = new JavatatorWriter(resp.getOutputStream())) {
 			Settings settings = new Settings(getServletContext(), req);
