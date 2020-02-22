@@ -22,8 +22,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
 
-<!--
-	This file only exists so NetBeans knows the path to deploy the application.
-	Tomcat uses the filtered version in src/main/webapp-filtered/META-INF/contex.xml.
--->
-<Context path="/javatator"/>
+<!-- META-INF/context.xml is used for local development deployment only -->
+<Context path="/javatator">
+
+	<Parameter
+		name="com.javaphilia.javatator.DatabaseConfiguration"
+		value="@{com.javaphilia.javatator.DatabaseConfiguration}"
+		override="false"
+	/>
+
+</Context>
