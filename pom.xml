@@ -32,6 +32,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	<groupId>com.aoindustries</groupId><artifactId>javatator</artifactId><version>0.5.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
+	<properties>
+		<com.javaphilia.javatator.DatabaseConfiguration />
+	</properties>
+
 	<name>Javatator</name>
 	<url>https://aoindustries.com/${project.artifactId}/</url>
 	<description>Multi-database admin tool.</description>
@@ -86,9 +90,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId><artifactId>maven-war-plugin</artifactId>
 				<configuration>
+					<packagingExcludes>
+						<!-- META-INF/context.xml is used for local development deployment only -->
+						META-INF/context.xml
+					</packagingExcludes>
 					<webResources>
 						<resource>
 							<directory>src/main/webapp</directory>
+							<excludes>
+								<!-- This file only exists so NetBeans knows the path to deploy the application. -->
+								<exclude>META-INF/context.xml</exclude>
+							</excludes>
 						</resource>
 						<resource>
 							<directory>src/main/webapp-filtered</directory>
