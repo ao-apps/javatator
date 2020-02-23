@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   metadata-complete="false">
 	<display-name>@{project.name} @{project.version}</display-name>
 	<description>@{project.description}</description>
-	<!-- TODO: Review filters versus other projects -->
+
 	<context-param>
 		<description>
 			Sets the filesystem path to the properties file to load for the
@@ -43,33 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<param-name>com.javaphilia.javatator.DatabaseConfiguration</param-name>
 		<param-value></param-value>
 	</context-param>
-	<servlet>
-		<servlet-name>Main</servlet-name>
-		<servlet-class>com.javaphilia.javatator.Main</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>MainRedirect</servlet-name>
-		<servlet-class>com.javaphilia.javatator.MainRedirect</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>SchemaImage</servlet-name>
-		<servlet-class>com.javaphilia.javatator.SchemaImage</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Main</servlet-name>
-		<url-pattern></url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>MainRedirect</servlet-name>
-		<url-pattern>/servlet/com.javaphilia.javatator.Main</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>SchemaImage</servlet-name>
-		<url-pattern>/schema.gif</url-pattern>
-	</servlet-mapping>
 
-	<!-- TODO: via annotation -->
-	<listener>
-		<listener-class>com.javaphilia.javatator.DatabaseConfigurationContext</listener-class>
-	</listener>
+	<!-- TODO: Review filters versus other projects -->
+
 </web-app>

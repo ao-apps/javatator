@@ -1,7 +1,7 @@
 /*
  * javatator - Multi-database admin tool.
  *
- * Copyright (C) 2019  AO Industries, Inc.
+ * Copyright (C) 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -28,10 +28,12 @@ import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 /**
  * The configuration for the current application
  */
+@WebListener
 public class DatabaseConfigurationContext implements ServletContextListener {
 
 	private static final String CONFIGURATION_ATTRIBUTE = DatabaseConfiguration.class.getName();
