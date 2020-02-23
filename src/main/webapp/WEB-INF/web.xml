@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
                       http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
   version="3.0"
-  metadata-complete="true">
+  metadata-complete="false">
 	<display-name>@{project.name} @{project.version}</display-name>
 	<description>@{project.description}</description>
 	<!-- TODO: Review filters versus other projects -->
@@ -67,10 +67,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<servlet-name>SchemaImage</servlet-name>
 		<url-pattern>/schema.gif</url-pattern>
 	</servlet-mapping>
-	<!-- Sets request character encoding to UTF-8 when not provided by client -->
-	<listener>
-		<listener-class>com.aoindustries.servlet.filter.Utf8RequestCharacterEncodingListener</listener-class>
-	</listener>
+
+	<!-- TODO: via annotation -->
 	<listener>
 		<listener-class>com.javaphilia.javatator.DatabaseConfigurationContext</listener-class>
 	</listener>
