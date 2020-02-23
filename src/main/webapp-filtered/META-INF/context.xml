@@ -31,4 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		override="false"
 	/>
 
+	<!-- Do not filter whitespace in development -->
+	<Parameter name="com.aoindustries.servlet.filter.TrimFilter.enabled" value="false" />
+
 </Context>
