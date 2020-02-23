@@ -1,7 +1,7 @@
 /*
  * javatator - Multi-database admin tool.
  *
- * Copyright (C) 2019  AO Industries, Inc.
+ * Copyright (C) 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -27,6 +27,7 @@ import com.aoindustries.servlet.http.HttpServletUtil;
 import com.aoindustries.servlet.http.LastModifiedServlet;
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Redirects requests from old Main servlet URL to now at /
  */
+@WebServlet("/servlet/com.javaphilia.javatator.Main")
 public class MainRedirect extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;

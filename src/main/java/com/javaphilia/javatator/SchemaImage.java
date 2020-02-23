@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,6 +51,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * A servlet that generates a GIF image of the database schema.
  */
+@WebServlet("/schema.gif")
 public class SchemaImage extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
