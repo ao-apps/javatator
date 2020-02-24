@@ -44,6 +44,35 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<param-value></param-value>
 	</context-param>
 
+	<context-param>
+		<description><![CDATA[
+			Controls the selection of HTML versus XHTML.  Supports three values:
+			<ul>
+				<li><code>SGML</code> - Use HTML always</li>
+				<li><code>XML</code> - Use XHTML always</li>
+				<li><code>auto</code> - (default) - Automatically choose based on the client's <code>Accept</code> header</li>
+			</ul>
+		]]></description>
+		<param-name>com.aoindustries.encoding.Serialization.default</param-name>
+		<param-value>SGML</param-value>
+	</context-param>
+
+	<context-param>
+		<description><![CDATA[
+			Controls the default DOCTYPE for the application.  Supported values:
+			<ul>
+				<li><code>HTML5</code> - Use (X)HTML 5</li>
+				<li><code>STRICT</code> - Use (X)HTML strict</li>
+				<li><code>TRANSITIONAL</code> - Use (X)HTML transitional/loose</li>
+				<li><code>FRAMESET</code> - Use (X)HTML frameset</li>
+				<li><code>NONE</code> - No doctype</li>
+				<li><code>default</code> - (default) - Use (X)HTML 5</li>
+			</ul>
+		]]></description>
+		<param-name>com.aoindustries.encoding.Doctype.default</param-name>
+		<param-value>default</param-value>
+	</context-param>
+
 	<!-- TODO: Review filters versus other projects -->
 
 </web-app>
