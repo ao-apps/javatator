@@ -141,6 +141,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 								<!-- Direct -->
 								<!-- No apidocs: <groupId>Acme</groupId><artifactId>Acme</artifactId> -->
 								<link>https://aoindustries.com/ao-lang/apidocs/</link>
+								<!-- No apidocs: <groupId>com.aoindustries</groupId><artifactId>ao-mime-mappings</artifactId> -->
 								<link>https://aoindustries.com/ao-net-types/apidocs/</link>
 								<link>https://aoindustries.com/ao-servlet-filter/apidocs/</link>
 								<link>https://aoindustries.com/ao-servlet-util/apidocs/</link>
@@ -169,6 +170,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 			</dependency>
 			<dependency>
 				<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId><version>3.4.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+			</dependency>
+			<dependency>
+				<groupId>com.aoindustries</groupId><artifactId>ao-mime-mappings</artifactId><version>1.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
 				<groupId>com.aoindustries</groupId><artifactId>ao-net-types</artifactId><version>1.2.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
@@ -211,6 +215,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId>
+		</dependency>
+		<dependency>
+			<!-- Required for UTF-8 static resources -->
+			<groupId>com.aoindustries</groupId><artifactId>ao-mime-mappings</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId><artifactId>ao-net-types</artifactId>
