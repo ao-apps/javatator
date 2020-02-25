@@ -38,6 +38,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	/>
 
 	<Parameter
+		description="Enable RFC 3987 IRI support in development"
+		name="com.aoindustries.servlet.filter.EncodeURIFilter.enableIRI" value="true"
+		override="false"
+	/>
+
+	<Parameter
 		description="Do not filter whitespace in development"
 		name="com.aoindustries.servlet.filter.TrimFilter.enabled" value="false"
 		override="false"
