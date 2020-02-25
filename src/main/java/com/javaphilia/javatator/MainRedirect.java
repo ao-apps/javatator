@@ -24,7 +24,6 @@ package com.javaphilia.javatator;
 
 import com.aoindustries.net.EmptyURIParameters;
 import com.aoindustries.servlet.http.HttpServletUtil;
-import com.aoindustries.servlet.http.LastModifiedServlet;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,15 +45,13 @@ public class MainRedirect extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		HttpServletUtil.sendRedirect(
-			getServletContext(),
+			HttpServletResponse.SC_MOVED_PERMANENTLY,
 			req,
 			resp,
 			"/",
 			EmptyURIParameters.getInstance(),
 			true,
-			false,
-			LastModifiedServlet.AddLastModifiedWhen.FALSE,
-			HttpServletResponse.SC_MOVED_PERMANENTLY
+			false
 		);
 	}
 
@@ -64,15 +61,13 @@ public class MainRedirect extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		HttpServletUtil.sendRedirect(
-			getServletContext(),
+			HttpServletResponse.SC_MOVED_PERMANENTLY,
 			req,
 			resp,
 			"/",
 			EmptyURIParameters.getInstance(),
 			true,
-			false,
-			LastModifiedServlet.AddLastModifiedWhen.FALSE,
-			HttpServletResponse.SC_MOVED_PERMANENTLY
+			false
 		);
 	}
 
