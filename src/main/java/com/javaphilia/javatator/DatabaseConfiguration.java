@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -27,6 +27,7 @@
 package com.javaphilia.javatator;
 
 import com.aoindustries.util.StringUtility;
+import com.aoindustries.util.WrappedException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -36,11 +37,53 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 /**
  * The configuration for the database is stored in a properties file
  */
 public class DatabaseConfiguration {
+
+	private static final String INIT_PARAM = DatabaseConfiguration.class.getName();
+
+	private static final String APPLICATION_ATTRIBUTE = DatabaseConfiguration.class.getName();
+
+	@WebListener
+	public static class Initializer implements ServletContextListener {
+		@Override
+		public void contextInitialized(ServletContextEvent event) {
+			getInstance(event.getServletContext());
+		}
+		@Override
+		public void contextDestroyed(ServletContextEvent event) {
+			// Do nothing
+		}
+	}
+
+	/**
+	 * Gets the database configuration for the current application.
+	 */
+	public static DatabaseConfiguration getInstance(ServletContext servletContext) {
+		DatabaseConfiguration instance = (DatabaseConfiguration)servletContext.getAttribute(APPLICATION_ATTRIBUTE);
+		if(instance == null) {
+			try {
+				String filename = StringUtility.trimNullIfEmpty(servletContext.getInitParameter(INIT_PARAM));
+				servletContext.log(DatabaseConfiguration.class.getName() + ": " + INIT_PARAM + '=' + filename);
+				if(filename != null) {
+					instance = new DatabaseConfiguration(new File(filename));
+				} else {
+					instance = new DatabaseConfiguration();
+				}
+				servletContext.setAttribute(APPLICATION_ATTRIBUTE, instance);
+			} catch(IOException e) {
+				throw new WrappedException(e);
+			}
+		}
+		return instance;
+	}
 
 	/**
 	 * The properties are kept here.
@@ -50,7 +93,7 @@ public class DatabaseConfiguration {
 	/**
 	 * Loads the default configuration from the bundled database.properties file.
 	 */
-	public DatabaseConfiguration() throws IOException {
+	private DatabaseConfiguration() throws IOException {
 		Properties newProps = new Properties();
 		try (InputStream in = DatabaseConfiguration.class.getResourceAsStream("database.properties")) {
 			if(in == null) throw new IOException("database.properties not found as resource");
@@ -62,7 +105,7 @@ public class DatabaseConfiguration {
 	/**
 	 * Loads the default configuration from a provided file.
 	 */
-	public DatabaseConfiguration(File file) throws IOException {
+	private DatabaseConfiguration(File file) throws IOException {
 		Properties newProps = new Properties();
 		try (InputStream in = new FileInputStream(file)) {
 			newProps.load(in);

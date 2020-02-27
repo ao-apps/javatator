@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -73,7 +73,7 @@ public class Settings {
 		this.servletContext = servletContext;
 		this.request = request;
 
-		databaseConfiguration = DatabaseConfigurationContext.getConfiguration(servletContext);
+		databaseConfiguration = DatabaseConfiguration.getInstance(servletContext);
 
 		// These values may by set in the configuration
 		databaseProduct = getSetting("dbproduct");
