@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2019  AO Industries, Inc.
+ * Copyright (C) 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -63,6 +63,7 @@ function deleteTable(tb) {
 function drawAdminMenu(doc) {
 	with(doc) {
 		write("<html><head>\n");
+		// TODO: RegistryEE
 		write("<link rel=stylesheet type='text/css' href='javatator.css'>\n");
 		write("</head>\n");
 		write("<body class='ALTBODY'><center>\n");
@@ -75,6 +76,7 @@ function drawAdminMenu(doc) {
 function drawMenu(doc) {
 	with(doc) {
 		write("<html><head>\n");
+		// TODO: RegistryEE
 		write("<link rel=stylesheet type='text/css' href='javatator.css'>\n");
 		write("</head>\n");
 		write("<body class='ALTBODY'>\n");
