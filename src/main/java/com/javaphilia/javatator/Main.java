@@ -26,10 +26,14 @@
  */
 package com.javaphilia.javatator;
 
+import com.aoindustries.html.servlet.HtmlEE;
 import com.aoindustries.io.ContentType;
+import com.aoindustries.web.resources.renderer.Renderer;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -74,11 +78,11 @@ public class Main extends HttpServlet {
 					// TODO: Make a blank.html or blank.jsp?
 					out.print("<html></html>");
 				else
-					printRightFrame(out, settings, action);
+					printRightFrame(resp, out, settings, action);
 			} else if ("left".equals(frame)) {
 				printLeftFrame(out, settings, action);
 			} else if ("top".equals(frame)) {
-				printTopFrame(out, settings, action);
+				printTopFrame(resp, out, settings, action);
 			} else {
 				printFrames(out, settings, action);
 			}
@@ -407,25 +411,32 @@ public class Main extends HttpServlet {
 	/**
 	 * Prints the contents of the right-hand frame.
 	 */
-	private void printRightFrame(JavatatorWriter out, Settings settings, String action) throws IOException {
+	private void printRightFrame(HttpServletResponse response, JavatatorWriter out, Settings settings, String action) throws IOException {
+		ServletContext servletContext = getServletContext();
+		HttpServletRequest request = settings.getRequest();
 		boolean isConnected = action != null && settings.getDatabaseProduct() != null && settings.getHostname() != null && settings.getPort() > 0 && settings.getUsername() != null && settings.getDatabase() != null;
 		// TODO: Forward to a set of appropriate JSP views
 		out.print("<html>\n"
 			+ "  <head>\n"
 			+ "    <script language=javascript src='");
 		// TODO: response encodeURL
-		out.print(settings.getRequest().getContextPath());
+		out.print(request.getContextPath());
 		out.print("/javatator.js'></script>\n"
-			+ "    <link rel=stylesheet type='text/css' href='");
-		// TODO: response encodeURL
-		out.print(settings.getRequest().getContextPath());
-		out.print("/javatator.css'>\n"
+			+ "    ");
+		Renderer.get(servletContext).renderStyles(
+			request,
+			response,
+			HtmlEE.get(servletContext, request, out),
+			Collections.singleton(JavatatorStyles.GROUP),
+			"    "
+		);
+		out.print("\n"
 			+ "  </head>\n"
 			+ "<body class='ALTBODY'>\n");
 		if (isConnected) {
 			out.print("<form method=post action='");
 			// TODO: response encodeURL
-			out.print(settings.getRequest().getContextPath());
+			out.print(request.getContextPath());
 			out.print("/' name=theform target='left_frame'>\n"
 				+ "<input type=hidden name=frame value=left>");
 		}
@@ -457,7 +468,9 @@ public class Main extends HttpServlet {
 	/**
 	 * Prints the contents of the top frame.
 	 */
-	private void printTopFrame(JavatatorWriter out, Settings settings, String action) throws IOException {
+	private void printTopFrame(HttpServletResponse response, JavatatorWriter out, Settings settings, String action) throws IOException {
+		ServletContext servletContext = getServletContext();
+		HttpServletRequest request = settings.getRequest();
 		boolean isConnected =
 			settings.getDatabaseProduct()!=null
 			&& settings.getHostname()!=null
@@ -469,12 +482,17 @@ public class Main extends HttpServlet {
 			+ "<head>"
 			+ "    <script language=javascript src='");
 		// TODO: response encodeURL
-		out.print(settings.getRequest().getContextPath());
+		out.print(request.getContextPath());
 		out.print("/javatator.js'></script>\n"
-			+ "    <link rel=stylesheet type='text/css' href='");
-		// TODO: response encodeURL
-		out.print(settings.getRequest().getContextPath());
-		out.print("/javatator.css'>\n");
+			+ "    ");
+		Renderer.get(servletContext).renderStyles(
+			request,
+			response,
+			HtmlEE.get(servletContext, request, out),
+			Collections.singleton(JavatatorStyles.GROUP),
+			"    "
+		);
+		out.print('\n');
 		if(isConnected) {
 			try {
 				JDBCConnector conn=settings.getJDBCConnector();
@@ -526,17 +544,17 @@ public class Main extends HttpServlet {
 		out.print("'>\n"
 			+ "<form method=post name=theform target='right_frame' action='");
 		// TODO: response encodeURL
-		out.print(settings.getRequest().getContextPath());
+		out.print(request.getContextPath());
 		out.print("/'>\n"
 			+ "<input type=hidden name=frame value=right>\n");
 		settings.printForm(out);
 		out.print("</form>\n"
 			+ "<a href='");
 		// TODO: response encodeURL
-		out.print(settings.getRequest().getContextPath());
+		out.print(request.getContextPath());
 		out.print("/' target='_top'><img src='");
 		// TODO: response encodeURL
-		out.print(settings.getRequest().getContextPath());
+		out.print(request.getContextPath());
 		out.print("/images/2.gif' alt='Javatator Admin' border=0 align=left width=345 height=72></a>\n");
 
 		out.startTable(null);
