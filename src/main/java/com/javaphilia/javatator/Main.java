@@ -29,6 +29,7 @@ package com.javaphilia.javatator;
 import com.aoindustries.html.servlet.HtmlEE;
 import com.aoindustries.io.ContentType;
 import com.aoindustries.web.resources.renderer.Renderer;
+import com.aoindustries.web.resources.servlet.RegistryEE;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -427,8 +428,12 @@ public class Main extends HttpServlet {
 			request,
 			response,
 			HtmlEE.get(servletContext, request, out),
-			Collections.singleton(JavatatorStyles.GROUP),
-			"    "
+			"    ",
+			true,
+			Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
+			RegistryEE.Request.get(servletContext, request),
+			RegistryEE.Session.get(request.getSession(false)),
+			RegistryEE.Page.get(request)
 		);
 		out.print("\n"
 			+ "  </head>\n"
@@ -489,8 +494,12 @@ public class Main extends HttpServlet {
 			request,
 			response,
 			HtmlEE.get(servletContext, request, out),
-			Collections.singleton(JavatatorStyles.GROUP),
-			"    "
+			"    ",
+			true,
+			Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
+			RegistryEE.Request.get(servletContext, request),
+			RegistryEE.Session.get(request.getSession(false)),
+			RegistryEE.Page.get(request)
 		);
 		out.print('\n');
 		if(isConnected) {
