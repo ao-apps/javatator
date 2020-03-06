@@ -22,6 +22,7 @@
  */
 package com.javaphilia.javatator;
 
+import com.aoindustries.web.resources.registry.Group;
 import com.aoindustries.web.resources.registry.Style;
 import com.aoindustries.web.resources.servlet.RegistryEE;
 import javax.servlet.ServletContextEvent;
@@ -31,14 +32,17 @@ import javax.servlet.annotation.WebListener;
 @WebListener("Registers the styles in RegistryEE.")
 public class JavatatorStyles implements ServletContextListener {
 
-	public static final String GROUP = "javatator";
+	public static final Group.Name RESOURCE_GROUP = new Group.Name("javatator");
 
 	public static final Style JAVATATOR = new Style("/javatator.css");
 
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		// Add our CSS files
-		RegistryEE.get(event.getServletContext()).getGroup(GROUP).styles.add(JAVATATOR);
+		RegistryEE.Application.get(event.getServletContext())
+			.getGroup(RESOURCE_GROUP)
+			.styles
+			.add(JAVATATOR);
 	}
 
 	@Override
