@@ -135,9 +135,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 						<groupId>org.apache.maven.plugins</groupId><artifactId>maven-javadoc-plugin</artifactId>
 						<configuration>
 							<links>
-								<link>${javac.link.javaApi}</link>
+								<link>${javadoc.link.javase}</link>
 								<!-- Java EE -->
-								<link>${javac.link.javaeeApi.6}</link>
+								<link>${javadoc.link.javaee}</link>
 								<!-- Direct -->
 								<!-- No apidocs: <groupId>Acme</groupId><artifactId>Acme</artifactId> -->
 								<link>https://aoindustries.com/ao-fluent-html/servlet/apidocs/</link>
