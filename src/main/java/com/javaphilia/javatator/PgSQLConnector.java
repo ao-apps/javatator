@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2009, 2015, 2017, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2009, 2015, 2017, 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * The PostgreSQL connection class. Implements things which the driver doesn't do using JDBC.
@@ -1507,5 +1508,23 @@ public class PgSQLConnector extends JDBCConnector {
 	@Override
 	public boolean isKeyword(String identifier) {
 		return Server.ReservedWord.isReservedWord(identifier);
+	}
+
+	private static final Pattern TIME_PATTERN = Pattern.compile(
+		"^time(stamp)? *(\\( *[0-6] *\\))? +with(out)? +time +zone$",
+		Pattern.CASE_INSENSITIVE
+	);
+
+	/**
+	 * Allows a few types that contains spaces.
+	 * See <a href="https://www.postgresql.org/docs/current/datatype-datetime.html">Date/Time Types</a>.
+	 */
+	@Override
+	public String quoteType(String type) {
+		if(TIME_PATTERN.matcher(type).matches()) {
+			return type;
+		} else {
+			return super.quoteType(type);
+		}
 	}
 }
