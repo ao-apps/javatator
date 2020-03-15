@@ -26,7 +26,7 @@
  */
 package com.javaphilia.javatator;
 
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import com.aoindustries.util.WrappedException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -70,7 +70,7 @@ public class DatabaseConfiguration {
 		DatabaseConfiguration instance = (DatabaseConfiguration)servletContext.getAttribute(APPLICATION_ATTRIBUTE);
 		if(instance == null) {
 			try {
-				String filename = StringUtility.trimNullIfEmpty(servletContext.getInitParameter(INIT_PARAM));
+				String filename = Strings.trimNullIfEmpty(servletContext.getInitParameter(INIT_PARAM));
 				servletContext.log(DatabaseConfiguration.class.getName() + ": " + INIT_PARAM + '=' + filename);
 				if(filename != null) {
 					instance = new DatabaseConfiguration(new File(filename));
@@ -119,7 +119,7 @@ public class DatabaseConfiguration {
 	public List<String> getAllowedHosts(String dbProduct) {
 		String hostList=getProperty("hostname", dbProduct);
 		if(hostList==null) return Collections.emptyList();
-		return StringUtility.splitStringCommaSpace(hostList);
+		return Strings.splitStringCommaSpace(hostList);
 	}
 
 	/**
