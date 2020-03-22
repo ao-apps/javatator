@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2009, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2009, 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -1354,7 +1354,7 @@ public class Table {
 							List<Integer> emptyList = Collections.emptyList();
 							exportedIDs.add(emptyList);
 						}
-						resultCopies.add(new ArrayList<String>());
+						resultCopies.add(new ArrayList<>());
 					}
 					out.printTH("Options");
 					out.endTR();

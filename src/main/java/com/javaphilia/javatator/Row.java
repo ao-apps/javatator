@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2019  AO Industries, Inc.
+ * Copyright (C) 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -243,8 +243,8 @@ public class Row {
 		StringTokenizer keys=new StringTokenizer(primaryKeysS,",");
 		String primaryValuesS=settings.getParameter("values");
 		StringTokenizer values=new StringTokenizer(primaryValuesS,",");
-		List<String> primaryKeys=new ArrayList<String>(keys.countTokens());
-		List<String> primaryValues=new ArrayList<String>(keys.countTokens());
+		List<String> primaryKeys=new ArrayList<>(keys.countTokens());
+		List<String> primaryValues=new ArrayList<>(keys.countTokens());
 		for(int i=0;keys.hasMoreTokens();i++) {
 			primaryKeys.add(keys.nextToken());
 			String value = values.nextToken();
