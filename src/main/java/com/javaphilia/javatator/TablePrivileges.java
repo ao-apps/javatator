@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2019  AO Industries, Inc.
+ * Copyright (C) 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -44,7 +44,6 @@ public class TablePrivileges {
 	 * @param grantors an array containing the users who have granted privileges to the table.
 	 * @param grantees an array containing the users who have been granted privileges to the table.
 	 * @param privileges an array containing the privileges which have been granted.
-	 * @param isGrantable
 	 */
 	public TablePrivileges(
 		List<String> grantors,
