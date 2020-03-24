@@ -163,7 +163,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<dependencies>
 			<!-- Java EE -->
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>javaee-web-api-bom</artifactId><version>6.0.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+				<groupId>com.aoindustries</groupId><artifactId>javaee-web-api-bom</artifactId><version>6.0.1${POST-SNAPSHOT}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
