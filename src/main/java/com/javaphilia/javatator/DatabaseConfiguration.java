@@ -119,7 +119,7 @@ public class DatabaseConfiguration {
 	public List<String> getAllowedHosts(String dbProduct) {
 		String hostList=getProperty("hostname", dbProduct);
 		if(hostList==null) return Collections.emptyList();
-		return Strings.splitStringCommaSpace(hostList);
+		return Strings.splitCommaSpace(hostList);
 	}
 
 	/**
