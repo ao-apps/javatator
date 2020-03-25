@@ -26,8 +26,8 @@
  */
 package com.javaphilia.javatator;
 
+import com.aoindustries.exception.WrappedException;
 import com.aoindustries.lang.Strings;
-import com.aoindustries.util.WrappedException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
