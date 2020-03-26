@@ -427,7 +427,7 @@ public class Main extends HttpServlet {
 		Renderer.get(servletContext).renderStyles(
 			request,
 			response,
-			HtmlEE.get(servletContext, request, out),
+			HtmlEE.get(servletContext, request, response, out),
 			"    ",
 			true,
 			Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
@@ -493,7 +493,7 @@ public class Main extends HttpServlet {
 		Renderer.get(servletContext).renderStyles(
 			request,
 			response,
-			HtmlEE.get(servletContext, request, out),
+			HtmlEE.get(servletContext, request, response, out),
 			"    ",
 			true,
 			Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
