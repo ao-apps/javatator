@@ -223,7 +223,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 						<groupId>org.apache.tomcat.maven</groupId><artifactId>tomcat7-maven-plugin</artifactId>
 						<configuration>
 							<charset>UTF-8</charset>
-							<server>aoindustries.com</server>
+							<server>tomcat7-maven-plugin-aoindustries.com</server>
 							<path>/javatator</path>
 							<update>true</update>
 							<url>${tomcat7-maven-plugin-aoindustries.com}</url>
