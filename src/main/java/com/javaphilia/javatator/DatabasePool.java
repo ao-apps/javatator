@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2016, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2016, 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -313,12 +313,11 @@ public class DatabasePool {
 	 * and more standard connection pooling implementation.
 	 * </p>
 	 */
+	// TODO: Extend NoCloseConnectionWrapper instead
 	private class ReleaseOnCloseConnection extends ConnectionWrapper {
 
-		private final Connection conn;
-
 		private ReleaseOnCloseConnection(Connection conn) {
-			this.conn = conn;
+			super(conn);
 		}
 
 		/**
@@ -327,12 +326,7 @@ public class DatabasePool {
 		 */
 		@Override
 		public void close() throws SQLException {
-			releaseConnection0(conn);
-		}
-
-		@Override
-		protected Connection getWrappedConnection() {
-			return conn;
+			releaseConnection0(getWrappedConnection());
 		}
 	}
 
