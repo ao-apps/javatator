@@ -26,6 +26,7 @@
 package com.javaphilia.javatator;
 
 import Acme.JPM.Encoders.GifEncoder;
+import com.aoindustries.collections.AoCollections;
 import com.aoindustries.io.ContentType;
 import java.awt.Color;
 import java.awt.Font;
@@ -39,7 +40,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -143,9 +143,9 @@ public class SchemaImage extends HttpServlet {
 			// Draw the image
 
 			// Get the font
-			Map<TextAttribute,Object> textAttributes = new HashMap<>(9);
+			Map<TextAttribute,Object> textAttributes = AoCollections.newHashMap(2);
 			textAttributes.put(TextAttribute.FAMILY, "Helvetica");
-			textAttributes.put(TextAttribute.SIZE, new Float(14));
+			textAttributes.put(TextAttribute.SIZE, 14f);
 			Font font = new Font(textAttributes);
 			//FontMetrics FM=toolkit.getFontMetrics(font);
 
