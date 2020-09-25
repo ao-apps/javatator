@@ -348,9 +348,9 @@ public class DatabasePool {
 						if(conn == null || conn.isClosed()) {
 							if(!driverLoaded) {
 								try {
-									Class.forName(databaseConfiguration.getProperty("driver", databaseProduct)).newInstance(); // TODO: newInstance is not necessary for loading JDBC drivers.
+									Class.forName(databaseConfiguration.getProperty("driver", databaseProduct));
 									driverLoaded = true;
-								} catch(ReflectiveOperationException err) {
+								} catch(ClassNotFoundException err) {
 									throw new SQLException(err);
 								}
 							}
