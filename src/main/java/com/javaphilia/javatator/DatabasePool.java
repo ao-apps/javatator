@@ -26,7 +26,7 @@
  */
 package com.javaphilia.javatator;
 
-import com.aoindustries.sql.ConnectionWrapper;
+import com.aoindustries.sql.wrapper.ConnectionWrapper;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -326,7 +326,7 @@ public class DatabasePool {
 		 */
 		@Override
 		public void close() throws SQLException {
-			releaseConnection0(getWrappedConnection());
+			releaseConnection0(getWrapped());
 		}
 	}
 
@@ -348,7 +348,7 @@ public class DatabasePool {
 						if(conn == null || conn.isClosed()) {
 							if(!driverLoaded) {
 								try {
-									Class.forName(databaseConfiguration.getProperty("driver", databaseProduct)).newInstance();
+									Class.forName(databaseConfiguration.getProperty("driver", databaseProduct)).newInstance(); // TODO: newInstance is not necessary for loading JDBC drivers.
 									driverLoaded = true;
 								} catch(ReflectiveOperationException err) {
 									throw new SQLException(err);
