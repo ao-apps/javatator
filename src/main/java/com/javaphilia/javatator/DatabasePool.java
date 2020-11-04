@@ -26,7 +26,7 @@
  */
 package com.javaphilia.javatator;
 
-import com.aoindustries.sql.wrapper.ConnectionWrapper;
+import com.aoindustries.sql.wrapper.ConnectionWrapperImpl;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -314,7 +314,7 @@ public class DatabasePool {
 	 * </p>
 	 */
 	// TODO: Extend NoCloseConnectionWrapper instead
-	private class ReleaseOnCloseConnection extends ConnectionWrapper {
+	private class ReleaseOnCloseConnection extends ConnectionWrapperImpl {
 
 		private ReleaseOnCloseConnection(Connection conn) {
 			super(conn);
