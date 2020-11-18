@@ -26,12 +26,12 @@
  */
 package com.javaphilia.javatator;
 
-import com.aoindustries.exception.WrappedException;
 import com.aoindustries.lang.Strings;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -79,7 +79,7 @@ public class DatabaseConfiguration {
 				}
 				servletContext.setAttribute(APPLICATION_ATTRIBUTE, instance);
 			} catch(IOException e) {
-				throw new WrappedException(e);
+				throw new UncheckedIOException(e);
 			}
 		}
 		return instance;
