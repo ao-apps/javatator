@@ -147,7 +147,7 @@ public class Settings {
 		S = request.getParameter("fkeyrows");
 		if (S != null && S.length() > 0)
 			fkeyrows = Integer.parseInt(S);
-		useMultiLine = "true".equals(request.getParameter("usemultiline"));
+		useMultiLine = Boolean.parseBoolean(request.getParameter("usemultiline"));
 	}
 
 	private Settings(
@@ -405,17 +405,16 @@ public class Settings {
 		// Replace all %h with the host
 		if(hostname.length()==0) throw new IOException("hostname not set");
 		if(hostname.contains("%h")) throw new IOException("hostname may not contain %h: "+hostname);
-		int pos;
-		while((pos=url.indexOf("%h"))>=0) url=url.substring(0, pos)+hostname+url.substring(pos+2);
+		url = url.replace("%h", hostname);
 
 		// Replace the %p with the port
 		if(port<1 || port>65535) throw new IOException("Invalid port: "+port);
-		while((pos=url.indexOf("%p"))>=0) url=url.substring(0, pos)+port+url.substring(pos+2);
+		url = url.replace("%p", Integer.toString(port));
 
 		// Replace the %d with the database
 		if(database.length()==0) throw new IOException("database not set");
 		if(database.contains("%d")) throw new IOException("database may not contain %d: "+database);
-		while((pos=url.indexOf("%d"))>=0) url=url.substring(0, pos)+database+url.substring(pos+2);
+		url = url.replace("%d", database);
 
 		/* TODO:
 		if(ssl) url = UrlUtils.addQuery(url, "ssl=true";
