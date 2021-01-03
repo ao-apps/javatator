@@ -2,7 +2,7 @@
 <!--
 javatator - Multi-database admin tool.
 
-Copyright (C) 2020  AO Industries, Inc.
+Copyright (C) 2020, 2021  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -38,10 +38,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<init-param>
 			<param-name>xpoweredBy</param-name>
 			<param-value>false</param-value>
-		</init-param>
-		<init-param>
-			<param-name>mappedfile</param-name>
-			<param-value>true</param-value>
 		</init-param>
 		<init-param>
 			<param-name>compilerSourceVM</param-name>
