@@ -247,31 +247,41 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 			</build>
 		</profile>
 		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.tomcat.maven</groupId><artifactId>tomcat7-maven-plugin</artifactId>
-						<configuration>
-							<charset>UTF-8</charset>
-							<server>tomcat7-maven-plugin-aoindustries.com</server>
-							<path>/javatator</path>
-							<update>true</update>
-							<url>${tomcat7-maven-plugin-aoindustries.com}</url>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
 			<id>publish</id>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId><artifactId>maven-enforcer-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>publish-enforce-profiles</id><goals><goal>enforce</goal></goals>
+								<configuration>
+									<rules>
+										<requireActiveProfile>
+											<message>"publish" requires "release" profile</message>
+											<profiles>release</profiles>
+										</requireActiveProfile>
+										<requireActiveProfile>
+											<message>"publish" requires "POST-SNAPSHOT" profile</message>
+											<profiles>POST-SNAPSHOT</profiles>
+										</requireActiveProfile>
+									</rules>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 					<plugin>
 						<groupId>org.apache.tomcat.maven</groupId><artifactId>tomcat7-maven-plugin</artifactId>
 						<executions>
 							<execution>
 								<id>publish</id><phase>deploy</phase><goals><goal>deploy-only</goal></goals>
+								<configuration>
+									<charset>UTF-8</charset>
+									<server>tomcat7-maven-plugin-aoindustries.com</server>
+									<path>/javatator</path>
+									<update>true</update>
+									<url>${tomcat7-maven-plugin-aoindustries.com}</url>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
