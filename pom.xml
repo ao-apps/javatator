@@ -285,6 +285,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 							</execution>
 						</executions>
 					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId><artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>warmup-get-url</id><phase>deploy</phase><goals><goal>run</goal></goals>
+								<configuration>
+									<target>
+										<sleep seconds="10" />
+										<mkdir dir="${project.build.directory}/warmup-get-url"/>
+										<get
+											src="${publish-aoindustries.com-javatator-warmup-get-url}"
+											dest="${project.build.directory}/warmup-get-url/response"
+											maxtime="120"
+											httpusecaches="false"
+										/>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
