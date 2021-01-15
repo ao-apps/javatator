@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2009, 2015, 2017, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2009, 2015, 2017, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -278,15 +278,11 @@ public class PgSQLConnector extends JDBCConnector {
 						+ "  c.relname='"+table+"'\n"
 						+ "  AND c.oid=r.rcrelid"
 					);
-				} else if(
-					version.startsWith("8.")
-					|| version.startsWith("9.")
-					// TODO: Assume all versions other than 7. here?
-				) {
+				} else {
 					R=stmt.executeQuery(
 						"SELECT\n"
 						+ "  co.conname,\n"
-						+ "  co.consrc\n"
+						+ "  pg_get_constraintdef(co.oid)\n"
 						+ "FROM\n"
 						+ "  pg_catalog.pg_class cl\n"
 						+ "  inner join pg_catalog.pg_constraint co on cl.oid=co.conrelid\n"
@@ -295,7 +291,7 @@ public class PgSQLConnector extends JDBCConnector {
 						+ "  cl.relname='"+table+"'\n"
 						+ "  and co.contype = 'c'"
 					);
-				} else throw new SQLException("Unsupported version: "+version);
+				}
 				try {
 					while(R.next()) {
 						names.add(R.getString(1));
@@ -372,10 +368,7 @@ public class PgSQLConnector extends JDBCConnector {
 					}
 					return null;
 				}
-			} else if(
-				version.startsWith("8.")
-				|| version.startsWith("9.")
-			) {
+			} else {
 				ForeignKeys foreignKeys = getForeignKeys(table, true);
 				if(foreignKeys!=null) {
 					for(int c=0;c<foreignKeys.getSize();c++) {
@@ -383,7 +376,7 @@ public class PgSQLConnector extends JDBCConnector {
 					}
 				}
 				return null;
-			} else throw new SQLException("Unsupported version: "+version);
+			}
 		}
 	}
 
@@ -409,24 +402,27 @@ public class PgSQLConnector extends JDBCConnector {
 
 		List<String> defaults=new ArrayList<>();
 		List<String> colNames=new ArrayList<>();
-		try (
-			Connection conn = DatabasePool.getConnection(getSettings());
-			PreparedStatement pstmt=conn.prepareStatement(
-				"SELECT d.adsrc, a.attname"
-				+ " FROM pg_attrdef d, pg_class c, pg_attribute a"
-				+ " WHERE c.relname = ?"
-				+ "   AND c.oid = d.adrelid"
-				+ "   AND a.attrelid = c.oid"
-				+ "   AND a.attnum > 0"
-				+ "   AND d.adnum = a.attnum"
-				+ " ORDER BY a.attnum"
-			)
-		) {
-			pstmt.setString(1, getSettings().getTable());
-			try (ResultSet results = pstmt.executeQuery()) {
-				while(results.next()) {
-					defaults.add(results.getString(1));
-					colNames.add(results.getString(2));
+		try (Connection conn = DatabasePool.getConnection(getSettings())) {
+			DatabaseMetaData metaData=conn.getMetaData();
+			String version = metaData.getDatabaseProductVersion();
+			try (
+				PreparedStatement pstmt=conn.prepareStatement(
+					"SELECT " + (version.startsWith("7.") ? "d.adsrc" : "pg_get_expr(d.adbin, d.adrelid)") + ", a.attname"
+					+ " FROM pg_attrdef d, pg_class c, pg_attribute a"
+					+ " WHERE c.relname = ?"
+					+ "   AND c.oid = d.adrelid"
+					+ "   AND a.attrelid = c.oid"
+					+ "   AND a.attnum > 0"
+					+ "   AND d.adnum = a.attnum"
+					+ " ORDER BY a.attnum"
+				)
+			) {
+				pstmt.setString(1, getSettings().getTable());
+				try (ResultSet results = pstmt.executeQuery()) {
+					while(results.next()) {
+						defaults.add(results.getString(1));
+						colNames.add(results.getString(2));
+					}
 				}
 			}
 		}
@@ -584,10 +580,7 @@ public class PgSQLConnector extends JDBCConnector {
 					}
 					return "";
 				}
-			} else if(
-				version.startsWith("8.")
-				|| version.startsWith("9.")
-			) {
+			} else {
 				ForeignKeys foreignKeys = getForeignKeys(table, true);
 				for(int c=0;c<foreignKeys.getSize();c++) {
 					if(constraint.equals(foreignKeys.getConstraintName(c))) {
@@ -595,7 +588,7 @@ public class PgSQLConnector extends JDBCConnector {
 					}
 				}
 				return "";
-			} else throw new SQLException("Unsupported version: "+version);
+			}
 		}
 	}
 
@@ -671,10 +664,7 @@ public class PgSQLConnector extends JDBCConnector {
 						}
 					}
 				}
-			} else if(
-				version.startsWith("8.")
-				|| version.startsWith("9.")
-			) {
+			} else {
 				List<Long> foreignTableOids = new ArrayList<>();
 				List<List<Short>> foreignKeyAttNums = new ArrayList<>();
 				List<Long> primaryTableOids = new ArrayList<>();
@@ -737,7 +727,7 @@ public class PgSQLConnector extends JDBCConnector {
 					if(primaryKeyAttNum.size()!=1) throw new SQLException("Only single-column primary keys currently supported");
 					primaryKeys.add(getColumnName(conn, primaryTableOids.get(c), primaryKeyAttNum.get(0)));
 				}
-			} else throw new SQLException("Unsupported version: "+version);
+			}
 			int size=constraintNames.size();
 			if(size<1) {
 				return null;
@@ -944,7 +934,7 @@ public class PgSQLConnector extends JDBCConnector {
 				String keyTable=key.substring(0,pos);
 
 				// Only return entries if less than or equal to fkeyrows possibilities
-				int count=getIntQuery("SELECT COUNT(" + quoteColumn(keyColumn) + ") FROM " + quoteTable(keyTable));
+				int count=getIntQuery("SELECT COUNT(*) FROM " + quoteTable(keyTable));
 				if(count<=fkeyrows) {
 					StringBuilder sql=new StringBuilder("SELECT ")
 						.append(quoteColumn(keyColumn))
@@ -968,9 +958,7 @@ public class PgSQLConnector extends JDBCConnector {
 								}
 								if(!isMultiple) {
 									sql
-										.append(" WHERE (SELECT COUNT(")
-										.append(quoteColumn(column))
-										.append(") FROM ")
+										.append(" WHERE (SELECT COUNT(*) FROM ")
 										.append(quoteTable(settings.getTable()))
 										.append(" WHERE ")
 										.append(quoteTable(keyTable))
