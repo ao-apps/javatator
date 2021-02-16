@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -462,7 +462,7 @@ public class Settings {
 		printHiddenField(out, "sortorder", sortOrder);
 		printHiddenField(out, "numrows", numrows);
 		printHiddenField(out, "fkeyrows", fkeyrows);
-		printHiddenField(out, "usemultiline", useMultiLine?"true":"false");
+		printHiddenField(out, "usemultiline", Boolean.toString(useMultiLine));
 	}
 
 	/**
@@ -545,7 +545,7 @@ public class Settings {
 		out.print('&');
 		printParam(out, "fkeyrows", fkeyrows);
 		out.print('&');
-		printParam(out, "usemultiline", useMultiLine?"true":"false");
+		printParam(out, "usemultiline", Boolean.toString(useMultiLine));
 	}
 
 	/**

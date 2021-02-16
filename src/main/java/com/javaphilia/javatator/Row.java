@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -40,7 +40,7 @@ public class Row {
 	/**
 	 * The {@link Settings} currently in use.
 	 */
-	private Settings settings;
+	private final Settings settings;
 
 	/**
 	 * Instantiate a new {@link Row}.
@@ -358,7 +358,7 @@ public class Row {
 						out.print(">[NULL]</option>\n");
 					}
 
-					if("bool".equals(columnType)) currentValue=("t".equals(currentValue))?"true":"false";
+					if("bool".equals(columnType)) currentValue = Boolean.toString("t".equals(currentValue));
 					int vsize=pvalues.size();
 					for(int c=0;c<vsize;c++) {
 						String value=pvalues.get(c);
