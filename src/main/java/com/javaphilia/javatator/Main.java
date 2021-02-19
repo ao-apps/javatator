@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -26,7 +26,7 @@
  */
 package com.javaphilia.javatator;
 
-import com.aoindustries.html.servlet.HtmlEE;
+import com.aoindustries.html.servlet.DocumentEE;
 import com.aoindustries.io.ContentType;
 import com.aoindustries.web.resources.renderer.Renderer;
 import com.aoindustries.web.resources.servlet.RegistryEE;
@@ -424,10 +424,9 @@ public class Main extends HttpServlet {
 		out.print(request.getContextPath());
 		out.print("/javatator.js'></script>\n"
 			+ "    ");
-		Renderer.get(servletContext).renderStyles(
-			request,
+		Renderer.get(servletContext).renderStyles(request,
 			response,
-			HtmlEE.get(servletContext, request, response, out),
+			DocumentEE.get(servletContext, request, response, out),
 			"    ",
 			true,
 			Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
@@ -490,10 +489,9 @@ public class Main extends HttpServlet {
 		out.print(request.getContextPath());
 		out.print("/javatator.js'></script>\n"
 			+ "    ");
-		Renderer.get(servletContext).renderStyles(
-			request,
+		Renderer.get(servletContext).renderStyles(request,
 			response,
-			HtmlEE.get(servletContext, request, response, out),
+			DocumentEE.get(servletContext, request, response, out),
 			"    ",
 			true,
 			Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
