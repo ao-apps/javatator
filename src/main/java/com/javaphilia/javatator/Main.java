@@ -424,7 +424,8 @@ public class Main extends HttpServlet {
 		out.print(request.getContextPath());
 		out.print("/javatator.js'></script>\n"
 			+ "    ");
-		Renderer.get(servletContext).renderStyles(request,
+		Renderer.get(servletContext).renderStyles(
+			request,
 			response,
 			DocumentEE.get(servletContext, request, response, out),
 			"    ",
@@ -489,7 +490,8 @@ public class Main extends HttpServlet {
 		out.print(request.getContextPath());
 		out.print("/javatator.js'></script>\n"
 			+ "    ");
-		Renderer.get(servletContext).renderStyles(request,
+		Renderer.get(servletContext).renderStyles(
+			request,
 			response,
 			DocumentEE.get(servletContext, request, response, out),
 			"    ",

@@ -2,7 +2,7 @@
 <!--
 javatator - Multi-database admin tool.
 
-Copyright (C) 2020  AO Industries, Inc.
+Copyright (C) 2020, 2021  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -34,6 +34,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	<Parameter
 		description="XHTML enabled in development"
 		name="com.aoindustries.encoding.Serialization.default" value="auto"
+		override="false"
+	/>
+
+	<Parameter
+		description="Tab indentation enabled in development"
+		name="com.aoindustries.html.Document.indent" value="true"
 		override="false"
 	/>
 
