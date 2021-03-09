@@ -351,7 +351,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 			<!-- javaee-web-api-bom: <groupId>javax.servlet.jsp</groupId><artifactId>javax.servlet.jsp-api</artifactId> -->
 			<!-- Transitive -->
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>ao-encoding</artifactId><version>4.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+				<groupId>com.aoindustries</groupId><artifactId>ao-encoding</artifactId><version>4.0.0${POST-SNAPSHOT}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.aoindustries</groupId><artifactId>ao-encoding-servlet</artifactId><version>3.0.0${POST-SNAPSHOT}</version>
