@@ -427,8 +427,8 @@ public class Main extends HttpServlet {
 		Renderer.get(servletContext).renderStyles(
 			request,
 			response,
-			DocumentEE.get(servletContext, request, response, out),
-			"    ",
+			new DocumentEE(servletContext, request, response, out),
+			null, // unused
 			true,
 			Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
 			RegistryEE.Request.get(servletContext, request),
@@ -493,8 +493,8 @@ public class Main extends HttpServlet {
 		Renderer.get(servletContext).renderStyles(
 			request,
 			response,
-			DocumentEE.get(servletContext, request, response, out),
-			"    ",
+			new DocumentEE(servletContext, request, response, out),
+			null, // unused
 			true,
 			Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
 			RegistryEE.Request.get(servletContext, request),

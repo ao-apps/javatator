@@ -4,7 +4,7 @@
  * Copyright (C) 2001  Dan Armstrong.
  *     dan@dans-home.com
  *
- * Copyright (C) 2015, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2015, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -143,7 +143,7 @@ public class SchemaImage extends HttpServlet {
 			// Draw the image
 
 			// Get the font
-			Map<TextAttribute,Object> textAttributes = AoCollections.newHashMap(2);
+			Map<TextAttribute, Object> textAttributes = AoCollections.newHashMap(2);
 			textAttributes.put(TextAttribute.FAMILY, "Helvetica");
 			textAttributes.put(TextAttribute.SIZE, 14f);
 			Font font = new Font(textAttributes);
