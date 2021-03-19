@@ -428,7 +428,6 @@ public class Main extends HttpServlet {
 			request,
 			response,
 			new DocumentEE(servletContext, request, response, out),
-			null, // unused
 			true,
 			Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
 			RegistryEE.Request.get(servletContext, request),
@@ -494,7 +493,6 @@ public class Main extends HttpServlet {
 			request,
 			response,
 			new DocumentEE(servletContext, request, response, out),
-			null, // unused
 			true,
 			Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
 			RegistryEE.Request.get(servletContext, request),
