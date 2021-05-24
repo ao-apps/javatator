@@ -6,7 +6,7 @@ Copyright (C) 2001  Jason Davies.
     If you want to help or want to report any bugs, please email me:
     jason@javaphilia.com
 
-Copyright (C) 2009, 2015, 2019  AO Industries, Inc.
+Copyright (C) 2009, 2015, 2019, 2021  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -25,11 +25,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-  version="3.0"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+  version="3.1"
   metadata-complete="false">
 	<display-name>@{project.name} @{project.version}</display-name>
 	<description>@{project.description}</description>
