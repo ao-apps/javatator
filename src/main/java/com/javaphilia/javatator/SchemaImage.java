@@ -26,8 +26,8 @@
 package com.javaphilia.javatator;
 
 import Acme.JPM.Encoders.GifEncoder;
-import com.aoindustries.collections.AoCollections;
-import com.aoindustries.io.ContentType;
+import com.aoapps.collections.AoCollections;
+import com.aoapps.lang.io.ContentType;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;

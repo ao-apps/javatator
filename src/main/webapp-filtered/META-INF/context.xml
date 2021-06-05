@@ -33,31 +33,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 	<Parameter
 		description="XHTML enabled in development"
-		name="com.aoindustries.encoding.Serialization.default" value="auto"
+		name="com.aoapps.encoding.Serialization.default" value="auto"
 		override="false"
 	/>
 
 	<Parameter
 		description="Automatic newline (and tab indentation when enabled) enabled in development"
-		name="com.aoindustries.html.servlet.DocumentEE.autonli" value="true"
+		name="com.aoapps.html.servlet.DocumentEE.autonli" value="true"
 		override="false"
 	/>
 
 	<Parameter
 		description="Tab indentation enabled in development"
-		name="com.aoindustries.html.servlet.DocumentEE.indent" value="true"
+		name="com.aoapps.html.servlet.DocumentEE.indent" value="true"
 		override="false"
 	/>
 
 	<Parameter
 		description="Enable RFC 3987 IRI support in development"
-		name="com.aoindustries.servlet.filter.EncodeURIFilter.enableIRI" value="true"
+		name="com.aoapps.servlet.filter.EncodeURIFilter.enableIRI" value="true"
 		override="false"
 	/>
 
 	<Parameter
 		description="Do not filter whitespace in development"
-		name="com.aoindustries.servlet.filter.TrimFilter.enabled" value="false"
+		name="com.aoapps.servlet.filter.TrimFilter.enabled" value="false"
 		override="false"
 	/>
 

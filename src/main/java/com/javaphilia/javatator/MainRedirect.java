@@ -1,7 +1,7 @@
 /*
  * javatator - Multi-database admin tool.
  *
- * Copyright (C) 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,8 +22,8 @@
  */
 package com.javaphilia.javatator;
 
-import com.aoindustries.net.EmptyURIParameters;
-import com.aoindustries.servlet.http.HttpServletUtil;
+import com.aoapps.net.EmptyURIParameters;
+import com.aoapps.servlet.http.HttpServletUtil;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

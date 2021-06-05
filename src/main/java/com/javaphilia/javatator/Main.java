@@ -26,10 +26,10 @@
  */
 package com.javaphilia.javatator;
 
-import com.aoindustries.html.servlet.DocumentEE;
-import com.aoindustries.io.ContentType;
-import com.aoindustries.web.resources.renderer.Renderer;
-import com.aoindustries.web.resources.servlet.RegistryEE;
+import com.aoapps.html.servlet.DocumentEE;
+import com.aoapps.lang.io.ContentType;
+import com.aoapps.web.resources.renderer.Renderer;
+import com.aoapps.web.resources.servlet.RegistryEE;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;

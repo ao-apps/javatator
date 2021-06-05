@@ -53,7 +53,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 				<li><code>auto</code> - (default) - Automatically choose based on the client's <code>Accept</code> header</li>
 			</ul>
 		]]></description>
-		<param-name>com.aoindustries.encoding.Serialization.default</param-name>
+		<param-name>com.aoapps.encoding.Serialization.default</param-name>
 		<param-value>SGML</param-value>
 	</context-param>
 
@@ -69,7 +69,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 				<li><code>default</code> - (default) - Use (X)HTML 5</li>
 			</ul>
 		]]></description>
-		<param-name>com.aoindustries.encoding.Doctype.default</param-name>
+		<param-name>com.aoapps.encoding.Doctype.default</param-name>
 		<param-value>default</param-value>
 	</context-param>
 

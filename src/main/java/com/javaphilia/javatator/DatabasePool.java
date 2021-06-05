@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2016, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2016, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -26,7 +26,7 @@
  */
 package com.javaphilia.javatator;
 
-import com.aoindustries.sql.wrapper.ConnectionWrapperImpl;
+import com.aoapps.sql.wrapper.ConnectionWrapperImpl;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
