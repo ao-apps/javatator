@@ -94,12 +94,23 @@ public class DatabaseConfiguration {
 	 * Loads the default configuration from the bundled database.properties file.
 	 */
 	private DatabaseConfiguration() throws IOException {
-		Properties newProps = new Properties();
-		try (InputStream in = DatabaseConfiguration.class.getResourceAsStream("database.properties")) {
-			if(in == null) throw new IOException("database.properties not found as resource");
-			newProps.load(in);
+		final String RESOURCE = "com/javaphilia/javatator/database.properties";
+		InputStream in = DatabaseConfiguration.class.getResourceAsStream("/" + RESOURCE);
+		if(in == null) {
+			// Try ClassLoader for when modules enabled
+			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+			in = (classloader != null)
+				? classloader.getResourceAsStream(RESOURCE)
+				: ClassLoader.getSystemResourceAsStream(RESOURCE);
 		}
-		props = newProps;
+		if(in == null) throw new IOException("database.properties not found as resource");
+		try {
+			Properties newProps = new Properties();
+			newProps.load(in);
+			props = newProps;
+		} finally {
+			in.close();
+		}
 	}
 
 	/**

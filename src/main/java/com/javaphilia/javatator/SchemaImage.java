@@ -25,7 +25,6 @@
  */
 package com.javaphilia.javatator;
 
-import Acme.JPM.Encoders.GifEncoder;
 import com.aoapps.collections.AoCollections;
 import com.aoapps.lang.io.ContentType;
 import java.awt.Color;
@@ -37,11 +36,14 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -133,270 +135,274 @@ public class SchemaImage extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		resp.setContentType(ContentType.GIF);
-		try (OutputStream out = resp.getOutputStream()) {
-			Settings settings = new Settings(getServletContext(), req);
+		Settings settings = new Settings(getServletContext(), req);
 
-			List<SchemaTable> tables = settings.getJDBCConnector().getDatabaseSchema();
-			int len = tables.size();
+		List<SchemaTable> tables;
+		try {
+			tables = settings.getJDBCConnector().getDatabaseSchema();
+		} catch(SQLException e) {
+			throw new ServletException(e);
+		}
+		int len = tables.size();
 
-			// Draw the image
+		// Draw the image
 
-			// Get the font
-			Map<TextAttribute, Object> textAttributes = AoCollections.newHashMap(2);
-			textAttributes.put(TextAttribute.FAMILY, "Helvetica");
-			textAttributes.put(TextAttribute.SIZE, 14f);
-			Font font = new Font(textAttributes);
-			//FontMetrics FM=toolkit.getFontMetrics(font);
+		// Get the font
+		Map<TextAttribute, Object> textAttributes = AoCollections.newHashMap(2);
+		textAttributes.put(TextAttribute.FAMILY, "Helvetica");
+		textAttributes.put(TextAttribute.SIZE, 14f);
+		Font font = new Font(textAttributes);
+		//FontMetrics FM=toolkit.getFontMetrics(font);
 
-			// Figure out the structure to use
-			short[][] structure = null;
-			int len2 = structures.length;
-			for (int d = 0; d < len2; d++) {
-				short[][] tstructure = structures[d];
-				// Count the number of slots for tables
-				short slots = 0;
-				int len3 = tstructure.length;
-				for (int e = 0; e < len3; e++) {
-					short[] line = tstructure[e];
-					int len4 = line.length;
-					for (int f = 0; f < len4; f++) {
-						if (line[f] != 0) {
-							slots++;
-						}
-					}
-				}
-				if (slots >= len) {
-					structure = tstructure;
-				}
-			}
-			if (structure == null) {
-				throw new ServletException("No more than 58 tables are currently supported.");
-			}
-
-			// Figure out the number of columns and rows
-			int cols = structure[0].length;
-			int rows = structure.length;
-
-			BufferedImage sizingImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
-			FontMetrics FM;
-			Graphics sizingG = sizingImage.getGraphics();
-			try {
-				FM = sizingG.getFontMetrics(font);
-			} finally {
-				sizingG.dispose();
-			}
-
-			// Figure out the widest and tallest for each row and column
-			int[] colWidest = new int[cols];
-			int[] rowHighest = new int[rows];
-			int currentTable = 0;
-			Loop:
-			for (int y = 0; y < rows; y++) {
-				short[] line = structure[y];
-				for (int x = 0; x < cols; x++) {
-					if (currentTable >= len) {
-						break Loop;
-					}
-					short priority = line[x];
-					if (priority > 0 && priority <= len) {
-						SchemaTable table = tables.get(currentTable++);
-						int width = table.getWidth(FM);
-						if (width > colWidest[x]) {
-							colWidest[x] = width;
-						}
-						int height = table.getHeight(FM);
-						if (height > rowHighest[y]) {
-							rowHighest[y] = height;
-						}
+		// Figure out the structure to use
+		short[][] structure = null;
+		int len2 = structures.length;
+		for (int d = 0; d < len2; d++) {
+			short[][] tstructure = structures[d];
+			// Count the number of slots for tables
+			short slots = 0;
+			int len3 = tstructure.length;
+			for (int e = 0; e < len3; e++) {
+				short[] line = tstructure[e];
+				int len4 = line.length;
+				for (int f = 0; f < len4; f++) {
+					if (line[f] != 0) {
+						slots++;
 					}
 				}
 			}
+			if (slots >= len) {
+				structure = tstructure;
+			}
+		}
+		if (structure == null) {
+			throw new ServletException("No more than 58 tables are currently supported.");
+		}
 
-			// Determine the total dimensions for the image
-			int imageWidth = 0;
+		// Figure out the number of columns and rows
+		int cols = structure[0].length;
+		int rows = structure.length;
+
+		BufferedImage sizingImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+		FontMetrics FM;
+		Graphics sizingG = sizingImage.getGraphics();
+		try {
+			FM = sizingG.getFontMetrics(font);
+		} finally {
+			sizingG.dispose();
+		}
+
+		// Figure out the widest and tallest for each row and column
+		int[] colWidest = new int[cols];
+		int[] rowHighest = new int[rows];
+		int currentTable = 0;
+		Loop:
+		for (int y = 0; y < rows; y++) {
+			short[] line = structure[y];
 			for (int x = 0; x < cols; x++) {
+				if (currentTable >= len) {
+					break Loop;
+				}
+				short priority = line[x];
+				if (priority > 0 && priority <= len) {
+					SchemaTable table = tables.get(currentTable++);
+					int width = table.getWidth(FM);
+					if (width > colWidest[x]) {
+						colWidest[x] = width;
+					}
+					int height = table.getHeight(FM);
+					if (height > rowHighest[y]) {
+						rowHighest[y] = height;
+					}
+				}
+			}
+		}
+
+		// Determine the total dimensions for the image
+		int imageWidth = 0;
+		for (int x = 0; x < cols; x++) {
+			if (x > 0) {
+				imageWidth += HORIZONTAL_SPACE;
+			}
+			imageWidth += colWidest[x];
+		}
+		int imageHeight = 0;
+		for (int y = 0; y < rows; y++) {
+			if (y > 0) {
+				imageHeight += VERTICAL_SPACE;
+			}
+			imageHeight += rowHighest[y];
+		}
+
+		// Make the image
+		BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D G = image.createGraphics();
+
+		// Set the antialiasing
+		RenderingHints hints = new RenderingHints(
+			RenderingHints.KEY_TEXT_ANTIALIASING,
+			RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		G.addRenderingHints(hints);
+
+		// Fill the background
+		G.setColor(background);
+		G.fillRect(0, 0, imageWidth, imageHeight);
+
+		// Determine the top left corner of each table
+		int[] xs = new int[len];
+		int[] ys = new int[len];
+		currentTable = 0;
+		int ypos = 0;
+		Loop2:
+		for (int y = 0; y < rows; y++) {
+			if (y > 0) {
+				ypos += VERTICAL_SPACE;
+			}
+			short[] line = structure[y];
+			int xpos = 0;
+			for (int x = 0; x < cols; x++) {
+				if (currentTable >= len) {
+					break Loop2;
+				}
 				if (x > 0) {
-					imageWidth += HORIZONTAL_SPACE;
+					xpos += HORIZONTAL_SPACE;
 				}
-				imageWidth += colWidest[x];
+				short priority = line[x];
+				if (priority > 0 && priority <= len) {
+					SchemaTable table = tables.get(currentTable);
+					// Center in available space
+					int width = table.getWidth(FM);
+					xs[currentTable] = xpos + (colWidest[x] - width) / 2;
+					int height = table.getHeight(FM);
+					ys[currentTable] = ypos + (rowHighest[y] - height) / 2;
+					currentTable++;
+				}
+				xpos += colWidest[x];
 			}
-			int imageHeight = 0;
-			for (int y = 0; y < rows; y++) {
-				if (y > 0) {
-					imageHeight += VERTICAL_SPACE;
-				}
-				imageHeight += rowHighest[y];
-			}
+			ypos += rowHighest[y];
+		}
 
-			// Make the image
-			BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D G = image.createGraphics();
+		// Draw the connections between all tables
+		G.setColor(connectorColor);
+		List<Point> points = new ArrayList<>();
+		for (int c = 0; c < len; c++) {
+			SchemaTable table = tables.get(c);
+			List<SchemaRow> urows = table.getRows();
+			len2 = urows.size();
+			for (int d = 0; d < len2; d++) {
+				SchemaRow row = urows.get(d);
+				List<SchemaForeignKey> keys = row.getForeignKeys();
+				int len3 = keys.size();
+				for (int e = 0; e < len3; e++) {
+					SchemaForeignKey key = keys.get(e);
 
-			// Set the antialiasing
-			RenderingHints hints = new RenderingHints(
-				RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			G.addRenderingHints(hints);
-
-			// Fill the background
-			G.setColor(background);
-			G.fillRect(0, 0, imageWidth, imageHeight);
-
-			// Determine the top left corner of each table
-			int[] xs = new int[len];
-			int[] ys = new int[len];
-			currentTable = 0;
-			int ypos = 0;
-			Loop2:
-			for (int y = 0; y < rows; y++) {
-				if (y > 0) {
-					ypos += VERTICAL_SPACE;
-				}
-				short[] line = structure[y];
-				int xpos = 0;
-				for (int x = 0; x < cols; x++) {
-					if (currentTable >= len) {
-						break Loop2;
-					}
-					if (x > 0) {
-						xpos += HORIZONTAL_SPACE;
-					}
-					short priority = line[x];
-					if (priority > 0 && priority <= len) {
-						SchemaTable table = tables.get(currentTable);
-						// Center in available space
-						int width = table.getWidth(FM);
-						xs[currentTable] = xpos + (colWidest[x] - width) / 2;
-						int height = table.getHeight(FM);
-						ys[currentTable] = ypos + (rowHighest[y] - height) / 2;
-						currentTable++;
-					}
-					xpos += colWidest[x];
-				}
-				ypos += rowHighest[y];
-			}
-
-			// Draw the connections between all tables
-			G.setColor(connectorColor);
-			List<Point> points = new ArrayList<>();
-			for (int c = 0; c < len; c++) {
-				SchemaTable table = tables.get(c);
-				List<SchemaRow> urows = table.getRows();
-				len2 = urows.size();
-				for (int d = 0; d < len2; d++) {
-					SchemaRow row = urows.get(d);
-					List<SchemaForeignKey> keys = row.getForeignKeys();
-					int len3 = keys.size();
-					for (int e = 0; e < len3; e++) {
-						SchemaForeignKey key = keys.get(e);
-
-						// Find the other table
-						SchemaTable foreignTable = null;
-						int foreignIndex = -1;
-						for (int f = 0; f < len; f++) {
-							SchemaTable temp = tables.get(f);
-							if (temp.getName().equals(key.getForeignTableName())) {
-								foreignTable = temp;
-								foreignIndex = f;
-								break;
-							}
+					// Find the other table
+					SchemaTable foreignTable = null;
+					int foreignIndex = -1;
+					for (int f = 0; f < len; f++) {
+						SchemaTable temp = tables.get(f);
+						if (temp.getName().equals(key.getForeignTableName())) {
+							foreignTable = temp;
+							foreignIndex = f;
+							break;
 						}
-						if (foreignTable == null) {
-							throw new AssertionError("Unable to find table: " + key.getForeignTableName());
-						}
+					}
+					if (foreignTable == null) {
+						throw new AssertionError("Unable to find table: " + key.getForeignTableName());
+					}
 
-						// Get the row link y position for both tables
-						int linky1 = ys[c] + table.getRowLinkY(row.getName(), FM);
-						int linky2 = ys[foreignIndex] + foreignTable.getRowLinkY(key.getForeignRowName(), FM);
+					// Get the row link y position for both tables
+					int linky1 = ys[c] + table.getRowLinkY(row.getName(), FM);
+					int linky2 = ys[foreignIndex] + foreignTable.getRowLinkY(key.getForeignRowName(), FM);
 
-						// Figure out which x coordinates to use
-						int link1x1 = xs[c];
-						int width1 = table.getWidth(FM);
-						int link1x2 = link1x1 + width1;
-						int link2x1 = xs[foreignIndex];
-						int width2 = foreignTable.getWidth(FM);
-						int link2x2 = link2x1 + width2;
-						int x1, x2;
-						if ((link1x1 <= link2x1 && link1x2 >= link2x2) || (link1x1 >= link2x1 && link1x2 <= link2x2)) {
-							if (link1x2 == link2x2 || link1x1 != link2x1) {
-								x1 = link1x1 - 2;
-								x2 = link2x1 - 2;
-							} else {
-								x1 = link1x2;
-								x2 = link2x2;
-							}
-						} else if (link2x2 < link1x1) {
-							x2 = link2x2;
+					// Figure out which x coordinates to use
+					int link1x1 = xs[c];
+					int width1 = table.getWidth(FM);
+					int link1x2 = link1x1 + width1;
+					int link2x1 = xs[foreignIndex];
+					int width2 = foreignTable.getWidth(FM);
+					int link2x2 = link2x1 + width2;
+					int x1, x2;
+					if ((link1x1 <= link2x1 && link1x2 >= link2x2) || (link1x1 >= link2x1 && link1x2 <= link2x2)) {
+						if (link1x2 == link2x2 || link1x1 != link2x1) {
 							x1 = link1x1 - 2;
-						} else if (link1x2 < link2x1) {
-							x1 = link1x2;
 							x2 = link2x1 - 2;
-						} else if (link2x1 < link1x1) {
-							x2 = link2x1 - 2;
-							x1 = link1x1 - 2;
 						} else {
 							x1 = link1x2;
 							x2 = link2x2;
 						}
-
-						// Draw the link
-						G.drawLine(x1, linky1, x2, linky2);
-						G.drawLine(x1 + 1, linky1, x2 + 1, linky2);
-						G.drawLine(x1, linky1 + 1, x2, linky2 + 1);
-						G.drawLine(x1 + 1, linky1 + 1, x2 + 1, linky2 + 1);
-
-						// Draw the arrow at point 2
-						int y1 = linky1;
-						int y2 = linky2;
-						double angle;
-						if (x1 < x2) {
-							angle = Math.atan(((double) (y2 - y1)) / ((double) (x2 - x1)));
-						} else {
-							angle = Math.PI + Math.atan(((double) (y2 - y1)) / ((double) (x2 - x1)));
-						}
-						double angle1 = angle - ARROW_SPREAD / 2;
-						double angle2 = angle + ARROW_SPREAD / 2;
-						int ax1 = (int) Math.round(x1 + ARROW_LENGTH * Math.cos(angle1));
-						int ay1 = (int) Math.round(y1 + ARROW_LENGTH * Math.sin(angle1));
-						int ax2 = (int) Math.round(x1 + ARROW_LENGTH * Math.cos(angle2));
-						int ay2 = (int) Math.round(y1 + ARROW_LENGTH * Math.sin(angle2));
-						G.drawLine(x1, linky1, ax1, ay1);
-						G.drawLine(x1 + 1, linky1, ax1 + 1, ay1);
-						G.drawLine(x1, linky1 + 1, ax1, ay1 + 1);
-						G.drawLine(x1 + 1, linky1 + 1, ax1 + 1, ay1 + 1);
-						G.drawLine(x1, linky1, ax2, ay2);
-						G.drawLine(x1 + 1, linky1, ax2 + 1, ay2);
-						G.drawLine(x1, linky1 + 1, ax2, ay2 + 1);
-						G.drawLine(x1 + 1, linky1 + 1, ax2 + 1, ay2 + 1);
-
-						//points.addElement(new Point(x1,linky1));
-						points.add(new Point(x2, linky2));
+					} else if (link2x2 < link1x1) {
+						x2 = link2x2;
+						x1 = link1x1 - 2;
+					} else if (link1x2 < link2x1) {
+						x1 = link1x2;
+						x2 = link2x1 - 2;
+					} else if (link2x1 < link1x1) {
+						x2 = link2x1 - 2;
+						x1 = link1x1 - 2;
+					} else {
+						x1 = link1x2;
+						x2 = link2x2;
 					}
+
+					// Draw the link
+					G.drawLine(x1, linky1, x2, linky2);
+					G.drawLine(x1 + 1, linky1, x2 + 1, linky2);
+					G.drawLine(x1, linky1 + 1, x2, linky2 + 1);
+					G.drawLine(x1 + 1, linky1 + 1, x2 + 1, linky2 + 1);
+
+					// Draw the arrow at point 2
+					int y1 = linky1;
+					int y2 = linky2;
+					double angle;
+					if (x1 < x2) {
+						angle = Math.atan(((double) (y2 - y1)) / ((double) (x2 - x1)));
+					} else {
+						angle = Math.PI + Math.atan(((double) (y2 - y1)) / ((double) (x2 - x1)));
+					}
+					double angle1 = angle - ARROW_SPREAD / 2;
+					double angle2 = angle + ARROW_SPREAD / 2;
+					int ax1 = (int) Math.round(x1 + ARROW_LENGTH * Math.cos(angle1));
+					int ay1 = (int) Math.round(y1 + ARROW_LENGTH * Math.sin(angle1));
+					int ax2 = (int) Math.round(x1 + ARROW_LENGTH * Math.cos(angle2));
+					int ay2 = (int) Math.round(y1 + ARROW_LENGTH * Math.sin(angle2));
+					G.drawLine(x1, linky1, ax1, ay1);
+					G.drawLine(x1 + 1, linky1, ax1 + 1, ay1);
+					G.drawLine(x1, linky1 + 1, ax1, ay1 + 1);
+					G.drawLine(x1 + 1, linky1 + 1, ax1 + 1, ay1 + 1);
+					G.drawLine(x1, linky1, ax2, ay2);
+					G.drawLine(x1 + 1, linky1, ax2 + 1, ay2);
+					G.drawLine(x1, linky1 + 1, ax2, ay2 + 1);
+					G.drawLine(x1 + 1, linky1 + 1, ax2 + 1, ay2 + 1);
+
+					//points.addElement(new Point(x1,linky1));
+					points.add(new Point(x2, linky2));
 				}
 			}
+		}
 
-			// Draw each table
-			G.setFont(font);
-			for (int c = 0; c < len; c++) {
-				SchemaTable table = tables.get(c);
-				table.draw(G, FM, xs[c], ys[c]);
-			}
+		// Draw each table
+		G.setFont(font);
+		for (int c = 0; c < len; c++) {
+			SchemaTable table = tables.get(c);
+			table.draw(G, FM, xs[c], ys[c]);
+		}
 
-			// Draw all of the connecting points
-			G.setColor(connectorColor);
-			len = points.size();
-			for (int c = 0; c < len; c++) {
-				Point P = points.get(c);
-				G.fillOval(P.x - 2, P.y - 2, 6, 6);
-			}
+		// Draw all of the connecting points
+		G.setColor(connectorColor);
+		len = points.size();
+		for (int c = 0; c < len; c++) {
+			Point P = points.get(c);
+			G.fillOval(P.x - 2, P.y - 2, 6, 6);
+		}
 
-			// Compress the GIF file
-			GifEncoder encoder = new GifEncoder(image, out, true);
-			encoder.encode();
-		} catch (Exception err) {
-			// TODO: servlet.log instead of printStackTrace, or just throw in ServletException
-			err.printStackTrace();
+		// Compress the GIF file
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		ImageIO.write(image, "GIF", bout);
+		resp.setContentType(ContentType.GIF);
+		resp.setContentLength(bout.size());
+		try (OutputStream out = resp.getOutputStream()) {
+			bout.writeTo(out);
 		}
 	}
 }

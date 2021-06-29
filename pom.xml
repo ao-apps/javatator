@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	<packaging>war</packaging>
 
 	<properties>
+		<module.name>com.javaphilia.javatator</module.name>
 		<javadoc.breadcrumbs><![CDATA[<a target="${javadoc.target}" href="${project.url}">${project.name}</a>]]></javadoc.breadcrumbs>
 		<com.javaphilia.javatator.DatabaseConfiguration />
 		<!-- TODO: Remove once moved to oss.aoapps.com -->
@@ -99,14 +100,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		-->
 	</distributionManagement>
 
-	<repositories>
-		<!-- See http://stackoverflow.com/questions/1164043/maven-how-to-include-jars-which-are-not-available-in-reps-into-a-j2ee-project -->
-		<repository>
-			<id>project-repository</id>
-			<url>file://${project.basedir}/repository</url>
-		</repository>
-	</repositories>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -142,7 +135,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 								<configuration>
 									<artifactItems>
 										<!-- Direct -->
-										<!-- No apidocs: <groupId>Acme</groupId><artifactId>Acme</artifactId> -->
 										<artifactItem>
 											<groupId>com.aoapps</groupId><artifactId>ao-collections</artifactId><classifier>javadoc</classifier>
 											<includes>element-list, package-list</includes>
@@ -205,7 +197,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 						<configuration>
 							<offlineLinks>
 								<!-- Direct -->
-								<!-- No apidocs: <groupId>Acme</groupId><artifactId>Acme</artifactId> -->
 								<offlineLink>
 									<url>https://oss.aoapps.com/collections/apidocs/</url>
 									<location>${project.build.directory}/offlineLinks/com.aoapps/ao-collections</location>
@@ -264,8 +255,36 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId><artifactId>maven-war-plugin</artifactId>
+						<configuration>
+							<!--
+								Releases use "Automatic-Module-Name" instead of "module-info.java"
+								since has direct dependencies that are not yet modularized.
+							-->
+							<archive>
+								<manifestEntries>
+									<Automatic-Module-Name>${module.name}</Automatic-Module-Name>
+								</manifestEntries>
+							</archive>
+							<packagingExcludes>
+								<!-- META-INF/context.xml is used for local development deployment only -->
+								META-INF/context.xml,
+								WEB-INF/classes/module-info.class
+							</packagingExcludes>
+							<!-- There is no way to exclude module-info.class from secondary artifact, just don't attach -->
+							<attachClasses>false</attachClasses>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<!--
-			Required for bug "requireActiveProfile ignores inherited profiles in submoduless":
+			Required for bug "requireActiveProfile ignores inherited profiles in submodules":
 			https://issues.apache.org/jira/browse/MENFORCER-226
 		-->
 		<profile>
@@ -285,10 +304,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 								<id>publish-enforce-profiles</id><goals><goal>enforce</goal></goals>
 								<configuration>
 									<rules>
-										<requireActiveProfile>
-											<message>"publish" requires "release" profile</message>
-											<profiles>release</profiles>
-										</requireActiveProfile>
 										<requireActiveProfile>
 											<message>"publish" requires "POST-SNAPSHOT" profile</message>
 											<profiles>POST-SNAPSHOT</profiles>
@@ -341,10 +356,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	<dependencyManagement>
 		<dependencies>
 			<!-- Direct -->
-			<dependency>
-				<!-- Installed with mvn install:install-file -Dfile=Acme-2005-05-20.jar -DgroupId=Acme -DartifactId=Acme -Dversion=2005-05-20 -Dpackaging=jar -DlocalRepositoryPath=repository -->
-				<groupId>Acme</groupId><artifactId>Acme</artifactId><version>2005-05-20</version>
-			</dependency>
 			<dependency>
 				<groupId>com.aoapps</groupId><artifactId>ao-collections</artifactId><version>2.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
@@ -426,9 +437,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 	<dependencies>
 		<!-- Direct -->
-		<dependency>
-			<groupId>Acme</groupId><artifactId>Acme</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>com.aoapps</groupId><artifactId>ao-collections</artifactId>
 		</dependency>
