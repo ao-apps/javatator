@@ -337,12 +337,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 									<target>
 										<sleep seconds="10" />
 										<mkdir dir="${project.build.directory}/warmup-get-url"/>
-										<get
-											src="${publish-aoindustries.com-javatator-warmup-get-url}"
-											dest="${project.build.directory}/warmup-get-url/response"
-											maxtime="120"
-											httpusecaches="false"
-										/>
+										<retry retrycount="12" retrydelay="15">
+											<get
+												retries="1"
+												src="${publish-aoindustries.com-javatator-warmup-get-url}"
+												dest="${project.build.directory}/warmup-get-url/response"
+												maxtime="120"
+												httpusecaches="false"
+											/>
+										</retry>
 									</target>
 								</configuration>
 							</execution>
