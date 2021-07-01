@@ -337,7 +337,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 									<target>
 										<sleep seconds="10" />
 										<mkdir dir="${project.build.directory}/warmup-get-url"/>
-										<retry retrycount="12" retrydelay="15">
+										<retry retrycount="12" retrydelay="15000">
 											<get
 												retries="1"
 												src="${publish-aoindustries.com-javatator-warmup-get-url}"
