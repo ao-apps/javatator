@@ -1,28 +1,12 @@
 # [<img src="javatator-logo.gif" alt="Javatator Logo" width="345" height="72">](https://github.com/aoindustries/javatator)
-<p>
-	<a href="https://aoindustries.com/life-cycle#project-beta">
-		<img src="https://aoindustries.com/ao-badges/project-beta.svg" alt="project: beta" />
-	</a>
-	<a href="https://aoindustries.com/life-cycle#management-production">
-		<img src="https://aoindustries.com/ao-badges/management-production.svg" alt="management: production" />
-	</a>
-	<a href="https://aoindustries.com/life-cycle#packaging-active">
-		<img src="https://aoindustries.com/ao-badges/packaging-active.svg" alt="packaging: active" />
-	</a>
-	<br />
-	<a href="https://docs.oracle.com/en/java/javase/11/docs/api/">
-		<img src="https://aoindustries.com/ao-badges/java-11.svg" alt="java: &gt;= 11" />
-	</a>
-	<a href="https://docs.oracle.com/javaee/7/api/">
-		<img src="https://aoindustries.com/ao-badges/javaee-7.svg" alt="java ee: &gt;= 7" />
-	</a>
-	<a href="http://semver.org/spec/v2.0.0.html">
-		<img src="https://aoindustries.com/ao-badges/semver-2.0.0.svg" alt="semantic versioning: 2.0.0" />
-	</a>
-	<a href="https://www.gnu.org/licenses/gpl-2.0">
-		<img src="https://aoindustries.com/ao-badges/license-gpl-2.0.svg" alt="license: GPL v2" />
-	</a>
-</p>
+
+[![project: beta](https://aoindustries.com/ao-badges/project-beta.svg)](https://aoindustries.com/life-cycle#project-beta)
+[![management: production](https://aoindustries.com/ao-badges/management-production.svg)](https://aoindustries.com/life-cycle#management-production)
+[![packaging: active](https://aoindustries.com/ao-badges/packaging-active.svg)](https://aoindustries.com/life-cycle#packaging-active)  
+[![java: &gt;= 11](https://aoindustries.com/ao-badges/java-11.svg)](https://docs.oracle.com/en/java/javase/11/docs/api/)
+[![java ee: &gt;= 7](https://aoindustries.com/ao-badges/javaee-7.svg)](https://docs.oracle.com/javaee/7/api/)
+[![semantic versioning: 2.0.0](https://aoindustries.com/ao-badges/semver-2.0.0.svg)](http://semver.org/spec/v2.0.0.html)
+[![license: GPL v2](https://aoindustries.com/ao-badges/license-gpl-2.0.svg)](https://www.gnu.org/licenses/gpl-2.0)
 
 Multi-database admin tool.
 
