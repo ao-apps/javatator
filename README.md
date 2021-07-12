@@ -8,6 +8,8 @@
 [![semantic versioning: 2.0.0](https://aoindustries.com/ao-badges/semver-2.0.0.svg)](http://semver.org/spec/v2.0.0.html)
 [![license: GPL v2](https://aoindustries.com/ao-badges/license-gpl-2.0.svg)](https://www.gnu.org/licenses/gpl-2.0)
 
+[![Build](https://github.com/aoindustries/javatator/workflows/Build/badge.svg?branch=master)](https://github.com/aoindustries/javatator/actions?query=workflow%3ABuild)
+
 Multi-database admin tool.
 
 ## Project Links
