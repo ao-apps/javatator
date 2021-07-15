@@ -91,6 +91,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<url>https://github.com/aoindustries/javatator/issues</url>
 	</issueManagement>
 
+	<ciManagement>
+		<system>GitHub Actions</system>
+		<url>https://github.com/aoindustries/javatator/actions</url>
+	</ciManagement>
+
 	<repositories>
 		<!-- Repository required here, too, so can find parent -->
 		<repository>
