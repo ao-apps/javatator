@@ -9,6 +9,7 @@
 [![license: GPL v2](https://aoindustries.com/ao-badges/license-gpl-2.0.svg)](https://www.gnu.org/licenses/gpl-2.0)
 
 [![Build](https://github.com/aoindustries/javatator/workflows/Build/badge.svg?branch=master)](https://github.com/aoindustries/javatator/actions?query=workflow%3ABuild)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.aoindustries/javatator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.aoindustries/javatator)
 
 Multi-database admin tool.
 
