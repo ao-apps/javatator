@@ -36,7 +36,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<module.name>com.javaphilia.javatator</module.name>
 		<javadoc.breadcrumbs><![CDATA[<a target="${javadoc.target}" href="${project.url}">${project.name}</a>]]></javadoc.breadcrumbs>
 		<com.javaphilia.javatator.DatabaseConfiguration />
-		<!-- TODO: Remove once moved to oss.aoapps.com -->
 		<google.analytics.trackingId>UA-86871646-1</google.analytics.trackingId>
 		<!-- com.aoindustries is on original Sonatype Nexus Repository Manager -->
 		<nexusUrl>https://oss.sonatype.org/</nexusUrl>
@@ -398,7 +397,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 				<groupId>com.aoapps</groupId><artifactId>ao-web-resources-servlet</artifactId><version>0.4.0${POST-SNAPSHOT}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>aoserv-client</artifactId><version>1.84.22-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+				<groupId>com.aoindustries</groupId><artifactId>aoserv-client</artifactId><version>1.85.0${POST-SNAPSHOT}</version>
 			</dependency>
 			<!-- javaee-web-api-bom: <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId> -->
 			<!-- javaee-web-api-bom: <groupId>javax.servlet.jsp</groupId><artifactId>javax.servlet.jsp-api</artifactId> -->
