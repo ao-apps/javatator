@@ -205,7 +205,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId><artifactId>maven-javadoc-plugin</artifactId>
 						<configuration>
-							<offlineLinks>
+							<offlineLinks combine.children="append">
 								<!-- Direct -->
 								<offlineLink>
 									<url>https://oss.aoapps.com/collections/apidocs/</url>
@@ -247,18 +247,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 									<url>https://aoindustries.com/aoserv/client/apidocs/</url>
 									<location>${project.build.directory}/offlineLinks/com.aoindustries/aoserv-client</location>
 								</offlineLink>
-								<!-- Java EE: <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId> -->
-								<!-- Java EE: <groupId>javax.servlet.jsp</groupId><artifactId>javax.servlet.jsp-api</artifactId> -->
-								<!-- Java SE -->
-								<offlineLink>
-									<url>${javadoc.link.javase}</url>
-									<location>${project.build.directory}/offlineLinks/com/aoapps/javadoc/offline/javase/${javase.release}</location>
-								</offlineLink>
-								<!-- Java EE -->
-								<offlineLink>
-									<url>${javadoc.link.javaee}</url>
-									<location>${project.build.directory}/offlineLinks/com/aoapps/javadoc/offline/javaee/${javaee.version}</location>
-								</offlineLink>
+								<!-- ao-javadoc-offline: <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId> -->
+								<!-- ao-javadoc-offline: <groupId>javax.servlet.jsp</groupId><artifactId>javax.servlet.jsp-api</artifactId> -->
 							</offlineLinks>
 						</configuration>
 					</plugin>
