@@ -27,6 +27,7 @@
 package com.javaphilia.javatator;
 
 import com.aoapps.lang.Strings;
+import com.aoapps.servlet.attribute.ScopeEE;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -49,7 +50,8 @@ public class DatabaseConfiguration {
 
 	private static final String INIT_PARAM = DatabaseConfiguration.class.getName();
 
-	private static final String APPLICATION_ATTRIBUTE = DatabaseConfiguration.class.getName();
+	private static final ScopeEE.Application.Attribute<DatabaseConfiguration> APPLICATION_ATTRIBUTE =
+		ScopeEE.APPLICATION.attribute(DatabaseConfiguration.class.getName());
 
 	@WebListener
 	public static class Initializer implements ServletContextListener {
@@ -67,22 +69,19 @@ public class DatabaseConfiguration {
 	 * Gets the database configuration for the current application.
 	 */
 	public static DatabaseConfiguration getInstance(ServletContext servletContext) {
-		DatabaseConfiguration instance = (DatabaseConfiguration)servletContext.getAttribute(APPLICATION_ATTRIBUTE);
-		if(instance == null) {
-			try {
+		try {
+			return APPLICATION_ATTRIBUTE.context(servletContext).computeIfAbsent(__ -> {
 				String filename = Strings.trimNullIfEmpty(servletContext.getInitParameter(INIT_PARAM));
 				servletContext.log(DatabaseConfiguration.class.getName() + ": " + INIT_PARAM + '=' + filename);
 				if(filename != null) {
-					instance = new DatabaseConfiguration(new File(filename));
+					return new DatabaseConfiguration(new File(filename));
 				} else {
-					instance = new DatabaseConfiguration();
+					return new DatabaseConfiguration();
 				}
-				servletContext.setAttribute(APPLICATION_ATTRIBUTE, instance);
-			} catch(IOException e) {
-				throw new UncheckedIOException(e);
-			}
+			});
+		} catch(IOException e) {
+			throw new UncheckedIOException(e);
 		}
-		return instance;
 	}
 
 	/**
