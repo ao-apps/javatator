@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -33,10 +33,10 @@ import java.util.List;
  */
 public class TablePrivileges {
 
-	final private List<String> grantors;
-	final private List<String> grantees;
-	final private List<String> privileges;
-	final private List<JDBCConnector.Boolean> isGrantable;
+	private final List<String> grantors;
+	private final List<String> grantees;
+	private final List<String> privileges;
+	private final List<JDBCConnector.Boolean> isGrantable;
 
 	/**
 	 * Instantiate a new {@link TablePrivileges} object.

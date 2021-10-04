@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -75,7 +75,7 @@ public class JDBCConnector {
 	/**
 	 * The {@link Settings} store all the configuration parameters.
 	 */
-	final protected Settings settings;
+	protected final Settings settings;
 
 	/**
 	 * Instantiate a new JDBCConnector.
@@ -597,7 +597,7 @@ public class JDBCConnector {
 	/**
 	 * Executes a query and returns a {@link List} of {@link String} at index 1.
 	 */
-	final protected List<String> executeListQuery(String sql) throws SQLException, IOException {
+	protected final List<String> executeListQuery(String sql) throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
 			Statement stmt = conn.createStatement();
@@ -615,7 +615,7 @@ public class JDBCConnector {
 	 * @param  sql    the SQL to execute
 	 * @param  param  the parameter to the SQL
 	 */
-	final protected List<String> executeListQuery(String sql, String param) throws SQLException, IOException {
+	protected final List<String> executeListQuery(String sql, String param) throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
 			PreparedStatement pstmt = conn.prepareStatement(sql)
@@ -636,7 +636,7 @@ public class JDBCConnector {
 	 *
 	 * @return  the number of rows updated
 	 */
-	final protected int executeUpdate(String sql) throws SQLException, IOException {
+	protected final int executeUpdate(String sql) throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
 			PreparedStatement pstmt = conn.prepareStatement(sql)
@@ -653,7 +653,7 @@ public class JDBCConnector {
 	 *
 	 * @return  the number of rows updated
 	 */
-	final protected int executeUpdate(String sql, String param) throws SQLException, IOException {
+	protected final int executeUpdate(String sql, String param) throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
 			PreparedStatement pstmt = conn.prepareStatement(sql)
@@ -672,7 +672,7 @@ public class JDBCConnector {
 	 *
 	 * @return  the number of rows updated
 	 */
-	final protected int executeUpdate(String sql, String param1, String param2) throws SQLException, IOException {
+	protected final int executeUpdate(String sql, String param1, String param2) throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
 			PreparedStatement pstmt = conn.prepareStatement(sql)
@@ -720,7 +720,7 @@ public class JDBCConnector {
 	/**
 	 * Gets information about the columns in the current table.
 	 */
-	final public Columns getColumns() throws SQLException, IOException {
+	public final Columns getColumns() throws SQLException, IOException {
 		return getColumns(settings.getTable());
 	}
 
@@ -921,7 +921,7 @@ public class JDBCConnector {
 	 *
 	 * @param isImported Get the imported keys?
 	 */
-	final public ForeignKeys getForeignKeys(boolean isImported) throws SQLException, IOException {
+	public final ForeignKeys getForeignKeys(boolean isImported) throws SQLException, IOException {
 		return getForeignKeys(settings.getTable(), isImported);
 	}
 
@@ -977,10 +977,10 @@ public class JDBCConnector {
 	}
 
 	/**
-	 * Gets a description of the primary key columns that are referenced 
+	 * Gets a description of the primary key columns that are referenced
 	 * by the table's foreign key columns.
 	 */
-	final public ForeignKeys getImportedKeys() throws SQLException, IOException {
+	public final ForeignKeys getImportedKeys() throws SQLException, IOException {
 		return getImportedKeys(settings.getTable());
 	}
 
@@ -1040,7 +1040,7 @@ public class JDBCConnector {
 	 * Gets a int from a query given a String using a {@link PreparedStatement}.
 	 * Returns 0 if no results were returned.
 	 */
-	final protected int getIntQuery(String sql) throws SQLException, IOException {
+	protected final int getIntQuery(String sql) throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -1055,7 +1055,7 @@ public class JDBCConnector {
 	 * Gets a int from a query given a String using a {@link PreparedStatement}.
 	 * Returns 0 if no results were returned.
 	 */
-	final protected int getIntQuery(String sql, String param) throws SQLException, IOException {
+	protected final int getIntQuery(String sql, String param) throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
 			PreparedStatement pstmt = conn.prepareStatement(sql)
@@ -1246,7 +1246,7 @@ public class JDBCConnector {
 	/**
 	 * Gets the {@link Settings} of this {@link JDBCConnector}.
 	 */
-	final public Settings getSettings() {
+	public final Settings getSettings() {
 		return settings;
 	}
 

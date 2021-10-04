@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2009, 2019  AO Industries, Inc.
+ * Copyright (C) 2009, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -37,57 +37,57 @@ public class ForeignKeys {
 	/**
 	 * The constraint names.
 	 */
-	final private List<String> constraintNames;
+	private final List<String> constraintNames;
 
 	/**
 	 * The names of the foreign key columns.
 	 */
-	final private List<String> foreignKeys;
+	private final List<String> foreignKeys;
 
 	/**
 	 * The names of the foreign tables.
 	 */
-	final private List<String> foreignTables;
+	private final List<String> foreignTables;
 
 	/**
 	 * The names of the primary keys.
 	 */
-	final private List<String> primaryKeys;
+	private final List<String> primaryKeys;
 
 	/**
 	 * The names of the primary tables.
 	 */
-	final private List<String> primaryTables;
+	private final List<String> primaryTables;
 
 	/**
 	 * The number of foreign keys stored in this {@link ForeignKeys} object.
 	 */
-	final private int size;
+	private final int size;
 
 	/**
 	 * The INSERT rules.
 	 */
-	final private List<String> insertRules;
+	private final List<String> insertRules;
 
 	/**
 	 * The DELETE rules.
 	 */
-	final private List<String> deleteRules;
+	private final List<String> deleteRules;
 
 	/**
 	 * The UPDATE rules.
 	 */
-	final private List<String> updateRules;
+	private final List<String> updateRules;
 
 	/**
 	 * Are the keys deferrable?
 	 */
-	final private List<JDBCConnector.Boolean> areDeferrable;
+	private final List<JDBCConnector.Boolean> areDeferrable;
 
 	/**
 	 * Are the keys initially deferred?
 	 */
-	final private List<JDBCConnector.Boolean> areInitiallyDeferred;
+	private final List<JDBCConnector.Boolean> areInitiallyDeferred;
 
 	public ForeignKeys(
 		List<String> constraintNames,

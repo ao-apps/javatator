@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2019  AO Industries, Inc.
+ * Copyright (C) 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -37,37 +37,37 @@ public class Columns {
 	/**
 	 * The column names.
 	 */
-	final private List<String> names;
+	private final List<String> names;
 
 	/**
 	 * The column types.
 	 */
-	final private List<String> types;
+	private final List<String> types;
 
 	/**
 	 * The length/set of each column.
 	 */
-	final private List<String> lengths;
+	private final List<String> lengths;
 
 	/**
 	 * Is NULL allowed?
 	 */
-	final private List<Boolean> areNullable;
+	private final List<Boolean> areNullable;
 
 	/**
 	 * Default values.
 	 */
-	final private List<String> defaults;
+	private final List<String> defaults;
 
 	/**
 	 * Column remarks.
 	 */
-	final private List<String> remarks;
+	private final List<String> remarks;
 
 	/**
 	 * The number of columns stored in this {@link Columns} object.
 	 */
-	final private int size;
+	private final int size;
 
 	/**
 	 * Instantiate a new {@link Column} object.
@@ -75,7 +75,7 @@ public class Columns {
 	 * @param names an array containing the names of the columns.
 	 * @param types an array of the columns' types.
 	 * @param lengths an array of the columns' lengths.
-	 * @param areNullable can the columns be NULL? 
+	 * @param areNullable can the columns be NULL?
 	 * Possible {@link Integer} values are:
 	 * <UL>
 	 * <LI>{@link Boolean#TRUE} if NULL is allowed,

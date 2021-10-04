@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2019  AO Industries, Inc.
+ * Copyright (C) 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -36,12 +36,12 @@ public class CheckConstraints {
 	/**
 	 * The constraint names.
 	 */
-	final private List<String> names;
+	private final List<String> names;
 
 	/**
 	 * The check clauses.
 	 */
-	final private List<String> checkClauses;
+	private final List<String> checkClauses;
 
 	public CheckConstraints(List<String> names, List<String> checkClauses) {
 		this.names=names;

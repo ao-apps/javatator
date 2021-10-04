@@ -41,23 +41,23 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class Settings {
 
-	final private ServletContext servletContext;
-	final private HttpServletRequest request;
+	private final ServletContext servletContext;
+	private final HttpServletRequest request;
 
-	final private DatabaseConfiguration databaseConfiguration;
+	private final DatabaseConfiguration databaseConfiguration;
 
-	final private String databaseProduct;
+	private final String databaseProduct;
 	private String hostname;
-	final private int port;
-	final private boolean ssl;
-	final private String username;
-	final private String password;
-	final private String database;
-	final private String table;
-	final private String column;
-	final private String action;
-	final private String sortColumn;
-	final private String sortOrder;
+	private final int port;
+	private final boolean ssl;
+	private final String username;
+	private final String password;
+	private final String database;
+	private final String table;
+	private final String column;
+	private final String action;
+	private final String sortColumn;
+	private final String sortOrder;
 	private int numrows=30;
 	private int fkeyrows=100;
 	private boolean useMultiLine=true;

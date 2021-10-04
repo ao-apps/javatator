@@ -4,7 +4,7 @@
  * Copyright (C) 2001  Dan Armstrong.
  *     dan@dans-home.com
  *
- * Copyright (C) 2019  AO Industries, Inc.
+ * Copyright (C) 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -51,9 +51,9 @@ public class SchemaTable {
 	 */
 	private static final Color nameColor=new Color(0x6f6f6f);
 
-	final private String name;
+	private final String name;
 
-	final private List<SchemaRow> rows = new ArrayList<>();
+	private final List<SchemaRow> rows = new ArrayList<>();
 
 	public SchemaTable(String name) {
 		this.name=name;
@@ -96,7 +96,7 @@ public class SchemaTable {
 		return name;
 	}
 
-	synchronized public SchemaRow getRow(String rowName) {
+	public synchronized SchemaRow getRow(String rowName) {
 		int size=rows.size();
 		for(int c=0;c<size;c++) {
 			SchemaRow row=rows.get(c);

@@ -4,7 +4,7 @@
  * Copyright (C) 2001  Dan Armstrong.
  *     dan@dans-home.com
  *
- * Copyright (C) 2019  AO Industries, Inc.
+ * Copyright (C) 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -38,11 +38,11 @@ public class SchemaRow {
 
 	private static final Color nameColor=new Color(0x6f6f6f);
 
-	final private SchemaTable table;
+	private final SchemaTable table;
 
-	final private String name;
+	private final String name;
 
-	final private List<SchemaForeignKey> foreignKeys=new ArrayList<>();
+	private final List<SchemaForeignKey> foreignKeys=new ArrayList<>();
 
 	public SchemaRow(
 		SchemaTable table,
