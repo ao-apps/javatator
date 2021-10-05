@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -190,10 +190,10 @@ public class MySQLConnector extends JDBCConnector {
 						String S=results.getString(2);
 						int len=S.length();
 						if(enum0) {
-							S=S.substring(6,len-2);
+							S=S.substring(6, len-2);
 							len-=10;
 						} else {
-							S=S.substring(5,len-2);
+							S=S.substring(5, len-2);
 							len-=9;
 						}
 						//Split up into tokens on ','
@@ -201,7 +201,7 @@ public class MySQLConnector extends JDBCConnector {
 						int start=0;
 						for(int i=0;i<len;i++) {
 							if(S.charAt(i)=='\'' && S.charAt(i+1)==',' && S.charAt(i+2)=='\'') {
-								V.add(Util.escapeMySQLQuotes(S.substring(start,i)));
+								V.add(Util.escapeMySQLQuotes(S.substring(start, i)));
 								start=i+3;
 								i+=3;
 							}

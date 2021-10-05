@@ -86,13 +86,13 @@ public class SchemaImage extends HttpServlet {
 			{  0,  1,  0,  2,  0,  3,  0 },
 			{  4,  0,  5,  0,  6,  0,  7 },
 			{  0,  8,  0,  9,  0, 10,  0 }
-		},{
+		}, {
 			{  0,  0,  1,  0,  2,  0,  3,  0,  4,  0,  5,  0,  0 },
 			{  0,  6,  0, 20,  0, 21,  0, 22,  0, 23,  0,  7,  0 },
 			{  8,  0, 28,  0, 18,  0, 17,  0, 19,  0, 29,  0,  9 },
 			{  0, 10,  0, 24,  0, 25,  0, 26,  0, 27,  0, 11,  0 },
 			{  0,  0, 12,  0, 13,  0, 14,  0, 15,  0, 16,  0,  0 }
-		},{
+		}, {
 			{  0,  0,  0,  1,  0,  2,  0,  3,  0,  4,  0,  5,  0,  6,  0,  7,  0,  0,  0 },
 			{  0,  0,  8,  0, 31,  0, 32,  0, 33,  0, 34,  0, 35,  0, 36,  0,  9,  0,  0 },
 			{  0, 10,  0, 45,  0, 46,  0, 47,  0, 48,  0, 49,  0, 50,  0, 51,  0, 11,  0 },
@@ -375,7 +375,7 @@ public class SchemaImage extends HttpServlet {
 					G.drawLine(x1, linky1 + 1, ax2, ay2 + 1);
 					G.drawLine(x1 + 1, linky1 + 1, ax2 + 1, ay2 + 1);
 
-					//points.addElement(new Point(x1,linky1));
+					//points.addElement(new Point(x1, linky1));
 					points.add(new Point(x2, linky2));
 				}
 			}

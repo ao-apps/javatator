@@ -179,7 +179,7 @@ public class PgSQLConnector extends JDBCConnector {
 	}
 
 	/**
-	 * Drops the database. Note: for PostgreSQL we cannot be connected to the database to be dropped. 
+	 * Drops the database. Note: for PostgreSQL we cannot be connected to the database to be dropped.
 	 */
 	@Override
 	public void dropDatabase() throws SQLException, IOException {
@@ -518,13 +518,13 @@ public class PgSQLConnector extends JDBCConnector {
 				String S=R.getString(2);
 				int pos=S.indexOf("\\000");
 				if(pos>-1) {
-					String tmp=S.substring(0,pos);
+					String tmp=S.substring(0, pos);
 					if(constraint.equals(tmp)) {
-					int pos2=S.indexOf("\\000",pos+1);
+					int pos2=S.indexOf("\\000", pos+1);
 						if(pos2>-1) {
-							if(table.equals(S.substring(pos+4,pos2))) {
+							if(table.equals(S.substring(pos+4, pos2))) {
 								String rule=R.getString(3);
-								return rule.substring(8,rule.length()-4);
+								return rule.substring(8, rule.length()-4);
 							}
 						}
 					}
@@ -629,20 +629,20 @@ public class PgSQLConnector extends JDBCConnector {
 						int pos=S.indexOf("\\000");
 						if(pos>-1) {
 							String constraintName=S.substring(0, pos);
-							int pos2=S.indexOf("\\000",pos+1);
+							int pos2=S.indexOf("\\000", pos+1);
 							if(pos2>-1) {
-								String primaryTable=S.substring(pos+4,pos2);
+								String primaryTable=S.substring(pos+4, pos2);
 								if(!isImported || table.equals(primaryTable)) {
-									pos=S.indexOf("\\000",pos2+1);
+									pos=S.indexOf("\\000", pos2+1);
 									if(pos>-1) {
-										String foreignTable=S.substring(pos2+4,pos);
+										String foreignTable=S.substring(pos2+4, pos);
 										if(isImported || table.equals(foreignTable)) {
-											pos=S.indexOf("\\000",pos+1);
+											pos=S.indexOf("\\000", pos+1);
 											if(pos>-1) {
-												pos2=S.indexOf("\\000",pos+1);
+												pos2=S.indexOf("\\000", pos+1);
 												if(pos2>-1) {
-													String primaryKey=S.substring(pos+4,pos2);
-													pos=S.indexOf("\\000",pos2+1);
+													String primaryKey=S.substring(pos+4, pos2);
+													pos=S.indexOf("\\000", pos2+1);
 													if(pos>-1) {
 														constraintNames.add(constraintName);
 														foreignTables.add(foreignTable);
@@ -867,13 +867,13 @@ public class PgSQLConnector extends JDBCConnector {
 				String S=R.getString(2);
 				int pos=S.indexOf("\\000");
 				if(pos>-1) {
-					String tmp=S.substring(0,pos);
+					String tmp=S.substring(0, pos);
 					if(constraint.equals(tmp)) {
-						int pos2=S.indexOf("\\000",pos+1);
+						int pos2=S.indexOf("\\000", pos+1);
 						if(pos2>-1) {
-							if(table.equals(S.substring(pos+4,pos2))) {
+							if(table.equals(S.substring(pos+4, pos2))) {
 								String rule=R.getString(3);
-								return rule.substring(8,rule.length()-4);
+								return rule.substring(8, rule.length()-4);
 							}
 						}
 					}
@@ -931,7 +931,7 @@ public class PgSQLConnector extends JDBCConnector {
 				String key=getForeignKey(constraint);
 				int pos=key.indexOf('.');
 				String keyColumn=key.substring(pos+1);
-				String keyTable=key.substring(0,pos);
+				String keyTable=key.substring(0, pos);
 
 				// Only return entries if less than or equal to fkeyrows possibilities
 				int count=getIntQuery("SELECT COUNT(*) FROM " + quoteTable(keyTable));
@@ -1010,14 +1010,14 @@ public class PgSQLConnector extends JDBCConnector {
 				String S=R.getString(1);
 				int pos=S.indexOf("\\000");
 				if(pos>-1) {
-					String tmp=S.substring(0,pos);
+					String tmp=S.substring(0, pos);
 					if(constraint.equals(tmp)) {
-						int pos2=S.indexOf("\\000",pos+1);
+						int pos2=S.indexOf("\\000", pos+1);
 						if(pos2>-1) {
-							if(table.equals(S.substring(pos+4,pos2))) {
-								pos=S.indexOf("\\000",pos2+1);
-								if(pos>-1)pos=S.indexOf("\\000",pos+1);
-								if(pos>-1)pos2=S.indexOf("\\000",pos+1);
+							if(table.equals(S.substring(pos+4, pos2))) {
+								pos=S.indexOf("\\000", pos2+1);
+								if(pos>-1)pos=S.indexOf("\\000", pos+1);
+								if(pos>-1)pos2=S.indexOf("\\000", pos+1);
 								if(pos2>-1) {
 									return table+"."+S.substring(pos+4, pos2);
 								}
@@ -1070,13 +1070,13 @@ public class PgSQLConnector extends JDBCConnector {
 				for(int i=0;i<size;i++) {
 					if(S.charAt(i)=='"') {
 						i++;
-						int n=S.indexOf('=',i);
-						String grantee=S.substring(i,n);
+						int n=S.indexOf('=', i);
+						String grantee=S.substring(i, n);
 						if(grantee.startsWith("group ")) grantee=S.substring(6);
 						grantees.add(grantee);
 						n++;
 						i=S.indexOf('"',n);
-						String privs=S.substring(n,i);
+						String privs=S.substring(n, i);
 						StringBuilder P=new StringBuilder();
 						if(privs.contains("arwR")) P.append("ALL");
 						else {
@@ -1201,13 +1201,13 @@ public class PgSQLConnector extends JDBCConnector {
 				String S=R.getString(2);
 				int pos=S.indexOf("\\000");
 				if(pos>-1) {
-					String tmp=S.substring(0,pos);
+					String tmp=S.substring(0, pos);
 					if(constraint.equals(tmp)) {
-						int pos2=S.indexOf("\\000",pos+1);
+						int pos2=S.indexOf("\\000", pos+1);
 						if(pos2>-1) {
-							if(table.equals(S.substring(pos+4,pos2))) {
+							if(table.equals(S.substring(pos+4, pos2))) {
 								String rule=R.getString(3);
-								return rule.substring(8,rule.length()-4);
+								return rule.substring(8, rule.length()-4);
 							}
 						}
 					}
@@ -1234,11 +1234,11 @@ public class PgSQLConnector extends JDBCConnector {
 				String S=R.getString(1);
 				int pos=S.indexOf("\\000");
 				if(pos>-1) {
-					String tmp=S.substring(0,pos);
+					String tmp=S.substring(0, pos);
 					if(constraint.equals(tmp)) {
-						int pos2=S.indexOf("\\000",pos+1);
+						int pos2=S.indexOf("\\000", pos+1);
 						if(pos2>-1) {
-							if(table.equals(S.substring(pos+4,pos2))) {
+							if(table.equals(S.substring(pos+4, pos2))) {
 								return R.getString(2).equals("t")?Boolean.TRUE:Boolean.FALSE;
 							}
 						}
@@ -1267,11 +1267,11 @@ public class PgSQLConnector extends JDBCConnector {
 				String S=R.getString(1);
 				int pos=S.indexOf("\\000");
 				if(pos>-1) {
-					String tmp=S.substring(0,pos);
+					String tmp=S.substring(0, pos);
 					if(constraint.equals(tmp)) {
-						int pos2=S.indexOf("\\000",pos+1);
+						int pos2=S.indexOf("\\000", pos+1);
 						if(pos2>-1) {
-							if(table.equals(S.substring(pos+4,pos2))) {
+							if(table.equals(S.substring(pos+4, pos2))) {
 								return R.getString(2).equals("t")?Boolean.TRUE:Boolean.FALSE;
 							}
 						}

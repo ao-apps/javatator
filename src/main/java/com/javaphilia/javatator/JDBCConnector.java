@@ -933,7 +933,7 @@ public class JDBCConnector {
 			Set<String> SV=new HashSet<>();
 			List<String> V=new ArrayList<>();
 			DatabaseMetaData metaData=conn.getMetaData();
-			StringTokenizer ST=new StringTokenizer(metaData.getNumericFunctions(),",");
+			StringTokenizer ST=new StringTokenizer(metaData.getNumericFunctions(), ",");
 			while(ST.hasMoreTokens()) {
 				String S=ST.nextToken();
 				if(!SV.contains(S)) {
@@ -941,7 +941,7 @@ public class JDBCConnector {
 					V.add(S);
 				}
 			}
-			ST=new StringTokenizer(metaData.getStringFunctions(),",");
+			ST=new StringTokenizer(metaData.getStringFunctions(), ",");
 			while(ST.hasMoreTokens()) {
 				String S=ST.nextToken();
 				if(!SV.contains(S)) {
@@ -949,7 +949,7 @@ public class JDBCConnector {
 					V.add(S);
 				}
 			}
-			ST=new StringTokenizer(metaData.getSystemFunctions(),",");
+			ST=new StringTokenizer(metaData.getSystemFunctions(), ",");
 			while(ST.hasMoreTokens()) {
 				String S=ST.nextToken();
 				if(!SV.contains(S)) {
@@ -957,7 +957,7 @@ public class JDBCConnector {
 					V.add(S);
 				}
 			}
-			ST=new StringTokenizer(metaData.getTimeDateFunctions(),",");
+			ST=new StringTokenizer(metaData.getTimeDateFunctions(), ",");
 			while(ST.hasMoreTokens()) {
 				String S=ST.nextToken();
 				if(!SV.contains(S)) {
@@ -1371,7 +1371,7 @@ public class JDBCConnector {
 			// stmt.setEscapeProcessing(false);
 			int pos=1;
 			for(int i=0;i<column.length;i++) {
-				if(function[i]==null || function[i].length()==0) stmt.setString(pos++,value[i]);
+				if(function[i]==null || function[i].length()==0) stmt.setString(pos++, value[i]);
 			}
 			stmt.executeUpdate();
 		}

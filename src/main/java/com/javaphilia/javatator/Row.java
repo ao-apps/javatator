@@ -56,9 +56,9 @@ public class Row {
 	 */
 	public Settings confirmDeleteRow(JavatatorWriter out) throws SQLException {
 		String primaryKeysS=settings.getParameter("primarykeys");
-		StringTokenizer keys=new StringTokenizer(primaryKeysS,",");
+		StringTokenizer keys=new StringTokenizer(primaryKeysS, ",");
 		String primaryValuesS=settings.getParameter("values");
-		StringTokenizer values=new StringTokenizer(primaryValuesS,",");
+		StringTokenizer values=new StringTokenizer(primaryValuesS, ",");
 		String[] primaryKeys=new String[keys.countTokens()];
 		String[] primaryValues=new String[keys.countTokens()];
 		for(int i=0;keys.hasMoreTokens();i++) {
@@ -240,9 +240,9 @@ public class Row {
 	 */
 	public Settings printEditRow(JavatatorWriter out) throws SQLException, IOException {
 		String primaryKeysS=settings.getParameter("primarykeys");
-		StringTokenizer keys=new StringTokenizer(primaryKeysS,",");
+		StringTokenizer keys=new StringTokenizer(primaryKeysS, ",");
 		String primaryValuesS=settings.getParameter("values");
-		StringTokenizer values=new StringTokenizer(primaryValuesS,",");
+		StringTokenizer values=new StringTokenizer(primaryValuesS, ",");
 		List<String> primaryKeys=new ArrayList<>(keys.countTokens());
 		List<String> primaryValues=new ArrayList<>(keys.countTokens());
 		for(int i=0;keys.hasMoreTokens();i++) {

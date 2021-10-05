@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -70,7 +70,7 @@ public class InterbaseConnector extends JDBCConnector {
 			StringBuilder sql=new StringBuilder("ALTER TABLE ");
 			StringBuilder cols=new StringBuilder();
 			sql.append(table);
-			try (ResultSet results = conn.getMetaData().getPrimaryKeys(null,null,table)) {
+			try (ResultSet results = conn.getMetaData().getPrimaryKeys(null, null, table)) {
 				if(results.next()) {
 					sql
 						.append(" DROP CONSTRAINT ")
