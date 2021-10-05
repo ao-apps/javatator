@@ -1,4 +1,4 @@
-# [<img src="javatator-logo.gif" alt="Javatator Logo" width="345" height="72">](https://github.com/aoindustries/javatator)
+# [<img src="javatator-logo.gif" alt="Javatator Logo" width="345" height="72">](https://github.com/ao-apps/javatator)
 
 [![project: beta](https://aoindustries.com/ao-badges/project-beta.svg)](https://aoindustries.com/life-cycle#project-beta)
 [![management: production](https://aoindustries.com/ao-badges/management-production.svg)](https://aoindustries.com/life-cycle#management-production)
@@ -8,7 +8,7 @@
 [![semantic versioning: 2.0.0](https://aoindustries.com/ao-badges/semver-2.0.0.svg)](http://semver.org/spec/v2.0.0.html)
 [![license: GPL v2](https://aoindustries.com/ao-badges/license-gpl-2.0.svg)](https://www.gnu.org/licenses/gpl-2.0)
 
-[![Build](https://github.com/aoindustries/javatator/workflows/Build/badge.svg?branch=master)](https://github.com/aoindustries/javatator/actions?query=workflow%3ABuild)
+[![Build](https://github.com/ao-apps/javatator/workflows/Build/badge.svg?branch=master)](https://github.com/ao-apps/javatator/actions?query=workflow%3ABuild)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.aoindustries/javatator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.aoindustries/javatator)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.aoindustries%3Ajavatator&metric=alert_status)](https://sonarcloud.io/dashboard?branch=master&id=com.aoindustries%3Ajavatator)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.aoindustries%3Ajavatator&metric=ncloc)](https://sonarcloud.io/component_measures?branch=master&id=com.aoindustries%3Ajavatator&metric=ncloc)  
@@ -24,7 +24,7 @@ Multi-database admin tool.
 * [Changelog](https://aoindustries.com/javatator/changelog)
 * [API Docs](https://aoindustries.com/javatator/apidocs/)
 * [Maven Central Repository](https://search.maven.org/artifact/com.aoindustries/javatator)
-* [GitHub](https://github.com/aoindustries/javatator)
+* [GitHub](https://github.com/ao-apps/javatator)
 
 ## Contact Us
 For questions or support, please [contact us](https://aoindustries.com/contact):
