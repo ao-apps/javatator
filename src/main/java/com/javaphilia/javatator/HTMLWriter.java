@@ -59,7 +59,7 @@ public class HTMLWriter extends FilterWriter {
 	 * @exception  IOException  If an I/O error occurs
 	 */
 	@Override
-	public void write(char cbuf[], int off, int len) throws IOException {
+	public void write(char[] cbuf, int off, int len) throws IOException {
 		for(int i=off;i<len;i++) {
 			switch(cbuf[i]) {
 				case '<':
