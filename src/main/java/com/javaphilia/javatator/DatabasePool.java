@@ -384,7 +384,7 @@ public class DatabasePool {
 					long time = System.currentTimeMillis();
 					releaseTimes[c] = time;
 					totalTimes[c] += time - startTimes[c];
-					connectLock.notify();
+					connectLock.notify(); // notifyAll() not needed: only one connection released, so only one thread can get a connection
 					return true;
 				}
 			}
