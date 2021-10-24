@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2009, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2009, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -356,8 +356,8 @@ public class Table {
 	 * Gets the startpos from the current {@link Settings}.
 	 */
 	private int getStartPos() {
-		String S=settings.getParameter("startpos");
-		if(S!=null && S.length()>0) return Integer.parseInt(S);
+		String s = settings.getParameter("startpos");
+		if(s != null && s.length() > 0) return Integer.parseInt(s);
 		return 0;
 	}
 
@@ -637,11 +637,11 @@ public class Table {
 		out.printTH("Grantable?");
 		out.endTR();
 		try {
-			TablePrivileges TP=conn.getTablePrivileges();
-			List<String> grantors=TP.getGrantors();
-			List<String> grantees=TP.getGrantees();
-			List<String> privileges=TP.getPrivileges();
-			List<JDBCConnector.Boolean> isGrantable=TP.getIsGrantable();
+			TablePrivileges tp = conn.getTablePrivileges();
+			List<String> grantors = tp.getGrantors();
+			List<String> grantees = tp.getGrantees();
+			List<String> privileges = tp.getPrivileges();
+			List<JDBCConnector.Boolean> isGrantable = tp.getIsGrantable();
 			int size=grantors.size();
 			for(int i=0;i<size;i++) {
 				out.startTR();
@@ -673,14 +673,14 @@ public class Table {
 			out.printTD("Privileges:");
 			out.startTD();
 			try {
-				List<String> V=conn.getPossiblePrivileges();
-				int size=V.size();
-				for(int i=0;i<size;i++) {
-					String S=V.get(i);
+				List<String> v = conn.getPossiblePrivileges();
+				int size = v.size();
+				for(int i = 0; i < size; i++) {
+					String s = v.get(i);
 					out.print("<input type=checkbox name=privileges value='");
-					out.print(S);
+					out.print(s);
 					out.print("'> ");
-					out.print(S);
+					out.print(s);
 					out.print('\n');
 				}
 			} finally {
@@ -1178,27 +1178,27 @@ public class Table {
 			String[] selectColNames = settings.getParameterValues("columns");
 
 			if (count > 0 && "doselect".equals(settings.getAction())) {
-				StringBuilder SB = new StringBuilder();
+				StringBuilder sb = new StringBuilder();
 				int size = (selectColNames == null) ? 0 : selectColNames.length;
 				for (int i = 0; i < size; i++) {
 					if (i > 0) {
-						SB.append(',');
+						sb.append(',');
 					}
-					SB.append(conn.quoteColumn(selectColNames[i]));
+					sb.append(conn.quoteColumn(selectColNames[i]));
 				}
 				if (size == 0) {
-					SB.append('*');
+					sb.append('*');
 				}
-				selectCols = SB.toString();
-				SB.setLength(0);
-				SB.append(conn.getSelectWhereClause(colNames, colValues));
+				selectCols = sb.toString();
+				sb.setLength(0);
+				sb.append(conn.getSelectWhereClause(colNames, colValues));
 				if (!"".equals(settings.getParameter("selectwhere"))) {
-					if (SB.length() > 0) {
-						SB.append(" AND ");
+					if (sb.length() > 0) {
+						sb.append(" AND ");
 					}
-					SB.append(settings.getParameter("selectwhere"));
+					sb.append(settings.getParameter("selectwhere"));
 				}
-				selectWhere = SB.toString();
+				selectWhere = sb.toString();
 			} else {
 				selectCols = settings.getParameter("selectcols");
 				selectWhere = settings.getParameter("selectwhere");
@@ -1313,7 +1313,7 @@ public class Table {
 							order = "desc";
 						}
 						out.printTH("<A href=\"javascript:setSortColumn('" + Util.escapeJavaScript(col) + "');setSortOrder('" + order + "');selectAction('doselect');\">" + Util.escapeHTML(col) + "</A>");
-						
+
 						// Build up the list of primary key columns as we iterate through the columns
 						if (primaryKeyCols.isEmpty() || primaryKeyCols.contains(col)) {
 							if (primaryKeysSB.length() > 0) {
@@ -1321,7 +1321,7 @@ public class Table {
 							}
 							primaryKeysSB.append(col);
 						}
-						
+
 						if (importedKeys != null) {
 							importedKeyIDs.add(importedKeys.getForeignID(col));
 						} else {
@@ -1363,30 +1363,30 @@ public class Table {
 					while (resultSize < numrows && results.next()) {
 						resultSize++;
 						for (int i = 1; i <= columnCount; i++) {
-							String S = results.getString(i);
-							resultCopies.get(i - 1).add(S);
+							String s = results.getString(i);
+							resultCopies.get(i - 1).add(s);
 						}
 					}
 				}
 
 				// This pass displays the results
-				StringBuilder SB = new StringBuilder();
+				StringBuilder sb = new StringBuilder();
 				for (int row = 0; row < resultSize; row++) {
-					SB.setLength(0);
+					sb.setLength(0);
 					out.startTR();
 					for (int column = 0; column < columnCount; column++) {
-						String S = resultCopies.get(column).get(row);
+						String s = resultCopies.get(column).get(row);
 						out.printTD(
-								(S == null) ? ""
-								: (S.length() == 0) ? "&nbsp;"
-								: (importedKeyIDs.get(column) < 0) ? Util.escapeHTML(S)
+								(s == null) ? ""
+								: (s.length() == 0) ? "&nbsp;"
+								: (importedKeyIDs.get(column) < 0) ? Util.escapeHTML(s)
 								: "<A href=\"javascript:select('"
 									+ Util.escapeJavaScript(
 										importedKeys.getPrimaryTable(importedKeyIDs.get(column))
 									) + "','" + Util.escapeJavaScript(
 										conn.quoteColumn(importedKeys.getPrimaryKey(importedKeyIDs.get(column)))
-										+ "='" + Util.escapeJavaScript(S) + '\''
-									) + "');\">" + Util.escapeHTML(S) + "</A>",
+										+ "='" + Util.escapeJavaScript(s) + '\''
+									) + "');\">" + Util.escapeHTML(s) + "</A>",
 								("DATE".equalsIgnoreCase(columnTypes.get(column))) ? "nowrap"
 								: ("TIME".equalsIgnoreCase(columnTypes.get(column))) ? "nowrap"
 								: ("DATETIME".equalsIgnoreCase(columnTypes.get(column))) ? "nowrap"
@@ -1403,7 +1403,7 @@ public class Table {
 								String fKey = exportedKeys.getForeignKey(z);
 
 								int tmp;
-								if (S == null) {
+								if (s == null) {
 									tmp = -1;
 								} else {
 									// TODO: Could put this into a single query to avoid round-trips
@@ -1414,7 +1414,7 @@ public class Table {
 										+ "  "
 										+ conn.quoteTable(fTable) + "\n"
 										+ "WHERE\n"
-										+ "  " + conn.quoteColumn(fKey) + "='" + Util.escapeSQL(S) + "'";
+										+ "  " + conn.quoteColumn(fKey) + "='" + Util.escapeSQL(s) + "'";
 									try (
 										Statement stmt2 = dbcon.createStatement();
 										ResultSet results2 = stmt2.executeQuery(sql)
@@ -1436,7 +1436,7 @@ public class Table {
 											+ "','"
 											+ Util.escapeJavaScript(
 												conn.quoteColumn(exportedKeys.getForeignKey(exportedIDs.get(column).get(c)))
-												+ "='" + Util.escapeJavaScript(S) + '\''
+												+ "='" + Util.escapeJavaScript(s) + '\''
 											)
 											+ "');\">" + tmp + "</A>"
 										: "",
@@ -1446,19 +1446,19 @@ public class Table {
 
 						// Build a list of primary key values
 						if (primaryKeyCols.isEmpty() || primaryKeyCols.contains(columnNames.get(column))) {
-							if (SB.length() > 0) {
-								SB.append(",");
+							if (sb.length() > 0) {
+								sb.append(",");
 							}
-							if (S != null) {
-								SB.append('\'');
+							if (s != null) {
+								sb.append('\'');
 							}
-							SB.append(S);
-							if (S != null) {
-								SB.append('\'');
+							sb.append(s);
+							if (s != null) {
+								sb.append('\'');
 							}
 						}
 					}
-					String primaryKeyValues = Util.escapeJavaScript(SB.toString());
+					String primaryKeyValues = Util.escapeJavaScript(sb.toString());
 
 					out.startTD();
 					out.print("<a href=\"javascript:setPrimaryKeys('");

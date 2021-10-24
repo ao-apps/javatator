@@ -73,7 +73,7 @@ public class Main extends HttpServlet {
 			Settings settings = new Settings(getServletContext(), req);
 			String action = settings.getAction();
 			String frame = req.getParameter("frame");
-			
+
 			if ("right".equals(frame)) {
 				if (req.getParameter("blank") != null)
 					// TODO: Make a blank.html or blank.jsp?
@@ -289,8 +289,8 @@ public class Main extends HttpServlet {
 					out.print(configPort);
 				} else {
 					out.print("<input type=text name=port size=5 value='");
-					String S=settings.getParameter(dbProduct+"_port");
-					if(S!=null) Util.printEscapedJavaScript(out, S);
+					String s = settings.getParameter(dbProduct+"_port");
+					if(s != null) Util.printEscapedJavaScript(out, s);
 					else {
 						int port=-1;
 						// Use settings if on settings product

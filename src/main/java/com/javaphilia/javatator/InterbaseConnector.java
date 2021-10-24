@@ -293,11 +293,11 @@ public class InterbaseConnector extends JDBCConnector {
 				}
 			}
 		}
-		String S=sql.toString();
+		String s = sql.toString();
 
 		try (
 			Connection conn = DatabasePool.getConnection(getSettings());
-			PreparedStatement stmt = conn.prepareStatement(S)
+			PreparedStatement stmt = conn.prepareStatement(s)
 		) {
 			// stmt.setEscapeProcessing(false);
 			int num=1;

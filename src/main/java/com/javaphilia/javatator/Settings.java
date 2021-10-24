@@ -99,15 +99,15 @@ public class Settings {
 		if (hostname.length() > 0) {
 			if (allowedLen == 0) {
 				// Remove hostname if denied in config
-				String S = databaseConfiguration.getProperty("host.deny", databaseProduct);
-				if (S != null && (S = S.trim()).length() > 0) {
-					StringTokenizer hosts = new StringTokenizer(S, ",");
+				String s = databaseConfiguration.getProperty("host.deny", databaseProduct);
+				if (s != null && (s = s.trim()).length() > 0) {
+					StringTokenizer hosts = new StringTokenizer(s, ",");
 					while (hosts.hasMoreTokens()) {
 						String host = hosts.nextToken().trim().toLowerCase();
 						if (host.length() > 0) {
-							InetAddress IA1 = InetAddress.getByName(host);
-							InetAddress IA2 = InetAddress.getByName(hostname);
-							if (IA1 == null ? (IA2 == null) : (IA1.equals(IA2))) {
+							InetAddress ia1 = InetAddress.getByName(host);
+							InetAddress ia2 = InetAddress.getByName(hostname);
+							if (ia1 == null ? (ia2 == null) : (ia1.equals(ia2))) {
 								error = "Access to " + hostname + " is denied.";
 								hostname = "";
 							}
@@ -141,12 +141,12 @@ public class Settings {
 		action = getClientSetting("action");
 		sortColumn = getClientSetting("sortcolumn");
 		sortOrder = getClientSetting("sortorder");
-		String S = request.getParameter("numrows");
-		if (S != null && S.length() > 0)
-			numrows = Integer.parseInt(S);
-		S = request.getParameter("fkeyrows");
-		if (S != null && S.length() > 0)
-			fkeyrows = Integer.parseInt(S);
+		String s = request.getParameter("numrows");
+		if (s != null && s.length() > 0)
+			numrows = Integer.parseInt(s);
+		s = request.getParameter("fkeyrows");
+		if (s != null && s.length() > 0)
+			fkeyrows = Integer.parseInt(s);
 		useMultiLine = Boolean.parseBoolean(request.getParameter("usemultiline"));
 	}
 
@@ -213,8 +213,8 @@ public class Settings {
 	 * Gets a setting without checking the config.
 	 */
 	private String getClientSetting(String name) {
-		String S = request.getParameter(name);
-		return (S==null)?"":S;
+		String s = request.getParameter(name);
+		return (s == null) ? "" : s;
 	}
 
 	/**
@@ -272,8 +272,8 @@ public class Settings {
 		String config = databaseConfiguration.getProperty(name, databaseProduct);
 		if(config!=null && config.length()>0) return Integer.parseInt(config);
 
-		String S = request.getParameter(name);
-		return (S==null)?-1:Integer.parseInt(S);
+		String s = request.getParameter(name);
+		return (s == null) ? -1 : Integer.parseInt(s);
 	}
 
 	private boolean getBooleanSetting(String databaseProduct, String name) throws IOException {
@@ -281,8 +281,8 @@ public class Settings {
 		String config = databaseConfiguration.getProperty(name, databaseProduct);
 		if(config!=null && config.length()>0) return Boolean.parseBoolean(config);
 
-		String S = request.getParameter(name);
-		return (S==null)?false:Boolean.parseBoolean(S);
+		String s = request.getParameter(name);
+		return (s == null) ? false : Boolean.parseBoolean(s);
 	}
 
 	/**
@@ -356,8 +356,8 @@ public class Settings {
 		String config = databaseConfiguration.getProperty(name);
 		if(config!=null && config.length()>0) return config;
 
-		String S = request.getParameter(name);
-		return (S==null)?"":S;
+		String s = request.getParameter(name);
+		return (s == null) ? "" : s;
 	}
 
 	/**
@@ -370,8 +370,8 @@ public class Settings {
 		String config = databaseConfiguration.getProperty(name, databaseProduct);
 		if(config!=null && config.length()>0) return config;
 
-		String S = request.getParameter(name);
-		return (S==null)?"":S;
+		String s = request.getParameter(name);
+		return (s == null) ? "" : s;
 	}
 
 	/**

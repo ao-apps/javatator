@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2019  AO Industries, Inc.
+ * Copyright (C) 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -38,11 +38,11 @@ public class SQLOutputStream extends OutputStream {
 
 	private final Statement stmt;
 
-	private boolean doubleQuotes=false;
-	private boolean singleQuotes=false;
-	private int check=-1;
-	private int count=0;
-	private final StringBuilder SB=new StringBuilder();
+	private boolean doubleQuotes = false;
+	private boolean singleQuotes = false;
+	private int check = -1;
+	private int count = 0;
+	private final StringBuilder sb = new StringBuilder();
 
 	/**
 	 * Constructs this {@link SQLOutputStream}.
@@ -55,7 +55,7 @@ public class SQLOutputStream extends OutputStream {
 
 	@Override
 	public void close() throws IOException {
-		SB.setLength(0);
+		sb.setLength(0);
 	}
 
 	/**
@@ -84,18 +84,18 @@ public class SQLOutputStream extends OutputStream {
 	 */
 	@Override
 	public void write(byte[] b, int off, int len) throws IOException {
-		int I=check+count-off;
-		for(int i=off;i<len;i++) {
-			SB.append(b[i]);
-			if(i>I) {
-				if(b[i]=='\\') check=count+i+1-off;
-				else if(!singleQuotes && b[i]=='"') doubleQuotes=!doubleQuotes;
-				else if(!doubleQuotes && b[i]=='\'') singleQuotes=!singleQuotes;
-				else if(!singleQuotes && !doubleQuotes && b[i]==';') {
-					executeSQL(SB.toString());
-					SB.setLength(0);
-					check=-1;
-					count=0;
+		int stop = check + count - off;
+		for(int i = off; i < len; i++) {
+			sb.append(b[i]);
+			if(i > stop) {
+				if(b[i]=='\\') check = count + i + 1 - off;
+				else if(!singleQuotes && b[i] == '"') doubleQuotes = !doubleQuotes;
+				else if(!doubleQuotes && b[i] == '\'') singleQuotes = !singleQuotes;
+				else if(!singleQuotes && !doubleQuotes && b[i] == ';') {
+					executeSQL(sb.toString());
+					sb.setLength(0);
+					check = -1;
+					count = 0;
 				}
 			}
 		}

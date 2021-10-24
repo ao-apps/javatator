@@ -178,8 +178,8 @@ public class Row {
 	}
 
 	private int getStartPos() {
-		String S=settings.getParameter("startpos");
-		if(S!=null && S.length()>0) return Integer.parseInt(S);
+		String s = settings.getParameter("startpos");
+		if(s != null && s.length() > 0) return Integer.parseInt(s);
 		return 0;
 	}
 
@@ -515,11 +515,11 @@ public class Row {
 				out.print(">[FUNCTION-->]</option>\n");
 
 				// Add the default functions to the available list
-				List<String> FV=conn.getFunctionList(conn.getEffectiveType(columnType));
-				int fSize=FV.size();
-				for(int c=0;c<fSize;c++) {
+				List<String> fv = conn.getFunctionList(conn.getEffectiveType(columnType));
+				int fSize = fv.size();
+				for(int c = 0; c < fSize; c++) {
 					out.print("<option value='");
-					String function=FV.get(c);
+					String function = fv.get(c);
 					out.print(function);
 					out.print("'>");
 					out.print(function);

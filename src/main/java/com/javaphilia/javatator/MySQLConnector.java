@@ -92,42 +92,46 @@ public class MySQLConnector extends JDBCConnector {
 		List<String> remarks=new ArrayList<>();
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
-			ResultSet R = conn.getMetaData().getColumns(null, null, table, "%")
+			ResultSet r = conn.getMetaData().getColumns(null, null, table, "%")
 		) {
-			while(R.next()) {
-				String column=R.getString(4);
+			while(r.next()) {
+				String column = r.getString(4);
 				names.add(column);
-				String type=R.getString(6);
+				String type = r.getString(6);
 				types.add(type);
 				if("ENUM".equalsIgnoreCase(type) || "SET".equalsIgnoreCase(type)) {
-					List<String> V=getPossibleValues(column, type);
-					int size=V.size();
-					StringBuilder SB=new StringBuilder();
-					for(int i=0;i<size;i++) {
-						if(i>0) SB.append(',');
-						SB
+					List<String> v = getPossibleValues(column, type);
+					int size = v.size();
+					StringBuilder sb = new StringBuilder();
+					for(int i = 0; i < size; i++) {
+						if(i > 0) sb.append(',');
+						sb
 							.append('\'')
-							.append(V.get(i))
+							.append(v.get(i))
 							.append('\'');
 					}
-					lengths.add(SB.toString());
-				} else lengths.add(R.getString(7));
-				int nullable=R.getInt(11);
+					lengths.add(sb.toString());
+				} else lengths.add(r.getString(7));
+				int nullable = r.getInt(11);
 				areNullable.add(
 					(nullable==DatabaseMetaData.columnNoNulls) ? Boolean.FALSE
 						: (nullable==DatabaseMetaData.columnNullable) ? Boolean.TRUE
 							: Boolean.UNKNOWN);
-				String def=R.getString(13);
-				int defLen=def.length();
+				String def = r.getString(13);
+				int defLen = def.length();
 				if(
-					defLen>=2
-					&& def.charAt(0)=='\''
-					&& def.charAt(defLen-1)=='\''
-					) defaults.add('V'+def.substring(1, defLen-1));
-				else if(defLen>0) defaults.add('V'+def);
-				else defaults.add(null);
-				String rem=R.getString(12);
-				remarks.add((rem!=null)?rem:"");
+					defLen >= 2
+					&& def.charAt(0) == '\''
+					&& def.charAt(defLen - 1) == '\''
+				) {
+					defaults.add('V' + def.substring(1, defLen - 1));
+				} else if(defLen > 0) {
+					defaults.add('V' + def);
+				} else {
+					defaults.add(null);
+				}
+				String rem = r.getString(12);
+				remarks.add((rem != null) ? rem : "");
 			}
 		}
 		return new Columns(names, types, lengths, areNullable, defaults, remarks);
@@ -187,27 +191,31 @@ public class MySQLConnector extends JDBCConnector {
 				pstmt.setString(1, column);
 				try (ResultSet results = pstmt.executeQuery()) {
 					if(results.next()) {
-						String S=results.getString(2);
-						int len=S.length();
+						String s = results.getString(2);
+						int len = s.length();
 						if(enum0) {
-							S=S.substring(6, len-2);
-							len-=10;
+							s = s.substring(6, len - 2);
+							len -= 10;
 						} else {
-							S=S.substring(5, len-2);
-							len-=9;
+							s = s.substring(5, len - 2);
+							len -= 9;
 						}
 						//Split up into tokens on ','
-						List<String> V=new ArrayList<>();
-						int start=0;
-						for(int i=0;i<len;i++) {
-							if(S.charAt(i)=='\'' && S.charAt(i+1)==',' && S.charAt(i+2)=='\'') {
-								V.add(Util.escapeMySQLQuotes(S.substring(start, i)));
-								start=i+3;
-								i+=3;
+						List<String> v = new ArrayList<>();
+						int start = 0;
+						for(int i = 0; i < len; i++) {
+							if(
+								s.charAt(i) == '\''
+								&& s.charAt(i + 1) == ','
+								&& s.charAt(i + 2) == '\''
+							) {
+								v.add(Util.escapeMySQLQuotes(s.substring(start, i)));
+								start = i + 3;
+								i += 3;
 							}
 						}
-						V.add(Util.escapeMySQLQuotes(S.substring(start)));
-						return V;
+						v.add(Util.escapeMySQLQuotes(s.substring(start)));
+						return v;
 					}
 				}
 			}

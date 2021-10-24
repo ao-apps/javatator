@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2019  AO Industries, Inc.
+ * Copyright (C) 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -193,10 +193,10 @@ public class Database {
 			out.endTR();
 
 			JDBCConnector conn=settings.getJDBCConnector();
-			List<String> V=conn.getTables();
-			int size=V.size();
-			for(int i=0;i<size;i++) {
-				String table = V.get(i);
+			List<String> v = conn.getTables();
+			int size = v.size();
+			for(int i = 0; i < size; i++) {
+				String table = v.get(i);
 				out.startTR();
 
 				out.printTD(table);

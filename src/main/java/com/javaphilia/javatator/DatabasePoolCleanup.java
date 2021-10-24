@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2016, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2016, 2018, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -62,10 +62,10 @@ public class DatabasePoolCleanup extends Thread {
 					sleep(DatabasePool.CLEANUP_POLL_DELAY);
 					DatabasePool.cleanup();
 				}
-			} catch(ThreadDeath TD) {
-				throw TD;
-			} catch(Throwable T) {
-				T.printStackTrace();
+			} catch(ThreadDeath td) {
+				throw td;
+			} catch(Throwable t) {
+				t.printStackTrace();
 			}
 			try {
 				sleep(DatabasePool.CLEANUP_POLL_DELAY);

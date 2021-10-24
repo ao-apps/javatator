@@ -140,9 +140,9 @@ public class DatabaseConfiguration {
 		String dbproduct=getProperty("dbproduct");
 		if(dbproduct!=null && dbproduct.length()>0) products.add(dbproduct);
 		else {
-			Enumeration<?> E=props.propertyNames();
-			while(E.hasMoreElements()) {
-				String tmp=(String)E.nextElement();
+			Enumeration<?> e = props.propertyNames();
+			while(e.hasMoreElements()) {
+				String tmp = (String)e.nextElement();
 				if(tmp.startsWith("db.") && tmp.endsWith(".name")) products.add(tmp.substring(3, tmp.length()-5));
 			}
 		}
@@ -167,18 +167,18 @@ public class DatabaseConfiguration {
 	 */
 	public String getProperty(String name, String databaseProduct) {
 		// Look for db.dbproduct.name
-		String S=props.getProperty("db."+databaseProduct+'.'+name);
-		if(S!=null) return S;
+		String s = props.getProperty("db." + databaseProduct + '.' + name);
+		if(s != null) return s;
 
 		// Look for db.*.name
 		return props.getProperty("db.*."+name);
 	}
 
 	public Boolean getBooleanProperty(String name, String databaseProduct) {
-		String S = getProperty(name, databaseProduct);
-		if(S == null || S.isEmpty()) return null;
-		if("true".equalsIgnoreCase(S)) return true;
-		if("false".equalsIgnoreCase(S)) return false;
-		throw new IllegalArgumentException("Unable to parse boolean: " + S);
+		String s = getProperty(name, databaseProduct);
+		if(s == null || s.isEmpty()) return null;
+		if("true".equalsIgnoreCase(s)) return true;
+		if("false".equalsIgnoreCase(s)) return false;
+		throw new IllegalArgumentException("Unable to parse boolean: " + s);
 	}
 }

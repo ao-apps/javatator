@@ -94,8 +94,8 @@ public class PgSQLConnector extends JDBCConnector {
 	}
 
 	@Override
-	protected void appendIsNull(StringBuilder SB, String column) {
-		SB.append(quoteColumn(column)).append(" IS NULL");
+	protected void appendIsNull(StringBuilder sb, String column) {
+		sb.append(quoteColumn(column)).append(" IS NULL");
 	}
 
 	/**
@@ -264,9 +264,9 @@ public class PgSQLConnector extends JDBCConnector {
 			DatabaseMetaData metaData=conn.getMetaData();
 			String version = metaData.getDatabaseProductVersion();
 			try (Statement stmt = conn.createStatement()) {
-				ResultSet R;
+				ResultSet r;
 				if(version.startsWith("7.")) {
-					R=stmt.executeQuery(
+					r = stmt.executeQuery(
 						"SELECT\n"
 						+ "  rcname,\n"
 						+ "  rcsrc\n"
@@ -279,7 +279,7 @@ public class PgSQLConnector extends JDBCConnector {
 						+ "  AND c.oid=r.rcrelid"
 					);
 				} else {
-					R=stmt.executeQuery(
+					r = stmt.executeQuery(
 						"SELECT\n"
 						+ "  co.conname,\n"
 						+ "  pg_get_constraintdef(co.oid)\n"
@@ -293,12 +293,12 @@ public class PgSQLConnector extends JDBCConnector {
 					);
 				}
 				try {
-					while(R.next()) {
-						names.add(R.getString(1));
-						checkClauses.add(R.getString(2));
+					while(r.next()) {
+						names.add(r.getString(1));
+						checkClauses.add(r.getString(2));
 					}
 				} finally {
-					R.close();
+					r.close();
 				}
 			}
 		}
@@ -314,20 +314,20 @@ public class PgSQLConnector extends JDBCConnector {
 		List<String> remarks=new ArrayList<>();
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
-			ResultSet R = conn.getMetaData().getColumns(null, null, table, "%")
+			ResultSet r = conn.getMetaData().getColumns(null, null, table, "%")
 		) {
-			while(R.next()) {
-				names.add(R.getString(4));
-				types.add(R.getString(6));
-				lengths.add(R.getString(7));
-				int nullable=R.getInt(11);
+			while(r.next()) {
+				names.add(r.getString(4));
+				types.add(r.getString(6));
+				lengths.add(r.getString(7));
+				int nullable = r.getInt(11);
 				areNullable.add(
 					(nullable==DatabaseMetaData.columnNoNulls) ? Boolean.FALSE
 						: (nullable==DatabaseMetaData.columnNullable) ? Boolean.TRUE
 							: Boolean.UNKNOWN
 				);
-				String rem=R.getString(12);
-				remarks.add((rem!=null)?rem:"");
+				String rem = r.getString(12);
+				remarks.add((rem != null) ? rem : "");
 			}
 		}
 		List<String> defaults=getDefaults(names);
@@ -348,20 +348,20 @@ public class PgSQLConnector extends JDBCConnector {
 			if(version.startsWith("7.")) {
 				try (
 					Statement stmt = conn.createStatement();
-					ResultSet R = stmt.executeQuery("select tgargs from pg_trigger")
+					ResultSet r = stmt.executeQuery("select tgargs from pg_trigger")
 				) {
-					while(R.next()) {
-						String S=R.getString(1);
-						int pos=S.indexOf("\\000");
-						if(pos>-1) {
-							String constraintName=S.substring(0, pos);
-							int pos2=S.indexOf("\\000", pos+4);
-							String localTable=S.substring(pos+4, pos2);
+					while(r.next()) {
+						String s = r.getString(1);
+						int pos = s.indexOf("\\000");
+						if(pos > -1) {
+							String constraintName = s.substring(0, pos);
+							int pos2 = s.indexOf("\\000", pos + 4);
+							String localTable = s.substring(pos + 4, pos2);
 							if(table.equals(localTable)) {
-								pos=S.indexOf("\\000", pos2+4);
-								pos2=S.indexOf("\\000", pos+4);
-								pos=S.indexOf("\\000", pos2+4);
-								String localColumn=S.substring(pos2+4, pos);
+								pos = s.indexOf("\\000", pos2 + 4);
+								pos2 = s.indexOf("\\000", pos + 4);
+								pos = s.indexOf("\\000", pos2 + 4);
+								String localColumn = s.substring(pos2 + 4, pos);
 								if(localColumn.equals(column)) return constraintName;
 							}
 						}
@@ -512,19 +512,19 @@ public class PgSQLConnector extends JDBCConnector {
 		try (
 			Connection conn = DatabasePool.getConnection(getSettings());
 			Statement stmt=conn.createStatement();
-			ResultSet R=stmt.executeQuery("select tgname, tgargs, proname from pg_proc, pg_trigger where tgfoid = pg_proc.oid and proname like 'RI_FKey_%_del'")
+			ResultSet r = stmt.executeQuery("select tgname, tgargs, proname from pg_proc, pg_trigger where tgfoid = pg_proc.oid and proname like 'RI_FKey_%_del'")
 		) {
-			while(R.next()) {
-				String S=R.getString(2);
-				int pos=S.indexOf("\\000");
-				if(pos>-1) {
-					String tmp=S.substring(0, pos);
+			while(r.next()) {
+				String s = r.getString(2);
+				int pos = s.indexOf("\\000");
+				if(pos > -1) {
+					String tmp = s.substring(0, pos);
 					if(constraint.equals(tmp)) {
-					int pos2=S.indexOf("\\000", pos+1);
-						if(pos2>-1) {
-							if(table.equals(S.substring(pos+4, pos2))) {
-								String rule=R.getString(3);
-								return rule.substring(8, rule.length()-4);
+					int pos2 = s.indexOf("\\000", pos + 1);
+						if(pos2 > -1) {
+							if(table.equals(s.substring(pos + 4, pos2))) {
+								String rule = r.getString(3);
+								return rule.substring(8, rule.length() - 4);
 							}
 						}
 					}
@@ -547,30 +547,30 @@ public class PgSQLConnector extends JDBCConnector {
 			if(version.startsWith("7.")) {
 				try (
 					Statement stmt = conn.createStatement();
-					ResultSet R = stmt.executeQuery("select tgargs from pg_trigger")
+					ResultSet r = stmt.executeQuery("select tgargs from pg_trigger")
 				) {
-					while (R.next()) {
-						String S = R.getString(1);
-						int pos = S.indexOf("\\000");
+					while (r.next()) {
+						String s = r.getString(1);
+						int pos = s.indexOf("\\000");
 						if (pos > -1) {
-							String tmp = S.substring(0, pos);
+							String tmp = s.substring(0, pos);
 							if (constraint.equals(tmp)) {
-								int pos2 = S.indexOf("\\000", pos + 1);
+								int pos2 = s.indexOf("\\000", pos + 1);
 								if (pos2 > -1) {
-									if (table.equals(S.substring(pos + 4, pos2))) {
-										pos = S.indexOf("\\000", pos2 + 1);
+									if (table.equals(s.substring(pos + 4, pos2))) {
+										pos = s.indexOf("\\000", pos2 + 1);
 										String foreign_table = "";
 										if (pos > -1) {
-											foreign_table = S.substring(pos2 + 4, pos);
-											pos = S.indexOf("\\000", pos + 1);
+											foreign_table = s.substring(pos2 + 4, pos);
+											pos = s.indexOf("\\000", pos + 1);
 										}
 										if (pos > -1) {
-											pos = S.indexOf("\\000", pos + 1);
+											pos = s.indexOf("\\000", pos + 1);
 										}
 										if (pos > -1) {
-											pos2 = S.indexOf("\\000", pos + 1);
+											pos2 = s.indexOf("\\000", pos + 1);
 											if (pos2 > -1) {
-												return foreign_table + "." + S.substring(pos + 4, pos2);
+												return foreign_table + "." + s.substring(pos + 4, pos2);
 											}
 										}
 									}
@@ -616,7 +616,7 @@ public class PgSQLConnector extends JDBCConnector {
 			if(version.startsWith("7.")) {
 				try (
 					Statement stmt = conn.createStatement();
-					ResultSet R = stmt.executeQuery(
+					ResultSet r = stmt.executeQuery(
 						"SELECT tgargs, "
 						+ "CASE WHEN proname LIKE 'RI_FKey_%' "
 						+ "THEN substring(proname from 9 for (char_length(proname)-12)) END, "
@@ -624,36 +624,36 @@ public class PgSQLConnector extends JDBCConnector {
 						+ "FROM pg_proc, pg_trigger WHERE tgfoid = pg_proc.oid ORDER BY tgname"
 					)
 				) {
-					while(R.next()) {
-						String S=R.getString(1);
-						int pos=S.indexOf("\\000");
-						if(pos>-1) {
-							String constraintName=S.substring(0, pos);
-							int pos2=S.indexOf("\\000", pos+1);
-							if(pos2>-1) {
-								String primaryTable=S.substring(pos+4, pos2);
+					while(r.next()) {
+						String s = r.getString(1);
+						int pos = s.indexOf("\\000");
+						if(pos > -1) {
+							String constraintName = s.substring(0, pos);
+							int pos2 = s.indexOf("\\000", pos + 1);
+							if(pos2 > -1) {
+								String primaryTable = s.substring(pos + 4, pos2);
 								if(!isImported || table.equals(primaryTable)) {
-									pos=S.indexOf("\\000", pos2+1);
-									if(pos>-1) {
-										String foreignTable=S.substring(pos2+4, pos);
+									pos = s.indexOf("\\000", pos2+1);
+									if(pos > -1) {
+										String foreignTable = s.substring(pos2 + 4, pos);
 										if(isImported || table.equals(foreignTable)) {
-											pos=S.indexOf("\\000", pos+1);
-											if(pos>-1) {
-												pos2=S.indexOf("\\000", pos+1);
-												if(pos2>-1) {
-													String primaryKey=S.substring(pos+4, pos2);
-													pos=S.indexOf("\\000", pos2+1);
-													if(pos>-1) {
+											pos = s.indexOf("\\000", pos + 1);
+											if(pos > -1) {
+												pos2 = s.indexOf("\\000", pos + 1);
+												if(pos2 > -1) {
+													String primaryKey = s.substring(pos + 4, pos2);
+													pos = s.indexOf("\\000", pos2 + 1);
+													if(pos > -1) {
 														constraintNames.add(constraintName);
 														foreignTables.add(foreignTable);
 														primaryTables.add(primaryTable);
 														primaryKeys.add(primaryKey);
-														foreignKeys.add(S.substring(pos2+4, pos));
-														isDeferrable.add(R.getBoolean(3)?Boolean.TRUE:Boolean.FALSE);
-														isInitiallyDeferred.add(R.getBoolean(4)?Boolean.TRUE:Boolean.FALSE);
-														insertRules.add(R.getString(2));
-														if(R.next()) deleteRules.add(R.getString(2));
-														if(R.next()) updateRules.add(R.getString(2));
+														foreignKeys.add(s.substring(pos2 + 4, pos));
+														isDeferrable.add(r.getBoolean(3) ? Boolean.TRUE : Boolean.FALSE);
+														isInitiallyDeferred.add(r.getBoolean(4) ? Boolean.TRUE : Boolean.FALSE);
+														insertRules.add(r.getString(2));
+														if(r.next()) deleteRules.add(r.getString(2));
+														if(r.next()) updateRules.add(r.getString(2));
 													}
 												}
 											}
@@ -820,7 +820,7 @@ public class PgSQLConnector extends JDBCConnector {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
 			Statement stmt = conn.createStatement();
-			ResultSet R = stmt.executeQuery(
+			ResultSet r = stmt.executeQuery(
 				"SELECT ic.relname as PK_NAME, "
 				+ " a.attname AS COLUMN_NAME,"
 				+ " i.indisunique as UNIQUE_KEY"
@@ -841,10 +841,10 @@ public class PgSQLConnector extends JDBCConnector {
 				+ " ORDER BY pk_name"
 			)
 		) {
-			while(R.next()) {
-				names.add(R.getString(1));
-				columns.add(R.getString(2));
-				areUnique.add(R.getBoolean(3)?Boolean.TRUE:Boolean.FALSE);
+			while(r.next()) {
+				names.add(r.getString(1));
+				columns.add(r.getString(2));
+				areUnique.add(r.getBoolean(3) ? Boolean.TRUE : Boolean.FALSE);
 			}
 		}
 		return new Indexes(names, areUnique, columns);
@@ -861,19 +861,19 @@ public class PgSQLConnector extends JDBCConnector {
 		try (
 			Connection conn = DatabasePool.getConnection(getSettings());
 			Statement stmt = conn.createStatement();
-			ResultSet R = stmt.executeQuery("select tgname, tgargs, proname from pg_proc, pg_trigger where tgfoid = pg_proc.oid and proname like 'RI_FKey_%_ins'")
+			ResultSet r = stmt.executeQuery("select tgname, tgargs, proname from pg_proc, pg_trigger where tgfoid = pg_proc.oid and proname like 'RI_FKey_%_ins'")
 		) {
-			while(R.next()) {
-				String S=R.getString(2);
-				int pos=S.indexOf("\\000");
-				if(pos>-1) {
-					String tmp=S.substring(0, pos);
+			while(r.next()) {
+				String s = r.getString(2);
+				int pos = s.indexOf("\\000");
+				if(pos > -1) {
+					String tmp = s.substring(0, pos);
 					if(constraint.equals(tmp)) {
-						int pos2=S.indexOf("\\000", pos+1);
-						if(pos2>-1) {
-							if(table.equals(S.substring(pos+4, pos2))) {
-								String rule=R.getString(3);
-								return rule.substring(8, rule.length()-4);
+						int pos2 = s.indexOf("\\000", pos + 1);
+						if(pos2 > -1) {
+							if(table.equals(s.substring(pos + 4, pos2))) {
+								String rule = r.getString(3);
+								return rule.substring(8, rule.length() - 4);
 							}
 						}
 					}
@@ -977,8 +977,8 @@ public class PgSQLConnector extends JDBCConnector {
 					sql.append(" ORDER BY ").append(quoteColumn(keyColumn));
 
 					// Return all the values, sorted
-					List<String> V=executeListQuery(sql.toString());
-					if(V.size()>0) return V;
+					List<String> v = executeListQuery(sql.toString());
+					if(v.size() > 0) return v;
 				}
 			}
 		}
@@ -1004,22 +1004,22 @@ public class PgSQLConnector extends JDBCConnector {
 		try (
 			Connection conn = DatabasePool.getConnection(getSettings());
 			Statement stmt = conn.createStatement();
-			ResultSet R = stmt.executeQuery("select tgargs from pg_trigger")
+			ResultSet r = stmt.executeQuery("select tgargs from pg_trigger")
 		) {
-			while(R.next()) {
-				String S=R.getString(1);
-				int pos=S.indexOf("\\000");
-				if(pos>-1) {
-					String tmp=S.substring(0, pos);
+			while(r.next()) {
+				String s = r.getString(1);
+				int pos = s.indexOf("\\000");
+				if(pos > -1) {
+					String tmp = s.substring(0, pos);
 					if(constraint.equals(tmp)) {
-						int pos2=S.indexOf("\\000", pos+1);
-						if(pos2>-1) {
-							if(table.equals(S.substring(pos+4, pos2))) {
-								pos=S.indexOf("\\000", pos2+1);
-								if(pos>-1)pos=S.indexOf("\\000", pos+1);
-								if(pos>-1)pos2=S.indexOf("\\000", pos+1);
-								if(pos2>-1) {
-									return table+"."+S.substring(pos+4, pos2);
+						int pos2 = s.indexOf("\\000", pos + 1);
+						if(pos2 > -1) {
+							if(table.equals(s.substring(pos + 4, pos2))) {
+								pos = s.indexOf("\\000", pos2 + 1);
+								if(pos > -1) pos = s.indexOf("\\000", pos + 1);
+								if(pos > -1) pos2 = s.indexOf("\\000", pos + 1);
+								if(pos2 > -1) {
+									return table + "." + s.substring(pos + 4, pos2);
 								}
 							}
 						}
@@ -1049,7 +1049,7 @@ public class PgSQLConnector extends JDBCConnector {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
 			Statement stmt = conn.createStatement();
-			ResultSet R = stmt.executeQuery(
+			ResultSet r = stmt.executeQuery(
 				"SELECT u.usename, c.relacl "
 				+ "FROM pg_class c, pg_user u "
 				+ "WHERE (c.relkind='r' OR relkind='S') AND "
@@ -1063,38 +1063,38 @@ public class PgSQLConnector extends JDBCConnector {
 			List<String> grantees=new ArrayList<>();
 			List<String> privileges=new ArrayList<>();
 			String grantor="";
-			if(R.next()) {
-				grantor=R.getString(1);
-				String S=R.getString(2);
-				int size=S.length();
-				for(int i=0;i<size;i++) {
-					if(S.charAt(i)=='"') {
+			if(r.next()) {
+				grantor = r.getString(1);
+				String s = r.getString(2);
+				int size = s.length();
+				for(int i = 0; i < size; i++) {
+					if(s.charAt(i) == '"') {
 						i++;
-						int n=S.indexOf('=', i);
-						String grantee=S.substring(i, n);
-						if(grantee.startsWith("group ")) grantee=S.substring(6);
+						int n = s.indexOf('=', i);
+						String grantee = s.substring(i, n);
+						if(grantee.startsWith("group ")) grantee = s.substring(6);
 						grantees.add(grantee);
 						n++;
-						i=S.indexOf('"',n);
-						String privs=S.substring(n, i);
-						StringBuilder P=new StringBuilder();
-						if(privs.contains("arwR")) P.append("ALL");
+						i = s.indexOf('"', n);
+						String privs = s.substring(n, i);
+						StringBuilder p = new StringBuilder();
+						if(privs.contains("arwR")) p.append("ALL");
 						else {
-							if(privs.indexOf('r')>-1) P.append("SELECT");
-							if(privs.indexOf('w')>-1) {
-								if(P.length()>0) P.append(", ");
-								P.append("UPDATE/DELETE");
+							if(privs.indexOf('r') > -1) p.append("SELECT");
+							if(privs.indexOf('w') > -1) {
+								if(p.length() > 0) p.append(", ");
+								p.append("UPDATE/DELETE");
 							}
-							if(privs.indexOf('a')>-1) {
-								if(P.length()>0) P.append(", ");
-								P.append("INSERT");
+							if(privs.indexOf('a') > -1) {
+								if(p.length() > 0) p.append(", ");
+								p.append("INSERT");
 							}
-							if(privs.indexOf('a')>-1) {
-								if(P.length()>0) P.append(", ");
-								P.append("RULE");
+							if(privs.indexOf('a') > -1) {
+								if(p.length() > 0) p.append(", ");
+								p.append("RULE");
 							}
 						}
-						privileges.add(P.toString());
+						privileges.add(p.toString());
 					}
 				}
 			}
@@ -1195,19 +1195,19 @@ public class PgSQLConnector extends JDBCConnector {
 		try (
 			Connection conn = DatabasePool.getConnection(getSettings());
 			Statement stmt = conn.createStatement();
-			ResultSet R = stmt.executeQuery("select tgname, tgargs, proname from pg_proc, pg_trigger where tgfoid = pg_proc.oid and proname like 'RI_FKey_%_upd'")
+			ResultSet r = stmt.executeQuery("select tgname, tgargs, proname from pg_proc, pg_trigger where tgfoid = pg_proc.oid and proname like 'RI_FKey_%_upd'")
 		) {
-			while(R.next()) {
-				String S=R.getString(2);
-				int pos=S.indexOf("\\000");
-				if(pos>-1) {
-					String tmp=S.substring(0, pos);
+			while(r.next()) {
+				String s = r.getString(2);
+				int pos = s.indexOf("\\000");
+				if(pos > -1) {
+					String tmp = s.substring(0, pos);
 					if(constraint.equals(tmp)) {
-						int pos2=S.indexOf("\\000", pos+1);
-						if(pos2>-1) {
-							if(table.equals(S.substring(pos+4, pos2))) {
-								String rule=R.getString(3);
-								return rule.substring(8, rule.length()-4);
+						int pos2 = s.indexOf("\\000", pos + 1);
+						if(pos2 > -1) {
+							if(table.equals(s.substring(pos + 4, pos2))) {
+								String rule = r.getString(3);
+								return rule.substring(8, rule.length() - 4);
 							}
 						}
 					}
@@ -1228,18 +1228,18 @@ public class PgSQLConnector extends JDBCConnector {
 		try (
 			Connection conn = DatabasePool.getConnection(getSettings());
 			Statement stmt = conn.createStatement();
-			ResultSet R = stmt.executeQuery("select tgargs, tgdeferrable from pg_trigger")
+			ResultSet r = stmt.executeQuery("select tgargs, tgdeferrable from pg_trigger")
 		) {
-			while(R.next()) {
-				String S=R.getString(1);
-				int pos=S.indexOf("\\000");
-				if(pos>-1) {
-					String tmp=S.substring(0, pos);
+			while(r.next()) {
+				String s = r.getString(1);
+				int pos = s.indexOf("\\000");
+				if(pos > -1) {
+					String tmp = s.substring(0, pos);
 					if(constraint.equals(tmp)) {
-						int pos2=S.indexOf("\\000", pos+1);
-						if(pos2>-1) {
-							if(table.equals(S.substring(pos+4, pos2))) {
-								return R.getString(2).equals("t")?Boolean.TRUE:Boolean.FALSE;
+						int pos2 = s.indexOf("\\000", pos + 1);
+						if(pos2 > -1) {
+							if(table.equals(s.substring(pos + 4, pos2))) {
+								return r.getString(2).equals("t") ? Boolean.TRUE : Boolean.FALSE;
 							}
 						}
 					}
@@ -1261,18 +1261,18 @@ public class PgSQLConnector extends JDBCConnector {
 		try (
 			Connection conn = DatabasePool.getConnection(getSettings());
 			Statement stmt = conn.createStatement();
-			ResultSet R = stmt.executeQuery("select tgargs, tginitdeferred from pg_trigger")
+			ResultSet r = stmt.executeQuery("select tgargs, tginitdeferred from pg_trigger")
 		) {
-			while(R.next()) {
-				String S=R.getString(1);
-				int pos=S.indexOf("\\000");
-				if(pos>-1) {
-					String tmp=S.substring(0, pos);
+			while(r.next()) {
+				String s = r.getString(1);
+				int pos = s.indexOf("\\000");
+				if(pos > -1) {
+					String tmp = s.substring(0, pos);
 					if(constraint.equals(tmp)) {
-						int pos2=S.indexOf("\\000", pos+1);
-						if(pos2>-1) {
-							if(table.equals(S.substring(pos+4, pos2))) {
-								return R.getString(2).equals("t")?Boolean.TRUE:Boolean.FALSE;
+						int pos2 = s.indexOf("\\000", pos + 1);
+						if(pos2 > -1) {
+							if(table.equals(s.substring(pos + 4, pos2))) {
+								return r.getString(2).equals("t") ? Boolean.TRUE : Boolean.FALSE;
 							}
 						}
 					}
@@ -1299,27 +1299,27 @@ public class PgSQLConnector extends JDBCConnector {
 		String table = settings.getTable();
 		Columns columns = getColumns(table);
 		// Build the SQL
-		StringBuilder SB=new StringBuilder("INSERT INTO ").append(quoteTable(table)).append(" (");
-		for(int i=0;i<column.length;i++) {
-			if(i>0) SB.append(", ");
-			SB.append(quoteColumn(column[i]));
+		StringBuilder sb = new StringBuilder("INSERT INTO ").append(quoteTable(table)).append(" (");
+		for(int i = 0; i < column.length; i++) {
+			if(i > 0) sb.append(", ");
+			sb.append(quoteColumn(column[i]));
 		}
-		SB.append(") VALUES (");
+		sb.append(") VALUES (");
 		for(int i=0;i<column.length;i++) {
-			if(i>0) SB.append(", ");
-			if(function[i]!=null && function[i].length()>0) {
-				SB.append(function[i]);
+			if(i > 0) sb.append(", ");
+			if(function[i] != null && function[i].length() > 0) {
+				sb.append(function[i]);
 			} else {
 				String type = getCastType(columns.getType(columns.getID(column[i])));
 				if("bool".equals(type) || "boolean".equals(type)) {
-					SB.append("?");
+					sb.append("?");
 				} else {
-					SB.append("?::").append(quoteType(type));
+					sb.append("?::").append(quoteType(type));
 				}
 			}
 		}
-		SB.append(')');
-		String sql=SB.toString();
+		sb.append(')');
+		String sql = sb.toString();
 
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
@@ -1356,17 +1356,17 @@ public class PgSQLConnector extends JDBCConnector {
 		String table = settings.getTable();
 		Columns columns = getColumns(table);
 
-		StringBuilder SB = new StringBuilder("DELETE FROM ").append(quoteTable(table));
+		StringBuilder sb = new StringBuilder("DELETE FROM ").append(quoteTable(table));
 		for (int i = 0; i < primaryKeys.length; i++) {
-			SB.append(i == 0 ? " WHERE " : " AND ");
+			sb.append(i == 0 ? " WHERE " : " AND ");
 			if (primaryKeyValues[i] == null) {
-				appendIsNull(SB, primaryKeys[i]);
+				appendIsNull(sb, primaryKeys[i]);
 			} else {
 				String type = getCastType(columns.getType(columns.getID(primaryKeys[i])));
-				SB.append(quoteColumn(primaryKeys[i])).append("=?::").append(quoteType(type));
+				sb.append(quoteColumn(primaryKeys[i])).append("=?::").append(quoteType(type));
 			}
 		}
-		String sql = SB.toString();
+		String sql = sb.toString();
 
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
@@ -1400,17 +1400,17 @@ public class PgSQLConnector extends JDBCConnector {
 		String table = settings.getTable();
 		Columns columns = getColumns(table);
 		// Build the SQL first
-		StringBuilder SB = new StringBuilder("SELECT * FROM ").append(quoteTable(table));
+		StringBuilder sb = new StringBuilder("SELECT * FROM ").append(quoteTable(table));
 		for (int i = 0; i < primaryKeys.size(); i++) {
-			SB.append(i == 0 ? " WHERE " : " AND ");
+			sb.append(i == 0 ? " WHERE " : " AND ");
 			if (primaryValues.get(i) == null) {
-				appendIsNull(SB, primaryKeys.get(i));
+				appendIsNull(sb, primaryKeys.get(i));
 			} else {
 				String type = getCastType(columns.getType(columns.getID(primaryKeys.get(i))));
-				SB.append(quoteColumn(primaryKeys.get(i))).append("=?::").append(quoteType(type));
+				sb.append(quoteColumn(primaryKeys.get(i))).append("=?::").append(quoteType(type));
 			}
 		}
-		String sql = SB.toString();
+		String sql = sb.toString();
 
 		// Then perform the query
 		try (
@@ -1425,14 +1425,14 @@ public class PgSQLConnector extends JDBCConnector {
 				}
 			}
 			try (ResultSet results = pstmt.executeQuery()) {
-				List<String> V = new ArrayList<>();
+				List<String> v = new ArrayList<>();
 				if (results.next()) {
 					int count = results.getMetaData().getColumnCount();
 					for (int i = 1; i <= count; i++) {
-						V.add(results.getString(i));
+						v.add(results.getString(i));
 					}
 				}
-				return V;
+				return v;
 			}
 		}
 	}
@@ -1450,29 +1450,29 @@ public class PgSQLConnector extends JDBCConnector {
 		String table = settings.getTable();
 		Columns columns = getColumns(table);
 		// Build the SQL statement
-		StringBuilder SB = new StringBuilder("UPDATE ").append(quoteTable(table)).append(" SET ");
+		StringBuilder sb = new StringBuilder("UPDATE ").append(quoteTable(table)).append(" SET ");
 		for (int i = 0; i < column.length; i++) {
 			if (i > 0) {
-				SB.append(", ");
+				sb.append(", ");
 			}
-			SB.append(quoteColumn(column[i])).append("=");
+			sb.append(quoteColumn(column[i])).append("=");
 			if (function[i] != null && function[i].length() > 0) {
-				SB.append(function[i]);
+				sb.append(function[i]);
 			} else {
 				String type = getCastType(columns.getType(columns.getID(column[i])));
-				SB.append("?::").append(quoteType(type));
+				sb.append("?::").append(quoteType(type));
 			}
 		}
 		for (int i = 0; i < primaryKeys.length; i++) {
-			SB.append(i == 0 ? " WHERE " : " AND ");
+			sb.append(i == 0 ? " WHERE " : " AND ");
 			if (primaryKeyValues[i] == null) {
-				appendIsNull(SB, primaryKeys[i]);
+				appendIsNull(sb, primaryKeys[i]);
 			} else {
 				String type = getCastType(columns.getType(columns.getID(primaryKeys[i])));
-				SB.append(quoteColumn(primaryKeys[i])).append("=?::").append(quoteType(type));
+				sb.append(quoteColumn(primaryKeys[i])).append("=?::").append(quoteType(type));
 			}
 		}
-		String sql = SB.toString();
+		String sql = sb.toString();
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
 			PreparedStatement stmt = conn.prepareStatement(sql)

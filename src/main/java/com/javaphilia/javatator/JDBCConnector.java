@@ -196,15 +196,15 @@ public class JDBCConnector {
 	 */
 	public void addPrimaryKey(String column) throws SQLException, IOException {
 		try (Connection conn = DatabasePool.getConnection(settings)) {
-			StringBuilder SB=new StringBuilder();
+			StringBuilder sb = new StringBuilder();
 			try (ResultSet results = conn.getMetaData().getPrimaryKeys(null, null, settings.getTable())) {
 				while(results.next()) {
-					SB.append(results.getString(4));
-					SB.append(", ");
+					sb.append(results.getString(4));
+					sb.append(", ");
 				}
-				SB.append(quoteColumn(column));
+				sb.append(quoteColumn(column));
 			}
-			try (PreparedStatement pstmt = conn.prepareStatement("ALTER TABLE " + quoteTable(settings.getTable()) + " DROP PRIMARY KEY, ADD PRIMARY KEY(" + SB.toString() + ")")) {
+			try (PreparedStatement pstmt = conn.prepareStatement("ALTER TABLE " + quoteTable(settings.getTable()) + " DROP PRIMARY KEY, ADD PRIMARY KEY(" + sb.toString() + ")")) {
 				pstmt.executeUpdate();
 			}
 		}
@@ -220,8 +220,8 @@ public class JDBCConnector {
 		executeUpdate("ALTER TABLE " + quoteTable(settings.getTable()) + " ADD UNIQUE " + indexName + " (" + quoteColumn(column) + ')');
 	}
 
-	protected void appendIsNull(StringBuilder SB, String column) {
-		SB
+	protected void appendIsNull(StringBuilder sb, String column) {
+		sb
 			.append("ISNULL(")
 			.append(quoteColumn(column))
 			.append(')');
@@ -306,16 +306,16 @@ public class JDBCConnector {
 		String[] primaryKeys,
 		String[] primaryKeyValues
 	) throws SQLException, IOException {
-		StringBuilder SB = new StringBuilder("DELETE FROM ").append(quoteTable(settings.getTable()));
+		StringBuilder sb = new StringBuilder("DELETE FROM ").append(quoteTable(settings.getTable()));
 		for (int i = 0; i < primaryKeys.length; i++) {
-			SB.append(i == 0 ? " WHERE " : " AND ");
+			sb.append(i == 0 ? " WHERE " : " AND ");
 			if (primaryKeyValues[i] == null) {
-				appendIsNull(SB, primaryKeys[i]);
+				appendIsNull(sb, primaryKeys[i]);
 			} else {
-				SB.append(primaryKeys[i]).append("=?");
+				sb.append(primaryKeys[i]).append("=?");
 			}
 		}
-		String sql = SB.toString();
+		String sql = sb.toString();
 
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
@@ -370,19 +370,19 @@ public class JDBCConnector {
 	 */
 	public void dropPrimaryKey(String column) throws SQLException, IOException {
 		try (Connection conn = DatabasePool.getConnection(settings)) {
-			StringBuilder SB=new StringBuilder();
+			StringBuilder sb = new StringBuilder();
 			try (ResultSet results = conn.getMetaData().getPrimaryKeys(null, null, settings.getTable())) {
 				while(results.next()) {
 					if(!results.getString(4).equals(column)) {
-						if(SB.length()>0)SB.append(", ");
-						SB.append(results.getString(4));
+						if(sb.length() > 0) sb.append(", ");
+						sb.append(results.getString(4));
 					}
 				}
 			}
 			StringBuilder sql=new StringBuilder("ALTER TABLE ").append(quoteTable(settings.getTable())).append(" DROP PRIMARY KEY");
-			if(SB.length()>0) {
+			if(sb.length() > 0) {
 				sql.append(", ADD PRIMARY KEY(");
-				sql.append(SB.toString());
+				sql.append(sb.toString());
 				sql.append(")");
 			}
 
@@ -409,10 +409,10 @@ public class JDBCConnector {
 			String table=settings.getTable();
 			try (
 				Statement stmt = conn.createStatement();
-				ResultSet R = stmt.executeQuery("SELECT * FROM " + quoteTable(table))
+				ResultSet r = stmt.executeQuery("SELECT * FROM " + quoteTable(table))
 			) {
-				int count=R.getMetaData().getColumnCount();
-				while(R.next()) {
+				int count = r.getMetaData().getColumnCount();
+				while(r.next()) {
 					out.write("INSERT INTO ");
 					out.write(quoteTable(table));
 					out.write(" VALUES (");
@@ -420,7 +420,7 @@ public class JDBCConnector {
 					for(int i=1;i<=count;i++) {
 						if(hasBeen) out.write(',');
 						else hasBeen=true;
-						Util.printEscapedSQLValue(out, R.getString(i));
+						Util.printEscapedSQLValue(out, r.getString(i));
 					}
 					out.write(");\n");
 				}
@@ -546,27 +546,27 @@ public class JDBCConnector {
 		String[] primaryKeyValues
 	) throws SQLException, IOException {
 		// Build the SQL statement
-		StringBuilder SB = new StringBuilder("UPDATE ").append(quoteTable(settings.getTable())).append(" SET ");
+		StringBuilder sb = new StringBuilder("UPDATE ").append(quoteTable(settings.getTable())).append(" SET ");
 		for (int i = 0; i < column.length; i++) {
 			if (i > 0) {
-				SB.append(", ");
+				sb.append(", ");
 			}
-			SB.append(quoteColumn(column[i])).append('=');
+			sb.append(quoteColumn(column[i])).append('=');
 			if (function[i] != null && function[i].length() > 0) {
-				SB.append(function[i]);
+				sb.append(function[i]);
 			} else {
-				SB.append('?');
+				sb.append('?');
 			}
 		}
 		for (int i = 0; i < primaryKeys.length; i++) {
-			SB.append(i == 0 ? " WHERE " : " AND ");
+			sb.append(i == 0 ? " WHERE " : " AND ");
 			if (primaryKeyValues[i] == null) {
-				appendIsNull(SB, primaryKeys[i]);
+				appendIsNull(sb, primaryKeys[i]);
 			} else {
-				SB.append(quoteColumn(primaryKeys[i])).append("=?");
+				sb.append(quoteColumn(primaryKeys[i])).append("=?");
 			}
 		}
-		String sql = SB.toString();
+		String sql = sb.toString();
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
 			PreparedStatement stmt = conn.prepareStatement(sql)
@@ -603,9 +603,11 @@ public class JDBCConnector {
 			Statement stmt = conn.createStatement();
 			ResultSet results = stmt.executeQuery(sql)
 		) {
-			List<String> V=new ArrayList<>();
-			while(results.next()) V.add(results.getString(1));
-			return V;
+			List<String> v = new ArrayList<>();
+			while(results.next()) {
+				v.add(results.getString(1));
+			}
+			return v;
 		}
 	}
 
@@ -622,9 +624,11 @@ public class JDBCConnector {
 		) {
 			pstmt.setString(1, param);
 			try (ResultSet results = pstmt.executeQuery()) {
-				List<String> V=new ArrayList<>();
-				while(results.next()) V.add(results.getString(1));
-				return V;
+				List<String> v = new ArrayList<>();
+				while(results.next()) {
+					v.add(results.getString(1));
+				}
+				return v;
 			}
 		}
 	}
@@ -710,9 +714,9 @@ public class JDBCConnector {
 	private String getColumnMetaData(String column, int index) throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
-			ResultSet R = conn.getMetaData().getColumns(null, null, settings.getTable(), column)
+			ResultSet r = conn.getMetaData().getColumns(null, null, settings.getTable(), column)
 		) {
-			if(R.next()) return R.getString(index);
+			if(r.next()) return r.getString(index);
 			else throw new SQLException("Column not found: "+column);
 		}
 	}
@@ -734,21 +738,21 @@ public class JDBCConnector {
 
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
-			ResultSet R = conn.getMetaData().getColumns(null, null, table, "%")
+			ResultSet r = conn.getMetaData().getColumns(null, null, table, "%")
 		) {
-			while(R.next()) {
-				names.add(R.getString(4));
-				types.add(R.getString(6));
-				lengths.add(R.getString(7));
-				int nullable=R.getInt(11);
+			while(r.next()) {
+				names.add(r.getString(4));
+				types.add(r.getString(6));
+				lengths.add(r.getString(7));
+				int nullable = r.getInt(11);
 				areNullable.add(
 					(nullable==DatabaseMetaData.columnNoNulls) ? Boolean.FALSE
 						: (nullable==DatabaseMetaData.columnNullable) ? Boolean.TRUE
 							: Boolean.UNKNOWN);
-				String def=R.getString(13);
-				defaults.add((def!=null)?'V'+def:null);
-				String rem=R.getString(12);
-				remarks.add((rem!=null)?rem:"");
+				String def = r.getString(13);
+				defaults.add((def != null) ? ('V' + def) : null);
+				String rem = r.getString(12);
+				remarks.add((rem != null) ? rem : "");
 			}
 		}
 		return new Columns(names, types, lengths, areNullable, defaults, remarks);
@@ -772,9 +776,11 @@ public class JDBCConnector {
 			DatabaseMetaData metaData=conn.getMetaData();
 			if(metaData.supportsCatalogsInDataManipulation()) {
 				try (ResultSet results = conn.getMetaData().getCatalogs()) {
-					List<String> V=new ArrayList<>();
-					while(results.next()) V.add(results.getString(1));
-					return V;
+					List<String> v = new ArrayList<>();
+					while(results.next()) {
+						v.add(results.getString(1));
+					}
+					return v;
 				}
 			} else {
 				return Collections.emptyList();
@@ -866,11 +872,11 @@ public class JDBCConnector {
 	protected ForeignKeys getForeignKeys(String table, boolean isImported) throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
-			ResultSet R=(isImported)
+			ResultSet r = (isImported)
 				? conn.getMetaData().getImportedKeys(null, null, table)
 				: conn.getMetaData().getExportedKeys(null, null, table)
 		) {
-			if(R!=null) {
+			if(r != null) {
 				List<String> foreignKeys=new ArrayList<>();
 				List<String> foreignTables=new ArrayList<>();
 				List<String> primaryKeys=new ArrayList<>();
@@ -879,15 +885,15 @@ public class JDBCConnector {
 				List<String> insertRules=new ArrayList<>();
 				List<String> deleteRules=new ArrayList<>();
 				List<String> updateRules=new ArrayList<>();
-				while(R.next()) {
-					primaryTables.add(R.getString(3));
-					primaryKeys.add(R.getString(4));
-					foreignTables.add(R.getString(7));
-					foreignKeys.add(R.getString(8));
-					constraintNames.add(R.getString(12));
+				while(r.next()) {
+					primaryTables.add(r.getString(3));
+					primaryKeys.add(r.getString(4));
+					foreignTables.add(r.getString(7));
+					foreignKeys.add(r.getString(8));
+					constraintNames.add(r.getString(12));
 					insertRules.add("Unknown");
-					deleteRules.add(getRuleDescription(R.getInt(11)));
-					updateRules.add(getRuleDescription(R.getInt(10)));
+					deleteRules.add(getRuleDescription(r.getInt(11)));
+					updateRules.add(getRuleDescription(r.getInt(10)));
 				}
 				int size=constraintNames.size();
 				if(size<1) return null;
@@ -930,42 +936,42 @@ public class JDBCConnector {
 	 */
 	public List<String> getFunctionList() throws SQLException, IOException {
 		try (Connection conn = DatabasePool.getConnection(settings)) {
-			Set<String> SV=new HashSet<>();
-			List<String> V=new ArrayList<>();
+			Set<String> sv = new HashSet<>();
+			List<String> v = new ArrayList<>();
 			DatabaseMetaData metaData=conn.getMetaData();
-			StringTokenizer ST=new StringTokenizer(metaData.getNumericFunctions(), ",");
-			while(ST.hasMoreTokens()) {
-				String S=ST.nextToken();
-				if(!SV.contains(S)) {
-					SV.add(S);
-					V.add(S);
+			StringTokenizer st = new StringTokenizer(metaData.getNumericFunctions(), ",");
+			while(st.hasMoreTokens()) {
+				String s = st.nextToken();
+				if(!sv.contains(s)) {
+					sv.add(s);
+					v.add(s);
 				}
 			}
-			ST=new StringTokenizer(metaData.getStringFunctions(), ",");
-			while(ST.hasMoreTokens()) {
-				String S=ST.nextToken();
-				if(!SV.contains(S)) {
-					SV.add(S);
-					V.add(S);
+			st = new StringTokenizer(metaData.getStringFunctions(), ",");
+			while(st.hasMoreTokens()) {
+				String s = st.nextToken();
+				if(!sv.contains(s)) {
+					sv.add(s);
+					v.add(s);
 				}
 			}
-			ST=new StringTokenizer(metaData.getSystemFunctions(), ",");
-			while(ST.hasMoreTokens()) {
-				String S=ST.nextToken();
-				if(!SV.contains(S)) {
-					SV.add(S);
-					V.add(S);
+			st = new StringTokenizer(metaData.getSystemFunctions(), ",");
+			while(st.hasMoreTokens()) {
+				String s = st.nextToken();
+				if(!sv.contains(s)) {
+					sv.add(s);
+					v.add(s);
 				}
 			}
-			ST=new StringTokenizer(metaData.getTimeDateFunctions(), ",");
-			while(ST.hasMoreTokens()) {
-				String S=ST.nextToken();
-				if(!SV.contains(S)) {
-					SV.add(S);
-					V.add(S);
+			st = new StringTokenizer(metaData.getTimeDateFunctions(), ",");
+			while(st.hasMoreTokens()) {
+				String s = st.nextToken();
+				if(!sv.contains(s)) {
+					sv.add(s);
+					v.add(s);
 				}
 			}
-			return V;
+			return v;
 		}
 	}
 
@@ -997,12 +1003,12 @@ public class JDBCConnector {
 		List<String> colNames=new ArrayList<>();
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
-			ResultSet R = conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false)
+			ResultSet r = conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false)
 		) {
-			while(R.next()) {
-				names.add(R.getString(6));
-				areUnique.add(R.getBoolean(4)?Boolean.FALSE:Boolean.TRUE);
-				colNames.add(R.getString(9));
+			while(r.next()) {
+				names.add(r.getString(6));
+				areUnique.add(r.getBoolean(4) ? Boolean.FALSE : Boolean.TRUE);
+				colNames.add(r.getString(9));
 			}
 		}
 		return new Indexes(names, areUnique, colNames);
@@ -1011,11 +1017,13 @@ public class JDBCConnector {
 	private List<String> getIndexInfo(int index) throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
-			ResultSet R = conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false)
+			ResultSet r = conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false)
 		) {
-			List<String> V=new ArrayList<>();
-			while(R.next()) V.add(R.getString(index));
-			return V;
+			List<String> v = new ArrayList<>();
+			while(r.next()) {
+				v.add(r.getString(index));
+			}
+			return v;
 		}
 	}
 
@@ -1133,11 +1141,11 @@ public class JDBCConnector {
 		List<String> names=new ArrayList<>();
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
-			ResultSet R = conn.getMetaData().getPrimaryKeys(null, null, settings.getTable())
+			ResultSet r = conn.getMetaData().getPrimaryKeys(null, null, settings.getTable())
 		) {
-			while(R.next()) {
-				columns.add(R.getString(4));
-				names.add(R.getString(6));
+			while(r.next()) {
+				columns.add(r.getString(4));
+				names.add(r.getString(6));
 			}
 		}
 		return new PrimaryKeys(columns, names);
@@ -1160,16 +1168,16 @@ public class JDBCConnector {
 	 */
 	public List<String> getRow(List<String> primaryKeys, List<String> primaryValues) throws SQLException, IOException {
 		// Build the SQL first
-		StringBuilder SB = new StringBuilder("SELECT * FROM ").append(quoteTable(settings.getTable()));
+		StringBuilder sb = new StringBuilder("SELECT * FROM ").append(quoteTable(settings.getTable()));
 		for (int i = 0; i < primaryKeys.size(); i++) {
-			SB.append(i == 0 ? " WHERE " : " AND ");
+			sb.append(i == 0 ? " WHERE " : " AND ");
 			if (primaryValues.get(i) == null) {
-				appendIsNull(SB, primaryKeys.get(i));
+				appendIsNull(sb, primaryKeys.get(i));
 			} else {
-				SB.append(quoteColumn(primaryKeys.get(i))).append("=?");
+				sb.append(quoteColumn(primaryKeys.get(i))).append("=?");
 			}
 		}
-		String sql = SB.toString();
+		String sql = sb.toString();
 
 		// Then perform the query
 		try (
@@ -1184,14 +1192,14 @@ public class JDBCConnector {
 				}
 			}
 			try (ResultSet results = pstmt.executeQuery()) {
-				List<String> V = new ArrayList<>();
+				List<String> v = new ArrayList<>();
 				if (results.next()) {
 					int count = results.getMetaData().getColumnCount();
 					for (int i = 1; i <= count; i++) {
-						V.add(results.getString(i));
+						v.add(results.getString(i));
 					}
 				}
-				return V;
+				return v;
 			}
 		}
 	}
@@ -1256,18 +1264,18 @@ public class JDBCConnector {
 	public TablePrivileges getTablePrivileges() throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
-			ResultSet R = conn.getMetaData().getTablePrivileges(null, null, settings.getTable())
+			ResultSet r = conn.getMetaData().getTablePrivileges(null, null, settings.getTable())
 		) {
 			List<String> grantors=new ArrayList<>();
 			List<String> grantees=new ArrayList<>();
 			List<String> privileges=new ArrayList<>();
 			List<Boolean> isGrantable=new ArrayList<>();
-			while(R.next()) {
-				grantors.add(R.getString(4));
-				grantees.add(R.getString(5));
-				privileges.add(R.getString(6));
-				String G=R.getString(7);
-				isGrantable.add(("YES".equals(G))?Boolean.TRUE:("NO".equals(G))?Boolean.FALSE:Boolean.UNKNOWN);
+			while(r.next()) {
+				grantors.add(r.getString(4));
+				grantees.add(r.getString(5));
+				privileges.add(r.getString(6));
+				String g = r.getString(7);
+				isGrantable.add(("YES".equals(g))?Boolean.TRUE:("NO".equals(g))?Boolean.FALSE:Boolean.UNKNOWN);
 			}
 			return new TablePrivileges(
 				grantors,
@@ -1286,9 +1294,11 @@ public class JDBCConnector {
 			Connection conn = DatabasePool.getConnection(settings);
 			ResultSet results = conn.getMetaData().getTables(null, null, "%", defaultTableTypes)
 		) {
-			List<String> V=new ArrayList<>();
-			while(results.next()) V.add(results.getString(3));
-			return V;
+			List<String> v = new ArrayList<>();
+			while(results.next()) {
+				v.add(results.getString(3));
+			}
+			return v;
 		}
 	}
 
@@ -1298,11 +1308,13 @@ public class JDBCConnector {
 	public List<String> getTypes() throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
-			ResultSet R = conn.getMetaData().getTypeInfo()
+			ResultSet r = conn.getMetaData().getTypeInfo()
 		) {
-			List<String> V=new ArrayList<>();
-			while(R.next()) V.add(R.getString(1));
-			return V;
+			List<String> v = new ArrayList<>();
+			while(r.next()) {
+				v.add(r.getString(1));
+			}
+			return v;
 		}
 	}
 
@@ -1347,22 +1359,22 @@ public class JDBCConnector {
 	 */
 	public void insertRow(String[] column, String[] function, String[] value) throws SQLException, IOException {
 		// Build the SQL
-		StringBuilder SB=new StringBuilder("INSERT INTO ").append(quoteTable(settings.getTable())).append(" (");
-		for(int i=0;i<column.length;i++) {
-			if(i>0) SB.append(", ");
-			SB.append(quoteColumn(column[i]));
+		StringBuilder sb = new StringBuilder("INSERT INTO ").append(quoteTable(settings.getTable())).append(" (");
+		for(int i = 0; i < column.length; i++) {
+			if(i > 0) sb.append(", ");
+			sb.append(quoteColumn(column[i]));
 		}
-		SB.append(") VALUES (");
-		for(int i=0;i<column.length;i++) {
-			if(i>0) SB.append(", ");
-			if(function[i]!=null && function[i].length()>0) {
-				SB.append(function[i]);
+		sb.append(") VALUES (");
+		for(int i = 0; i < column.length; i++) {
+			if(i > 0) sb.append(", ");
+			if(function[i] != null && function[i].length() > 0) {
+				sb.append(function[i]);
 			} else {
-				SB.append('?');
+				sb.append('?');
 			}
 		}
-		SB.append(')');
-		String sql=SB.toString();
+		sb.append(')');
+		String sql = sb.toString();
 
 		try (
 			Connection conn = DatabasePool.getConnection(settings);

@@ -59,27 +59,31 @@ public class SchemaTable {
 		this.name=name;
 	}
 
-	public void draw(Graphics G, FontMetrics metrics, int x, int y) {
-		G.setColor(background);
+	public void draw(Graphics g, FontMetrics metrics, int x, int y) {
+		g.setColor(background);
 		int width=getWidth(metrics);
 		int height=getHeight(metrics);
-		G.fillRect(x, y, width, height);
-		G.setColor(borderColor);
-		G.drawRect(x, y, width-1, height-1);
-		G.drawLine(x, y+metrics.getHeight(), x+width-1, y+metrics.getHeight());
+		g.fillRect(x, y, width, height);
+		g.setColor(borderColor);
+		g.drawRect(x, y, width - 1, height - 1);
+		g.drawLine(x, y + metrics.getHeight(), x + width - 1, y + metrics.getHeight());
 
-		G.setColor(nameColor);
-		int nameWidth=metrics.stringWidth(name);
-		G.drawString(name, x+(width-nameWidth)/2, y+metrics.getHeight()-metrics.getDescent());
+		g.setColor(nameColor);
+		int nameWidth = metrics.stringWidth(name);
+		g.drawString(
+			name,
+			x + (width - nameWidth) / 2,
+			y + metrics.getHeight() - metrics.getDescent()
+		);
 
 		// Draw all the rows
 		x += 1;
-		y += metrics.getHeight()+1;
-		int len=rows.size();
-		for(int c=0;c<len;c++) {
-			SchemaRow row=rows.get(c);
-			row.draw(G, metrics, x, y);
-			y+=row.getHeight(metrics);
+		y += metrics.getHeight() + 1;
+		int len = rows.size();
+		for(int c = 0; c < len; c++) {
+			SchemaRow row = rows.get(c);
+			row.draw(g, metrics, x, y);
+			y += row.getHeight(metrics);
 		}
 	}
 

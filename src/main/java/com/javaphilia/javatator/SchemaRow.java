@@ -56,20 +56,24 @@ public class SchemaRow {
 		foreignKeys.add(new SchemaForeignKey(this, table, row));
 	}
 
-	public void draw(Graphics G, FontMetrics metrics, int x, int y) {
-		int width=getWidth(metrics);
+	public void draw(Graphics g, FontMetrics metrics, int x, int y) {
+		int width = getWidth(metrics);
 
-		G.setColor(nameColor);
-		int nameWidth=metrics.stringWidth(name);
-		G.drawString(name, x+(width-nameWidth)/2, y+metrics.getHeight()-metrics.getDescent());
+		g.setColor(nameColor);
+		int nameWidth = metrics.stringWidth(name);
+		g.drawString(
+			name,
+			x + (width - nameWidth) / 2,
+			y + metrics.getHeight() - metrics.getDescent()
+		);
 	}
 
 	public List<SchemaForeignKey> getForeignKeys() {
 		return foreignKeys;
 	}
 
-	public int getHeight(FontMetrics FM) {
-		return FM.getHeight();
+	public int getHeight(FontMetrics fm) {
+		return fm.getHeight();
 	}
 
 	public String getName() {
@@ -80,7 +84,7 @@ public class SchemaRow {
 		return table;
 	}
 
-	public int getWidth(FontMetrics FM) {
-		return FM.stringWidth(name)+4;
+	public int getWidth(FontMetrics fm) {
+		return fm.stringWidth(name) + 4;
 	}
 }

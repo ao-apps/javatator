@@ -184,10 +184,10 @@ public class SchemaImage extends HttpServlet {
 		int rows = structure.length;
 
 		BufferedImage sizingImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
-		FontMetrics FM;
+		FontMetrics fm;
 		Graphics sizingG = sizingImage.getGraphics();
 		try {
-			FM = sizingG.getFontMetrics(font);
+			fm = sizingG.getFontMetrics(font);
 		} finally {
 			sizingG.dispose();
 		}
@@ -206,11 +206,11 @@ public class SchemaImage extends HttpServlet {
 				short priority = line[x];
 				if (priority > 0 && priority <= len) {
 					SchemaTable table = tables.get(currentTable++);
-					int width = table.getWidth(FM);
+					int width = table.getWidth(fm);
 					if (width > colWidest[x]) {
 						colWidest[x] = width;
 					}
-					int height = table.getHeight(FM);
+					int height = table.getHeight(fm);
 					if (height > rowHighest[y]) {
 						rowHighest[y] = height;
 					}
@@ -236,17 +236,17 @@ public class SchemaImage extends HttpServlet {
 
 		// Make the image
 		BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D G = image.createGraphics();
+		Graphics2D g = image.createGraphics();
 
 		// Set the antialiasing
 		RenderingHints hints = new RenderingHints(
 			RenderingHints.KEY_TEXT_ANTIALIASING,
 			RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		G.addRenderingHints(hints);
+		g.addRenderingHints(hints);
 
 		// Fill the background
-		G.setColor(background);
-		G.fillRect(0, 0, imageWidth, imageHeight);
+		g.setColor(background);
+		g.fillRect(0, 0, imageWidth, imageHeight);
 
 		// Determine the top left corner of each table
 		int[] xs = new int[len];
@@ -271,9 +271,9 @@ public class SchemaImage extends HttpServlet {
 				if (priority > 0 && priority <= len) {
 					SchemaTable table = tables.get(currentTable);
 					// Center in available space
-					int width = table.getWidth(FM);
+					int width = table.getWidth(fm);
 					xs[currentTable] = xpos + (colWidest[x] - width) / 2;
-					int height = table.getHeight(FM);
+					int height = table.getHeight(fm);
 					ys[currentTable] = ypos + (rowHighest[y] - height) / 2;
 					currentTable++;
 				}
@@ -283,7 +283,7 @@ public class SchemaImage extends HttpServlet {
 		}
 
 		// Draw the connections between all tables
-		G.setColor(connectorColor);
+		g.setColor(connectorColor);
 		List<Point> points = new ArrayList<>();
 		for (int c = 0; c < len; c++) {
 			SchemaTable table = tables.get(c);
@@ -312,15 +312,15 @@ public class SchemaImage extends HttpServlet {
 					}
 
 					// Get the row link y position for both tables
-					int linky1 = ys[c] + table.getRowLinkY(row.getName(), FM);
-					int linky2 = ys[foreignIndex] + foreignTable.getRowLinkY(key.getForeignRowName(), FM);
+					int linky1 = ys[c] + table.getRowLinkY(row.getName(), fm);
+					int linky2 = ys[foreignIndex] + foreignTable.getRowLinkY(key.getForeignRowName(), fm);
 
 					// Figure out which x coordinates to use
 					int link1x1 = xs[c];
-					int width1 = table.getWidth(FM);
+					int width1 = table.getWidth(fm);
 					int link1x2 = link1x1 + width1;
 					int link2x1 = xs[foreignIndex];
-					int width2 = foreignTable.getWidth(FM);
+					int width2 = foreignTable.getWidth(fm);
 					int link2x2 = link2x1 + width2;
 					int x1, x2;
 					if ((link1x1 <= link2x1 && link1x2 >= link2x2) || (link1x1 >= link2x1 && link1x2 <= link2x2)) {
@@ -346,10 +346,10 @@ public class SchemaImage extends HttpServlet {
 					}
 
 					// Draw the link
-					G.drawLine(x1, linky1, x2, linky2);
-					G.drawLine(x1 + 1, linky1, x2 + 1, linky2);
-					G.drawLine(x1, linky1 + 1, x2, linky2 + 1);
-					G.drawLine(x1 + 1, linky1 + 1, x2 + 1, linky2 + 1);
+					g.drawLine(x1, linky1, x2, linky2);
+					g.drawLine(x1 + 1, linky1, x2 + 1, linky2);
+					g.drawLine(x1, linky1 + 1, x2, linky2 + 1);
+					g.drawLine(x1 + 1, linky1 + 1, x2 + 1, linky2 + 1);
 
 					// Draw the arrow at point 2
 					int y1 = linky1;
@@ -366,14 +366,14 @@ public class SchemaImage extends HttpServlet {
 					int ay1 = (int) Math.round(y1 + ARROW_LENGTH * Math.sin(angle1));
 					int ax2 = (int) Math.round(x1 + ARROW_LENGTH * Math.cos(angle2));
 					int ay2 = (int) Math.round(y1 + ARROW_LENGTH * Math.sin(angle2));
-					G.drawLine(x1, linky1, ax1, ay1);
-					G.drawLine(x1 + 1, linky1, ax1 + 1, ay1);
-					G.drawLine(x1, linky1 + 1, ax1, ay1 + 1);
-					G.drawLine(x1 + 1, linky1 + 1, ax1 + 1, ay1 + 1);
-					G.drawLine(x1, linky1, ax2, ay2);
-					G.drawLine(x1 + 1, linky1, ax2 + 1, ay2);
-					G.drawLine(x1, linky1 + 1, ax2, ay2 + 1);
-					G.drawLine(x1 + 1, linky1 + 1, ax2 + 1, ay2 + 1);
+					g.drawLine(x1, linky1, ax1, ay1);
+					g.drawLine(x1 + 1, linky1, ax1 + 1, ay1);
+					g.drawLine(x1, linky1 + 1, ax1, ay1 + 1);
+					g.drawLine(x1 + 1, linky1 + 1, ax1 + 1, ay1 + 1);
+					g.drawLine(x1, linky1, ax2, ay2);
+					g.drawLine(x1 + 1, linky1, ax2 + 1, ay2);
+					g.drawLine(x1, linky1 + 1, ax2, ay2 + 1);
+					g.drawLine(x1 + 1, linky1 + 1, ax2 + 1, ay2 + 1);
 
 					//points.addElement(new Point(x1, linky1));
 					points.add(new Point(x2, linky2));
@@ -382,18 +382,18 @@ public class SchemaImage extends HttpServlet {
 		}
 
 		// Draw each table
-		G.setFont(font);
+		g.setFont(font);
 		for (int c = 0; c < len; c++) {
 			SchemaTable table = tables.get(c);
-			table.draw(G, FM, xs[c], ys[c]);
+			table.draw(g, fm, xs[c], ys[c]);
 		}
 
 		// Draw all of the connecting points
-		G.setColor(connectorColor);
+		g.setColor(connectorColor);
 		len = points.size();
 		for (int c = 0; c < len; c++) {
-			Point P = points.get(c);
-			G.fillOval(P.x - 2, P.y - 2, 6, 6);
+			Point p = points.get(c);
+			g.fillOval(p.x - 2, p.y - 2, 6, 6);
 		}
 
 		// Compress the GIF file

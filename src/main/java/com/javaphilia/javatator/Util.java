@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -43,50 +43,50 @@ public class Util {
 	/**
 	 * Adds a space to commas to make certain strings wrap properly in tables
 	 */
-	public static String addSpaceToCommas(String S) {
-		int len=S.length();
-		StringBuilder SB=new StringBuilder(len);
-		for(int c=0;c<len;c++) {
-			char ch=S.charAt(c);
-			if(ch==',') SB.append(", ");
-			else SB.append(ch);
+	public static String addSpaceToCommas(String s) {
+		int len = s.length();
+		StringBuilder sb = new StringBuilder(len);
+		for(int c = 0; c < len; c++) {
+			char ch = s.charAt(c);
+			if(ch == ',') sb.append(", ");
+			else sb.append(ch);
 		}
-		return SB.toString();
+		return sb.toString();
 	}
 
 	/**
 	 * Escapes HTML so that it can be displayed properly in browsers.
 	 *
-	 * @param S the string to be escaped.
+	 * @param s the string to be escaped.
 	 */
-	public static String escapeHTML(String S) {
-		if(S!=null) {
-			int len=S.length();
-			StringBuilder SB=new StringBuilder(len);
-			for(int c=0;c<len;c++) {
-				char ch=S.charAt(c);
+	public static String escapeHTML(String s) {
+		if(s != null) {
+			int len = s.length();
+			StringBuilder sb = new StringBuilder(len);
+			for(int c = 0; c < len; c++) {
+				char ch = s.charAt(c);
 				switch(ch) {
 					case '<':
-						SB.append("&#60;");
+						sb.append("&#60;");
 						break;
 					case '&':
-						SB.append("&#38;");
+						sb.append("&#38;");
 						break;
 					case '"':
-						SB.append("&#34;");
+						sb.append("&#34;");
 						break;
 					case '\'':
-						SB.append("&#39;");
+						sb.append("&#39;");
 						break;
 					case '\n':
-						SB.append("<BR>"); // TODO: lower-case all HTML
+						sb.append("<BR>"); // TODO: lower-case all HTML
 						break;
 					default:
-						SB.append(ch);
+						sb.append(ch);
 						break;
 				}
 			}
-			return SB.toString();
+			return sb.toString();
 		}
 		return null;
 	}
@@ -94,33 +94,33 @@ public class Util {
 	/**
 	 * Escapes HTML so that it can be put in between <code>&lt;TEXTAREA&gt;&lt;/TEXTAREA&gt;</code> etc.
 	 *
-	 * @param S the string to be escaped.
+	 * @param s the string to be escaped.
 	 */
-	public static String escapeInputValue(String S) {
-		if(S!=null) {
-			int len=S.length();
-			StringBuilder SB=new StringBuilder(len);
-			for(int c=0;c<len;c++) {
-				char ch=S.charAt(c);
+	public static String escapeInputValue(String s) {
+		if(s != null) {
+			int len = s.length();
+			StringBuilder sb = new StringBuilder(len);
+			for(int c = 0; c < len; c++) {
+				char ch = s.charAt(c);
 				switch(ch) {
 					case '<':
-						SB.append("&#60;");
+						sb.append("&#60;");
 						break;
 					case '&':
-						SB.append("&#38;");
+						sb.append("&#38;");
 						break;
 					case '"':
-						SB.append("&#34;");
+						sb.append("&#34;");
 						break;
 					case '\'':
-						SB.append("&#39;");
+						sb.append("&#39;");
 						break;
 					default:
-						SB.append(ch);
+						sb.append(ch);
 						break;
 				}
 			}
-			return SB.toString();
+			return sb.toString();
 		}
 		return null;
 	}
@@ -128,34 +128,34 @@ public class Util {
 	/**
 	 * Escapes the specified {@link String} so that it can be put in a JavaScript string.
 	 *
-	 * @param S the string to be escaped.
+	 * @param s the string to be escaped.
 	 */
-	public static String escapeJavaScript(String S) {
-		if(S!=null) {
-			int len=S.length();
-			StringBuilder SB=new StringBuilder(len);
-			for(int c=0;c<len;c++) {
+	public static String escapeJavaScript(String s) {
+		if(s != null) {
+			int len = s.length();
+			StringBuilder sb = new StringBuilder(len);
+			for(int c = 0; c < len; c++) {
 				// TODO: Use ao-encoding and onclick scripts: SB.append("\\\"");
-				char ch=S.charAt(c);
+				char ch = s.charAt(c);
 				switch(ch) {
 					case '"':
-						SB.append("&quot;");
+						sb.append("&quot;");
 						break;
 					case '\'':
-						SB.append("\\'");
+						sb.append("\\'");
 						break;
 					case '\n':
-						SB.append("\\n");
+						sb.append("\\n");
 						break;
 					case '\\':
-						SB.append("\\\\");
+						sb.append("\\\\");
 						break;
 					default:
-						SB.append(ch);
+						sb.append(ch);
 						break;
 				}
 			}
-			return SB.toString();
+			return sb.toString();
 		}
 		return null;
 	}
@@ -163,77 +163,78 @@ public class Util {
 	/**
 	 * Escapes the '' returned by ENUMs in MySQL.
 	 */
-	public static String escapeMySQLQuotes(String S) {
-		int len=S.length();
-		int len2=len-1;
-		StringBuilder SB=new StringBuilder();
-		for(int i=0;i<len;i++) {
-			char c=S.charAt(i);
-			if(i<len2 && c=='\'' && S.charAt(i+1)=='\'') {
-				SB.append("\'");
+	@SuppressWarnings("AssignmentToForLoopParameter")
+	public static String escapeMySQLQuotes(String s) {
+		int len = s.length();
+		int len2 = len - 1;
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < len; i++) {
+			char c = s.charAt(i);
+			if(i < len2 && c == '\'' && s.charAt(i + 1) == '\'') {
+				sb.append("\'");
 				i++;
-			} else SB.append(c);
+			} else sb.append(c);
 		}
-		return SB.toString();
+		return sb.toString();
 	}
 
 	/**
 	 * Escapes SQL so that it can be used safely in queries.
 	 *
-	 * @param S the string to be escaped.
+	 * @param s the string to be escaped.
 	 */
-	public static String escapeSQL(String S) {
+	public static String escapeSQL(String s) {
 		int i;
-		StringBuilder B=new StringBuilder();
-		escapeSQL(S, B);
-		return B.toString();
+		StringBuilder b = new StringBuilder();
+		escapeSQL(s, b);
+		return b.toString();
 	}
 
 	/**
 	 * Escapes SQL so that it can be used safely in queries.
 	 *
-	 * @param S the string to be escaped.
-	 * @param B the {@link StringBuilder} to append to.
+	 * @param s the string to be escaped.
+	 * @param sb the {@link StringBuilder} to append to.
 	 */
-	public static void escapeSQL(String S, StringBuilder B) {
+	public static void escapeSQL(String s, StringBuilder sb) {
 		int i;
-		for (i=0;i<S.length();i++) {
-			char c = S.charAt(i);
+		for (i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
 
-			if (c=='\\' || c=='\'' || c=='"') {
-				B.append('\\');
+			if (c == '\\' || c == '\'' || c == '"') {
+				sb.append('\\');
 			}
-			B.append(c);
+			sb.append(c);
 		}
 	}
 
 	/**
 	 * Escapes a value to be put in an SQL query i.e. returns <code>'blah'</code>.
 	 *
-	 * @param S the string to be escaped.
+	 * @param s the string to be escaped.
 	 */
-	public static String escapeSQLValue(String S) {
-		if(S==null) {
+	public static String escapeSQLValue(String s) {
+		if(s == null) {
 			return "null";
 		} else {
-			StringBuilder B=new StringBuilder();
-			B.append('\'');
-			escapeSQL(S, B);
-			return B.append('\'').toString();
+			StringBuilder b = new StringBuilder();
+			b.append('\'');
+			escapeSQL(s, b);
+			return b.append('\'').toString();
 		}
 	}
 
 	/**
 	 * Gets comma-separated list from a {@link List} of {@link String}.
 	 */
-	public static String getCommaList(List<String> V) {
-		StringBuilder SB=new StringBuilder();
-		int size=V.size();
-		for(int i=0;i<size;i++) {
-			if(SB.length()>0) SB.append(',');
-			SB.append(V.get(i));
+	public static String getCommaList(List<String> list) {
+		StringBuilder sb = new StringBuilder();
+		int size = list.size();
+		for(int i = 0; i < size; i++) {
+			if(sb.length() > 0) sb.append(',');
+			sb.append(list.get(i));
 		}
-		return SB.toString();
+		return sb.toString();
 	}
 
 	private static char getHex(int value) {
@@ -244,13 +245,13 @@ public class Util {
 	 * Escapes HTML for displaying in browsers and writes to the specified {@link JavatatorWriter}.
 	 *
 	 * @param out the {@link JavatatorWriter} to write to.
-	 * @param S the string to be escaped.
+	 * @param s the string to be escaped.
 	 */
-	public static void printEscapedHTML(JavatatorWriter out, String S) {
-		if(S!=null) {
-			int len=S.length();
-			for(int c=0;c<len;c++) {
-				char ch=S.charAt(c);
+	public static void printEscapedHTML(JavatatorWriter out, String s) {
+		if(s != null) {
+			int len = s.length();
+			for(int c = 0; c < len; c++) {
+				char ch = s.charAt(c);
 				switch(ch) {
 					case '<':
 						out.print("&#60;");
@@ -279,13 +280,13 @@ public class Util {
 	 * Escapes HTML for displaying in browsers and writes to the specified {@link JavatatorWriter}.
 	 *
 	 * @param out the {@link JavatatorWriter} to write to.
-	 * @param S the string to be escaped.
+	 * @param s the string to be escaped.
 	 */
-	public static void printEscapedInputValue(JavatatorWriter out, String S) {
-		if(S!=null) {
-			int len=S.length();
-			for(int c=0;c<len;c++) {
-				char ch=S.charAt(c);
+	public static void printEscapedInputValue(JavatatorWriter out, String s) {
+		if(s != null) {
+			int len = s.length();
+			for(int c = 0; c < len; c++) {
+				char ch = s.charAt(c);
 				switch(ch) {
 					case '<':
 						out.print("&#60;");
@@ -312,13 +313,13 @@ public class Util {
 	 * Writes to the specified {@link JavatatorWriter}.
 	 *
 	 * @param out the {@link JavatatorWriter} to write to.
-	 * @param S the string to be escaped.
+	 * @param s the string to be escaped.
 	 */
-	public static void printEscapedJavaScript(JavatatorWriter out, String S) {
-		if(S!=null) {
-			int len=S.length();
-			for(int c=0;c<len;c++) {
-				char ch=S.charAt(c);
+	public static void printEscapedJavaScript(JavatatorWriter out, String s) {
+		if(s != null) {
+			int len = s.length();
+			for(int c = 0; c < len; c++) {
+				char ch = s.charAt(c);
 				switch(ch) {
 					case '"':
 						out.print("\\\"");
@@ -345,13 +346,13 @@ public class Util {
 	 * Writes to the specified {@link JavatatorWriter}.
 	 *
 	 * @param out the {@link JavatatorWriter} to write to.
-	 * @param S the string to be escaped.
+	 * @param s the string to be escaped.
 	 */
-	public static void printEscapedSQL(Writer out, String S) throws IOException {
+	public static void printEscapedSQL(Writer out, String s) throws IOException {
 		int i;
-		for (i=0;i<S.length();i++) {
-			char c=S.charAt(i);
-			if(c=='\n') out.write("\\n");
+		for (i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if(c == '\n') out.write("\\n");
 			else {
 				if (c=='\\' || c=='\'' || c=='"') {
 					out.write('\\');
@@ -366,14 +367,14 @@ public class Util {
 	 * Writes to the specified {@link JavatatorWriter}.
 	 *
 	 * @param out the {@link JavatatorWriter} to write to.
-	 * @param S the string to be escaped.
+	 * @param s the string to be escaped.
 	 */
-	public static void printEscapedSQLValue(Writer out, String S) throws IOException {
-		if(S==null) {
+	public static void printEscapedSQLValue(Writer out, String s) throws IOException {
+		if(s == null) {
 			out.write("null");
 		} else {
 			out.write('\'');
-			printEscapedSQL(out, S);
+			printEscapedSQL(out, s);
 			out.write('\'');
 		}
 	}
@@ -382,20 +383,20 @@ public class Util {
 	 * Prints a value that may be placed in a URL.
 	 */
 	public static void printEscapedURLValue(JavatatorWriter out, String value) {
-		int len=value.length();
-		for(int c=0;c<len;c++) {
-			char ch=value.charAt(c);
-			if(ch==' ') out.print('+');
+		int len = value.length();
+		for(int c = 0; c < len; c++) {
+			char ch = value.charAt(c);
+			if(ch == ' ') out.print('+');
 			else {
 				if(
-				   (ch>='0' && ch<='9')
-				   || (ch>='a' && ch<='z')
-				   || (ch>='A' && ch<='Z')
+				   (ch >= '0' && ch <= '9')
+				   || (ch >= 'a' && ch <= 'z')
+				   || (ch >= 'A' && ch <= 'Z')
 				) {
 					out.print(ch);
 				} else {
 					out.print('%');
-					out.print(getHex(ch>>>4));
+					out.print(getHex(ch >>> 4));
 					out.print(getHex(ch));
 				}
 			}
