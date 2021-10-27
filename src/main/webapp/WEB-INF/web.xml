@@ -75,4 +75,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 	<!-- TODO: Review filters versus other projects -->
 
+	<!-- Error Pages -->
+	<!-- Using error pages from ao-error-pages:/META-INF/web-fragment.xml -->
+
 </web-app>
