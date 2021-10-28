@@ -45,6 +45,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<!-- TODO: Implement tests -->
 		<sonar.coverage.exclusions>**.*</sonar.coverage.exclusions>
+		<!-- Require secure session cookies in production -->
+		<session.cookie.secure>true</session.cookie.secure>
 	</properties>
 
 	<name>Javatator</name>
@@ -136,6 +138,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	</build>
 
 	<profiles>
+		<profile>
+			<!-- Features only enabled during development time -->
+			<id>development</id>
+			<properties>
+				<!-- Allow unsecure session cookies in development -->
+				<session.cookie.secure>false</session.cookie.secure>
+			</properties>
+		</profile>
 		<profile>
 			<id>offlineLinks</id><activation><file><exists>src/main/java</exists></file></activation>
 			<build>

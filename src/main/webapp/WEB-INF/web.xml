@@ -73,6 +73,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 		<param-value>default</param-value>
 	</context-param>
 
+	<!-- Require all session attributes to be Serializable -->
+	<distributable />
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+		<cookie-config>
+			<http-only>true</http-only>
+			<secure>@{session.cookie.secure}</secure>
+		</cookie-config>
+		<!-- Block any servlet container URL rewriting -->
+		<tracking-mode>COOKIE</tracking-mode>
+	</session-config>
+
 	<!-- TODO: Review filters versus other projects -->
 
 	<!-- Error Pages -->
