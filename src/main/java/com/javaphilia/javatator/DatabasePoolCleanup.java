@@ -56,21 +56,25 @@ public class DatabasePoolCleanup extends Thread {
 	 */
 	@Override
 	public void run() {
-		while(true) {
+		while(!Thread.currentThread().isInterrupted()) {
 			try {
-				while(true) {
-					sleep(DatabasePool.CLEANUP_POLL_DELAY);
-					DatabasePool.cleanup();
-				}
+				sleep(DatabasePool.CLEANUP_POLL_DELAY);
+				DatabasePool.cleanup();
+			} catch(InterruptedException e) {
+				e.printStackTrace();
+				// Restore the interrupted status
+				Thread.currentThread().interrupt();
 			} catch(ThreadDeath td) {
 				throw td;
 			} catch(Throwable t) {
 				t.printStackTrace();
-			}
-			try {
-				sleep(DatabasePool.CLEANUP_POLL_DELAY);
-			} catch(InterruptedException err) {
-				err.printStackTrace();
+				try {
+					sleep(DatabasePool.CLEANUP_POLL_DELAY);
+				} catch(InterruptedException err) {
+					err.printStackTrace();
+					// Restore the interrupted status
+					Thread.currentThread().interrupt();
+				}
 			}
 		}
 	}

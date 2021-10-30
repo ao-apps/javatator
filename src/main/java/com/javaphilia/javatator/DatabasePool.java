@@ -341,6 +341,7 @@ public class DatabasePool {
 	private ReleaseOnCloseConnection getConnection0() throws SQLException, IOException {
 		synchronized(connectLock) {
 			while(true) {
+				if(Thread.currentThread().isInterrupted()) throw new SQLException(new InterruptedException());
 				for(int c = 0; c < numConnections; c++) {
 					if(!busyConnections[c]) {
 						startTimes[c] = System.currentTimeMillis();
@@ -370,7 +371,9 @@ public class DatabasePool {
 				try {
 					connectLock.wait();
 				} catch(InterruptedException err) {
-					err.printStackTrace();
+					// Restore the interrupted status
+					Thread.currentThread().interrupt();
+					throw new SQLException(err);
 				}
 			}
 		}
