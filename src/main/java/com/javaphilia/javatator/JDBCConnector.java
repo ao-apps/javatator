@@ -801,9 +801,11 @@ public class JDBCConnector {
 			SchemaTable schemaTable=new SchemaTable(tableName);
 
 			// Populate the columns
-			List<String> columns=getColumns(tableName).getNames();
-			int len=columns.size();
-			for(int d=0;d<len;d++) schemaTable.getRow(columns.get(d));
+			List<String> columns = getColumns(tableName).getNames();
+			int len = columns.size();
+			for(int d = 0; d < len; d++) {
+				schemaTable.getRow(columns.get(d));
+			}
 
 			// Add the foreign key constraints
 			ForeignKeys importedKeys=getImportedKeys(tableName);
@@ -1095,7 +1097,7 @@ public class JDBCConnector {
 		return null;
 	}
 
-	private static final List<String> possiblePrivileges=new ArrayList<String>(6);
+	private static final List<String> possiblePrivileges = new ArrayList<>(6);
 	private static final List<String> unmodifiablePrivileges = Collections.unmodifiableList(possiblePrivileges);
 	static {
 		possiblePrivileges.add("SELECT");

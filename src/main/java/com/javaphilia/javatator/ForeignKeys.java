@@ -153,7 +153,9 @@ public class ForeignKeys {
 	 * Gets the id of the specified foreign key in the array.
 	 */
 	public int getForeignID(String column) {
-		for(int i=0;i<size;i++) if(foreignKeys.get(i).equals(column)) return i;
+		for(int i = 0; i < size; i++) {
+			if(foreignKeys.get(i).equals(column)) return i;
+		}
 		return -1;
 	}
 
@@ -161,9 +163,9 @@ public class ForeignKeys {
 	 * Gets the ids of the specified foreign key in the array.
 	 */
 	public List<Integer> getForeignIDs(String column) {
-		// List<String> hasBeen=new ArrayList<String>();
-		List<Integer> ids=new ArrayList<>();
-		for(int i=0;i<size;i++) {
+		// List<String> hasBeen = new ArrayList<>();
+		List<Integer> ids = new ArrayList<>();
+		for(int i = 0; i < size; i++) {
 			if(primaryKeys.get(i).equals(column) /*&& !hasBeen.contains(foreignTables.get(i))*/) {
 				//hasBeen.add(foreignTables.get(i));
 				ids.add(i);
@@ -211,7 +213,9 @@ public class ForeignKeys {
 	 * Gets the id of the specified primary key in the array.
 	 */
 	public int getPrimaryID(String column) {
-		for(int i=0;i<size;i++) if(primaryKeys.get(i).equals(column)) return i;
+		for(int i = 0; i < size; i++) {
+			if(primaryKeys.get(i).equals(column)) return i;
+		}
 		return -1;
 	}
 

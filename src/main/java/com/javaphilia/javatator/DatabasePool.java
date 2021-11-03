@@ -54,7 +54,7 @@ public class DatabasePool {
 	 * would remove their statistics from the overall results.  Idle connections within
 	 * pools are closed by {@link DatabasePoolCleanup}.
 	 */
-	private static final List<DatabasePool> pools=new ArrayList<DatabasePool>();
+	private static final List<DatabasePool> pools = new ArrayList<>();
 
 	private final DatabaseConfiguration databaseConfiguration;
 

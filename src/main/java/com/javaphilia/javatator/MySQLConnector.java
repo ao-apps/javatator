@@ -45,7 +45,7 @@ public class MySQLConnector extends JDBCConnector {
 	/**
 	 * These types are stored in a static final variable for faster access.
 	 */
-	private static final List<String> modifiableTypes=new ArrayList<String>(25);
+	private static final List<String> modifiableTypes = new ArrayList<>(25);
 	private static final List<String> unmodifiableTypes = Collections.unmodifiableList(modifiableTypes);
 	static {
 		modifiableTypes.add("TINYINT");
@@ -181,6 +181,7 @@ public class MySQLConnector extends JDBCConnector {
 	 * @return the list of all possible values or {@code null} if not known
 	 */
 	@Override
+	@SuppressWarnings("AssignmentToForLoopParameter")
 	public List<String> getPossibleValues(String column, String type) throws SQLException, IOException {
 		boolean enum0="ENUM".equalsIgnoreCase(type) || "SET".equalsIgnoreCase(type);
 		if(enum0) {

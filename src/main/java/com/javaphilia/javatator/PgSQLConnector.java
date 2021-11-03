@@ -183,7 +183,7 @@ public class PgSQLConnector extends JDBCConnector {
 	 */
 	@Override
 	public void dropDatabase() throws SQLException, IOException {
-		System.out.println("closing database: "+settings.getDatabase());
+		System.out.println("closing database: " + settings.getDatabase());
 		DatabasePool.closeDatabase(settings);
 		String sql="DROP DATABASE "+settings.getDatabase();
 		try (
@@ -427,14 +427,18 @@ public class PgSQLConnector extends JDBCConnector {
 			}
 		}
 
-		int size=defaults.size();
-		int len=columns.size();
-		List<String> out=new ArrayList<>(len);
-		for(int c=0;c<len;c++) out.add(null);
-		for(int c=0;c<size;c++) {
-			String col=colNames.get(c);
+		int size = defaults.size();
+		int len = columns.size();
+		List<String> out = new ArrayList<>(len);
+		for(int c = 0; c < len; c++) {
+			out.add(null);
+		}
+		for(int c = 0; c < size; c++) {
+			String col = colNames.get(c);
 			int i;
-			for(i=0;i<len;i++) if(col.equals(columns.get(i))) break;
+			for(i = 0; i < len; i++) {
+				if(col.equals(columns.get(i))) break;
+			}
 			String def=defaults.get(c);
 			// Look for null
 			if(def==null) {
@@ -899,7 +903,7 @@ public class PgSQLConnector extends JDBCConnector {
 			.toString();
 	}
 
-	private static final List<String> possiblePrivileges=new ArrayList<String>(4);
+	private static final List<String> possiblePrivileges = new ArrayList<>(4);
 	private static final List<String> unmodifiablePrivileges = Collections.unmodifiableList(possiblePrivileges);
 	static {
 		possiblePrivileges.add("SELECT");
@@ -919,6 +923,7 @@ public class PgSQLConnector extends JDBCConnector {
 	 * @param column the name of the column.
 	 */
 	@Override
+	@SuppressWarnings("AssignmentToForLoopParameter")
 	public List<String> getPossibleValues(String column, String type) throws SQLException, IOException {
 		// Do not search if the settings are less than 1
 		int fkeyrows=getSettings().getForeignKeyRows();
@@ -953,7 +958,7 @@ public class PgSQLConnector extends JDBCConnector {
 								for(int n=0;n<size;n++) {
 									if(n!=i && names.get(i).equals(names.get(n))) {
 										isMultiple=true;
-										n=size;
+										n = size;
 									}
 								}
 								if(!isMultiple) {
@@ -1045,6 +1050,7 @@ public class PgSQLConnector extends JDBCConnector {
 	}
 
 	@Override
+	@SuppressWarnings("AssignmentToForLoopParameter")
 	public TablePrivileges getTablePrivileges() throws SQLException, IOException {
 		try (
 			Connection conn = DatabasePool.getConnection(settings);
