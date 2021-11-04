@@ -983,7 +983,7 @@ public class PgSQLConnector extends JDBCConnector {
 
 					// Return all the values, sorted
 					List<String> v = executeListQuery(sql.toString());
-					if(v.size() > 0) return v;
+					if(!v.isEmpty()) return v;
 				}
 			}
 		}
