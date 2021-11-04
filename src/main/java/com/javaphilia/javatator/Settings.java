@@ -270,7 +270,7 @@ public class Settings {
 	private int getIntSetting(String databaseProduct, String name) throws IOException {
 		// The configuration overrides the client values
 		String config = databaseConfiguration.getProperty(name, databaseProduct);
-		if(config!=null && config.length()>0) return Integer.parseInt(config);
+		if(config != null && !config.isEmpty()) return Integer.parseInt(config);
 
 		String s = request.getParameter(name);
 		return (s == null) ? -1 : Integer.parseInt(s);
@@ -279,10 +279,9 @@ public class Settings {
 	private boolean getBooleanSetting(String databaseProduct, String name) throws IOException {
 		// The configuration overrides the client values
 		String config = databaseConfiguration.getProperty(name, databaseProduct);
-		if(config!=null && config.length()>0) return Boolean.parseBoolean(config);
+		if(config != null && !config.isEmpty()) return Boolean.parseBoolean(config);
 
-		String s = request.getParameter(name);
-		return (s == null) ? false : Boolean.parseBoolean(s);
+		return Boolean.parseBoolean(request.getParameter(name));
 	}
 
 	/**
