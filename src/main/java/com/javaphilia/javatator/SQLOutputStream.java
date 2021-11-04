@@ -70,11 +70,6 @@ public class SQLOutputStream extends OutputStream {
 	}
 
 	@Override
-	public void flush() throws IOException {
-		super.flush();
-	}
-
-	@Override
 	public void write(byte[] b) throws IOException {
 		write(b, 0, b.length);
 	}
