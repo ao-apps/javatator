@@ -33,10 +33,10 @@ import java.util.List;
 /**
  * Utility class.
  */
-public class Util {
+public abstract class Util {
 
-	private Util() {
-	}
+	/** Make no instances. */
+	private Util() {throw new AssertionError();}
 
 	private static final char[] hexChars={'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 

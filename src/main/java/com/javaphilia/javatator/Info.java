@@ -34,10 +34,10 @@ import java.sql.SQLException;
 /**
  * Shows info about the database product.
  */
-public class Info {
+public abstract class Info {
 
-	private Info() {
-	}
+	/** Make no instances. */
+	private Info() {throw new AssertionError();}
 
 	/**
 	 * Prints information about the current database product in use.
