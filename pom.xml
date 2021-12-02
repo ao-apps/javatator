@@ -275,18 +275,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 			</properties>
 		</profile>
 		<profile>
-			<id>jenkins</id>
-			<build>
-				<plugins>
-					<!-- Always deploy Jenkins builds -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId><artifactId>maven-deploy-plugin</artifactId>
-						<configuration><skip>false</skip></configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
 			<id>release</id>
 			<build>
 				<plugins>
