@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2019, 2021  AO Industries, Inc.
+ * Copyright (C) 2019, 2021, 2022  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -34,7 +34,7 @@ import java.sql.SQLException;
 /**
  * Shows info about the database product.
  */
-public abstract class Info {
+public final class Info {
 
 	/** Make no instances. */
 	private Info() {throw new AssertionError();}

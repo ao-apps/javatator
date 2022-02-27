@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019, 2021  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2021, 2022  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Utility class.
  */
-public abstract class Util {
+public final class Util {
 
 	/** Make no instances. */
 	private Util() {throw new AssertionError();}
