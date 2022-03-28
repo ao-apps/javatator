@@ -403,7 +403,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 				<groupId>com.aoapps</groupId><artifactId>ao-fluent-html-any</artifactId><version>0.7.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoapps</groupId><artifactId>ao-hodgepodge</artifactId><version>5.0.2${POST-SNAPSHOT}</version>
+				<groupId>com.aoapps</groupId><artifactId>ao-hodgepodge</artifactId><version>5.0.3-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
 				<groupId>com.aoapps</groupId><artifactId>ao-security</artifactId><version>3.1.0${POST-SNAPSHOT}</version>
