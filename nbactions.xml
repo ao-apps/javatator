@@ -121,4 +121,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 			<goal>javadoc:javadoc-no-fork</goal>
 		</goals>
 	</action>
+	<action>
+		<actionName>test</actionName>
+		<packagings>
+			<packaging>*</packaging>
+		</packagings>
+		<goals>
+			<goal>test</goal>
+		</goals>
+		<properties>
+			<pgpverify.skip>true</pgpverify.skip>
+			<ossindex.skip>true</ossindex.skip>
+		</properties>
+	</action>
+	<action>
+		<actionName>test.single</actionName>
+		<packagings>
+			<packaging>*</packaging>
+		</packagings>
+		<goals>
+			<goal>process-test-classes</goal>
+			<goal>surefire:test</goal>
+		</goals>
+		<properties>
+			<test>${packageClassName}</test>
+			<pgpverify.skip>true</pgpverify.skip>
+			<ossindex.skip>true</ossindex.skip>
+		</properties>
+	</action>
 </actions>
