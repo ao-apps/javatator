@@ -34,32 +34,32 @@ import java.util.List;
  */
 public class CheckConstraints {
 
-	/**
-	 * The constraint names.
-	 */
-	private final List<String> names;
+  /**
+   * The constraint names.
+   */
+  private final List<String> names;
 
-	/**
-	 * The check clauses.
-	 */
-	private final List<String> checkClauses;
+  /**
+   * The check clauses.
+   */
+  private final List<String> checkClauses;
 
-	public CheckConstraints(List<String> names, List<String> checkClauses) {
-		this.names=names;
-		this.checkClauses=checkClauses;
-	}
+  public CheckConstraints(List<String> names, List<String> checkClauses) {
+    this.names=names;
+    this.checkClauses=checkClauses;
+  }
 
-	/**
-	 * Gets the CHECK clauses.
-	 */
-	public List<String> getCheckClauses() {
-		return checkClauses;
-	}
+  /**
+   * Gets the CHECK clauses.
+   */
+  public List<String> getCheckClauses() {
+    return checkClauses;
+  }
 
-	/**
-	 * Gets the names of the CHECK constraints.
-	 */
-	public List<String> getNames() {
-		return names;
-	}
+  /**
+   * Gets the names of the CHECK constraints.
+   */
+  public List<String> getNames() {
+    return names;
+  }
 }

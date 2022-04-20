@@ -6,7 +6,7 @@ Copyright (C) 2001  Jason Davies.
     If you want to help or want to report any bugs, please email me:
     jason@javaphilia.com
 
-Copyright (C) 2009, 2015, 2019, 2021  AO Industries, Inc.
+Copyright (C) 2009, 2015, 2019, 2021, 2022  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -31,64 +31,64 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
   version="3.1"
   metadata-complete="false">
-	<display-name>@{project.name} @{project.version}</display-name>
-	<description>@{project.description}</description>
+  <display-name>@{project.name} @{project.version}</display-name>
+  <description>@{project.description}</description>
 
-	<context-param>
-		<description>
-			Sets the filesystem path to the properties file to load for the
-			application database configuration.  When not set, will use the
-			bundled default database.properties.
-		</description>
-		<param-name>com.javaphilia.javatator.DatabaseConfiguration</param-name>
-		<param-value></param-value>
-	</context-param>
+  <context-param>
+    <description>
+      Sets the filesystem path to the properties file to load for the
+      application database configuration.  When not set, will use the
+      bundled default database.properties.
+    </description>
+    <param-name>com.javaphilia.javatator.DatabaseConfiguration</param-name>
+    <param-value></param-value>
+  </context-param>
 
-	<context-param>
-		<description><![CDATA[
-			Controls the selection of HTML versus XHTML.  Supports three values:
-			<ul>
-				<li><code>SGML</code> - Use HTML always</li>
-				<li><code>XML</code> - Use XHTML always</li>
-				<li><code>auto</code> - (default) - Automatically choose based on the client's <code>Accept</code> header</li>
-			</ul>
-		]]></description>
-		<param-name>com.aoapps.encoding.Serialization.default</param-name>
-		<param-value>SGML</param-value>
-	</context-param>
+  <context-param>
+    <description><![CDATA[
+      Controls the selection of HTML versus XHTML.  Supports three values:
+      <ul>
+        <li><code>SGML</code> - Use HTML always</li>
+        <li><code>XML</code> - Use XHTML always</li>
+        <li><code>auto</code> - (default) - Automatically choose based on the client's <code>Accept</code> header</li>
+      </ul>
+    ]]></description>
+    <param-name>com.aoapps.encoding.Serialization.default</param-name>
+    <param-value>SGML</param-value>
+  </context-param>
 
-	<context-param>
-		<description><![CDATA[
-			Controls the default DOCTYPE for the application.  Supported values:
-			<ul>
-				<li><code>HTML5</code> - Use (X)HTML 5</li>
-				<li><code>STRICT</code> - Use (X)HTML strict</li>
-				<li><code>TRANSITIONAL</code> - Use (X)HTML transitional/loose</li>
-				<li><code>FRAMESET</code> - Use (X)HTML frameset</li>
-				<li><code>NONE</code> - No doctype</li>
-				<li><code>default</code> - (default) - Use (X)HTML 5</li>
-			</ul>
-		]]></description>
-		<param-name>com.aoapps.encoding.Doctype.default</param-name>
-		<param-value>default</param-value>
-	</context-param>
+  <context-param>
+    <description><![CDATA[
+      Controls the default DOCTYPE for the application.  Supported values:
+      <ul>
+        <li><code>HTML5</code> - Use (X)HTML 5</li>
+        <li><code>STRICT</code> - Use (X)HTML strict</li>
+        <li><code>TRANSITIONAL</code> - Use (X)HTML transitional/loose</li>
+        <li><code>FRAMESET</code> - Use (X)HTML frameset</li>
+        <li><code>NONE</code> - No doctype</li>
+        <li><code>default</code> - (default) - Use (X)HTML 5</li>
+      </ul>
+    ]]></description>
+    <param-name>com.aoapps.encoding.Doctype.default</param-name>
+    <param-value>default</param-value>
+  </context-param>
 
-	<!-- Require all session attributes to be Serializable -->
-	<distributable />
+  <!-- Require all session attributes to be Serializable -->
+  <distributable />
 
-	<session-config>
-		<session-timeout>30</session-timeout>
-		<cookie-config>
-			<http-only>true</http-only>
-			<secure>@{session.cookie.secure}</secure>
-		</cookie-config>
-		<!-- Block any servlet container URL rewriting -->
-		<tracking-mode>COOKIE</tracking-mode>
-	</session-config>
+  <session-config>
+    <session-timeout>30</session-timeout>
+    <cookie-config>
+      <http-only>true</http-only>
+      <secure>@{session.cookie.secure}</secure>
+    </cookie-config>
+    <!-- Block any servlet container URL rewriting -->
+    <tracking-mode>COOKIE</tracking-mode>
+  </session-config>
 
-	<!-- TODO: Review filters versus other projects -->
+  <!-- TODO: Review filters versus other projects -->
 
-	<!-- Error Pages -->
-	<!-- Using error pages from ao-error-pages:/META-INF/web-fragment.xml -->
+  <!-- Error Pages -->
+  <!-- Using error pages from ao-error-pages:/META-INF/web-fragment.xml -->
 
 </web-app>

@@ -34,43 +34,43 @@ import java.util.List;
  */
 public class TablePrivileges {
 
-	private final List<String> grantors;
-	private final List<String> grantees;
-	private final List<String> privileges;
-	private final List<JDBCConnector.Boolean> isGrantable;
+  private final List<String> grantors;
+  private final List<String> grantees;
+  private final List<String> privileges;
+  private final List<JDBCConnector.Boolean> isGrantable;
 
-	/**
-	 * Instantiate a new {@link TablePrivileges} object.
-	 *
-	 * @param grantors an array containing the users who have granted privileges to the table.
-	 * @param grantees an array containing the users who have been granted privileges to the table.
-	 * @param privileges an array containing the privileges which have been granted.
-	 */
-	public TablePrivileges(
-		List<String> grantors,
-		List<String> grantees,
-		List<String> privileges,
-		List<JDBCConnector.Boolean> isGrantable
-	) {
-		this.grantors=grantors;
-		this.grantees=grantees;
-		this.privileges=privileges;
-		this.isGrantable=isGrantable;
-	}
+  /**
+   * Instantiate a new {@link TablePrivileges} object.
+   *
+   * @param grantors an array containing the users who have granted privileges to the table.
+   * @param grantees an array containing the users who have been granted privileges to the table.
+   * @param privileges an array containing the privileges which have been granted.
+   */
+  public TablePrivileges(
+    List<String> grantors,
+    List<String> grantees,
+    List<String> privileges,
+    List<JDBCConnector.Boolean> isGrantable
+  ) {
+    this.grantors=grantors;
+    this.grantees=grantees;
+    this.privileges=privileges;
+    this.isGrantable=isGrantable;
+  }
 
-	public List<String> getGrantees() {
-		return grantees;
-	}
+  public List<String> getGrantees() {
+    return grantees;
+  }
 
-	public List<String> getGrantors() {
-		return grantors;
-	}
+  public List<String> getGrantors() {
+    return grantors;
+  }
 
-	public List<JDBCConnector.Boolean> getIsGrantable() {
-		return isGrantable;
-	}
+  public List<JDBCConnector.Boolean> getIsGrantable() {
+    return isGrantable;
+  }
 
-	public List<String> getPrivileges() {
-		return privileges;
-	}
+  public List<String> getPrivileges() {
+    return privileges;
+  }
 }

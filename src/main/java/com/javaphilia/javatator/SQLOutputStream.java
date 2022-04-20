@@ -37,68 +37,71 @@ import java.sql.Statement;
  */
 public class SQLOutputStream extends OutputStream {
 
-	private final Statement stmt;
+  private final Statement stmt;
 
-	private boolean doubleQuotes = false;
-	private boolean singleQuotes = false;
-	private int check = -1;
-	private int count = 0;
-	private final StringBuilder sb = new StringBuilder();
+  private boolean doubleQuotes = false;
+  private boolean singleQuotes = false;
+  private int check = -1;
+  private int count = 0;
+  private final StringBuilder sb = new StringBuilder();
 
-	/**
-	 * Constructs this {@link SQLOutputStream}.
-	 *
-	 * @param stmt the {@link Statement} for executing the query.
-	 */
-	public SQLOutputStream(Statement stmt) {
-		this.stmt=stmt;
-	}
+  /**
+   * Constructs this {@link SQLOutputStream}.
+   *
+   * @param stmt the {@link Statement} for executing the query.
+   */
+  public SQLOutputStream(Statement stmt) {
+    this.stmt=stmt;
+  }
 
-	@Override
-	public void close() throws IOException {
-		sb.setLength(0);
-	}
+  @Override
+  public void close() throws IOException {
+    sb.setLength(0);
+  }
 
-	/**
-	 * Executes the specified SQL query.
-	 */
-	private void executeSQL(String sql) throws IOException {
-		try {
-			stmt.executeUpdate(sql);
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
+  /**
+   * Executes the specified SQL query.
+   */
+  private void executeSQL(String sql) throws IOException {
+    try {
+      stmt.executeUpdate(sql);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
 
-	@Override
-	public void write(byte[] b) throws IOException {
-		write(b, 0, b.length);
-	}
+  @Override
+  public void write(byte[] b) throws IOException {
+    write(b, 0, b.length);
+  }
 
-	/**
-	 * Writes to the stream.
-	 */
-	@Override
-	public void write(byte[] b, int off, int len) throws IOException {
-		int stop = check + count - off;
-		for(int i = off; i < len; i++) {
-			sb.append(b[i]);
-			if(i > stop) {
-				if(b[i]=='\\') check = count + i + 1 - off;
-				else if(!singleQuotes && b[i] == '"') doubleQuotes = !doubleQuotes;
-				else if(!doubleQuotes && b[i] == '\'') singleQuotes = !singleQuotes;
-				else if(!singleQuotes && !doubleQuotes && b[i] == ';') {
-					executeSQL(sb.toString());
-					sb.setLength(0);
-					check = -1;
-					count = 0;
-				}
-			}
-		}
-	}
+  /**
+   * Writes to the stream.
+   */
+  @Override
+  public void write(byte[] b, int off, int len) throws IOException {
+    int stop = check + count - off;
+    for (int i = off; i < len; i++) {
+      sb.append(b[i]);
+      if (i > stop) {
+        if (b[i] == '\\') {
+          check = count + i + 1 - off;
+        } else if (!singleQuotes && b[i] == '"') {
+          doubleQuotes = !doubleQuotes;
+        } else if (!doubleQuotes && b[i] == '\'') {
+          singleQuotes = !singleQuotes;
+        } else if (!singleQuotes && !doubleQuotes && b[i] == ';') {
+          executeSQL(sb.toString());
+          sb.setLength(0);
+          check = -1;
+          count = 0;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void write(int b) throws IOException {
-		write(new byte[]{(byte)b}, 0, 1);
-	}
+  @Override
+  public void write(int b) throws IOException {
+    write(new byte[]{(byte)b}, 0, 1);
+  }
 }

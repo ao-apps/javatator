@@ -35,168 +35,182 @@ import java.util.List;
  */
 public class Columns {
 
-	/**
-	 * The column names.
-	 */
-	private final List<String> names;
+  /**
+   * The column names.
+   */
+  private final List<String> names;
 
-	/**
-	 * The column types.
-	 */
-	private final List<String> types;
+  /**
+   * The column types.
+   */
+  private final List<String> types;
 
-	/**
-	 * The length/set of each column.
-	 */
-	private final List<String> lengths;
+  /**
+   * The length/set of each column.
+   */
+  private final List<String> lengths;
 
-	/**
-	 * Is NULL allowed?
-	 */
-	private final List<Boolean> areNullable;
+  /**
+   * Is NULL allowed?
+   */
+  private final List<Boolean> areNullable;
 
-	/**
-	 * Default values.
-	 */
-	private final List<String> defaults;
+  /**
+   * Default values.
+   */
+  private final List<String> defaults;
 
-	/**
-	 * Column remarks.
-	 */
-	private final List<String> remarks;
+  /**
+   * Column remarks.
+   */
+  private final List<String> remarks;
 
-	/**
-	 * The number of columns stored in this {@link Columns} object.
-	 */
-	private final int size;
+  /**
+   * The number of columns stored in this {@link Columns} object.
+   */
+  private final int size;
 
-	/**
-	 * Instantiate a new {@link Column} object.
-	 *
-	 * @param names an array containing the names of the columns.
-	 * @param types an array of the columns' types.
-	 * @param lengths an array of the columns' lengths.
-	 * @param areNullable can the columns be NULL?
-	 * Possible {@link Integer} values are:
-	 * <UL>
-	 * <LI>{@link Boolean#TRUE} if NULL is allowed,
-	 * <LI>{@link Boolean#FALSE} if NULL is not allowed,
-	 * <LI>{@link Boolean#UNKNOWN} if unknown.
-	 * </UL>
-	 * @param defaults an array containing the default values for the columns.
-	 * @param remarks an array of column remarks.
-	 */
-	public Columns(
-		List<String> names,
-		List<String> types,
-		List<String> lengths,
-		List<Boolean> areNullable,
-		List<String> defaults,
-		List<String> remarks
-	) {
-		this.names=names;
-		size=names.size();
-		if(types.size()!=size) throw new AssertionError();
-		this.types=types;
-		if(lengths.size()!=size) throw new AssertionError();
-		this.lengths=lengths;
-		if(areNullable.size()!=size) throw new AssertionError();
-		this.areNullable=areNullable;
-		if(defaults.size()!=size) throw new AssertionError();
-		this.defaults=defaults;
-		if(remarks.size()!=size) throw new AssertionError();
-		this.remarks=remarks;
-	}
+  /**
+   * Instantiate a new {@link Column} object.
+   *
+   * @param names an array containing the names of the columns.
+   * @param types an array of the columns' types.
+   * @param lengths an array of the columns' lengths.
+   * @param areNullable can the columns be NULL?
+   * Possible {@link Integer} values are:
+   * <UL>
+   * <LI>{@link Boolean#TRUE} if NULL is allowed,
+   * <LI>{@link Boolean#FALSE} if NULL is not allowed,
+   * <LI>{@link Boolean#UNKNOWN} if unknown.
+   * </UL>
+   * @param defaults an array containing the default values for the columns.
+   * @param remarks an array of column remarks.
+   */
+  public Columns(
+    List<String> names,
+    List<String> types,
+    List<String> lengths,
+    List<Boolean> areNullable,
+    List<String> defaults,
+    List<String> remarks
+  ) {
+    this.names=names;
+    size=names.size();
+    if (types.size() != size) {
+      throw new AssertionError();
+    }
+    this.types=types;
+    if (lengths.size() != size) {
+      throw new AssertionError();
+    }
+    this.lengths=lengths;
+    if (areNullable.size() != size) {
+      throw new AssertionError();
+    }
+    this.areNullable=areNullable;
+    if (defaults.size() != size) {
+      throw new AssertionError();
+    }
+    this.defaults=defaults;
+    if (remarks.size() != size) {
+      throw new AssertionError();
+    }
+    this.remarks=remarks;
+  }
 
-	/**
-	 * Can the columns contain NULL values?
-	 */
-	public List<Boolean> areNullable() {
-		return areNullable;
-	}
+  /**
+   * Can the columns contain NULL values?
+   */
+  public List<Boolean> areNullable() {
+    return areNullable;
+  }
 
-	/**
-	 * Gets the default value of the column at the specified index.
-	 */
-	public String getDefault(int i) {
-		return defaults.get(i);
-	}
+  /**
+   * Gets the default value of the column at the specified index.
+   */
+  public String getDefault(int i) {
+    return defaults.get(i);
+  }
 
-	/**
-	 * Gets the default values for the columns.
-	 */
-	public List<String> getDefaults() {
-		return defaults;
-	}
+  /**
+   * Gets the default values for the columns.
+   */
+  public List<String> getDefaults() {
+    return defaults;
+  }
 
-	/**
-	 * Gets the id of the specified column in the array.
-	 */
-	public int getID(String column) {
-		for(int i=0;i<size;i++) if(names.get(i).equals(column)) return i;
-		return -1;
-	}
+  /**
+   * Gets the id of the specified column in the array.
+   */
+  public int getID(String column) {
+    for (int i=0;i<size;i++) {
+      if (names.get(i).equals(column)) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
-	/**
-	 * Gets the length of the column at the specified index.
-	 */
-	public String getLength(int i) {
-		return lengths.get(i);
-	}
+  /**
+   * Gets the length of the column at the specified index.
+   */
+  public String getLength(int i) {
+    return lengths.get(i);
+  }
 
-	/**
-	 * Gets the length/set of each column.
-	 */
-	public List<String> getLengths() {
-		return lengths;
-	}
+  /**
+   * Gets the length/set of each column.
+   */
+  public List<String> getLengths() {
+    return lengths;
+  }
 
-	/**
-	 * Gets the names of the columns.
-	 */
-	public List<String> getNames() {
-		return names;
-	}
+  /**
+   * Gets the names of the columns.
+   */
+  public List<String> getNames() {
+    return names;
+  }
 
-	/**
-	 * Gets the column remark at the specified index.
-	 */
-	public String getRemark(int i) {
-		return remarks.get(i);
-	}
+  /**
+   * Gets the column remark at the specified index.
+   */
+  public String getRemark(int i) {
+    return remarks.get(i);
+  }
 
-	/**
-	 * Gets the column remarks.
-	 */
-	public List<String> getRemarks() {
-		return remarks;
-	}
+  /**
+   * Gets the column remarks.
+   */
+  public List<String> getRemarks() {
+    return remarks;
+  }
 
-	/**
-	 * Gets the number of columns stored here.
-	 */
-	public int getSize() {
-		return size;
-	}
+  /**
+   * Gets the number of columns stored here.
+   */
+  public int getSize() {
+    return size;
+  }
 
-	/**
-	 * Gets the type of the column at the specified index.
-	 */
-	public String getType(int i) {
-		return types.get(i);
-	}
+  /**
+   * Gets the type of the column at the specified index.
+   */
+  public String getType(int i) {
+    return types.get(i);
+  }
 
-	/**
-	 * Gets the types of the columns.
-	 */
-	public List<String> getTypes() {
-		return types;
-	}
+  /**
+   * Gets the types of the columns.
+   */
+  public List<String> getTypes() {
+    return types;
+  }
 
-	/**
-	 * Does the column at the specified index allow NULL values?
-	 */
-	public Boolean isNullable(int i) {
-		return areNullable.get(i);
-	}
+  /**
+   * Does the column at the specified index allow NULL values?
+   */
+  public Boolean isNullable(int i) {
+    return areNullable.get(i);
+  }
 }

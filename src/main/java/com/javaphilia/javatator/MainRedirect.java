@@ -38,42 +38,42 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/servlet/com.javaphilia.javatator.Main")
 public class MainRedirect extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * Handles the GET request.
-	 */
-	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		HttpServletUtil.sendRedirect(
-			HttpServletResponse.SC_MOVED_PERMANENTLY,
-			req,
-			resp,
-			"/",
-			EmptyURIParameters.getInstance(),
-			true,
-			false
-		);
-	}
+  /**
+   * Handles the GET request.
+   */
+  @Override
+  public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    HttpServletUtil.sendRedirect(
+      HttpServletResponse.SC_MOVED_PERMANENTLY,
+      req,
+      resp,
+      "/",
+      EmptyURIParameters.getInstance(),
+      true,
+      false
+    );
+  }
 
-	/**
-	 * Handles the POST request.
-	 */
-	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		HttpServletUtil.sendRedirect(
-			HttpServletResponse.SC_MOVED_PERMANENTLY,
-			req,
-			resp,
-			"/",
-			EmptyURIParameters.getInstance(),
-			true,
-			false
-		);
-	}
+  /**
+   * Handles the POST request.
+   */
+  @Override
+  public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    HttpServletUtil.sendRedirect(
+      HttpServletResponse.SC_MOVED_PERMANENTLY,
+      req,
+      resp,
+      "/",
+      EmptyURIParameters.getInstance(),
+      true,
+      false
+    );
+  }
 
-	@Override
-	protected long getLastModified(HttpServletRequest req) {
-		return Main.UPTIME;
-	}
+  @Override
+  protected long getLastModified(HttpServletRequest req) {
+    return Main.UPTIME;
+  }
 }

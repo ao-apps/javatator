@@ -33,21 +33,21 @@ import javax.servlet.annotation.WebListener;
 @WebListener("Registers the styles in RegistryEE.")
 public class JavatatorStyles implements ServletContextListener {
 
-	public static final Group.Name RESOURCE_GROUP = new Group.Name("javatator");
+  public static final Group.Name RESOURCE_GROUP = new Group.Name("javatator");
 
-	public static final Style JAVATATOR = new Style("/javatator.css");
+  public static final Style JAVATATOR = new Style("/javatator.css");
 
-	@Override
-	public void contextInitialized(ServletContextEvent event) {
-		// Add our CSS files
-		RegistryEE.Application.get(event.getServletContext())
-			.getGroup(RESOURCE_GROUP)
-			.styles
-			.add(JAVATATOR);
-	}
+  @Override
+  public void contextInitialized(ServletContextEvent event) {
+    // Add our CSS files
+    RegistryEE.Application.get(event.getServletContext())
+      .getGroup(RESOURCE_GROUP)
+      .styles
+      .add(JAVATATOR);
+  }
 
-	@Override
-	public void contextDestroyed(ServletContextEvent event) {
-		// Do nothing
-	}
+  @Override
+  public void contextDestroyed(ServletContextEvent event) {
+    // Do nothing
+  }
 }

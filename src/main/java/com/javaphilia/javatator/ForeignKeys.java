@@ -35,230 +35,234 @@ import java.util.List;
  */
 public class ForeignKeys {
 
-	/**
-	 * The constraint names.
-	 */
-	private final List<String> constraintNames;
+  /**
+   * The constraint names.
+   */
+  private final List<String> constraintNames;
 
-	/**
-	 * The names of the foreign key columns.
-	 */
-	private final List<String> foreignKeys;
+  /**
+   * The names of the foreign key columns.
+   */
+  private final List<String> foreignKeys;
 
-	/**
-	 * The names of the foreign tables.
-	 */
-	private final List<String> foreignTables;
+  /**
+   * The names of the foreign tables.
+   */
+  private final List<String> foreignTables;
 
-	/**
-	 * The names of the primary keys.
-	 */
-	private final List<String> primaryKeys;
+  /**
+   * The names of the primary keys.
+   */
+  private final List<String> primaryKeys;
 
-	/**
-	 * The names of the primary tables.
-	 */
-	private final List<String> primaryTables;
+  /**
+   * The names of the primary tables.
+   */
+  private final List<String> primaryTables;
 
-	/**
-	 * The number of foreign keys stored in this {@link ForeignKeys} object.
-	 */
-	private final int size;
+  /**
+   * The number of foreign keys stored in this {@link ForeignKeys} object.
+   */
+  private final int size;
 
-	/**
-	 * The INSERT rules.
-	 */
-	private final List<String> insertRules;
+  /**
+   * The INSERT rules.
+   */
+  private final List<String> insertRules;
 
-	/**
-	 * The DELETE rules.
-	 */
-	private final List<String> deleteRules;
+  /**
+   * The DELETE rules.
+   */
+  private final List<String> deleteRules;
 
-	/**
-	 * The UPDATE rules.
-	 */
-	private final List<String> updateRules;
+  /**
+   * The UPDATE rules.
+   */
+  private final List<String> updateRules;
 
-	/**
-	 * Are the keys deferrable?
-	 */
-	private final List<JDBCConnector.Boolean> areDeferrable;
+  /**
+   * Are the keys deferrable?
+   */
+  private final List<JDBCConnector.Boolean> areDeferrable;
 
-	/**
-	 * Are the keys initially deferred?
-	 */
-	private final List<JDBCConnector.Boolean> areInitiallyDeferred;
+  /**
+   * Are the keys initially deferred?
+   */
+  private final List<JDBCConnector.Boolean> areInitiallyDeferred;
 
-	public ForeignKeys(
-		List<String> constraintNames,
-		List<String> foreignKeys,
-		List<String> foreignTables,
-		List<String> primaryKeys,
-		List<String> primaryTables,
-		List<String> insertRules,
-		List<String> deleteRules,
-		List<String> updateRules,
-		List<JDBCConnector.Boolean> areDeferrable,
-		List<JDBCConnector.Boolean> areInitiallyDeferred
-	) {
-		this.constraintNames=constraintNames;
-		this.foreignKeys=foreignKeys;
-		this.foreignTables=foreignTables;
-		this.primaryKeys=primaryKeys;
-		this.primaryTables=primaryTables;
-		this.insertRules=insertRules;
-		this.deleteRules=deleteRules;
-		this.updateRules=updateRules;
-		this.areDeferrable=areDeferrable;
-		this.areInitiallyDeferred=areInitiallyDeferred;
-		size=constraintNames.size();
-	}
+  public ForeignKeys(
+    List<String> constraintNames,
+    List<String> foreignKeys,
+    List<String> foreignTables,
+    List<String> primaryKeys,
+    List<String> primaryTables,
+    List<String> insertRules,
+    List<String> deleteRules,
+    List<String> updateRules,
+    List<JDBCConnector.Boolean> areDeferrable,
+    List<JDBCConnector.Boolean> areInitiallyDeferred
+  ) {
+    this.constraintNames=constraintNames;
+    this.foreignKeys=foreignKeys;
+    this.foreignTables=foreignTables;
+    this.primaryKeys=primaryKeys;
+    this.primaryTables=primaryTables;
+    this.insertRules=insertRules;
+    this.deleteRules=deleteRules;
+    this.updateRules=updateRules;
+    this.areDeferrable=areDeferrable;
+    this.areInitiallyDeferred=areInitiallyDeferred;
+    size=constraintNames.size();
+  }
 
-	/**
-	 * Are the keys deferrable?
-	 */
-	public List<JDBCConnector.Boolean> areDeferrable() {
-		return areDeferrable;
-	}
+  /**
+   * Are the keys deferrable?
+   */
+  public List<JDBCConnector.Boolean> areDeferrable() {
+    return areDeferrable;
+  }
 
-	/**
-	 * Are the keys initially deferred?
-	 */
-	public List<JDBCConnector.Boolean> areInitiallyDeferred() {
-		return areInitiallyDeferred;
-	}
+  /**
+   * Are the keys initially deferred?
+   */
+  public List<JDBCConnector.Boolean> areInitiallyDeferred() {
+    return areInitiallyDeferred;
+  }
 
-	/**
-	 * Gets the constraint name at the specified index.
-	 */
-	public String getConstraintName(int i) {
-		return constraintNames.get(i);
-	}
+  /**
+   * Gets the constraint name at the specified index.
+   */
+  public String getConstraintName(int i) {
+    return constraintNames.get(i);
+  }
 
-	/**
-	 * Gets an array of the constraint names.
-	 */
-	public List<String> getConstraintNames() {
-		return constraintNames;
-	}
+  /**
+   * Gets an array of the constraint names.
+   */
+  public List<String> getConstraintNames() {
+    return constraintNames;
+  }
 
-	/**
-	 * Gets an array of the DELETE rules.
-	 */
-	public List<String> getDeleteRules() {
-		return deleteRules;
-	}
+  /**
+   * Gets an array of the DELETE rules.
+   */
+  public List<String> getDeleteRules() {
+    return deleteRules;
+  }
 
-	/**
-	 * Gets the id of the specified foreign key in the array.
-	 */
-	public int getForeignID(String column) {
-		for(int i = 0; i < size; i++) {
-			if(foreignKeys.get(i).equals(column)) return i;
-		}
-		return -1;
-	}
+  /**
+   * Gets the id of the specified foreign key in the array.
+   */
+  public int getForeignID(String column) {
+    for (int i = 0; i < size; i++) {
+      if (foreignKeys.get(i).equals(column)) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
-	/**
-	 * Gets the ids of the specified foreign key in the array.
-	 */
-	public List<Integer> getForeignIDs(String column) {
-		// List<String> hasBeen = new ArrayList<>();
-		List<Integer> ids = new ArrayList<>();
-		for(int i = 0; i < size; i++) {
-			if(primaryKeys.get(i).equals(column) /*&& !hasBeen.contains(foreignTables.get(i))*/) {
-				//hasBeen.add(foreignTables.get(i));
-				ids.add(i);
-			}
-		}
-		return ids;
-	}
+  /**
+   * Gets the ids of the specified foreign key in the array.
+   */
+  public List<Integer> getForeignIDs(String column) {
+    // List<String> hasBeen = new ArrayList<>();
+    List<Integer> ids = new ArrayList<>();
+    for (int i = 0; i < size; i++) {
+      if (primaryKeys.get(i).equals(column) /* && !hasBeen.contains(foreignTables.get(i))*/) {
+        //hasBeen.add(foreignTables.get(i));
+        ids.add(i);
+      }
+    }
+    return ids;
+  }
 
-	/**
-	 * Gets the foreign key (the column name) at the specified index.
-	 */
-	public String getForeignKey(int i) {
-		return foreignKeys.get(i);
-	}
+  /**
+   * Gets the foreign key (the column name) at the specified index.
+   */
+  public String getForeignKey(int i) {
+    return foreignKeys.get(i);
+  }
 
-	/**
-	 * Gets an array of the foreign key names (the column names).
-	 */
-	public List<String> getForeignKeys() {
-		return foreignKeys;
-	}
+  /**
+   * Gets an array of the foreign key names (the column names).
+   */
+  public List<String> getForeignKeys() {
+    return foreignKeys;
+  }
 
-	/**
-	 * Gets the foreign table name at the specified index.
-	 */
-	public String getForeignTable(int i) {
-		return foreignTables.get(i);
-	}
+  /**
+   * Gets the foreign table name at the specified index.
+   */
+  public String getForeignTable(int i) {
+    return foreignTables.get(i);
+  }
 
-	/**
-	 * Gets an array of the foreign table names.
-	 */
-	public List<String> getForeignTables() {
-		return foreignTables;
-	}
+  /**
+   * Gets an array of the foreign table names.
+   */
+  public List<String> getForeignTables() {
+    return foreignTables;
+  }
 
-	/**
-	 * Gets an array of the INSERT rules.
-	 */
-	public List<String> getInsertRules() {
-		return insertRules;
-	}
+  /**
+   * Gets an array of the INSERT rules.
+   */
+  public List<String> getInsertRules() {
+    return insertRules;
+  }
 
-	/**
-	 * Gets the id of the specified primary key in the array.
-	 */
-	public int getPrimaryID(String column) {
-		for(int i = 0; i < size; i++) {
-			if(primaryKeys.get(i).equals(column)) return i;
-		}
-		return -1;
-	}
+  /**
+   * Gets the id of the specified primary key in the array.
+   */
+  public int getPrimaryID(String column) {
+    for (int i = 0; i < size; i++) {
+      if (primaryKeys.get(i).equals(column)) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
-	/**
-	 * Gets the primary key (the column name) at the specified index.
-	 */
-	public String getPrimaryKey(int i) {
-		return primaryKeys.get(i);
-	}
+  /**
+   * Gets the primary key (the column name) at the specified index.
+   */
+  public String getPrimaryKey(int i) {
+    return primaryKeys.get(i);
+  }
 
-	/**
-	 * Gets an array of the primary keys (the column names).
-	 */
-	public List<String> getPrimaryKeys() {
-		return primaryKeys;
-	}
+  /**
+   * Gets an array of the primary keys (the column names).
+   */
+  public List<String> getPrimaryKeys() {
+    return primaryKeys;
+  }
 
-	/**
-	 * Gets the primary table name at the specified index.
-	 */
-	public String getPrimaryTable(int i) {
-		return primaryTables.get(i);
-	}
+  /**
+   * Gets the primary table name at the specified index.
+   */
+  public String getPrimaryTable(int i) {
+    return primaryTables.get(i);
+  }
 
-	/**
-	 * Gets an array of the primary table names.
-	 */
-	public List<String> getPrimaryTables() {
-		return primaryTables;
-	}
+  /**
+   * Gets an array of the primary table names.
+   */
+  public List<String> getPrimaryTables() {
+    return primaryTables;
+  }
 
-	/**
-	 * Gets the number of foreign keys stored here.
-	 */
-	public int getSize() {
-		return size;
-	}
+  /**
+   * Gets the number of foreign keys stored here.
+   */
+  public int getSize() {
+    return size;
+  }
 
-	/**
-	 * Gets an array of the UPDATE rules.
-	 */
-	public List<String> getUpdateRules() {
-		return updateRules;
-	}
+  /**
+   * Gets an array of the UPDATE rules.
+   */
+  public List<String> getUpdateRules() {
+    return updateRules;
+  }
 }

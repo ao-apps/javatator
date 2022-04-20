@@ -34,56 +34,56 @@ import java.util.List;
  */
 public class Indexes {
 
-	/**
-	 * The index names.
-	 */
-	private final List<String> names;
+  /**
+   * The index names.
+   */
+  private final List<String> names;
 
-	/**
-	 * Are they unique?
-	 */
-	private final List<JDBCConnector.Boolean> areUnique;
+  /**
+   * Are they unique?
+   */
+  private final List<JDBCConnector.Boolean> areUnique;
 
-	/**
-	 * The column names.
-	 */
-	private final List<String> columns;
+  /**
+   * The column names.
+   */
+  private final List<String> columns;
 
-	/**
-	 * Instantiates a new {@link Indexes} object.
-	 *
-	 * @param names an array containing the index names.
-	 * @param areUnique which indexes are unique?
-	 * @param columns an array of the column names.
-	 */
-	public Indexes(
-		List<String> names,
-		List<JDBCConnector.Boolean> areUnique,
-		List<String> columns
-	) {
-		this.names=names;
-		this.areUnique=areUnique;
-		this.columns=columns;
-	}
+  /**
+   * Instantiates a new {@link Indexes} object.
+   *
+   * @param names an array containing the index names.
+   * @param areUnique which indexes are unique?
+   * @param columns an array of the column names.
+   */
+  public Indexes(
+    List<String> names,
+    List<JDBCConnector.Boolean> areUnique,
+    List<String> columns
+  ) {
+    this.names=names;
+    this.areUnique=areUnique;
+    this.columns=columns;
+  }
 
-	/**
-	 * Are the indexes UNIQUE?
-	 */
-	public List<JDBCConnector.Boolean> areUnique() {
-		return areUnique;
-	}
+  /**
+   * Are the indexes UNIQUE?
+   */
+  public List<JDBCConnector.Boolean> areUnique() {
+    return areUnique;
+  }
 
-	/**
-	 * Gets the names of the columns.
-	 */
-	public List<String> getColumns() {
-		return columns;
-	}
+  /**
+   * Gets the names of the columns.
+   */
+  public List<String> getColumns() {
+    return columns;
+  }
 
-	/**
-	 * Gets the names of the indexes.
-	 */
-	public List<String> getNames() {
-		return names;
-	}
+  /**
+   * Gets the names of the indexes.
+   */
+  public List<String> getNames() {
+    return names;
+  }
 }

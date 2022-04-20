@@ -2,7 +2,7 @@
 <!--
 javatator - Multi-database admin tool.
 
-Copyright (C) 2020, 2021  AO Industries, Inc.
+Copyright (C) 2020, 2021, 2022  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -25,40 +25,40 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <!-- META-INF/context.xml is used for local development deployment only -->
 <Context path="/javatator">
 
-	<Parameter
-		name="com.javaphilia.javatator.DatabaseConfiguration"
-		value="@{com.javaphilia.javatator.DatabaseConfiguration}"
-		override="false"
-	/>
+  <Parameter
+    name="com.javaphilia.javatator.DatabaseConfiguration"
+    value="@{com.javaphilia.javatator.DatabaseConfiguration}"
+    override="false"
+  />
 
-	<Parameter
-		description="XHTML enabled in development"
-		name="com.aoapps.encoding.Serialization.default" value="auto"
-		override="false"
-	/>
+  <Parameter
+    description="XHTML enabled in development"
+    name="com.aoapps.encoding.Serialization.default" value="auto"
+    override="false"
+  />
 
-	<Parameter
-		description="Automatic newline (and tab indentation when enabled) enabled in development"
-		name="com.aoapps.html.servlet.DocumentEE.autonli" value="true"
-		override="false"
-	/>
+  <Parameter
+    description="Automatic newline (and tab indentation when enabled) enabled in development"
+    name="com.aoapps.html.servlet.DocumentEE.autonli" value="true"
+    override="false"
+  />
 
-	<Parameter
-		description="Tab indentation enabled in development"
-		name="com.aoapps.html.servlet.DocumentEE.indent" value="true"
-		override="false"
-	/>
+  <Parameter
+    description="Tab indentation enabled in development"
+    name="com.aoapps.html.servlet.DocumentEE.indent" value="true"
+    override="false"
+  />
 
-	<Parameter
-		description="Enable RFC 3987 IRI support in development"
-		name="com.aoapps.servlet.filter.EncodeURIFilter.enableIRI" value="true"
-		override="false"
-	/>
+  <Parameter
+    description="Enable RFC 3987 IRI support in development"
+    name="com.aoapps.servlet.filter.EncodeURIFilter.enableIRI" value="true"
+    override="false"
+  />
 
-	<Parameter
-		description="Do not filter whitespace in development"
-		name="com.aoapps.servlet.filter.TrimFilter.enabled" value="false"
-		override="false"
-	/>
+  <Parameter
+    description="Do not filter whitespace in development"
+    name="com.aoapps.servlet.filter.TrimFilter.enabled" value="false"
+    override="false"
+  />
 
 </Context>

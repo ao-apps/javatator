@@ -34,32 +34,32 @@ import java.util.List;
  */
 public class PrimaryKeys {
 
-	/**
-	 * The names of the columns.
-	 */
-	private final List<String> columns;
+  /**
+   * The names of the columns.
+   */
+  private final List<String> columns;
 
-	/**
-	 * The names of the primary keys.
-	 */
-	private final List<String> names;
+  /**
+   * The names of the primary keys.
+   */
+  private final List<String> names;
 
-	public PrimaryKeys(List<String> columns, List<String> names) {
-		this.columns=columns;
-		this.names=names;
-	}
+  public PrimaryKeys(List<String> columns, List<String> names) {
+    this.columns=columns;
+    this.names=names;
+  }
 
-	/**
-	 * Gets the column names.
-	 */
-	public List<String> getColumns() {
-		return columns;
-	}
+  /**
+   * Gets the column names.
+   */
+  public List<String> getColumns() {
+    return columns;
+  }
 
-	/**
-	 * Gets the primary key names.
-	 */
-	public List<String> getNames() {
-		return names;
-	}
+  /**
+   * Gets the primary key names.
+   */
+  public List<String> getNames() {
+    return names;
+  }
 }

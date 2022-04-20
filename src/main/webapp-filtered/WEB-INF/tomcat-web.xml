@@ -2,7 +2,7 @@
 <!--
 javatator - Multi-database admin tool.
 
-Copyright (C) 2020, 2021  AO Industries, Inc.
+Copyright (C) 2020, 2021, 2022  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -27,26 +27,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
   version="3.1"
   metadata-complete="false">
-	<!-- Set JSP compiler Java version -->
-	<servlet>
-		<servlet-name>jsp</servlet-name>
-		<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
-		<init-param>
-			<param-name>fork</param-name>
-			<param-value>false</param-value>
-		</init-param>
-		<init-param>
-			<param-name>xpoweredBy</param-name>
-			<param-value>false</param-value>
-		</init-param>
-		<init-param>
-			<param-name>compilerSourceVM</param-name>
-			<param-value>@{maven.compiler.source}</param-value>
-		</init-param>
-		<init-param>
-			<param-name>compilerTargetVM</param-name>
-			<param-value>@{maven.compiler.target}</param-value>
-		</init-param>
-		<load-on-startup>3</load-on-startup>
-	</servlet>
+  <!-- Set JSP compiler Java version -->
+  <servlet>
+    <servlet-name>jsp</servlet-name>
+    <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+    <init-param>
+      <param-name>fork</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>xpoweredBy</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>compilerSourceVM</param-name>
+      <param-value>@{maven.compiler.source}</param-value>
+    </init-param>
+    <init-param>
+      <param-name>compilerTargetVM</param-name>
+      <param-value>@{maven.compiler.target}</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
 </web-app>

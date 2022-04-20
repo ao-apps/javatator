@@ -36,95 +36,95 @@ import java.io.Writer;
  */
 public class HTMLWriter extends FilterWriter {
 
-	// TODO: Switch to ao-encoding?
-	private static final char[] LT=new char[] {'&', '#', '6', '0', ';'};
-	private static final char[] AMP=new char[] {'&', '#', '3', '8', ';'};
-	private static final char[] DQ=new char[] {'&', '#', '3', '4', ';'};
-	private static final char[] SQ=new char[] {'&', '#', '3', '9', ';'};
-	private static final char[] BR=new char[] {'<', 'b', 'r', ' ', '/', '>'};
+  // TODO: Switch to ao-encoding?
+  private static final char[] LT=new char[] {'&', '#', '6', '0', ';'};
+  private static final char[] AMP=new char[] {'&', '#', '3', '8', ';'};
+  private static final char[] DQ=new char[] {'&', '#', '3', '4', ';'};
+  private static final char[] SQ=new char[] {'&', '#', '3', '9', ';'};
+  private static final char[] BR=new char[] {'<', 'b', 'r', ' ', '/', '>'};
 
-	/**
-	 * Constructs this {@link HTMLWriter}.
-	 */
-	public HTMLWriter(Writer out) {
-		super(out);
-	}
+  /**
+   * Constructs this {@link HTMLWriter}.
+   */
+  public HTMLWriter(Writer out) {
+    super(out);
+  }
 
-	/**
-	 * Write a portion of an array of characters.
-	 *
-	 * @param  cbuf  Buffer of characters to be written
-	 * @param  off   Offset from which to start reading characters
-	 * @param  len   Number of characters to be written
-	 *
-	 * @exception  IOException  If an I/O error occurs
-	 */
-	@Override
-	public void write(char[] cbuf, int off, int len) throws IOException {
-		for(int i=off;i<len;i++) {
-			switch(cbuf[i]) {
-				case '<':
-					out.write(LT);
-					break;
-				case '&':
-					out.write(AMP);
-					break;
-				case '"':
-					out.write(DQ);
-					break;
-				case '\'':
-					out.write(SQ);
-					break;
-				case '\n':
-					out.write(BR);
-					break;
-				default:
-					out.write(cbuf[i]);
-					break;
-			}
-		}
-	}
+  /**
+   * Write a portion of an array of characters.
+   *
+   * @param  cbuf  Buffer of characters to be written
+   * @param  off   Offset from which to start reading characters
+   * @param  len   Number of characters to be written
+   *
+   * @exception  IOException  If an I/O error occurs
+   */
+  @Override
+  public void write(char[] cbuf, int off, int len) throws IOException {
+    for (int i=off;i<len;i++) {
+      switch (cbuf[i]) {
+        case '<':
+          out.write(LT);
+          break;
+        case '&':
+          out.write(AMP);
+          break;
+        case '"':
+          out.write(DQ);
+          break;
+        case '\'':
+          out.write(SQ);
+          break;
+        case '\n':
+          out.write(BR);
+          break;
+        default:
+          out.write(cbuf[i]);
+          break;
+      }
+    }
+  }
 
-	/**
-	 * Write a single character.
-	 *
-	 * @exception  IOException  If an I/O error occurs
-	 */
-	@Override
-	public void write(int c) throws IOException {
-		switch(c) {
-			case '<':
-				out.write(LT);
-				break;
-			case '&':
-				out.write(AMP);
-				break;
-			case '"':
-				out.write(DQ);
-				break;
-			case '\'':
-				out.write(SQ);
-				break;
-			case '\n':
-				out.write(BR);
-				break;
-			default:
-				out.write(c);
-				break;
-		}
-	}
+  /**
+   * Write a single character.
+   *
+   * @exception  IOException  If an I/O error occurs
+   */
+  @Override
+  public void write(int c) throws IOException {
+    switch (c) {
+      case '<':
+        out.write(LT);
+        break;
+      case '&':
+        out.write(AMP);
+        break;
+      case '"':
+        out.write(DQ);
+        break;
+      case '\'':
+        out.write(SQ);
+        break;
+      case '\n':
+        out.write(BR);
+        break;
+      default:
+        out.write(c);
+        break;
+    }
+  }
 
-	/**
-	 * Write a portion of a string.
-	 *
-	 * @param  str  String to be written
-	 * @param  off  Offset from which to start reading characters
-	 * @param  len  Number of characters to be written
-	 *
-	 * @exception  IOException  If an I/O error occurs
-	 */
-	@Override
-	public void write(String str, int off, int len) throws IOException {
-		write(str.toCharArray(), off, len);
-	}
+  /**
+   * Write a portion of a string.
+   *
+   * @param  str  String to be written
+   * @param  off  Offset from which to start reading characters
+   * @param  len  Number of characters to be written
+   *
+   * @exception  IOException  If an I/O error occurs
+   */
+  @Override
+  public void write(String str, int off, int len) throws IOException {
+    write(str.toCharArray(), off, len);
+  }
 }

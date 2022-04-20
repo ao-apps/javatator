@@ -49,137 +49,152 @@ import javax.servlet.annotation.WebListener;
  */
 public class DatabaseConfiguration {
 
-	private static final String INIT_PARAM = DatabaseConfiguration.class.getName();
+  private static final String INIT_PARAM = DatabaseConfiguration.class.getName();
 
-	private static final ScopeEE.Application.Attribute<DatabaseConfiguration> APPLICATION_ATTRIBUTE =
-		ScopeEE.APPLICATION.attribute(DatabaseConfiguration.class.getName());
+  private static final ScopeEE.Application.Attribute<DatabaseConfiguration> APPLICATION_ATTRIBUTE =
+    ScopeEE.APPLICATION.attribute(DatabaseConfiguration.class.getName());
 
-	@WebListener
-	public static class Initializer implements ServletContextListener {
-		@Override
-		public void contextInitialized(ServletContextEvent event) {
-			getInstance(event.getServletContext());
-		}
-		@Override
-		public void contextDestroyed(ServletContextEvent event) {
-			// Do nothing
-		}
-	}
+  @WebListener
+  public static class Initializer implements ServletContextListener {
+    @Override
+    public void contextInitialized(ServletContextEvent event) {
+      getInstance(event.getServletContext());
+    }
+    @Override
+    public void contextDestroyed(ServletContextEvent event) {
+      // Do nothing
+    }
+  }
 
-	/**
-	 * Gets the database configuration for the current application.
-	 */
-	public static DatabaseConfiguration getInstance(ServletContext servletContext) {
-		try {
-			return APPLICATION_ATTRIBUTE.context(servletContext).computeIfAbsent(__ -> {
-				String filename = Strings.trimNullIfEmpty(servletContext.getInitParameter(INIT_PARAM));
-				servletContext.log(DatabaseConfiguration.class.getName() + ": " + INIT_PARAM + '=' + filename);
-				if(filename != null) {
-					return new DatabaseConfiguration(new File(filename));
-				} else {
-					return new DatabaseConfiguration();
-				}
-			});
-		} catch(IOException e) {
-			throw new UncheckedIOException(e);
-		}
-	}
+  /**
+   * Gets the database configuration for the current application.
+   */
+  public static DatabaseConfiguration getInstance(ServletContext servletContext) {
+    try {
+      return APPLICATION_ATTRIBUTE.context(servletContext).computeIfAbsent(__ -> {
+        String filename = Strings.trimNullIfEmpty(servletContext.getInitParameter(INIT_PARAM));
+        servletContext.log(DatabaseConfiguration.class.getName() + ": " + INIT_PARAM + '=' + filename);
+        if (filename != null) {
+          return new DatabaseConfiguration(new File(filename));
+        } else {
+          return new DatabaseConfiguration();
+        }
+      });
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
 
-	/**
-	 * The properties are kept here.
-	 */
-	private final Properties props;
+  /**
+   * The properties are kept here.
+   */
+  private final Properties props;
 
-	/**
-	 * Loads the default configuration from the bundled database.properties file.
-	 */
-	private DatabaseConfiguration() throws IOException {
-		final String RESOURCE = "com/javaphilia/javatator/database.properties";
-		InputStream in = DatabaseConfiguration.class.getResourceAsStream("/" + RESOURCE);
-		if(in == null) {
-			// Try ClassLoader for when modules enabled
-			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-			in = (classloader != null)
-				? classloader.getResourceAsStream(RESOURCE)
-				: ClassLoader.getSystemResourceAsStream(RESOURCE);
-		}
-		if(in == null) throw new IOException("database.properties not found as resource");
-		try {
-			Properties newProps = new Properties();
-			newProps.load(in);
-			props = newProps;
-		} finally {
-			in.close();
-		}
-	}
+  /**
+   * Loads the default configuration from the bundled database.properties file.
+   */
+  private DatabaseConfiguration() throws IOException {
+    final String RESOURCE = "com/javaphilia/javatator/database.properties";
+    InputStream in = DatabaseConfiguration.class.getResourceAsStream("/" + RESOURCE);
+    if (in == null) {
+      // Try ClassLoader for when modules enabled
+      ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+      in = (classloader != null)
+        ? classloader.getResourceAsStream(RESOURCE)
+        : ClassLoader.getSystemResourceAsStream(RESOURCE);
+    }
+    if (in == null) {
+      throw new IOException("database.properties not found as resource");
+    }
+    try {
+      Properties newProps = new Properties();
+      newProps.load(in);
+      props = newProps;
+    } finally {
+      in.close();
+    }
+  }
 
-	/**
-	 * Loads the default configuration from a provided file.
-	 */
-	private DatabaseConfiguration(File file) throws IOException {
-		Properties newProps = new Properties();
-		try (InputStream in = new FileInputStream(file)) {
-			newProps.load(in);
-		}
-		props = newProps;
-	}
+  /**
+   * Loads the default configuration from a provided file.
+   */
+  private DatabaseConfiguration(File file) throws IOException {
+    Properties newProps = new Properties();
+    try (InputStream in = new FileInputStream(file)) {
+      newProps.load(in);
+    }
+    props = newProps;
+  }
 
-	/**
-	 * Gets the list of hosts that may be accessed for the specified dbProduct.
-	 */
-	public List<String> getAllowedHosts(String dbProduct) {
-		String hostList=getProperty("hostname", dbProduct);
-		if(hostList==null) return Collections.emptyList();
-		return Strings.splitCommaSpace(hostList);
-	}
+  /**
+   * Gets the list of hosts that may be accessed for the specified dbProduct.
+   */
+  public List<String> getAllowedHosts(String dbProduct) {
+    String hostList=getProperty("hostname", dbProduct);
+    if (hostList == null) {
+      return Collections.emptyList();
+    }
+    return Strings.splitCommaSpace(hostList);
+  }
 
-	/**
-	 * Gets the list of databases that may be selected.
-	 */
-	public List<String> getAvailableDatabaseProducts() {
-		List<String> products=new ArrayList<>();
-		String dbproduct=getProperty("dbproduct");
-		if(dbproduct!=null && dbproduct.length()>0) products.add(dbproduct);
-		else {
-			Enumeration<?> e = props.propertyNames();
-			while(e.hasMoreElements()) {
-				String tmp = (String)e.nextElement();
-				if(tmp.startsWith("db.") && tmp.endsWith(".name")) products.add(tmp.substring(3, tmp.length()-5));
-			}
-		}
-		return products;
-	}
+  /**
+   * Gets the list of databases that may be selected.
+   */
+  public List<String> getAvailableDatabaseProducts() {
+    List<String> products=new ArrayList<>();
+    String dbproduct=getProperty("dbproduct");
+    if (dbproduct != null && dbproduct.length()>0) {
+      products.add(dbproduct);
+    } else {
+      Enumeration<?> e = props.propertyNames();
+      while (e.hasMoreElements()) {
+        String tmp = (String)e.nextElement();
+        if (tmp.startsWith("db.") && tmp.endsWith(".name")) {
+          products.add(tmp.substring(3, tmp.length()-5));
+        }
+      }
+    }
+    return products;
+  }
 
-	/**
-	 * Gets the specified property from the file.  If <code>db.name</code> exists, returns the value.
-	 */
-	public String getProperty(String name) {
-		// Look for db.name
-		return props.getProperty("db."+name);
-	}
+  /**
+   * Gets the specified property from the file.  If <code>db.name</code> exists, returns the value.
+   */
+  public String getProperty(String name) {
+    // Look for db.name
+    return props.getProperty("db."+name);
+  }
 
-	/**
-	 * Gets the specified property from the properties file, using the database product string.
-	 * If <code>db.databaseProduct.name</code> is defined in the properties file, then that is returned.
-	 * If <code>db.*.name</code> is defined in the properties file, then that is returned.
-	 *
-	 * @param name the name of the property to get.
-	 * @param databaseProduct the name of the database product being used.
-	 */
-	public String getProperty(String name, String databaseProduct) {
-		// Look for db.dbproduct.name
-		String s = props.getProperty("db." + databaseProduct + '.' + name);
-		if(s != null) return s;
+  /**
+   * Gets the specified property from the properties file, using the database product string.
+   * If <code>db.databaseProduct.name</code> is defined in the properties file, then that is returned.
+   * If <code>db.*.name</code> is defined in the properties file, then that is returned.
+   *
+   * @param name the name of the property to get.
+   * @param databaseProduct the name of the database product being used.
+   */
+  public String getProperty(String name, String databaseProduct) {
+    // Look for db.dbproduct.name
+    String s = props.getProperty("db." + databaseProduct + '.' + name);
+    if (s != null) {
+      return s;
+    }
 
-		// Look for db.*.name
-		return props.getProperty("db.*."+name);
-	}
+    // Look for db.*.name
+    return props.getProperty("db.*."+name);
+  }
 
-	public Boolean getBooleanProperty(String name, String databaseProduct) {
-		String s = getProperty(name, databaseProduct);
-		if(s == null || s.isEmpty()) return null;
-		if("true".equalsIgnoreCase(s)) return true;
-		if("false".equalsIgnoreCase(s)) return false;
-		throw new IllegalArgumentException("Unable to parse boolean: " + s);
-	}
+  public Boolean getBooleanProperty(String name, String databaseProduct) {
+    String s = getProperty(name, databaseProduct);
+    if (s == null || s.isEmpty()) {
+      return null;
+    }
+    if ("true".equalsIgnoreCase(s)) {
+      return true;
+    }
+    if ("false".equalsIgnoreCase(s)) {
+      return false;
+    }
+    throw new IllegalArgumentException("Unable to parse boolean: " + s);
+  }
 }

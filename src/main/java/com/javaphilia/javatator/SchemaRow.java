@@ -37,55 +37,55 @@ import java.util.List;
  */
 public class SchemaRow {
 
-	private static final Color nameColor=new Color(0x6f6f6f);
+  private static final Color nameColor=new Color(0x6f6f6f);
 
-	private final SchemaTable table;
+  private final SchemaTable table;
 
-	private final String name;
+  private final String name;
 
-	private final List<SchemaForeignKey> foreignKeys=new ArrayList<>();
+  private final List<SchemaForeignKey> foreignKeys=new ArrayList<>();
 
-	public SchemaRow(
-		SchemaTable table,
-		String name
-	) {
-		this.table=table;
-		this.name=name;
-	}
+  public SchemaRow(
+    SchemaTable table,
+    String name
+  ) {
+    this.table=table;
+    this.name=name;
+  }
 
-	public void addForeignKey(String table, String row) {
-		foreignKeys.add(new SchemaForeignKey(this, table, row));
-	}
+  public void addForeignKey(String table, String row) {
+    foreignKeys.add(new SchemaForeignKey(this, table, row));
+  }
 
-	public void draw(Graphics g, FontMetrics metrics, int x, int y) {
-		int width = getWidth(metrics);
+  public void draw(Graphics g, FontMetrics metrics, int x, int y) {
+    int width = getWidth(metrics);
 
-		g.setColor(nameColor);
-		int nameWidth = metrics.stringWidth(name);
-		g.drawString(
-			name,
-			x + (width - nameWidth) / 2,
-			y + metrics.getHeight() - metrics.getDescent()
-		);
-	}
+    g.setColor(nameColor);
+    int nameWidth = metrics.stringWidth(name);
+    g.drawString(
+      name,
+      x + (width - nameWidth) / 2,
+      y + metrics.getHeight() - metrics.getDescent()
+    );
+  }
 
-	public List<SchemaForeignKey> getForeignKeys() {
-		return foreignKeys;
-	}
+  public List<SchemaForeignKey> getForeignKeys() {
+    return foreignKeys;
+  }
 
-	public int getHeight(FontMetrics fm) {
-		return fm.getHeight();
-	}
+  public int getHeight(FontMetrics fm) {
+    return fm.getHeight();
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public SchemaTable getTable() {
-		return table;
-	}
+  public SchemaTable getTable() {
+    return table;
+  }
 
-	public int getWidth(FontMetrics fm) {
-		return fm.stringWidth(name) + 4;
-	}
+  public int getWidth(FontMetrics fm) {
+    return fm.stringWidth(name) + 4;
+  }
 }
