@@ -143,6 +143,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <configuration><skip>${build.isSnapshot}</skip></configuration>
       </plugin>
       <plugin>
+        <!-- TODO: rewrite-maven-plugin 4.22.2 says "Changes have been made to" but nothing changed and dryRun fails -->
+        <groupId>org.openrewrite.maven</groupId><artifactId>rewrite-maven-plugin</artifactId>
+        <configuration>
+          <!--
+            Exclusion seems to not work as documented at https://docs.openrewrite.org/reference/rewrite-maven-plugin
+            Disabling fail instead:
+          <exclusions>
+            <exclude>**/com/javaphilia/javatator/Main.java</exclude>
+          </exclusions>
+          -->
+          <failOnDryRunResults>false</failOnDryRunResults>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId><artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
           <!-- TODO: Clean-up Checkstyle -->
