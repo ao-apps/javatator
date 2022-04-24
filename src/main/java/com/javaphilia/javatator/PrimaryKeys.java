@@ -45,8 +45,8 @@ public class PrimaryKeys {
   private final List<String> names;
 
   public PrimaryKeys(List<String> columns, List<String> names) {
-    this.columns=columns;
-    this.names=names;
+    this.columns = columns;
+    this.names = names;
   }
 
   /**

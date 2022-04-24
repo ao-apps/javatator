@@ -71,7 +71,7 @@ public class JDBCConnector {
     NA
   }
 
-  protected static final String[] defaultTableTypes=new String[]{"TABLE"};
+  protected static final String[] defaultTableTypes = new String[]{"TABLE"};
 
   /**
    * The {@link Settings} store all the configuration parameters.
@@ -84,7 +84,7 @@ public class JDBCConnector {
    * @param settings  the {@link Settings} to use.
    */
   public JDBCConnector(Settings settings) {
-    this.settings=settings;
+    this.settings = settings;
   }
 
   /**
@@ -105,27 +105,27 @@ public class JDBCConnector {
    * @param remarks at the moment this is only used for the "auto_increment" value in MySQL.
    */
   public void addColumn(
-    String name,
-    String type,
-    String length,
-    String dfault,
-    String nullClause,
-    String remarks
+      String name,
+      String type,
+      String length,
+      String dfault,
+      String nullClause,
+      String remarks
   ) throws SQLException, IOException {
-    StringBuilder sql=new StringBuilder("ALTER TABLE ");
+    StringBuilder sql = new StringBuilder("ALTER TABLE ");
     sql
-      .append(quoteTable(settings.getTable()))
-      .append(" ADD ")
-      .append(quoteColumn(name))
-      .append(' ')
-      .append(type)
-      .append(' ');
-    boolean hasLength=!type.toUpperCase().endsWith("TEXT");
-    if (hasLength && length != null && length.length()>0) {
+        .append(quoteTable(settings.getTable()))
+        .append(" ADD ")
+        .append(quoteColumn(name))
+        .append(' ')
+        .append(type)
+        .append(' ');
+    boolean hasLength = !type.toUpperCase().endsWith("TEXT");
+    if (hasLength && length != null && length.length() > 0) {
       sql
-        .append('(')
-        .append(length)
-        .append(')');
+          .append('(')
+          .append(length)
+          .append(')');
     }
     if (dfault != null) {
       sql.append(" DEFAULT ");
@@ -136,10 +136,10 @@ public class JDBCConnector {
       }
     }
     sql
-      .append(' ')
-      .append(nullClause)
-      .append(' ')
-      .append(remarks);
+        .append(' ')
+        .append(nullClause)
+        .append(' ')
+        .append(remarks);
     executeUpdate(sql.toString());
   }
 
@@ -150,39 +150,39 @@ public class JDBCConnector {
    * @param primaryKey the name of the primary key.
    */
   public void addForeignKey(
-    String constraint,
-    String primaryKey,
-    String foreignTable,
-    String foreignKey,
-    String matchType,
-    String onDelete,
-    String onUpdate,
-    boolean isDeferrable,
-    String initially
+      String constraint,
+      String primaryKey,
+      String foreignTable,
+      String foreignKey,
+      String matchType,
+      String onDelete,
+      String onUpdate,
+      boolean isDeferrable,
+      String initially
   ) throws SQLException, IOException {
-    StringBuilder sql=new StringBuilder("ALTER TABLE ");
+    StringBuilder sql = new StringBuilder("ALTER TABLE ");
     sql
-      .append(quoteTable(settings.getTable()))
-      .append(" ADD CONSTRAINT ")
-      .append(constraint)
-      .append(" FOREIGN KEY(")
-      .append(primaryKey)
-      .append(") REFERENCES ")
-      .append(foreignTable)
-      .append(" (")
-      .append(foreignKey)
-      .append(")");
+        .append(quoteTable(settings.getTable()))
+        .append(" ADD CONSTRAINT ")
+        .append(constraint)
+        .append(" FOREIGN KEY(")
+        .append(primaryKey)
+        .append(") REFERENCES ")
+        .append(foreignTable)
+        .append(" (")
+        .append(foreignKey)
+        .append(")");
     if (matchType != null) {
       sql.append(" MATCH ").append(matchType);
     }
     sql
-      .append(" ON DELETE ")
-      .append(onDelete)
-      .append(" ON UPDATE ")
-      .append(onUpdate)
-      .append(isDeferrable?" DEFERRABLE":" NOT DEFERRABLE")
-      .append(" INITIALLY ")
-      .append(initially);
+        .append(" ON DELETE ")
+        .append(onDelete)
+        .append(" ON UPDATE ")
+        .append(onUpdate)
+        .append(isDeferrable ? " DEFERRABLE" : " NOT DEFERRABLE")
+        .append(" INITIALLY ")
+        .append(initially);
     executeUpdate(sql.toString());
   }
 
@@ -229,16 +229,16 @@ public class JDBCConnector {
 
   protected void appendIsNull(StringBuilder sb, String column) {
     sb
-      .append("ISNULL(")
-      .append(quoteColumn(column))
-      .append(')');
+        .append("ISNULL(")
+        .append(quoteColumn(column))
+        .append(')');
   }
 
   /**
    * Counts the number of records in the table.
    */
   public int countRecords() throws SQLException, IOException {
-    String table=settings.getTable();
+    String table = settings.getTable();
     if (table != null) {
       return getIntQuery("select count(*) from " + quoteTable(table));
     }
@@ -251,7 +251,7 @@ public class JDBCConnector {
    * @param database the new name for the database.
    */
   public void createDatabase(String database) throws SQLException, IOException {
-    executeUpdate("CREATE DATABASE "+database);
+    executeUpdate("CREATE DATABASE " + database);
   }
 
   /**
@@ -278,17 +278,17 @@ public class JDBCConnector {
     boolean[] uniqueKey
   ) throws SQLException, IOException {
     // Build the SQL first
-    StringBuilder sql=new StringBuilder();
+    StringBuilder sql = new StringBuilder();
     sql.append("CREATE TABLE ").append(quoteTable(settings.getTable())).append(" (");
-    for (int i=0;i<newColumn.length;i++) {
-      if (i>0) {
+    for (int i = 0; i < newColumn.length; i++) {
+      if (i > 0) {
         sql.append(", ");
       }
       sql.append(quoteColumn(newColumn[i])).append(' ').append(newType[i]);
-      if (newLength[i].length()>0) {
+      if (newLength[i].length() > 0) {
         sql.append('(').append(newLength[i]).append(')');
       }
-      if (newDefault[i].length()>0) {
+      if (newDefault[i].length() > 0) {
         sql.append(" DEFAULT ").append(Util.escapeSQLValue(newDefault[i]));
       }
       sql.append(' ').append(newNull[i]);
@@ -324,8 +324,8 @@ public class JDBCConnector {
    * @param primaryKeyValues the values of the primary keys.
    */
   public void deleteRow(
-    String[] primaryKeys,
-    String[] primaryKeyValues
+      String[] primaryKeys,
+      String[] primaryKeyValues
   ) throws SQLException, IOException {
     StringBuilder sb = new StringBuilder("DELETE FROM ").append(quoteTable(settings.getTable()));
     for (int i = 0; i < primaryKeys.length; i++) {
@@ -341,7 +341,7 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       PreparedStatement stmt = conn.prepareStatement(sql)
-    ) {
+        ) {
       // stmt.setEscapeProcessing(false);
       int pos = 1;
       for (String primaryKeyValue : primaryKeyValues) {
@@ -361,10 +361,10 @@ public class JDBCConnector {
    */
   public void dropConstraint(String constraint, String behaviour) throws SQLException, IOException {
     executeUpdate(
-      "ALTER TABLE "
-      + quoteTable(settings.getTable())
-      + " DROP CONSTRAINT "
-      + constraint+' '+behaviour
+        "ALTER TABLE "
+            + quoteTable(settings.getTable())
+            + " DROP CONSTRAINT "
+            + constraint + ' ' + behaviour
     );
   }
 
@@ -372,7 +372,7 @@ public class JDBCConnector {
    * Drops the database.
    */
   public void dropDatabase() throws SQLException, IOException {
-    executeUpdate("DROP DATABASE "+settings.getDatabase());
+    executeUpdate("DROP DATABASE " + settings.getDatabase());
   }
 
   /**
@@ -402,7 +402,7 @@ public class JDBCConnector {
           }
         }
       }
-      StringBuilder sql=new StringBuilder("ALTER TABLE ").append(quoteTable(settings.getTable())).append(" DROP PRIMARY KEY");
+      StringBuilder sql = new StringBuilder("ALTER TABLE ").append(quoteTable(settings.getTable())).append(" DROP PRIMARY KEY");
       if (sb.length() > 0) {
         sql.append(", ADD PRIMARY KEY(");
         sql.append(sb.toString());
@@ -429,22 +429,22 @@ public class JDBCConnector {
    */
   public void dumpTableContents(Writer out) throws SQLException, IOException {
     try (Connection conn = DatabasePool.getConnection(settings)) {
-      String table=settings.getTable();
+      String table = settings.getTable();
       try (
         Statement stmt = conn.createStatement();
         ResultSet r = stmt.executeQuery("SELECT * FROM " + quoteTable(table))
-      ) {
+          ) {
         int count = r.getMetaData().getColumnCount();
         while (r.next()) {
           out.write("INSERT INTO ");
           out.write(quoteTable(table));
           out.write(" VALUES (");
-          boolean hasBeen=false;
-          for (int i=1;i <= count;i++) {
+          boolean hasBeen = false;
+          for (int i = 1; i <= count; i++) {
             if (hasBeen) {
               out.write(',');
             } else {
-              hasBeen=true;
+              hasBeen = true;
             }
             Util.printEscapedSQLValue(out, r.getString(i));
           }
@@ -460,22 +460,22 @@ public class JDBCConnector {
    * @param out a {@link Writer} to dump the SQL to.
    */
   public void dumpTableStructure(Writer out) throws SQLException, IOException {
-    Columns columns=getColumns();
-    List<String> names=columns.getNames();
-    List<String> types=columns.getTypes();
-    List<String> lengths=columns.getLengths();
-    List<Boolean> areNullable=columns.areNullable();
-    List<String> defaults=columns.getDefaults();
+    Columns columns = getColumns();
+    List<String> names = columns.getNames();
+    List<String> types = columns.getTypes();
+    List<String> lengths = columns.getLengths();
+    List<Boolean> areNullable = columns.areNullable();
+    List<String> defaults = columns.getDefaults();
     out.write("CREATE TABLE ");
     out.write(quoteTable(settings.getTable()));
     out.write(" (");
-    boolean hasBeen=false;
-    int size=names.size();
-    for (int i=0;i<size;i++) {
+    boolean hasBeen = false;
+    int size = names.size();
+    for (int i = 0; i < size; i++) {
       if (hasBeen) {
         out.write(", ");
       } else {
-        hasBeen=true;
+        hasBeen = true;
       }
       out.write(quoteColumn(names.get(i)));
       out.write(' ');
@@ -487,7 +487,7 @@ public class JDBCConnector {
         out.write(" NULL");
       }
 
-      if (defaults.get(i) != null && defaults.get(i).length()>1) {
+      if (defaults.get(i) != null && defaults.get(i).length() > 1) {
         out.write(" DEFAULT ");
         if (defaults.get(i).charAt(0) == 'V') {
           Util.printEscapedSQLValue(out, defaults.get(i).substring(1));
@@ -495,18 +495,18 @@ public class JDBCConnector {
           out.write(defaults.get(i).substring(1));
         }
       }
-      String remark=getRemark(names.get(i));
+      String remark = getRemark(names.get(i));
       if ("auto_increment".equalsIgnoreCase(remark)) {
         out.write(" AUTO_INCREMENT");
       }
     }
     out.write(");");
-    Indexes indexes=getIndexes();
-    List<String> indexNames=indexes.getNames();
-    List<Boolean> areUnique=indexes.areUnique();
-    List<String> colNames=indexes.getColumns();
-    size=indexNames.size();
-    for (int i=0;i<size;i++) {
+    Indexes indexes = getIndexes();
+    List<String> indexNames = indexes.getNames();
+    List<Boolean> areUnique = indexes.areUnique();
+    List<String> colNames = indexes.getColumns();
+    size = indexNames.size();
+    for (int i = 0; i < size; i++) {
       // TODO: This seems incomplete
     }
   }
@@ -528,31 +528,31 @@ public class JDBCConnector {
    * @param newRemarks extra info added to the end of the statement.
    */
   public void editColumn(
-    String column,
-    String newColumn,
-    String newType,
-    String newLength,
-    String newDefault,
-    String newNull,
-    String newRemarks
+      String column,
+      String newColumn,
+      String newType,
+      String newLength,
+      String newDefault,
+      String newNull,
+      String newRemarks
   ) throws SQLException, IOException {
     // Build the SQL before allocating the connection
-    StringBuilder sql=new StringBuilder();
+    StringBuilder sql = new StringBuilder();
     sql
-      .append("ALTER TABLE ")
-      .append(quoteTable(settings.getTable()))
-      .append(" CHANGE ")
-      .append(quoteColumn(column))
-      .append(' ')
-      .append(quoteColumn(newColumn))
-      .append(' ')
-      .append(newType);
-    boolean hasLength=!newType.toUpperCase().endsWith("TEXT");
+        .append("ALTER TABLE ")
+        .append(quoteTable(settings.getTable()))
+        .append(" CHANGE ")
+        .append(quoteColumn(column))
+        .append(' ')
+        .append(quoteColumn(newColumn))
+        .append(' ')
+        .append(newType);
+    boolean hasLength = !newType.toUpperCase().endsWith("TEXT");
     if (hasLength) {
       sql
-        .append('(')
-        .append(newLength)
-        .append(')');
+          .append('(')
+          .append(newLength)
+          .append(')');
     }
     if (newDefault != null) {
       sql.append(" DEFAULT ");
@@ -563,10 +563,10 @@ public class JDBCConnector {
       }
     }
     sql
-      .append(' ')
-      .append(newNull)
-      .append(' ')
-      .append(newRemarks);
+        .append(' ')
+        .append(newNull)
+        .append(' ')
+        .append(newRemarks);
     executeUpdate(sql.toString());
   }
 
@@ -610,7 +610,7 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       PreparedStatement stmt = conn.prepareStatement(sql)
-    ) {
+        ) {
       // stmt.setEscapeProcessing(false);
       int pos = 1;
       for (int i = 0; i < column.length; i++) {
@@ -642,7 +642,7 @@ public class JDBCConnector {
       Connection conn = DatabasePool.getConnection(settings);
       Statement stmt = conn.createStatement();
       ResultSet results = stmt.executeQuery(sql)
-    ) {
+        ) {
       List<String> v = new ArrayList<>();
       while (results.next()) {
         v.add(results.getString(1));
@@ -661,7 +661,7 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       PreparedStatement pstmt = conn.prepareStatement(sql)
-    ) {
+        ) {
       pstmt.setString(1, param);
       try (ResultSet results = pstmt.executeQuery()) {
         List<String> v = new ArrayList<>();
@@ -684,7 +684,7 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       PreparedStatement pstmt = conn.prepareStatement(sql)
-    ) {
+        ) {
       return pstmt.executeUpdate();
     }
   }
@@ -701,7 +701,7 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       PreparedStatement pstmt = conn.prepareStatement(sql)
-    ) {
+        ) {
       pstmt.setString(1, param);
       return pstmt.executeUpdate();
     }
@@ -720,7 +720,7 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       PreparedStatement pstmt = conn.prepareStatement(sql)
-    ) {
+        ) {
       pstmt.setString(1, param1);
       pstmt.setString(2, param2);
       return pstmt.executeUpdate();
@@ -737,7 +737,7 @@ public class JDBCConnector {
       case TRUE : return "true";
       case UNKNOWN : return "unknown";
       case NA : return "N/A";
-      default : throw new SQLException("Unknown value: "+i);
+      default : throw new SQLException("Unknown value: " + i);
     }
   }
 
@@ -755,11 +755,11 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       ResultSet r = conn.getMetaData().getColumns(null, null, settings.getTable(), column)
-    ) {
+        ) {
       if (r.next()) {
         return r.getString(index);
       } else {
-        throw new SQLException("Column not found: "+column);
+        throw new SQLException("Column not found: " + column);
       }
     }
   }
@@ -772,26 +772,26 @@ public class JDBCConnector {
   }
 
   protected Columns getColumns(String table) throws SQLException, IOException {
-    List<String> names=new ArrayList<>();
-    List<String> types=new ArrayList<>();
-    List<String> lengths=new ArrayList<>();
-    List<Boolean> areNullable=new ArrayList<>();
-    List<String> defaults=new ArrayList<>();
-    List<String> remarks=new ArrayList<>();
+    List<String> names = new ArrayList<>();
+    List<String> types = new ArrayList<>();
+    List<String> lengths = new ArrayList<>();
+    List<Boolean> areNullable = new ArrayList<>();
+    List<String> defaults = new ArrayList<>();
+    List<String> remarks = new ArrayList<>();
 
     try (
       Connection conn = DatabasePool.getConnection(settings);
       ResultSet r = conn.getMetaData().getColumns(null, null, table, "%")
-    ) {
+        ) {
       while (r.next()) {
         names.add(r.getString(4));
         types.add(r.getString(6));
         lengths.add(r.getString(7));
         int nullable = r.getInt(11);
         areNullable.add(
-          (nullable == DatabaseMetaData.columnNoNulls) ? Boolean.FALSE
-            : (nullable == DatabaseMetaData.columnNullable) ? Boolean.TRUE
-              : Boolean.UNKNOWN);
+            (nullable == DatabaseMetaData.columnNoNulls) ? Boolean.FALSE
+                : (nullable == DatabaseMetaData.columnNullable) ? Boolean.TRUE
+                : Boolean.UNKNOWN);
         String def = r.getString(13);
         defaults.add((def != null) ? ('V' + def) : null);
         String rem = r.getString(12);
@@ -806,8 +806,8 @@ public class JDBCConnector {
    */
   public String getDatabaseProductName() throws SQLException, IOException {
     try (Connection conn = DatabasePool.getConnection(settings)) {
-      DatabaseMetaData metaData=conn.getMetaData();
-      return metaData.getDatabaseProductName()+' '+metaData.getDatabaseProductVersion();
+      DatabaseMetaData metaData = conn.getMetaData();
+      return metaData.getDatabaseProductName() + ' ' + metaData.getDatabaseProductVersion();
     }
   }
 
@@ -816,7 +816,7 @@ public class JDBCConnector {
    */
   public List<String> getDatabases() throws SQLException, IOException {
     try (Connection conn = DatabasePool.getConnection(settings)) {
-      DatabaseMetaData metaData=conn.getMetaData();
+      DatabaseMetaData metaData = conn.getMetaData();
       if (metaData.supportsCatalogsInDataManipulation()) {
         try (ResultSet results = conn.getMetaData().getCatalogs()) {
           List<String> v = new ArrayList<>();
@@ -836,12 +836,12 @@ public class JDBCConnector {
    * data structure of the entire database schema.
    */
   public List<SchemaTable> getDatabaseSchema() throws IOException, SQLException {
-    List<String> tableNames=getTables();
-    int size=tableNames.size();
-    List<SchemaTable> schemaTables=new ArrayList<>(size);
-    for (int c=0;c<size;c++) {
-      String tableName=tableNames.get(c);
-      SchemaTable schemaTable=new SchemaTable(tableName);
+    List<String> tableNames = getTables();
+    int size = tableNames.size();
+    List<SchemaTable> schemaTables = new ArrayList<>(size);
+    for (int c = 0; c < size; c++) {
+      String tableName = tableNames.get(c);
+      SchemaTable schemaTable = new SchemaTable(tableName);
 
       // Populate the columns
       List<String> columns = getColumns(tableName).getNames();
@@ -851,13 +851,13 @@ public class JDBCConnector {
       }
 
       // Add the foreign key constraints
-      ForeignKeys importedKeys=getImportedKeys(tableName);
+      ForeignKeys importedKeys = getImportedKeys(tableName);
       if (importedKeys != null) {
-        List<String> primaryKeys=importedKeys.getPrimaryKeys();
-        List<String> foreignTables=importedKeys.getForeignTables();
-        List<String> foreignKeys=importedKeys.getForeignKeys();
-        len=primaryKeys.size();
-        for (int d=0;d<len;d++) {
+        List<String> primaryKeys = importedKeys.getPrimaryKeys();
+        List<String> foreignTables = importedKeys.getForeignTables();
+        List<String> foreignKeys = importedKeys.getForeignKeys();
+        len = primaryKeys.size();
+        for (int d = 0; d < len; d++) {
           schemaTable.getRow(primaryKeys.get(d)).addForeignKey(foreignTables.get(d), foreignKeys.get(d));
         }
       }
@@ -880,9 +880,9 @@ public class JDBCConnector {
    *          with a {@code 'F'}.
    */
   public String getDefault(String column) throws SQLException, IOException {
-    String def=getColumnMetaData(column, 13);
+    String def = getColumnMetaData(column, 13);
     if (def != null) {
-      return 'V'+def;
+      return 'V' + def;
     }
     return null;
   }
@@ -892,8 +892,8 @@ public class JDBCConnector {
    */
   public String getDriverName() throws SQLException, IOException {
     try (Connection conn = DatabasePool.getConnection(settings)) {
-      DatabaseMetaData metaData=conn.getMetaData();
-      return metaData.getDriverName()+' '+metaData.getDriverVersion();
+      DatabaseMetaData metaData = conn.getMetaData();
+      return metaData.getDriverName() + ' ' + metaData.getDriverVersion();
     }
   }
 
@@ -922,18 +922,18 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       ResultSet r = (isImported)
-        ? conn.getMetaData().getImportedKeys(null, null, table)
-        : conn.getMetaData().getExportedKeys(null, null, table)
-    ) {
+            ? conn.getMetaData().getImportedKeys(null, null, table)
+            : conn.getMetaData().getExportedKeys(null, null, table)
+        ) {
       if (r != null) {
-        List<String> foreignKeys=new ArrayList<>();
-        List<String> foreignTables=new ArrayList<>();
-        List<String> primaryKeys=new ArrayList<>();
-        List<String> primaryTables=new ArrayList<>();
-        List<String> constraintNames=new ArrayList<>();
-        List<String> insertRules=new ArrayList<>();
-        List<String> deleteRules=new ArrayList<>();
-        List<String> updateRules=new ArrayList<>();
+        List<String> foreignKeys = new ArrayList<>();
+        List<String> foreignTables = new ArrayList<>();
+        List<String> primaryKeys = new ArrayList<>();
+        List<String> primaryTables = new ArrayList<>();
+        List<String> constraintNames = new ArrayList<>();
+        List<String> insertRules = new ArrayList<>();
+        List<String> deleteRules = new ArrayList<>();
+        List<String> updateRules = new ArrayList<>();
         while (r.next()) {
           primaryTables.add(r.getString(3));
           primaryKeys.add(r.getString(4));
@@ -944,27 +944,27 @@ public class JDBCConnector {
           deleteRules.add(getRuleDescription(r.getInt(11)));
           updateRules.add(getRuleDescription(r.getInt(10)));
         }
-        int size=constraintNames.size();
-        if (size<1) {
+        int size = constraintNames.size();
+        if (size < 1) {
           return null;
         } else {
-          List<Boolean> isDeferrable=new ArrayList<>(size);
-          List<Boolean> isInitiallyDeferred=new ArrayList<>(size);
-          for (int i=0;i<size;i++) {
+          List<Boolean> isDeferrable = new ArrayList<>(size);
+          List<Boolean> isInitiallyDeferred = new ArrayList<>(size);
+          for (int i = 0; i < size; i++) {
             isDeferrable.add(Boolean.UNKNOWN);
             isInitiallyDeferred.add(Boolean.UNKNOWN);
           }
           return new ForeignKeys(
-            constraintNames,
-            foreignKeys,
-            foreignTables,
-            primaryKeys,
-            primaryTables,
-            insertRules,
-            deleteRules,
-            updateRules,
-            isDeferrable,
-            isInitiallyDeferred
+              constraintNames,
+              foreignKeys,
+              foreignTables,
+              primaryKeys,
+              primaryTables,
+              insertRules,
+              deleteRules,
+              updateRules,
+              isDeferrable,
+              isInitiallyDeferred
           );
         }
       }
@@ -988,7 +988,7 @@ public class JDBCConnector {
     try (Connection conn = DatabasePool.getConnection(settings)) {
       Set<String> sv = new HashSet<>();
       List<String> v = new ArrayList<>();
-      DatabaseMetaData metaData=conn.getMetaData();
+      DatabaseMetaData metaData = conn.getMetaData();
       StringTokenizer st = new StringTokenizer(metaData.getNumericFunctions(), ",");
       while (st.hasMoreTokens()) {
         String s = st.nextToken();
@@ -1048,13 +1048,13 @@ public class JDBCConnector {
    * Gets a list of indexes for the selected table.
    */
   public Indexes getIndexes() throws SQLException, IOException {
-    List<String> names=new ArrayList<>();
-    List<Boolean> areUnique=new ArrayList<>();
-    List<String> colNames=new ArrayList<>();
+    List<String> names = new ArrayList<>();
+    List<Boolean> areUnique = new ArrayList<>();
+    List<String> colNames = new ArrayList<>();
     try (
       Connection conn = DatabasePool.getConnection(settings);
       ResultSet r = conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false)
-    ) {
+        ) {
       while (r.next()) {
         names.add(r.getString(6));
         areUnique.add(r.getBoolean(4) ? Boolean.FALSE : Boolean.TRUE);
@@ -1068,7 +1068,7 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       ResultSet r = conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false)
-    ) {
+        ) {
       List<String> v = new ArrayList<>();
       while (r.next()) {
         v.add(r.getString(index));
@@ -1083,15 +1083,15 @@ public class JDBCConnector {
    * @param settings  the {@link Settings} to use
    */
   public static JDBCConnector getInstance(Settings settings)
-  throws
-    IOException,
-    ReflectiveOperationException
+      throws
+      IOException,
+      ReflectiveOperationException
   {
     return
-      (JDBCConnector)Class
-      .forName(settings.getDatabaseConfiguration().getProperty("connector", settings.getDatabaseProduct()))
-      .getConstructor(Settings.class)
-      .newInstance(settings);
+        (JDBCConnector) Class
+            .forName(settings.getDatabaseConfiguration().getProperty("connector", settings.getDatabaseProduct()))
+            .getConstructor(Settings.class)
+            .newInstance(settings);
   }
 
   /**
@@ -1103,7 +1103,7 @@ public class JDBCConnector {
       Connection conn = DatabasePool.getConnection(settings);
       PreparedStatement pstmt = conn.prepareStatement(sql);
       ResultSet results = pstmt.executeQuery()
-    ) {
+        ) {
       if (results.next()) {
         return results.getInt(1);
       } else {
@@ -1120,7 +1120,7 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       PreparedStatement pstmt = conn.prepareStatement(sql)
-    ) {
+        ) {
       pstmt.setString(1, param);
       try (ResultSet results = pstmt.executeQuery()) {
         if (results.next()) {
@@ -1153,6 +1153,7 @@ public class JDBCConnector {
 
   private static final List<String> possiblePrivileges = new ArrayList<>(6);
   private static final List<String> unmodifiablePrivileges = Collections.unmodifiableList(possiblePrivileges);
+
   static {
     possiblePrivileges.add("SELECT");
     possiblePrivileges.add("DELETE");
@@ -1193,12 +1194,12 @@ public class JDBCConnector {
    * Gets a list of primary keys in the selected table.
    */
   public PrimaryKeys getPrimaryKeys() throws SQLException, IOException {
-    List<String> columns=new ArrayList<>();
-    List<String> names=new ArrayList<>();
+    List<String> columns = new ArrayList<>();
+    List<String> names = new ArrayList<>();
     try (
       Connection conn = DatabasePool.getConnection(settings);
       ResultSet r = conn.getMetaData().getPrimaryKeys(null, null, settings.getTable())
-    ) {
+        ) {
       while (r.next()) {
         columns.add(r.getString(4));
         names.add(r.getString(6));
@@ -1239,7 +1240,7 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       PreparedStatement pstmt = conn.prepareStatement(sql)
-    ) {
+        ) {
       // pstmt.setEscapeProcessing(false);
       int pos = 1;
       for (int i = 0; i < primaryKeys.size(); i++) {
@@ -1291,7 +1292,7 @@ public class JDBCConnector {
     if (i == DatabaseMetaData.importedKeyNotDeferrable) {
       return "NOT DEFERRABLE";
     }
-    throw new SQLException("Unknown value: "+i);
+    throw new SQLException("Unknown value: " + i);
   }
 
   /**
@@ -1302,27 +1303,27 @@ public class JDBCConnector {
    */
   public String getSelectWhereClause(String[] colNames, String[] colValues) throws SQLException, IOException {
     // Build the SQL
-    StringBuilder sql=new StringBuilder();
-    boolean hasBeen=false;
-    for (int i=0;i<colNames.length;i++) {
-      if (colNames[i].length()>0) {
+    StringBuilder sql = new StringBuilder();
+    boolean hasBeen = false;
+    for (int i = 0; i < colNames.length; i++) {
+      if (colNames[i].length() > 0) {
         if (colValues[i] == null) {
           if (hasBeen) {
             sql.append(" AND ");
           } else {
-            hasBeen=true;
+            hasBeen = true;
           }
           appendIsNull(sql, colNames[i]);
         } else if (!"".equals(colValues[i])) {
           if (hasBeen) {
             sql.append(" AND ");
           } else {
-            hasBeen=true;
+            hasBeen = true;
           }
           sql
-            .append(quoteColumn(colNames[i]))
-            .append(" LIKE ")
-            .append(Util.escapeSQLValue(colValues[i]));
+              .append(quoteColumn(colNames[i]))
+              .append(" LIKE ")
+              .append(Util.escapeSQLValue(colValues[i]));
         }
       }
     }
@@ -1343,23 +1344,23 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       ResultSet r = conn.getMetaData().getTablePrivileges(null, null, settings.getTable())
-    ) {
-      List<String> grantors=new ArrayList<>();
-      List<String> grantees=new ArrayList<>();
-      List<String> privileges=new ArrayList<>();
-      List<Boolean> isGrantable=new ArrayList<>();
+        ) {
+      List<String> grantors = new ArrayList<>();
+      List<String> grantees = new ArrayList<>();
+      List<String> privileges = new ArrayList<>();
+      List<Boolean> isGrantable = new ArrayList<>();
       while (r.next()) {
         grantors.add(r.getString(4));
         grantees.add(r.getString(5));
         privileges.add(r.getString(6));
         String g = r.getString(7);
-        isGrantable.add(("YES".equals(g))?Boolean.TRUE:("NO".equals(g))?Boolean.FALSE:Boolean.UNKNOWN);
+        isGrantable.add(("YES".equals(g)) ? Boolean.TRUE : ("NO".equals(g)) ? Boolean.FALSE : Boolean.UNKNOWN);
       }
       return new TablePrivileges(
-        grantors,
-        grantees,
-        privileges,
-        isGrantable
+          grantors,
+          grantees,
+          privileges,
+          isGrantable
       );
     }
   }
@@ -1371,7 +1372,7 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       ResultSet results = conn.getMetaData().getTables(null, null, "%", defaultTableTypes)
-    ) {
+        ) {
       List<String> v = new ArrayList<>();
       while (results.next()) {
         v.add(results.getString(3));
@@ -1387,7 +1388,7 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       ResultSet r = conn.getMetaData().getTypeInfo()
-    ) {
+        ) {
       List<String> v = new ArrayList<>();
       while (r.next()) {
         v.add(r.getString(1));
@@ -1401,7 +1402,7 @@ public class JDBCConnector {
    */
   public String getURL() throws SQLException, IOException {
     try (Connection conn = DatabasePool.getConnection(settings)) {
-      DatabaseMetaData metaData=conn.getMetaData();
+      DatabaseMetaData metaData = conn.getMetaData();
       return metaData.getURL();
     }
   }
@@ -1413,20 +1414,20 @@ public class JDBCConnector {
    * @param privileges  an array of privileges which will be granted.
    */
   public void grantPrivileges(String user, String[] privileges) throws SQLException, IOException {
-    StringBuilder sql=new StringBuilder("GRANT ");
-    int size=privileges.length;
-    if (size<1) {
+    StringBuilder sql = new StringBuilder("GRANT ");
+    int size = privileges.length;
+    if (size < 1) {
       throw new SQLException("No privileges specified!");
     }
     sql.append(privileges[0]);
-    for (int i=1;i<size;i++) {
+    for (int i = 1; i < size; i++) {
       sql.append(',').append(privileges[i]);
     }
     sql
-      .append(" ON ")
-      .append(quoteTable(settings.getTable()))
-      .append(" TO ")
-      .append(user);
+        .append(" ON ")
+        .append(quoteTable(settings.getTable()))
+        .append(" TO ")
+        .append(user);
     executeUpdate(sql.toString());
   }
 
@@ -1463,10 +1464,10 @@ public class JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(settings);
       PreparedStatement stmt = conn.prepareStatement(sql)
-    ) {
+        ) {
       // stmt.setEscapeProcessing(false);
-      int pos=1;
-      for (int i=0;i<column.length;i++) {
+      int pos = 1;
+      for (int i = 0; i < column.length; i++) {
         if (function[i] == null || function[i].length() == 0) {
           stmt.setString(pos++, value[i]);
         }
@@ -1481,7 +1482,7 @@ public class JDBCConnector {
    * @param column the name of the column,
    */
   public Boolean isNullable(String column) throws SQLException, IOException {
-    return "YES".equals(getColumnMetaData(column, 18))?Boolean.TRUE:Boolean.FALSE;
+    return "YES".equals(getColumnMetaData(column, 18)) ? Boolean.TRUE : Boolean.FALSE;
   }
 
   /**
@@ -1500,20 +1501,20 @@ public class JDBCConnector {
    * @param privileges  an array of privileges which will be revoked.
    */
   public void revokePrivileges(String user, String[] privileges) throws SQLException, IOException {
-    StringBuilder sql=new StringBuilder("REVOKE ");
-    int size=privileges.length;
-    if (size<1) {
+    StringBuilder sql = new StringBuilder("REVOKE ");
+    int size = privileges.length;
+    if (size < 1) {
       throw new SQLException("No privileges specified!");
     }
     sql.append(privileges[0]);
-    for (int i=1;i<size;i++) {
+    for (int i = 1; i < size; i++) {
       sql.append(',').append(privileges[i]);
     }
     sql
-      .append(" ON ")
-      .append(quoteTable(settings.getTable()))
-      .append(" FROM ")
-      .append(user);
+        .append(" ON ")
+        .append(quoteTable(settings.getTable()))
+        .append(" FROM ")
+        .append(user);
     executeUpdate(sql.toString());
   }
 
@@ -1545,8 +1546,8 @@ public class JDBCConnector {
    */
   public boolean isKeyword(String identifier) {
     return
-      Server.ReservedWord.isReservedWord(identifier)
-      || com.aoindustries.aoserv.client.postgresql.Server.ReservedWord.isReservedWord(identifier);
+        Server.ReservedWord.isReservedWord(identifier)
+            || com.aoindustries.aoserv.client.postgresql.Server.ReservedWord.isReservedWord(identifier);
   }
 
   /**
@@ -1568,9 +1569,9 @@ public class JDBCConnector {
     for (int i = 0; i < len; i++) {
       char ch = identifier.charAt(i);
       if (
-        (ch >= 'a' && ch <= 'z')
-        || ch == '_'
-        || (i != 0 && ch >= '0' && ch <= '9')
+          (ch >= 'a' && ch <= 'z')
+              || ch == '_'
+              || (i != 0 && ch >= '0' && ch <= '9')
       ) {
         quoted.append(ch);
       } else if (ch == '"') {

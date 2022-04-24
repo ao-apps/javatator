@@ -43,12 +43,12 @@ public class DatabasePool {
   /**
    * The maximum idle time for a connection.
    */
-  public static final long MAX_IDLE_TIME=300000;
+  public static final long MAX_IDLE_TIME = 300000;
 
   /**
    * The delay between connection polls.
    */
-  public static final long CLEANUP_POLL_DELAY=180000;
+  public static final long CLEANUP_POLL_DELAY = 180000;
 
   /**
    * Stores all the pools that have been created.  Pools are never deleted because that
@@ -150,14 +150,14 @@ public class DatabasePool {
    * The constructor is used internally only.
    */
   private DatabasePool(
-    DatabaseConfiguration databaseConfiguration,
-    String databaseProduct,
-    String hostname,
-    int port,
-    String username,
-    String password,
-    String database,
-    String url
+      DatabaseConfiguration databaseConfiguration,
+      String databaseProduct,
+      String hostname,
+      int port,
+      String username,
+      String password,
+      String database,
+      String url
   ) throws IOException {
     this.databaseConfiguration = databaseConfiguration;
     this.databaseProduct = databaseProduct;
@@ -192,12 +192,12 @@ public class DatabasePool {
     synchronized (connectLock) {
       for (int c = 0; c < size; c++) {
         if (
-           connections[c] != null &&
-           !busyConnections[c] &&
-           (time - releaseTimes[c]) >= MAX_IDLE_TIME
+            connections[c] != null &&
+                !busyConnections[c] &&
+                (time - releaseTimes[c]) >= MAX_IDLE_TIME
         ) {
           connections[c].close();
-          connections[c]=null;
+          connections[c] = null;
         }
       }
     }
@@ -209,10 +209,10 @@ public class DatabasePool {
       for (int c = 0; c < size; c++) {
         DatabasePool temp = pools.get(c);
         if (
-           temp.database.equals(settings.getDatabase())
-           && temp.hostname.equals(settings.getHostname())
-           && temp.port == settings.getPort()
-           && temp.databaseProduct.equals(settings.getDatabaseProduct())
+            temp.database.equals(settings.getDatabase())
+                && temp.hostname.equals(settings.getHostname())
+                && temp.port == settings.getPort()
+                && temp.databaseProduct.equals(settings.getDatabaseProduct())
         ) {
           while (!temp.closeDatabase0()) {
             // Try until closed
@@ -231,8 +231,8 @@ public class DatabasePool {
       for (int c = 0; c < size; c++) {
         if (connections[c] != null) {
           if (
-             !busyConnections[c] ||
-             (busyConnections[c] && (time - releaseTimes[c]) >= MAX_IDLE_TIME)
+              !busyConnections[c] ||
+                  (busyConnections[c] && (time - releaseTimes[c]) >= MAX_IDLE_TIME)
           ) {
             connections[c].close();
             connections[c] = null;
@@ -285,12 +285,12 @@ public class DatabasePool {
       for (int c = 0; c < size; c++) {
         DatabasePool temp = pools.get(c);
         if (
-           databaseProduct.equals(temp.databaseProduct)
-           && hostname.equals(temp.hostname)
-           && port == temp.port
-           && username.equals(temp.username)
-           && password.equals(temp.password)
-           && database.equals(temp.database)
+            databaseProduct.equals(temp.databaseProduct)
+                && hostname.equals(temp.hostname)
+                && port == temp.port
+                && username.equals(temp.username)
+                && password.equals(temp.password)
+                && database.equals(temp.database)
         ) {
           pool = temp;
           break;
@@ -300,14 +300,14 @@ public class DatabasePool {
       // Create if not found
       if (pool == null) {
         pool = new DatabasePool(
-          settings.getDatabaseConfiguration(),
-          databaseProduct,
-          hostname,
-          port,
-          username,
-          password,
-          database,
-          settings.getURL()
+            settings.getDatabaseConfiguration(),
+            databaseProduct,
+            hostname,
+            port,
+            username,
+            password,
+            database,
+            settings.getURL()
         );
         pools.add(pool);
       }
@@ -371,9 +371,9 @@ public class DatabasePool {
                 }
               }
               conn = connections[c] = DriverManager.getConnection(
-                url,
-                username,
-                password
+                  url,
+                  username,
+                  password
               );
               connectCount[c]++;
             }

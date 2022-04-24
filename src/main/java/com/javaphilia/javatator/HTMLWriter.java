@@ -37,11 +37,11 @@ import java.io.Writer;
 public class HTMLWriter extends FilterWriter {
 
   // TODO: Switch to ao-encoding?
-  private static final char[] LT=new char[] {'&', '#', '6', '0', ';'};
-  private static final char[] AMP=new char[] {'&', '#', '3', '8', ';'};
-  private static final char[] DQ=new char[] {'&', '#', '3', '4', ';'};
-  private static final char[] SQ=new char[] {'&', '#', '3', '9', ';'};
-  private static final char[] BR=new char[] {'<', 'b', 'r', ' ', '/', '>'};
+  private static final char[] LT = new char[]{'&', '#', '6', '0', ';'};
+  private static final char[] AMP = new char[]{'&', '#', '3', '8', ';'};
+  private static final char[] DQ = new char[]{'&', '#', '3', '4', ';'};
+  private static final char[] SQ = new char[]{'&', '#', '3', '9', ';'};
+  private static final char[] BR = new char[]{'<', 'b', 'r', ' ', '/', '>'};
 
   /**
    * Constructs this {@link HTMLWriter}.
@@ -61,7 +61,7 @@ public class HTMLWriter extends FilterWriter {
    */
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    for (int i=off;i<len;i++) {
+    for (int i = off; i < len; i++) {
       switch (cbuf[i]) {
         case '<':
           out.write(LT);

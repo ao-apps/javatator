@@ -51,7 +51,7 @@ public class SQLOutputStream extends OutputStream {
    * @param stmt the {@link Statement} for executing the query.
    */
   public SQLOutputStream(Statement stmt) {
-    this.stmt=stmt;
+    this.stmt = stmt;
   }
 
   @Override
@@ -102,6 +102,6 @@ public class SQLOutputStream extends OutputStream {
 
   @Override
   public void write(int b) throws IOException {
-    write(new byte[]{(byte)b}, 0, 1);
+    write(new byte[]{(byte) b}, 0, 1);
   }
 }

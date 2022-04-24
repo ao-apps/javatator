@@ -49,9 +49,9 @@ public final class Info {
    */
   public static Settings printDatabaseInfo(JavatatorWriter out, Settings settings) throws SQLException, IOException {
     try (Connection conn = DatabasePool.getConnection(settings)) {
-      DatabaseMetaData metaData=conn.getMetaData();
+      DatabaseMetaData metaData = conn.getMetaData();
       out.print("<b>More database info:</b> Please note that these values result from querying the database driver "
-        + "and some values may be incorrect.<br><br>\n");
+          + "and some values may be incorrect.<br><br>\n");
 
       out.startTable(null, "cellspacing=1");
       try {
@@ -60,8 +60,8 @@ public final class Info {
         out.printTH("Value");
         out.endTR();
 
-        printInfoRow(out, "DatabaseProduct", metaData.getDatabaseProductName()+' '+metaData.getDatabaseProductVersion());
-        printInfoRow(out, "Driver", metaData.getDriverName()+' '+metaData.getDriverVersion());
+        printInfoRow(out, "DatabaseProduct", metaData.getDatabaseProductName() + ' ' + metaData.getDatabaseProductVersion());
+        printInfoRow(out, "Driver", metaData.getDriverName() + ' ' + metaData.getDriverVersion());
         printInfoRow(out, "Does the database store tables in a local file?", metaData.usesLocalFiles());
         printInfoRow(out, "Does the database use a file for each table?", metaData.usesLocalFilePerTable());
         printInfoRow(out, "Does the database support mixed case unquoted SQL identifiers?", metaData.supportsMixedCaseIdentifiers());

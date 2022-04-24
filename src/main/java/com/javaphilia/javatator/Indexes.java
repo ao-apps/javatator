@@ -57,13 +57,13 @@ public class Indexes {
    * @param columns an array of the column names.
    */
   public Indexes(
-    List<String> names,
-    List<JDBCConnector.Boolean> areUnique,
-    List<String> columns
+      List<String> names,
+      List<JDBCConnector.Boolean> areUnique,
+      List<String> columns
   ) {
-    this.names=names;
-    this.areUnique=areUnique;
-    this.columns=columns;
+    this.names = names;
+    this.areUnique = areUnique;
+    this.columns = columns;
   }
 
   /**

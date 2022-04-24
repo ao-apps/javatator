@@ -41,9 +41,9 @@ public class JavatatorStyles implements ServletContextListener {
   public void contextInitialized(ServletContextEvent event) {
     // Add our CSS files
     RegistryEE.Application.get(event.getServletContext())
-      .getGroup(RESOURCE_GROUP)
-      .styles
-      .add(JAVATATOR);
+        .getGroup(RESOURCE_GROUP)
+        .styles
+        .add(JAVATATOR);
   }
 
   @Override

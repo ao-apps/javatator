@@ -44,7 +44,7 @@ public class Column {
    * @param  settings  the {@link Settings} to use
    */
   public Column(Settings settings) {
-    this.settings=settings;
+    this.settings = settings;
   }
 
   /**
@@ -60,28 +60,28 @@ public class Column {
     out.print("</h2>");
 
     // Determine what the default is
-    String newdefault=null;
+    String newdefault = null;
 
-    String newdefaulttype=settings.getParameter("newdefaulttype");
-    if (newdefaulttype.length()>0) {
+    String newdefaulttype = settings.getParameter("newdefaulttype");
+    if (newdefaulttype.length() > 0) {
       if (newdefaulttype.charAt(0) == 'F') {
-        newdefault='F'+settings.getParameter("newdefaultvalue");
+        newdefault = 'F' + settings.getParameter("newdefaultvalue");
       } else if (newdefaulttype.charAt(0) == 'V') {
-        if (newdefaulttype.length()>1) {
-          newdefault=newdefaulttype;
+        if (newdefaulttype.length() > 1) {
+          newdefault = newdefaulttype;
         } else {
-          newdefault='V'+settings.getParameter("newdefaultvalue");
+          newdefault = 'V' + settings.getParameter("newdefaultvalue");
         }
       }
     }
 
     settings.getJDBCConnector().addColumn(
-      settings.getColumn(),
-      settings.getParameter("newtype"),
-      settings.getParameter("newlength"),
-      newdefault,
-      settings.getParameter("newnull"),
-      settings.getParameter("newremarks")
+        settings.getColumn(),
+        settings.getParameter("newtype"),
+        settings.getParameter("newlength"),
+        newdefault,
+        settings.getParameter("newnull"),
+        settings.getParameter("newremarks")
     );
     out.print("Column added successfully.\n");
     return new Table(settings).printTableProperties(out);
@@ -91,8 +91,8 @@ public class Column {
    * Adds an index on the current column.
    */
   public Settings addIndex(JavatatorWriter out) throws SQLException, IOException {
-    String indexName=settings.getParameter("indexname");
-    String column=settings.getColumn();
+    String indexName = settings.getParameter("indexname");
+    String column = settings.getColumn();
     out.print("<h2>Database ");
     out.print(settings.getDatabase());
     out.print(" : table ");
@@ -131,8 +131,8 @@ public class Column {
    * Adds a unique index on the current column.
    */
   public Settings addUniqueIndex(JavatatorWriter out) throws SQLException, IOException {
-    String indexName=settings.getParameter("indexname");
-    String column=settings.getColumn();
+    String indexName = settings.getParameter("indexname");
+    String column = settings.getColumn();
     out.print("<h2>Database ");
     out.print(settings.getDatabase());
     out.print(" : table ");
@@ -160,11 +160,11 @@ public class Column {
     out.print(" : column ");
     out.print(settings.getColumn());
     out.print("</h2>\n"
-      + "<b>Are you sure you want to add ");
+        + "<b>Are you sure you want to add ");
     out.print(settings.getColumn());
     out.print(" as a primary key?</b><br>\n"
-      + "<input type='submit' value='YES' onClick=\"return selectAction('doadd_primarykey')\"> "
-      + "<input type='submit' value='NO' onClick=\"history.go(-1);return false;\">");
+        + "<input type='submit' value='YES' onClick=\"return selectAction('doadd_primarykey')\"> "
+        + "<input type='submit' value='NO' onClick=\"history.go(-1);return false;\">");
     return settings;
   }
 
@@ -182,9 +182,9 @@ public class Column {
     out.print("Are you sure you want to drop this column <b>");
     out.print(settings.getColumn());
     out.print("</b>?"
-      + "<br>\n"
-      + "<input type='submit' value='YES' onClick=\"return selectAction('dodelete_column')\"> "
-      + "<input type='submit' value='NO' onClick=\"history.go(-1);return false;\"> ");
+        + "<br>\n"
+        + "<input type='submit' value='YES' onClick=\"return selectAction('dodelete_column')\"> "
+        + "<input type='submit' value='NO' onClick=\"history.go(-1);return false;\"> ");
     return settings;
   }
 
@@ -199,11 +199,11 @@ public class Column {
     out.print(" : column ");
     out.print(settings.getColumn());
     out.print("</h2>\n"
-      + "<b>Are you sure you want to drop primary key ");
+        + "<b>Are you sure you want to drop primary key ");
     out.print(settings.getColumn());
     out.print("?</b><br>\n"
-      + "<input type='submit' value='YES' onClick=\"return selectAction('dodrop_primarykey')\"> "
-      + "<input type='submit' value='NO' onClick=\"history.go(-1);return false;\">");
+        + "<input type='submit' value='YES' onClick=\"return selectAction('dodrop_primarykey')\"> "
+        + "<input type='submit' value='NO' onClick=\"history.go(-1);return false;\">");
     return settings;
   }
 
@@ -254,29 +254,29 @@ public class Column {
     out.print(" edited</h2>\n");
 
     // Determine what the default is
-    String newdefault=null;
+    String newdefault = null;
 
-    String newdefaulttype=settings.getParameter("newdefaulttype");
-    if (newdefaulttype.length()>0) {
+    String newdefaulttype = settings.getParameter("newdefaulttype");
+    if (newdefaulttype.length() > 0) {
       if (newdefaulttype.charAt(0) == 'F') {
-        newdefault='F'+settings.getParameter("newdefaultvalue");
+        newdefault = 'F' + settings.getParameter("newdefaultvalue");
       } else if (newdefaulttype.charAt(0) == 'V') {
-        if (newdefaulttype.length()>1) {
-          newdefault=newdefaulttype;
+        if (newdefaulttype.length() > 1) {
+          newdefault = newdefaulttype;
         } else {
-          newdefault='V'+settings.getParameter("newdefaultvalue");
+          newdefault = 'V' + settings.getParameter("newdefaultvalue");
         }
       }
     }
 
     settings.getJDBCConnector().editColumn(
-      settings.getColumn(),
-      settings.getParameter("newcolumn"),
-      settings.getParameter("newtype"),
-      settings.getParameter("newlength"),
-      newdefault,
-      settings.getParameter("newnull"),
-      settings.getParameter("newremarks")
+        settings.getColumn(),
+        settings.getParameter("newcolumn"),
+        settings.getParameter("newtype"),
+        settings.getParameter("newlength"),
+        newdefault,
+        settings.getParameter("newnull"),
+        settings.getParameter("newremarks")
     );
     out.print("Column edited successfully.\n");
     return new Table(settings).printTableProperties(out);
@@ -307,16 +307,16 @@ public class Column {
     out.printTD("<input type='text' name='column' size=10 value=''>");
 
     try {
-      JDBCConnector conn=settings.getJDBCConnector();
+      JDBCConnector conn = settings.getJDBCConnector();
       //Columns columns=conn.getColumns();
-      List<String> types=conn.getTypes();
+      List<String> types = conn.getTypes();
 
       // List all the possible types
       out.startTD();
       out.print("<select name='newtype'>");
-      int size=types.size();
-      for (int i=0;i<size;i++) {
-        String type=types.get(i);
+      int size = types.size();
+      for (int i = 0; i < size; i++) {
+        String type = types.get(i);
         out.print("<option value='");
         out.print(type);
         out.print("'>");
@@ -329,16 +329,16 @@ public class Column {
       out.printTD("<input type='text' name='newlength' size=8 value=''>");
 
       out.printTD("<select name='newnull'>\n"
-        + "<option value='not null' selected>NO</option>\n"
-        + "<option value='null'>YES</option>\n"
-        + "</select>\n");
+          + "<option value='not null' selected>NO</option>\n"
+          + "<option value='null'>YES</option>\n"
+          + "</select>\n");
 
       out.printTD("<select name='newdefaulttype'>\n"
-        + "<option value=''>[NULL]</option>\n"
-        + "<option value='V'>[VALUE-->]</option>\n"
-        + "<option value='F'>[FUNCTION-->]</option>\n"
-        + "</select>\n"
-        + "<input type='text' name='newdefaultvalue' size=12 value=''>");
+          + "<option value=''>[NULL]</option>\n"
+          + "<option value='V'>[VALUE-->]</option>\n"
+          + "<option value='F'>[FUNCTION-->]</option>\n"
+          + "</select>\n"
+          + "<input type='text' name='newdefaultvalue' size=12 value=''>");
 
       out.printTD("<input type='text' name='newremarks' size=12 value=''>");
     } finally {
@@ -360,8 +360,8 @@ public class Column {
     out.print(" : add index on ");
     out.print(settings.getColumn());
     out.print("</h2>\n"
-      + "<br>Index Name: <input type='text' name='indexname'> "
-      + "<input type='submit' value='Add!' onClick=\"return selectAction('doadd_index')\">");
+        + "<br>Index Name: <input type='text' name='indexname'> "
+        + "<input type='submit' value='Add!' onClick=\"return selectAction('doadd_index')\">");
     return settings;
   }
 
@@ -376,8 +376,8 @@ public class Column {
     out.print(" : add unique index on ");
     out.print(settings.getColumn());
     out.print("</h2>\n"
-      + "<br>Unique Index Name: <input type='text' name='indexname'> "
-      + "<input type='submit' value='Add!' onClick=\"return selectAction('doadd_uniqueindex')\">");
+        + "<br>Unique Index Name: <input type='text' name='indexname'> "
+        + "<input type='submit' value='Add!' onClick=\"return selectAction('doadd_uniqueindex')\">");
     return settings;
   }
 
@@ -385,7 +385,7 @@ public class Column {
    * Prints a screen for editing a column.
    */
   public Settings printEditColumn(JavatatorWriter out) throws SQLException, IOException {
-    String column=settings.getColumn();
+    String column = settings.getColumn();
 
     out.print("<h2>Database ");
     out.print(settings.getDatabase());
@@ -414,29 +414,29 @@ public class Column {
     out.endTD();
 
     try {
-      JDBCConnector conn=settings.getJDBCConnector();
-      Columns columns=conn.getColumns();
-      int id=columns.getID(column);
-      String columnType=columns.getType(id);
-      String columnLength=columns.getLength(id);
-      String columnDefault=columns.getDefault(id);
-      String columnExtra=columns.getRemark(id);
-      JDBCConnector.Boolean isNullable=columns.isNullable(id);
-      List<String> types=conn.getTypes();
+      JDBCConnector conn = settings.getJDBCConnector();
+      Columns columns = conn.getColumns();
+      int id = columns.getID(column);
+      String columnType = columns.getType(id);
+      String columnLength = columns.getLength(id);
+      String columnDefault = columns.getDefault(id);
+      String columnExtra = columns.getRemark(id);
+      JDBCConnector.Boolean isNullable = columns.isNullable(id);
+      List<String> types = conn.getTypes();
 
       // List all the possible types
       out.startTD();
       out.print("<select name='newtype'>");
-      boolean done=false;
-      int size=types.size();
-      for (int i=0;i<size;i++) {
-        String type=types.get(i);
+      boolean done = false;
+      int size = types.size();
+      for (int i = 0; i < size; i++) {
+        String type = types.get(i);
         out.print("<option value='");
         out.print(type);
         out.print('\'');
         if (!done && columnType.equalsIgnoreCase(type)) {
           out.print(" selected");
-          done=true;
+          done = true;
         }
         out.print('>');
         out.print(type);
@@ -463,24 +463,24 @@ public class Column {
       out.print("<select name='newnull'>");
       if (isNullable == JDBCConnector.Boolean.TRUE) {
         out.print("<option value='null' selected>YES</option>\n"
-          + "<option value='not null'>NO</option>\n");
+            + "<option value='not null'>NO</option>\n");
       } else {
         out.print("<option value='not null' selected>NO</option>\n"
-          + "<option value='null'>YES</option>\n");
+            + "<option value='null'>YES</option>\n");
       }
       out.print("</select>");
       out.endTD();
 
       out.startTD();
       out.print("<select name='newdefaulttype'>\n");
-      List<String> pvalues=conn.getPossibleValues(column, columnType);
+      List<String> pvalues = conn.getPossibleValues(column, columnType);
       if (pvalues != null) {
         // Show empty in choice first
-        boolean found=false;
+        boolean found = false;
         out.print("<option value=''");
         if (columnDefault == null) {
           out.print(" selected");
-          found=true;
+          found = true;
         }
         out.print(">[NULL]</option>\n");
 
@@ -488,28 +488,28 @@ public class Column {
         out.print("<option value='F'");
         if (!found && columnDefault != null && columnDefault.charAt(0) == 'F') {
           out.print(" selected");
-          found=true;
+          found = true;
         }
         out.print(">[FUNCTION-->]</option>\n");
 
         // Display all the possible values, selecting current value if present in list
         if ("bool".equals(columnType)) {
           if ("t".equals(columnDefault)) {
-            columnDefault="Vtrue";
+            columnDefault = "Vtrue";
           } else if ("f".equals(columnDefault)) {
-            columnDefault="Vfalse";
+            columnDefault = "Vfalse";
           }
         }
-        int vsize=pvalues.size();
-        for (int c=0;c<vsize;c++) {
-          String value=pvalues.get(c);
-          String vvalue='V'+value;
+        int vsize = pvalues.size();
+        for (int c = 0; c < vsize; c++) {
+          String value = pvalues.get(c);
+          String vvalue = 'V' + value;
           out.print("<option value='");
           Util.printEscapedInputValue(out, vvalue);
           out.print('\'');
           if (!found && vvalue.equals(columnDefault)) {
             out.print(" selected");
-            found=true;
+            found = true;
           }
           out.print('>');
           Util.printEscapedInputValue(out, value);
@@ -536,18 +536,18 @@ public class Column {
           out.print(" selected");
         }
         out.print(">[NULL]</option>\n"
-          + "<option value='V'");
+            + "<option value='V'");
         if (columnDefault != null && columnDefault.charAt(0) == 'V') {
           out.print(" selected");
         }
         out.print(">[VALUE-->]</option>\n"
-          + "<option value='F'");
+            + "<option value='F'");
         if (columnDefault != null && columnDefault.charAt(0) == 'F') {
           out.print(" selected");
         }
         out.print(">[FUNCTION-->]</option>\n"
-          + "</select><input type='text' name='newdefaultvalue' size=12 value=\"");
-        out.print(columnDefault == null?"":columnDefault.substring(1));
+            + "</select><input type='text' name='newdefaultvalue' size=12 value=\"");
+        out.print(columnDefault == null ? "" : columnDefault.substring(1));
         out.print("\">");
       }
       out.endTD();
@@ -571,7 +571,7 @@ public class Column {
    * Process the {@link Settings} object and decide what to do.
    */
   public Settings processRequest(JavatatorWriter out) throws SQLException, IOException {
-    String action=settings.getAction();
+    String action = settings.getAction();
 
     if ("edit_column".equals(action)) {
       return printEditColumn(out);

@@ -59,9 +59,9 @@ public class Settings {
   private final String action;
   private final String sortColumn;
   private final String sortOrder;
-  private int numrows=30;
-  private int fkeyrows=100;
-  private boolean useMultiLine=true;
+  private int numrows = 30;
+  private int fkeyrows = 100;
+  private boolean useMultiLine = true;
 
   private String error;
 
@@ -116,7 +116,7 @@ public class Settings {
             }
           }
         }
-      } else if (allowedLen>1) {
+      } else if (allowedLen > 1) {
         boolean found = false;
         for (int c = 0; c < allowedLen; c++) {
           String host = allowedHosts.get(c);
@@ -155,43 +155,43 @@ public class Settings {
   }
 
   private Settings(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    DatabaseConfiguration databaseConfiguration,
-    String databaseProduct,
-    String hostname,
-    int port,
-    boolean ssl,
-    String username,
-    String password,
-    String database,
-    String table,
-    String column,
-    String action,
-    String sortColumn,
-    String sortOrder,
-    int numrows,
-    int fkeyrows,
-    boolean useMultiLine
+      ServletContext servletContext,
+      HttpServletRequest request,
+      DatabaseConfiguration databaseConfiguration,
+      String databaseProduct,
+      String hostname,
+      int port,
+      boolean ssl,
+      String username,
+      String password,
+      String database,
+      String table,
+      String column,
+      String action,
+      String sortColumn,
+      String sortOrder,
+      int numrows,
+      int fkeyrows,
+      boolean useMultiLine
   ) {
     this.servletContext = servletContext;
-    this.request=request;
+    this.request = request;
     this.databaseConfiguration = databaseConfiguration;
-    this.databaseProduct=databaseProduct;
-    this.hostname=hostname;
-    this.port=port;
+    this.databaseProduct = databaseProduct;
+    this.hostname = hostname;
+    this.port = port;
     this.ssl = ssl;
-    this.username=username;
-    this.password=password;
-    this.database=database;
-    this.table=table;
-    this.column=column;
-    this.action=action;
-    this.sortColumn=sortColumn;
-    this.sortOrder=sortOrder;
-    this.numrows=numrows;
-    this.fkeyrows=fkeyrows;
-    this.useMultiLine=useMultiLine;
+    this.username = username;
+    this.password = password;
+    this.database = database;
+    this.table = table;
+    this.column = column;
+    this.action = action;
+    this.sortColumn = sortColumn;
+    this.sortOrder = sortOrder;
+    this.numrows = numrows;
+    this.fkeyrows = fkeyrows;
+    this.useMultiLine = useMultiLine;
   }
 
   public ServletContext getServletContext() {
@@ -210,7 +210,7 @@ public class Settings {
    * Gets the action currently being performed or {@code null} if not set.
    */
   public String getAction() {
-    return action.length() == 0?null:action;
+    return action.length() == 0 ? null : action;
   }
 
   /**
@@ -225,21 +225,21 @@ public class Settings {
    * Gets the column currently being accessed or {@code null} if not set.
    */
   public String getColumn() {
-    return column.length() == 0?null:column;
+    return column.length() == 0 ? null : column;
   }
 
   /**
    * Gets the database currently being accessed or {@code null} if not set.
    */
   public String getDatabase() {
-    return database.length() == 0?null:database;
+    return database.length() == 0 ? null : database;
   }
 
   /**
    * Gets the database product in use or {@code null} if not set.
    */
   public String getDatabaseProduct() {
-    return databaseProduct.length() == 0?null:databaseProduct;
+    return databaseProduct.length() == 0 ? null : databaseProduct;
   }
 
   /**
@@ -263,7 +263,7 @@ public class Settings {
    * or {@code null} if not set.
    */
   public String getHostname() {
-    return hostname.length() == 0?null:hostname;
+    return hostname.length() == 0 ? null : hostname;
   }
 
   /**
@@ -337,7 +337,7 @@ public class Settings {
    * Gets the password or {@code null} if not set.
    */
   public String getPassword() {
-    return password.length() == 0?null:password;
+    return password.length() == 0 ? null : password;
   }
 
   /**
@@ -361,7 +361,7 @@ public class Settings {
   private String getSetting(String name) throws IOException {
     // The configuration overrides the client values
     String config = databaseConfiguration.getProperty(name);
-    if (config != null && config.length()>0) {
+    if (config != null && config.length() > 0) {
       return config;
     }
 
@@ -377,7 +377,7 @@ public class Settings {
   private String getSetting(String databaseProduct, String name) throws IOException {
     // The configuration overrides the client values
     String config = databaseConfiguration.getProperty(name, databaseProduct);
-    if (config != null && config.length()>0) {
+    if (config != null && config.length() > 0) {
       return config;
     }
 
@@ -389,21 +389,21 @@ public class Settings {
    * Gets the column name to be ordered by or {@code null} if not set.
    */
   public String getSortColumn() {
-    return sortColumn.length() == 0?null:sortColumn;
+    return sortColumn.length() == 0 ? null : sortColumn;
   }
 
   /**
    * Gets the sorting order or {@code null} if not set.
    */
   public String getSortOrder() {
-    return sortOrder.length() == 0?null:sortOrder;
+    return sortOrder.length() == 0 ? null : sortOrder;
   }
 
   /**
    * Gets the table currently being accessed or {@code null} if not set.
    */
   public String getTable() {
-    return table.length() == 0?null:table;
+    return table.length() == 0 ? null : table;
   }
 
   /**
@@ -412,7 +412,7 @@ public class Settings {
   public String getURL() throws IOException {
     String url = databaseConfiguration.getProperty("url", databaseProduct);
     if (url.length() == 0) {
-      throw new IOException("Unable to find URL for databaseProduct="+databaseProduct);
+      throw new IOException("Unable to find URL for databaseProduct=" + databaseProduct);
     }
 
     // Replace all %h with the host
@@ -420,13 +420,13 @@ public class Settings {
       throw new IOException("hostname not set");
     }
     if (hostname.contains("%h")) {
-      throw new IOException("hostname may not contain %h: "+hostname);
+      throw new IOException("hostname may not contain %h: " + hostname);
     }
     url = url.replace("%h", hostname);
 
     // Replace the %p with the port
-    if (port<1 || port>65535) {
-      throw new IOException("Invalid port: "+port);
+    if (port < 1 || port > 65535) {
+      throw new IOException("Invalid port: " + port);
     }
     url = url.replace("%p", Integer.toString(port));
 
@@ -435,7 +435,7 @@ public class Settings {
       throw new IOException("database not set");
     }
     if (database.contains("%d")) {
-      throw new IOException("database may not contain %d: "+database);
+      throw new IOException("database may not contain %d: " + database);
     }
     url = url.replace("%d", database);
 
@@ -451,7 +451,7 @@ public class Settings {
    * Gets the username or {@code null} if not set.
    */
   public String getUsername() {
-    return username.length() == 0?null:username;
+    return username.length() == 0 ? null : username;
   }
 
   /**
@@ -584,24 +584,24 @@ public class Settings {
    */
   public Settings setDatabase(String database) {
     return new Settings(
-      servletContext,
-      request,
-      databaseConfiguration,
-      databaseProduct,
-      hostname,
-      port,
-      ssl,
-      username,
-      password,
-      database,
-      table,
-      column,
-      action,
-      sortColumn,
-      sortOrder,
-      numrows,
-      fkeyrows,
-      useMultiLine
+        servletContext,
+        request,
+        databaseConfiguration,
+        databaseProduct,
+        hostname,
+        port,
+        ssl,
+        username,
+        password,
+        database,
+        table,
+        column,
+        action,
+        sortColumn,
+        sortOrder,
+        numrows,
+        fkeyrows,
+        useMultiLine
     );
   }
 
@@ -610,24 +610,24 @@ public class Settings {
    */
   public Settings setTable(String table) {
     return new Settings(
-      servletContext,
-      request,
-      databaseConfiguration,
-      databaseProduct,
-      hostname,
-      port,
-      ssl,
-      username,
-      password,
-      database,
-      table,
-      column,
-      action,
-      sortColumn,
-      sortOrder,
-      numrows,
-      fkeyrows,
-      useMultiLine
+        servletContext,
+        request,
+        databaseConfiguration,
+        databaseProduct,
+        hostname,
+        port,
+        ssl,
+        username,
+        password,
+        database,
+        table,
+        column,
+        action,
+        sortColumn,
+        sortOrder,
+        numrows,
+        fkeyrows,
+        useMultiLine
     );
   }
 

@@ -48,6 +48,7 @@ public class MySQLConnector extends JDBCConnector {
    */
   private static final List<String> modifiableTypes = new ArrayList<>(25);
   private static final List<String> unmodifiableTypes = Collections.unmodifiableList(modifiableTypes);
+
   static {
     modifiableTypes.add("TINYINT");
     modifiableTypes.add("SMALLINT");
@@ -85,16 +86,16 @@ public class MySQLConnector extends JDBCConnector {
 
   @Override
   protected Columns getColumns(String table) throws SQLException, IOException {
-    List<String> names=new ArrayList<>();
-    List<String> types=new ArrayList<>();
-    List<String> lengths=new ArrayList<>();
-    List<Boolean> areNullable=new ArrayList<>();
-    List<String> defaults=new ArrayList<>();
-    List<String> remarks=new ArrayList<>();
+    List<String> names = new ArrayList<>();
+    List<String> types = new ArrayList<>();
+    List<String> lengths = new ArrayList<>();
+    List<Boolean> areNullable = new ArrayList<>();
+    List<String> defaults = new ArrayList<>();
+    List<String> remarks = new ArrayList<>();
     try (
       Connection conn = DatabasePool.getConnection(settings);
       ResultSet r = conn.getMetaData().getColumns(null, null, table, "%")
-    ) {
+        ) {
       while (r.next()) {
         String column = r.getString(4);
         names.add(column);
@@ -109,9 +110,9 @@ public class MySQLConnector extends JDBCConnector {
               sb.append(',');
             }
             sb
-              .append('\'')
-              .append(v.get(i))
-              .append('\'');
+                .append('\'')
+                .append(v.get(i))
+                .append('\'');
           }
           lengths.add(sb.toString());
         } else {
@@ -119,15 +120,15 @@ public class MySQLConnector extends JDBCConnector {
         }
         int nullable = r.getInt(11);
         areNullable.add(
-          (nullable == DatabaseMetaData.columnNoNulls) ? Boolean.FALSE
-            : (nullable == DatabaseMetaData.columnNullable) ? Boolean.TRUE
-              : Boolean.UNKNOWN);
+            (nullable == DatabaseMetaData.columnNoNulls) ? Boolean.FALSE
+                : (nullable == DatabaseMetaData.columnNullable) ? Boolean.TRUE
+                : Boolean.UNKNOWN);
         String def = r.getString(13);
         int defLen = def.length();
         if (
-          defLen >= 2
-          && def.charAt(0) == '\''
-          && def.charAt(defLen - 1) == '\''
+            defLen >= 2
+                && def.charAt(0) == '\''
+                && def.charAt(defLen - 1) == '\''
         ) {
           defaults.add('V' + def.substring(1, defLen - 1));
         } else if (defLen > 0) {
@@ -172,11 +173,11 @@ public class MySQLConnector extends JDBCConnector {
   @Override
   public String getLimitClause(int startPos, int numRows) throws SQLException, IOException {
     return new StringBuilder()
-      .append("limit ")
-      .append(startPos)
-      .append(',')
-      .append(numRows)
-      .toString();
+        .append("limit ")
+        .append(startPos)
+        .append(',')
+        .append(numRows)
+        .toString();
   }
 
   /**
@@ -188,12 +189,12 @@ public class MySQLConnector extends JDBCConnector {
   @Override
   @SuppressWarnings("AssignmentToForLoopParameter")
   public List<String> getPossibleValues(String column, String type) throws SQLException, IOException {
-    boolean enum0="ENUM".equalsIgnoreCase(type) || "SET".equalsIgnoreCase(type);
+    boolean enum0 = "ENUM".equalsIgnoreCase(type) || "SET".equalsIgnoreCase(type);
     if (enum0) {
       try (
         Connection conn = DatabasePool.getConnection(getSettings());
         PreparedStatement pstmt = conn.prepareStatement("SHOW COLUMNS FROM " + getSettings().getTable() + " LIKE ?")
-      ) {
+          ) {
         pstmt.setString(1, column);
         try (ResultSet results = pstmt.executeQuery()) {
           if (results.next()) {
@@ -211,9 +212,9 @@ public class MySQLConnector extends JDBCConnector {
             int start = 0;
             for (int i = 0; i < len; i++) {
               if (
-                s.charAt(i) == '\''
-                && s.charAt(i + 1) == ','
-                && s.charAt(i + 2) == '\''
+                  s.charAt(i) == '\''
+                      && s.charAt(i + 1) == ','
+                      && s.charAt(i + 2) == '\''
               ) {
                 v.add(Util.escapeMySQLQuotes(s.substring(start, i)));
                 start = i + 3;
@@ -246,30 +247,30 @@ public class MySQLConnector extends JDBCConnector {
   @Override
   public String getSelectWhereClause(String[] colNames, String[] colValues) throws SQLException, IOException {
     // Build the SQL
-    StringBuilder sql=new StringBuilder();
-    boolean hasBeen=false;
-    for (int i=0;i<colNames.length;i++) {
-      if (colNames[i].length()>0) {
+    StringBuilder sql = new StringBuilder();
+    boolean hasBeen = false;
+    for (int i = 0; i < colNames.length; i++) {
+      if (colNames[i].length() > 0) {
         if (colValues[i] == null) {
           if (hasBeen) {
             sql.append(" AND ");
           } else {
-            hasBeen=true;
+            hasBeen = true;
           }
           sql
-            .append(" ISNULL(")
-            .append(colNames[i])
-            .append(')');
+              .append(" ISNULL(")
+              .append(colNames[i])
+              .append(')');
         } else if (!"".equals(colValues[i])) {
           if (hasBeen) {
             sql.append(" AND ");
           } else {
-            hasBeen=true;
+            hasBeen = true;
           }
           sql
-            .append(colNames[i])
-            .append(" LIKE ")
-            .append(Util.escapeSQLValue(colValues[i]));
+              .append(colNames[i])
+              .append(" LIKE ")
+              .append(Util.escapeSQLValue(colValues[i]));
         }
       }
     }
@@ -326,7 +327,7 @@ public class MySQLConnector extends JDBCConnector {
    */
   @Override
   public void renameTable(String newTable) throws SQLException, IOException {
-    executeUpdate("ALTER TABLE "+getSettings().getTable()+" RENAME "+newTable);
+    executeUpdate("ALTER TABLE " + getSettings().getTable() + " RENAME " + newTable);
   }
 
   @Override

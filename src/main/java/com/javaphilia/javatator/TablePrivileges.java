@@ -47,15 +47,15 @@ public class TablePrivileges {
    * @param privileges an array containing the privileges which have been granted.
    */
   public TablePrivileges(
-    List<String> grantors,
-    List<String> grantees,
-    List<String> privileges,
-    List<JDBCConnector.Boolean> isGrantable
+      List<String> grantors,
+      List<String> grantees,
+      List<String> privileges,
+      List<JDBCConnector.Boolean> isGrantable
   ) {
-    this.grantors=grantors;
-    this.grantees=grantees;
-    this.privileges=privileges;
-    this.isGrantable=isGrantable;
+    this.grantors = grantors;
+    this.grantees = grantees;
+    this.privileges = privileges;
+    this.isGrantable = isGrantable;
   }
 
   public List<String> getGrantees() {

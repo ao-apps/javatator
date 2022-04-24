@@ -82,57 +82,57 @@ public class SchemaImage extends HttpServlet {
    *    g D E F G H I h
    *     i j k l m n o
    */
-  private static final short[][][] structures={
-    {
-      {  0,  1,  0,  2,  0,  3,  0 },
-      {  4,  0,  5,  0,  6,  0,  7 },
-      {  0,  8,  0,  9,  0, 10,  0 }
-    }, {
-      {  0,  0,  1,  0,  2,  0,  3,  0,  4,  0,  5,  0,  0 },
-      {  0,  6,  0, 20,  0, 21,  0, 22,  0, 23,  0,  7,  0 },
-      {  8,  0, 28,  0, 18,  0, 17,  0, 19,  0, 29,  0,  9 },
-      {  0, 10,  0, 24,  0, 25,  0, 26,  0, 27,  0, 11,  0 },
-      {  0,  0, 12,  0, 13,  0, 14,  0, 15,  0, 16,  0,  0 }
-    }, {
-      {  0,  0,  0,  1,  0,  2,  0,  3,  0,  4,  0,  5,  0,  6,  0,  7,  0,  0,  0 },
-      {  0,  0,  8,  0, 31,  0, 32,  0, 33,  0, 34,  0, 35,  0, 36,  0,  9,  0,  0 },
-      {  0, 10,  0, 45,  0, 46,  0, 47,  0, 48,  0, 49,  0, 50,  0, 51,  0, 11,  0 },
-      { 12,  0, 37,  0, 29,  0, 27,  0, 25,  0, 26,  0, 28,  0, 30,  0, 38,  0, 13 },
-      {  0, 14,  0, 52,  0, 53,  0, 54,  0, 55,  0, 56,  0, 57,  0, 58,  0, 15,  0 },
-      {  0,  0, 16,  0, 39,  0, 40,  0, 41,  0, 42,  0, 43,  0, 44,  0, 17,  0,  0 },
-      {  0,  0,  0, 18,  0, 19,  0, 20,  0, 21,  0, 22,  0, 23,  0, 24,  0,  0,  0 }
-    }
+  private static final short[][][] structures = {
+      {
+          {  0,  1,  0,  2,  0,  3,  0},
+          {  4,  0,  5,  0,  6,  0,  7},
+          {  0,  8,  0,  9,  0, 10,  0}
+      }, {
+      {  0,  0,  1,  0,  2,  0,  3,  0,  4,  0,  5,  0,  0},
+      {  0,  6,  0, 20,  0, 21,  0, 22,  0, 23,  0,  7,  0},
+      {  8,  0, 28,  0, 18,  0, 17,  0, 19,  0, 29,  0,  9},
+      {  0, 10,  0, 24,  0, 25,  0, 26,  0, 27,  0, 11,  0},
+      {  0,  0, 12,  0, 13,  0, 14,  0, 15,  0, 16,  0,  0}
+  }, {
+      {  0,  0,  0,  1,  0,  2,  0,  3,  0,  4,  0,  5,  0,  6,  0,  7,  0,  0,  0},
+      {  0,  0,  8,  0, 31,  0, 32,  0, 33,  0, 34,  0, 35,  0, 36,  0,  9,  0,  0},
+      {  0, 10,  0, 45,  0, 46,  0, 47,  0, 48,  0, 49,  0, 50,  0, 51,  0, 11,  0},
+      {12,  0, 37,  0, 29,  0, 27,  0, 25,  0, 26,  0, 28,  0, 30,  0, 38,  0, 13},
+      {  0, 14,  0, 52,  0, 53,  0, 54,  0, 55,  0, 56,  0, 57,  0, 58,  0, 15,  0},
+      {  0,  0, 16,  0, 39,  0, 40,  0, 41,  0, 42,  0, 43,  0, 44,  0, 17,  0,  0},
+      {  0,  0,  0, 18,  0, 19,  0, 20,  0, 21,  0, 22,  0, 23,  0, 24,  0,  0,  0}
+  }
   };
 
   /**
    * The spread of the arrow, in radians
    */
-  private static final double ARROW_SPREAD=Math.PI/2;
+  private static final double ARROW_SPREAD = Math.PI / 2;
 
   /**
    * The length of the arrow, in pixels
    */
-  private static final int ARROW_LENGTH=8;
+  private static final int ARROW_LENGTH = 8;
 
   /**
    * The background color of the image.
    */
-  private static final Color background=new Color(0xecf8ff);
+  private static final Color background = new Color(0xecf8ff);
 
   /**
    * The color of the connecting lines.
    */
-  private static final Color connectorColor=new Color(0x6f6f6f);
+  private static final Color connectorColor = new Color(0x6f6f6f);
 
   /**
    * The minimum space between tables horizontally.
    */
-  private static final int HORIZONTAL_SPACE=40;
+  private static final int HORIZONTAL_SPACE = 40;
 
   /**
    * The minimum space between tables vertically.
    */
-  private static final int VERTICAL_SPACE=40;
+  private static final int VERTICAL_SPACE = 40;
 
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -241,8 +241,8 @@ public class SchemaImage extends HttpServlet {
 
     // Set the antialiasing
     RenderingHints hints = new RenderingHints(
-      RenderingHints.KEY_TEXT_ANTIALIASING,
-      RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        RenderingHints.KEY_TEXT_ANTIALIASING,
+        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     g.addRenderingHints(hints);
 
     // Fill the background

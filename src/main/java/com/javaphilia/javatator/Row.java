@@ -49,22 +49,22 @@ public class Row {
    * @param settings the {@link Settings} to use.
    */
   public Row(Settings settings) {
-    this.settings=settings;
+    this.settings = settings;
   }
 
   /**
    * Shows a screen asking the user if they want to delete this row.
    */
   public Settings confirmDeleteRow(JavatatorWriter out) throws SQLException {
-    String primaryKeysS=settings.getParameter("primarykeys");
-    StringTokenizer keys=new StringTokenizer(primaryKeysS, ",");
-    String primaryValuesS=settings.getParameter("values");
-    StringTokenizer values=new StringTokenizer(primaryValuesS, ",");
-    String[] primaryKeys=new String[keys.countTokens()];
-    String[] primaryValues=new String[keys.countTokens()];
-    for (int i=0;keys.hasMoreTokens();i++) {
-      primaryKeys[i]=keys.nextToken();
-      primaryValues[i]=values.nextToken();
+    String primaryKeysS = settings.getParameter("primarykeys");
+    StringTokenizer keys = new StringTokenizer(primaryKeysS, ",");
+    String primaryValuesS = settings.getParameter("values");
+    StringTokenizer values = new StringTokenizer(primaryValuesS, ",");
+    String[] primaryKeys = new String[keys.countTokens()];
+    String[] primaryValues = new String[keys.countTokens()];
+    for (int i = 0; keys.hasMoreTokens(); i++) {
+      primaryKeys[i] = keys.nextToken();
+      primaryValues[i] = values.nextToken();
     }
 
     out.print("<h2>Database ");
@@ -72,18 +72,18 @@ public class Row {
     out.print(" : table ");
     out.print(settings.getTable());
     out.print("</h2>\n"
-      + "Are you <b>sure</b> you want to delete this row?"
-      + "<input type='hidden' name='primarykeys' value=\"");
+        + "Are you <b>sure</b> you want to delete this row?"
+        + "<input type='hidden' name='primarykeys' value=\"");
     Util.printEscapedInputValue(out, primaryKeysS);
     out.print("\">"
-      + "<input type='hidden' name='values' value=\"");
+        + "<input type='hidden' name='values' value=\"");
     Util.printEscapedInputValue(out, primaryValuesS);
     out.print("\">"
-      + "<input type='hidden' name='startpos' value='");
+        + "<input type='hidden' name='startpos' value='");
     out.print(getStartPos());
     out.print("'>"
-      + "<input type='submit' value='YES' onClick=\"return selectAction('dodelete_row')\"> "
-      + "<input type='submit' value='NO' onClick=\"history.go(-1);return false;\"> ");
+        + "<input type='submit' value='YES' onClick=\"return selectAction('dodelete_row')\"> "
+        + "<input type='submit' value='NO' onClick=\"history.go(-1);return false;\"> ");
     return settings;
   }
 
@@ -91,17 +91,17 @@ public class Row {
    * Deletes the current row
    */
   public Settings deleteRow(JavatatorWriter out) throws SQLException, IOException {
-    StringTokenizer keys=new StringTokenizer(settings.getParameter("primarykeys"),",");
-    StringTokenizer values=new StringTokenizer(settings.getParameter("values"),",");
-    String[] primaryKeys=new String[keys.countTokens()];
-    String[] primaryKeyValues=new String[keys.countTokens()];
-    for (int i=0;keys.hasMoreTokens();i++) {
-      primaryKeys[i]=keys.nextToken();
-      primaryKeyValues[i]=values.nextToken();
+    StringTokenizer keys = new StringTokenizer(settings.getParameter("primarykeys"), ",");
+    StringTokenizer values = new StringTokenizer(settings.getParameter("values"), ",");
+    String[] primaryKeys = new String[keys.countTokens()];
+    String[] primaryKeyValues = new String[keys.countTokens()];
+    for (int i = 0; keys.hasMoreTokens(); i++) {
+      primaryKeys[i] = keys.nextToken();
+      primaryKeyValues[i] = values.nextToken();
       if (!"null".equals(primaryKeyValues[i])) {
-        primaryKeyValues[i]=primaryKeyValues[i].substring(1,primaryKeyValues[i].length()-1);
+        primaryKeyValues[i] = primaryKeyValues[i].substring(1, primaryKeyValues[i].length() - 1);
       } else {
-        primaryKeyValues[i]=null;
+        primaryKeyValues[i] = null;
       }
     }
 
@@ -119,37 +119,37 @@ public class Row {
    * Edits the current row.
    */
   public Settings editRow(JavatatorWriter out) throws SQLException, IOException {
-    StringTokenizer keys=new StringTokenizer(settings.getParameter("primarykeys"),",");
-    StringTokenizer values=new StringTokenizer(settings.getParameter("values"),",");
-    String[] primaryKeys=new String[keys.countTokens()];
-    String[] primaryKeyValues=new String[keys.countTokens()];
-    for (int i=0;keys.hasMoreTokens();i++) {
-      primaryKeys[i]=keys.nextToken(); // TODO: encode/decode these?
-      primaryKeyValues[i]=values.nextToken(); // TODO: encode/decode these?
+    StringTokenizer keys = new StringTokenizer(settings.getParameter("primarykeys"), ",");
+    StringTokenizer values = new StringTokenizer(settings.getParameter("values"), ",");
+    String[] primaryKeys = new String[keys.countTokens()];
+    String[] primaryKeyValues = new String[keys.countTokens()];
+    for (int i = 0; keys.hasMoreTokens(); i++) {
+      primaryKeys[i] = keys.nextToken(); // TODO: encode/decode these?
+      primaryKeyValues[i] = values.nextToken(); // TODO: encode/decode these?
       if (!"null".equals(primaryKeyValues[i])) {
-        primaryKeyValues[i]=primaryKeyValues[i].substring(1,primaryKeyValues[i].length()-1);
+        primaryKeyValues[i] = primaryKeyValues[i].substring(1, primaryKeyValues[i].length() - 1);
       } else {
-        primaryKeyValues[i]=null;
+        primaryKeyValues[i] = null;
       }
     }
 
-    int count=0;
-    while (settings.getParameter("column"+count) != null) count++;
-    String[] column=new String[count];
-    String[] function=new String[count];
-    String[] value=new String[count];
-    for (int i=0;i<count;i++) {
-      column[i]=settings.getParameter("column"+i);
-      String func=settings.getParameter("function"+i);
+    int count = 0;
+    while (settings.getParameter("column" + count) != null) count++;
+    String[] column = new String[count];
+    String[] function = new String[count];
+    String[] value = new String[count];
+    for (int i = 0; i < count; i++) {
+      column[i] = settings.getParameter("column" + i);
+      String func = settings.getParameter("function" + i);
       if (func != null && func.length() == 0) {
-        func=null;
+        func = null;
       }
-      String val=settings.getParameter("value"+i);
-      if (val.length() == 0 && settings.getParameter("null"+i) != null) {
-        val=null;
+      String val = settings.getParameter("value" + i);
+      if (val.length() == 0 && settings.getParameter("null" + i) != null) {
+        val = null;
       }
       if ("[NULL]".equals(val)) {
-        val=null;
+        val = null;
       }
 
       // Handle no function
@@ -158,17 +158,17 @@ public class Row {
 
         // Handle user function
       } else if (func.equals("F")) {
-        func=val;
-        val=null;
+        func = val;
+        val = null;
 
         // Handle predefined function
       } else {
-        func=func+'('+Util.escapeSQLValue(val)+')';
-        val=null;
+        func = func + '(' + Util.escapeSQLValue(val) + ')';
+        val = null;
       }
 
-      function[i]=func;
-      value[i]=val;
+      function[i] = func;
+      value[i] = val;
     }
 
     out.print("<h2>Database ");
@@ -178,14 +178,14 @@ public class Row {
     out.print(settings.getTable());
     out.print("</h2>\n");
     settings.getJDBCConnector().editRow(
-      column,
-      function,
-      value,
-      primaryKeys,
-      primaryKeyValues
+        column,
+        function,
+        value,
+        primaryKeys,
+        primaryKeyValues
     );
     out.print("Table updated successfully.");
-    String nextAction=settings.getParameter("nextaction");
+    String nextAction = settings.getParameter("nextaction");
     if (nextAction != null && !"".equals(nextAction)) {
       return processRequest(out, nextAction);
     } else {
@@ -205,23 +205,23 @@ public class Row {
    * Inserts a new row.
    */
   public Settings insert(JavatatorWriter out) throws SQLException, IOException {
-    int count=0;
-    while (settings.getParameter("column"+count) != null) count++;
-    String[] newColumn=new String[count];
-    String[] newFunction=new String[count];
-    String[] newValue=new String[count];
-    for (int i=0;i<count;i++) {
-      newColumn[i]=settings.getParameter("column"+i);
-      String function=settings.getParameter("function"+i);
+    int count = 0;
+    while (settings.getParameter("column" + count) != null) count++;
+    String[] newColumn = new String[count];
+    String[] newFunction = new String[count];
+    String[] newValue = new String[count];
+    for (int i = 0; i < count; i++) {
+      newColumn[i] = settings.getParameter("column" + i);
+      String function = settings.getParameter("function" + i);
       if (function != null && function.length() == 0) {
-        function=null;
+        function = null;
       }
-      String value=settings.getParameter("value"+i);
-      if (value.length() == 0 && settings.getParameter("null"+i) != null) {
-        value=null;
+      String value = settings.getParameter("value" + i);
+      if (value.length() == 0 && settings.getParameter("null" + i) != null) {
+        value = null;
       }
       if ("[NULL]".equals(value)) {
-        value=null;
+        value = null;
       }
 
       // Handle no function
@@ -230,17 +230,17 @@ public class Row {
 
         // Handle user function
       } else if (function.equals("F")) {
-        function=value;
-        value=null;
+        function = value;
+        value = null;
 
         // Handle predefined function
       } else {
-        function=function+'('+Util.escapeSQLValue(value)+')';
-        value=null;
+        function = function + '(' + Util.escapeSQLValue(value) + ')';
+        value = null;
       }
 
-      newFunction[i]=function;
-      newValue[i]=value;
+      newFunction[i] = function;
+      newValue[i] = value;
     }
 
     out.print("<h2>Database ");
@@ -250,9 +250,9 @@ public class Row {
     out.print("</h2>\n");
     settings.getJDBCConnector().insertRow(newColumn, newFunction, newValue);
     out.print("Data successfully inserted.");
-    String nextAction=settings.getParameter("nextaction");
+    String nextAction = settings.getParameter("nextaction");
     if (nextAction != null && !"".equals(nextAction)) {
-      System.out.println("there was a nextaction=["+nextAction+"]");
+      System.out.println("there was a nextaction=[" + nextAction + "]");
       return processRequest(out, nextAction);
     } else {
       return new Table(settings).select(out);
@@ -263,17 +263,17 @@ public class Row {
    * Shows a screen to edit the current row.
    */
   public Settings printEditRow(JavatatorWriter out) throws SQLException, IOException {
-    String primaryKeysS=settings.getParameter("primarykeys");
-    StringTokenizer keys=new StringTokenizer(primaryKeysS, ",");
-    String primaryValuesS=settings.getParameter("values");
-    StringTokenizer values=new StringTokenizer(primaryValuesS, ",");
-    List<String> primaryKeys=new ArrayList<>(keys.countTokens());
-    List<String> primaryValues=new ArrayList<>(keys.countTokens());
-    for (int i=0;keys.hasMoreTokens();i++) {
+    String primaryKeysS = settings.getParameter("primarykeys");
+    StringTokenizer keys = new StringTokenizer(primaryKeysS, ",");
+    String primaryValuesS = settings.getParameter("values");
+    StringTokenizer values = new StringTokenizer(primaryValuesS, ",");
+    List<String> primaryKeys = new ArrayList<>(keys.countTokens());
+    List<String> primaryValues = new ArrayList<>(keys.countTokens());
+    for (int i = 0; keys.hasMoreTokens(); i++) {
       primaryKeys.add(keys.nextToken());
       String value = values.nextToken();
       if (!"null".equals(value)) {
-        value = value.substring(1, value.length()-1);
+        value = value.substring(1, value.length() - 1);
       } else {
         value = null;
       }
@@ -285,22 +285,22 @@ public class Row {
     out.print(" : table ");
     out.print(settings.getTable());
     out.print("</h2>\n"
-      + "<input type='hidden' name='startpos' value='");
+        + "<input type='hidden' name='startpos' value='");
     out.print(getStartPos());
     out.print("'>"
-      + "<input type='hidden' name='primarykeys' value='");
+        + "<input type='hidden' name='primarykeys' value='");
     Util.printEscapedInputValue(out, primaryKeysS);
     out.print("'>"
-      + "<input type='hidden' name='values' value='");
+        + "<input type='hidden' name='values' value='");
     Util.printEscapedInputValue(out, primaryValuesS);
     out.print("'>");
-    String selectCols=settings.getParameter("selectcols");
+    String selectCols = settings.getParameter("selectcols");
     if (selectCols != null && !"".equals(selectCols)) {
       out.print("<input type='hidden' name='selectcols' value='");
       Util.printEscapedInputValue(out, selectCols);
       out.print("'>");
     }
-    String selectWhere=settings.getParameter("selectwhere");
+    String selectWhere = settings.getParameter("selectwhere");
     if (selectWhere != null && !"".equals(selectWhere)) {
       out.print("<input type='hidden' name='selectwhere' value='");
       Util.printEscapedInputValue(out, selectWhere);
@@ -316,21 +316,21 @@ public class Row {
     out.printTH("Value");
     out.endTR();
     try {
-      JDBCConnector conn=settings.getJDBCConnector();
-      List<String> rowValues=conn.getRow(primaryKeys, primaryValues);
-      Columns columns=conn.getColumns();
-      List<String> names=columns.getNames();
-      List<String> types=columns.getTypes();
-      List<String> lengths=columns.getLengths();
-      List<JDBCConnector.Boolean> areNullable=columns.areNullable();
+      JDBCConnector conn = settings.getJDBCConnector();
+      List<String> rowValues = conn.getRow(primaryKeys, primaryValues);
+      Columns columns = conn.getColumns();
+      List<String> names = columns.getNames();
+      List<String> types = columns.getTypes();
+      List<String> lengths = columns.getLengths();
+      List<JDBCConnector.Boolean> areNullable = columns.areNullable();
       //List<String> defaults=columns.getDefaults();
-      int size=names.size();
-      for (int i=0;i<size;i++) {
-        String columnName=names.get(i);
-        String columnType=types.get(i);
-        String columnLength=lengths.get(i);
-        String currentValue=rowValues.get(i);
-        JDBCConnector.Boolean isNullable=areNullable.get(i);
+      int size = names.size();
+      for (int i = 0; i < size; i++) {
+        String columnName = names.get(i);
+        String columnType = types.get(i);
+        String columnLength = lengths.get(i);
+        String currentValue = rowValues.get(i);
+        JDBCConnector.Boolean isNullable = areNullable.get(i);
 
         out.startTR();
 
@@ -347,17 +347,17 @@ public class Row {
 
         out.startTD();
         // Don't show the the functions if all possible values are displayed
-        List<String> pvalues=conn.getPossibleValues(columnName, columnType);
+        List<String> pvalues = conn.getPossibleValues(columnName, columnType);
         if (pvalues == null) {
-          List<String> functions=conn.getFunctionList(conn.getEffectiveType(columnType));
-          int fSize=functions.size();
+          List<String> functions = conn.getFunctionList(conn.getEffectiveType(columnType));
+          int fSize = functions.size();
           out.print("<select name='function");
           out.print(i);
           out.print("'>\n"
-            +"<option value='' selected>[VALUE-->]</option>\n"
-            +"<option value='F'>[FUNCTION-->]</option>\n");
-          for (int c=0;c<fSize;c++) {
-            String function=functions.get(c);
+              + "<option value='' selected>[VALUE-->]</option>\n"
+              + "<option value='F'>[FUNCTION-->]</option>\n");
+          for (int c = 0; c < fSize; c++) {
+            String function = functions.get(c);
             out.print("<option value='");
             out.print(function);
             out.print("'>");
@@ -375,14 +375,14 @@ public class Row {
           out.print("<select name='value");
           out.print(i);
           out.print("'>\n");
-          boolean found=false;
+          boolean found = false;
 
           // Add the null if null is allowed
           if (isNullable == JDBCConnector.Boolean.TRUE) {
             out.print("<option value='[NULL]'");
             if (currentValue == null) {
               out.print(" selected");
-              found=true;
+              found = true;
             }
             out.print(">[NULL]</option>\n");
           }
@@ -390,15 +390,15 @@ public class Row {
           if ("bool".equals(columnType)) {
             currentValue = Boolean.toString("t".equals(currentValue));
           }
-          int vsize=pvalues.size();
-          for (int c=0;c<vsize;c++) {
-            String value=pvalues.get(c);
+          int vsize = pvalues.size();
+          for (int c = 0; c < vsize; c++) {
+            String value = pvalues.get(c);
             out.print("<option value='");
             Util.printEscapedInputValue(out, value);
             out.print('\'');
             if (!found && value.equals(currentValue)) {
               out.print(" selected");
-              found=true;
+              found = true;
             }
             out.print('>');
             Util.printEscapedInputValue(out, value);
@@ -406,20 +406,20 @@ public class Row {
           }
           // Add to end if not found in list of possible values (this should not happen)
           if (!found) {
-          out.print("<option value='");
-          Util.printEscapedInputValue(out, currentValue);
-          out.print("' selected>");
-          Util.printEscapedInputValue(out, currentValue);
-          out.print("</option>\n");
+            out.print("<option value='");
+            Util.printEscapedInputValue(out, currentValue);
+            out.print("' selected>");
+            Util.printEscapedInputValue(out, currentValue);
+            out.print("</option>\n");
           }
           out.print("</select>");
         } else {
           if (
-            columnType.toUpperCase().endsWith("TEXT")
-            && (
-              settings.useMultiLine()
-              || (currentValue != null && currentValue.indexOf('\n')>-1)
-            )
+              columnType.toUpperCase().endsWith("TEXT")
+                  && (
+                  settings.useMultiLine()
+                      || (currentValue != null && currentValue.indexOf('\n') > -1)
+              )
           ) {
             out.print("<textarea rows=16 cols=80 name='value");
             out.print(i);
@@ -461,9 +461,9 @@ public class Row {
       out.endTable();
     }
     out.print("<br><br>\n"
-      + "<input type='submit' value='Save!' onClick=\"return selectAction('doedit_row')\">");
-      //+ " <input type='submit' value='Save and edit next row!' "
-      //+ "onClick=\"setNextAction('edit_row');return selectAction('doedit_row');\">");
+        + "<input type='submit' value='Save!' onClick=\"return selectAction('doedit_row')\">");
+    //+ " <input type='submit' value='Save and edit next row!' "
+    //+ "onClick=\"setNextAction('edit_row');return selectAction('doedit_row');\">");
     return settings;
   }
 
@@ -476,16 +476,16 @@ public class Row {
     out.print(" : table ");
     out.print(settings.getTable());
     out.print("</h2>\n"
-      + "<input type='hidden' name='startpos' value='");
+        + "<input type='hidden' name='startpos' value='");
     out.print(getStartPos());
     out.print("'>");
-    String selectCols=settings.getParameter("selectcols");
+    String selectCols = settings.getParameter("selectcols");
     if (selectCols != null && !"".equals(selectCols)) {
       out.print("<input type='hidden' name='selectcols' value='");
       Util.printEscapedInputValue(out, selectCols);
       out.print("'>");
     }
-    String selectWhere=settings.getParameter("selectwhere");
+    String selectWhere = settings.getParameter("selectwhere");
     if (selectWhere != null && !"".equals(selectWhere)) {
       out.print("<input type='hidden' name='selectwhere' value='");
       Util.printEscapedInputValue(out, selectWhere);
@@ -501,21 +501,21 @@ public class Row {
     out.printTH("Value");
     out.endTR();
 
-    JDBCConnector conn=settings.getJDBCConnector();
+    JDBCConnector conn = settings.getJDBCConnector();
 
-    Columns columns=conn.getColumns();
-    List<String> names=columns.getNames();
-    List<String> types=columns.getTypes();
-    List<String> lengths=columns.getLengths();
-    List<JDBCConnector.Boolean> areNullable=columns.areNullable();
-    List<String> defaults=columns.getDefaults();
-    int size=names.size();
-    for (int i=0;i<size;i++) {
-      String columnName=names.get(i);
-      String columnType=types.get(i);
-      String columnLength=lengths.get(i);
-      JDBCConnector.Boolean isNullable=areNullable.get(i);
-      String columnDefault=defaults.get(i);
+    Columns columns = conn.getColumns();
+    List<String> names = columns.getNames();
+    List<String> types = columns.getTypes();
+    List<String> lengths = columns.getLengths();
+    List<JDBCConnector.Boolean> areNullable = columns.areNullable();
+    List<String> defaults = columns.getDefaults();
+    int size = names.size();
+    for (int i = 0; i < size; i++) {
+      String columnName = names.get(i);
+      String columnType = types.get(i);
+      String columnLength = lengths.get(i);
+      JDBCConnector.Boolean isNullable = areNullable.get(i);
+      String columnDefault = defaults.get(i);
       out.startTR();
 
       out.startTD();
@@ -532,7 +532,7 @@ public class Row {
       out.startTD();
 
       // Do not show the functions if all possible values are listed and the default is not a function
-      List<String> values=conn.getPossibleValues(columnName, columnType);
+      List<String> values = conn.getPossibleValues(columnName, columnType);
       if (values == null || (columnDefault != null && columnDefault.charAt(0) == 'F')) {
         out.print("<select name='function");
         out.print(i);
@@ -572,31 +572,31 @@ public class Row {
       out.startTD();
       // Only show the list of possible values when available and the default is not a function
       if (values != null && (columnDefault == null || columnDefault.charAt(0) == 'V')) {
-        String def=columnDefault == null?null:columnDefault.substring(1);
+        String def = columnDefault == null ? null : columnDefault.substring(1);
         out.print("<select name='value");
         out.print(i);
         out.print("'>\n");
-        boolean found=false;
+        boolean found = false;
 
         // Add the null option if nullable
         if (isNullable == JDBCConnector.Boolean.TRUE) {
           out.print("<option value='[NULL]'");
           if (columnDefault == null) {
             out.print(" selected");
-            found=true;
+            found = true;
           }
           out.print(">[NULL]</option>\n");
         }
 
-        int vsize=values.size();
-        for (int c=0;c<vsize;c++) {
-          String value=values.get(c);
+        int vsize = values.size();
+        for (int c = 0; c < vsize; c++) {
+          String value = values.get(c);
           out.print("<option value='");
           Util.printEscapedInputValue(out, value);
           out.print('\'');
           if (!found && value.equals(def)) {
             out.print(" selected");
-            found=true;
+            found = true;
           }
           out.print('>');
           Util.printEscapedInputValue(out, value);
@@ -605,9 +605,9 @@ public class Row {
         out.print("</select>");
       } else {
         if (
-          (columnDefault == null || columnDefault.charAt(0) != 'F')
-          && columnType.toUpperCase().endsWith("TEXT")
-          && settings.useMultiLine()
+            (columnDefault == null || columnDefault.charAt(0) != 'F')
+                && columnType.toUpperCase().endsWith("TEXT")
+                && settings.useMultiLine()
         ) {
           out.print("<textarea rows=16 cols=80 name='value");
           out.print(i);
@@ -646,10 +646,10 @@ public class Row {
     }
     out.endTable();
     out.print("<br><br>\n"
-      + "<input type='hidden' name='nextaction' value=''>\n"
-      + "<input type='submit' value='Save!' onClick=\"return selectAction('doinsert')\"> "
-      + "<input type='submit' value='Save and insert another row!' "
-      + "onClick=\"setNextAction('insert');return selectAction('doinsert');\">");
+        + "<input type='hidden' name='nextaction' value=''>\n"
+        + "<input type='submit' value='Save!' onClick=\"return selectAction('doinsert')\"> "
+        + "<input type='submit' value='Save and insert another row!' "
+        + "onClick=\"setNextAction('insert');return selectAction('doinsert');\">");
     return settings;
   }
 
@@ -657,7 +657,7 @@ public class Row {
    * Process the {@link Settings} object and decide what to do.
    */
   public Settings processRequest(JavatatorWriter out) throws SQLException, IOException {
-    String action=settings.getAction();
+    String action = settings.getAction();
     return processRequest(out, action);
   }
 

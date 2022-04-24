@@ -52,7 +52,7 @@ public class DatabaseConfiguration {
   private static final String INIT_PARAM = DatabaseConfiguration.class.getName();
 
   private static final ScopeEE.Application.Attribute<DatabaseConfiguration> APPLICATION_ATTRIBUTE =
-    ScopeEE.APPLICATION.attribute(DatabaseConfiguration.class.getName());
+      ScopeEE.APPLICATION.attribute(DatabaseConfiguration.class.getName());
 
   @WebListener
   public static class Initializer implements ServletContextListener {
@@ -60,6 +60,7 @@ public class DatabaseConfiguration {
     public void contextInitialized(ServletContextEvent event) {
       getInstance(event.getServletContext());
     }
+
     @Override
     public void contextDestroyed(ServletContextEvent event) {
       // Do nothing
@@ -100,8 +101,8 @@ public class DatabaseConfiguration {
       // Try ClassLoader for when modules enabled
       ClassLoader classloader = Thread.currentThread().getContextClassLoader();
       in = (classloader != null)
-        ? classloader.getResourceAsStream(RESOURCE)
-        : ClassLoader.getSystemResourceAsStream(RESOURCE);
+          ? classloader.getResourceAsStream(RESOURCE)
+          : ClassLoader.getSystemResourceAsStream(RESOURCE);
     }
     if (in == null) {
       throw new IOException("database.properties not found as resource");
@@ -130,7 +131,7 @@ public class DatabaseConfiguration {
    * Gets the list of hosts that may be accessed for the specified dbProduct.
    */
   public List<String> getAllowedHosts(String dbProduct) {
-    String hostList=getProperty("hostname", dbProduct);
+    String hostList = getProperty("hostname", dbProduct);
     if (hostList == null) {
       return Collections.emptyList();
     }
@@ -141,16 +142,16 @@ public class DatabaseConfiguration {
    * Gets the list of databases that may be selected.
    */
   public List<String> getAvailableDatabaseProducts() {
-    List<String> products=new ArrayList<>();
-    String dbproduct=getProperty("dbproduct");
-    if (dbproduct != null && dbproduct.length()>0) {
+    List<String> products = new ArrayList<>();
+    String dbproduct = getProperty("dbproduct");
+    if (dbproduct != null && dbproduct.length() > 0) {
       products.add(dbproduct);
     } else {
       Enumeration<?> e = props.propertyNames();
       while (e.hasMoreElements()) {
-        String tmp = (String)e.nextElement();
+        String tmp = (String) e.nextElement();
         if (tmp.startsWith("db.") && tmp.endsWith(".name")) {
-          products.add(tmp.substring(3, tmp.length()-5));
+          products.add(tmp.substring(3, tmp.length() - 5));
         }
       }
     }
@@ -162,7 +163,7 @@ public class DatabaseConfiguration {
    */
   public String getProperty(String name) {
     // Look for db.name
-    return props.getProperty("db."+name);
+    return props.getProperty("db." + name);
   }
 
   /**
@@ -181,7 +182,7 @@ public class DatabaseConfiguration {
     }
 
     // Look for db.*.name
-    return props.getProperty("db.*."+name);
+    return props.getProperty("db.*." + name);
   }
 
   public Boolean getBooleanProperty(String name, String databaseProduct) {

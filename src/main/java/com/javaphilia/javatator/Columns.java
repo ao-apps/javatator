@@ -87,35 +87,35 @@ public class Columns {
    * @param remarks an array of column remarks.
    */
   public Columns(
-    List<String> names,
-    List<String> types,
-    List<String> lengths,
-    List<Boolean> areNullable,
-    List<String> defaults,
-    List<String> remarks
+      List<String> names,
+      List<String> types,
+      List<String> lengths,
+      List<Boolean> areNullable,
+      List<String> defaults,
+      List<String> remarks
   ) {
-    this.names=names;
-    size=names.size();
+    this.names = names;
+    size = names.size();
     if (types.size() != size) {
       throw new AssertionError();
     }
-    this.types=types;
+    this.types = types;
     if (lengths.size() != size) {
       throw new AssertionError();
     }
-    this.lengths=lengths;
+    this.lengths = lengths;
     if (areNullable.size() != size) {
       throw new AssertionError();
     }
-    this.areNullable=areNullable;
+    this.areNullable = areNullable;
     if (defaults.size() != size) {
       throw new AssertionError();
     }
-    this.defaults=defaults;
+    this.defaults = defaults;
     if (remarks.size() != size) {
       throw new AssertionError();
     }
-    this.remarks=remarks;
+    this.remarks = remarks;
   }
 
   /**
@@ -143,7 +143,7 @@ public class Columns {
    * Gets the id of the specified column in the array.
    */
   public int getID(String column) {
-    for (int i=0;i<size;i++) {
+    for (int i = 0; i < size; i++) {
       if (names.get(i).equals(column)) {
         return i;
       }

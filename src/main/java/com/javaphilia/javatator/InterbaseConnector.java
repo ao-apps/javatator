@@ -55,7 +55,7 @@ public class InterbaseConnector extends JDBCConnector {
    */
   @Override
   public void addIndex(String indexName, String column) throws SQLException, IOException {
-    executeUpdate("CREATE INDEX "+indexName+" ON "+getSettings().getTable()+" ("+column+')');
+    executeUpdate("CREATE INDEX " + indexName + " ON " + getSettings().getTable() + " (" + column + ')');
   }
 
   /**
@@ -65,26 +65,26 @@ public class InterbaseConnector extends JDBCConnector {
    */
   @Override
   public void addPrimaryKey(String column) throws SQLException, IOException {
-    String table=settings.getTable();
+    String table = settings.getTable();
 
     try (Connection conn = DatabasePool.getConnection(getSettings())) {
-      StringBuilder sql=new StringBuilder("ALTER TABLE ");
-      StringBuilder cols=new StringBuilder();
+      StringBuilder sql = new StringBuilder("ALTER TABLE ");
+      StringBuilder cols = new StringBuilder();
       sql.append(table);
       try (ResultSet results = conn.getMetaData().getPrimaryKeys(null, null, table)) {
         if (results.next()) {
           sql
-            .append(" DROP CONSTRAINT ")
-            .append(results.getString(6))
-            .append(", ");
+              .append(" DROP CONSTRAINT ")
+              .append(results.getString(6))
+              .append(", ");
           cols.append(',').append(results.getString(4));
         }
       }
       sql
-        .append(" ADD PRIMARY KEY(")
-        .append(column)
-        .append(cols)
-        .append(')');
+          .append(" ADD PRIMARY KEY(")
+          .append(column)
+          .append(cols)
+          .append(')');
       try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
         pstmt.executeUpdate();
       }
@@ -99,7 +99,7 @@ public class InterbaseConnector extends JDBCConnector {
    */
   @Override
   public void addUniqueIndex(String indexName, String column) throws SQLException, IOException {
-    executeUpdate("CREATE UNIQUE INDEX "+indexName+" ON "+getSettings().getTable()+" ("+column+')');
+    executeUpdate("CREATE UNIQUE INDEX " + indexName + " ON " + getSettings().getTable() + " (" + column + ')');
   }
 
   /**
@@ -117,32 +117,32 @@ public class InterbaseConnector extends JDBCConnector {
    */
   @Override
   public void createTable(
-    String[] newColumn,
-    String[] newType,
-    String[] newLength,
-    String[] newDefault,
-    String[] newNull,
-    String[] newRemarks,
-    boolean[] primaryKey,
-    boolean[] indexKey,
-    boolean[] uniqueKey
+      String[] newColumn,
+      String[] newType,
+      String[] newLength,
+      String[] newDefault,
+      String[] newNull,
+      String[] newRemarks,
+      boolean[] primaryKey,
+      boolean[] indexKey,
+      boolean[] uniqueKey
   ) throws SQLException, IOException {
     // Build the SQL first
-    StringBuilder sql=new StringBuilder();
+    StringBuilder sql = new StringBuilder();
     sql.append("CREATE TABLE ").append(settings.getTable()).append(" (");
-    for (int i=0;i<newColumn.length;i++) {
-      if (i>0) {
+    for (int i = 0; i < newColumn.length; i++) {
+      if (i > 0) {
         sql.append(", ");
       }
       sql.append(newColumn[i]).append(' ').append(newType[i]);
-      if (newLength[i].length()>0) {
+      if (newLength[i].length() > 0) {
         sql.append('(').append(newLength[i]).append(')');
       }
       sql.append(' ').append(newNull[i]);
       if (uniqueKey[i]) {
         sql.append(" UNIQUE");
       }
-      if (newDefault[i].length()>0) {
+      if (newDefault[i].length() > 0) {
         sql.append(" DEFAULT ").append(Util.escapeSQLValue(newDefault[i]));
       }
       if (primaryKey[i]) {
@@ -155,7 +155,7 @@ public class InterbaseConnector extends JDBCConnector {
     executeUpdate(sql.toString());
 
     // Check for indexes to add
-    for (int i=0;i<newColumn.length;i++) {
+    for (int i = 0; i < newColumn.length; i++) {
       if (indexKey[i]) {
         addIndex(newColumn[i], newColumn[i]);
       }
@@ -177,7 +177,7 @@ public class InterbaseConnector extends JDBCConnector {
    */
   @Override
   public void dropIndex(String indexName) throws SQLException, IOException {
-    executeUpdate("DROP INDEX "+indexName);
+    executeUpdate("DROP INDEX " + indexName);
   }
 
   /**
@@ -187,25 +187,25 @@ public class InterbaseConnector extends JDBCConnector {
    */
   @Override
   public void dropPrimaryKey(String column) throws SQLException, IOException {
-    PrimaryKeys primaryKeys=getPrimaryKeys();
-    List<String> columns=primaryKeys.getColumns();
-    int i=columns.indexOf(column);
-    if (i>-1) {
-      StringBuilder sql=new StringBuilder("ALTER TABLE ");
+    PrimaryKeys primaryKeys = getPrimaryKeys();
+    List<String> columns = primaryKeys.getColumns();
+    int i = columns.indexOf(column);
+    if (i > -1) {
+      StringBuilder sql = new StringBuilder("ALTER TABLE ");
       sql
-        .append(settings.getTable())
-        .append(" DROP CONSTRAINT ")
-        .append(primaryKeys.getNames().get(i));
-      int size=columns.size();
-      if (size>1) {
+          .append(settings.getTable())
+          .append(" DROP CONSTRAINT ")
+          .append(primaryKeys.getNames().get(i));
+      int size = columns.size();
+      if (size > 1) {
         sql.append(", ADD PRIMARY KEY(");
-        boolean hasBeen=false;
-        for (int c=0;c<size;c++) {
+        boolean hasBeen = false;
+        for (int c = 0; c < size; c++) {
           if (c != i) {
             if (hasBeen) {
               sql.append(',');
             } else {
-              hasBeen=true;
+              hasBeen = true;
             }
             sql.append(columns.get(c));
           }
@@ -214,7 +214,7 @@ public class InterbaseConnector extends JDBCConnector {
       }
       executeUpdate(sql.toString());
     } else {
-      throw new SQLException("The column "+column+" does not appear to be a primary key.");
+      throw new SQLException("The column " + column + " does not appear to be a primary key.");
     }
   }
 
@@ -233,23 +233,23 @@ public class InterbaseConnector extends JDBCConnector {
     String newNull,
     String newRemarks
   ) throws SQLException, IOException {
-    StringBuilder sql=new StringBuilder();
+    StringBuilder sql = new StringBuilder();
     sql
-      .append("ALTER TABLE ")
-      .append(settings.getTable());
+        .append("ALTER TABLE ")
+        .append(settings.getTable());
     if (!column.equals(newColumn)) {
       sql
-        .append(" ALTER COLUMN ")
-        .append(column)
-        .append(" TO ")
-        .append(newColumn)
-        .append(',');
+          .append(" ALTER COLUMN ")
+          .append(column)
+          .append(" TO ")
+          .append(newColumn)
+          .append(',');
     }
     sql
-      .append(" ALTER COLUMN ")
-      .append(newColumn)
-      .append(" TYPE ")
-      .append(newType);
+        .append(" ALTER COLUMN ")
+        .append(newColumn)
+        .append(" TYPE ")
+        .append(newType);
     executeUpdate(sql.toString());
   }
 
@@ -279,38 +279,38 @@ public class InterbaseConnector extends JDBCConnector {
    * @param colValues the values of the columns to compare.
    */
   public String getSelectQuery(
-    List<String> selectCols,
-    List<String> colNames,
-    List<String> colValues
+      List<String> selectCols,
+      List<String> colNames,
+      List<String> colValues
   ) throws SQLException, IOException {
     // Build the SQL
-    StringBuilder sql=new StringBuilder("SELECT ");
-    for (int i=0;i<selectCols.size();i++) {
-      if (i>0) {
+    StringBuilder sql = new StringBuilder("SELECT ");
+    for (int i = 0; i < selectCols.size(); i++) {
+      if (i > 0) {
         sql.append(',');
       }
       sql.append(selectCols.get(i));
     }
     sql
-      .append(" FROM ")
-      .append(getSettings().getTable());
-    boolean hasBeen=false;
-    for (int i=0;i<colNames.size();i++) {
-      if (colNames.get(i).length()>0) {
+        .append(" FROM ")
+        .append(getSettings().getTable());
+    boolean hasBeen = false;
+    for (int i = 0; i < colNames.size(); i++) {
+      if (colNames.get(i).length() > 0) {
         if (hasBeen) {
           sql.append(" AND ");
         } else {
           sql.append(" WHERE ");
-          hasBeen=true;
+          hasBeen = true;
         }
         if (colValues.get(i) == null) {
           sql
-          .append(colNames.get(i))
-          .append(" ISNULL");
+              .append(colNames.get(i))
+              .append(" ISNULL");
         } else {
           sql
-          .append(colNames.get(i))
-          .append(" LIKE ?");
+              .append(colNames.get(i))
+              .append(" LIKE ?");
         }
       }
     }
@@ -319,11 +319,11 @@ public class InterbaseConnector extends JDBCConnector {
     try (
       Connection conn = DatabasePool.getConnection(getSettings());
       PreparedStatement stmt = conn.prepareStatement(s)
-    ) {
+        ) {
       // stmt.setEscapeProcessing(false);
-      int num=1;
-      for (int i=0;i<colValues.size();i++) {
-        if (colNames.get(i).length()>0 && colValues.get(i) != null) {
+      int num = 1;
+      for (int i = 0; i < colValues.size(); i++) {
+        if (colNames.get(i).length() > 0 && colValues.get(i) != null) {
           stmt.setString(num++, colValues.get(i));
         }
       }

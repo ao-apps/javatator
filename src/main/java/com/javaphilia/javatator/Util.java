@@ -41,7 +41,7 @@ public final class Util {
     throw new AssertionError();
   }
 
-  private static final char[] hexChars={'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+  private static final char[] hexChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
   /**
    * Adds a space to commas to make certain strings wrap properly in tables
@@ -248,7 +248,7 @@ public final class Util {
   }
 
   private static char getHex(int value) {
-    return hexChars[value&15];
+    return hexChars[value & 15];
   }
 
   /**
@@ -401,9 +401,9 @@ public final class Util {
         out.print('+');
       } else {
         if (
-           (ch >= '0' && ch <= '9')
-           || (ch >= 'a' && ch <= 'z')
-           || (ch >= 'A' && ch <= 'Z')
+            (ch >= '0' && ch <= '9')
+                || (ch >= 'a' && ch <= 'z')
+                || (ch >= 'A' && ch <= 'Z')
         ) {
           out.print(ch);
         } else {

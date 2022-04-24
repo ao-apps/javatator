@@ -45,8 +45,8 @@ public class CheckConstraints {
   private final List<String> checkClauses;
 
   public CheckConstraints(List<String> names, List<String> checkClauses) {
-    this.names=names;
-    this.checkClauses=checkClauses;
+    this.names = names;
+    this.checkClauses = checkClauses;
   }
 
   /**

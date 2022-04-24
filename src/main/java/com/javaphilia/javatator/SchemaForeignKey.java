@@ -38,13 +38,13 @@ public class SchemaForeignKey {
   private final String foreignRowName;
 
   public SchemaForeignKey(
-    SchemaRow row,
-    String tableName,
-    String rowName
+      SchemaRow row,
+      String tableName,
+      String rowName
   ) {
-    this.row=row;
-    this.foreignTableName=tableName;
-    this.foreignRowName=rowName;
+    this.row = row;
+    this.foreignTableName = tableName;
+    this.foreignRowName = rowName;
   }
 
   public String getForeignRowName() {

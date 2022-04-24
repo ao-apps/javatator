@@ -40,30 +40,30 @@ public class SchemaTable {
   /**
    * The color of the border.
    */
-  private static final Color borderColor=new Color(0xa8dda0);
+  private static final Color borderColor = new Color(0xa8dda0);
 
   /**
    * The background color of the table.
    */
-  private static final Color background=new Color(0xebffed);
+  private static final Color background = new Color(0xebffed);
 
   /**
    * The color of the name.
    */
-  private static final Color nameColor=new Color(0x6f6f6f);
+  private static final Color nameColor = new Color(0x6f6f6f);
 
   private final String name;
 
   private final List<SchemaRow> rows = new ArrayList<>();
 
   public SchemaTable(String name) {
-    this.name=name;
+    this.name = name;
   }
 
   public void draw(Graphics g, FontMetrics metrics, int x, int y) {
     g.setColor(background);
-    int width=getWidth(metrics);
-    int height=getHeight(metrics);
+    int width = getWidth(metrics);
+    int height = getHeight(metrics);
     g.fillRect(x, y, width, height);
     g.setColor(borderColor);
     g.drawRect(x, y, width - 1, height - 1);
@@ -72,9 +72,9 @@ public class SchemaTable {
     g.setColor(nameColor);
     int nameWidth = metrics.stringWidth(name);
     g.drawString(
-      name,
-      x + (width - nameWidth) / 2,
-      y + metrics.getHeight() - metrics.getDescent()
+        name,
+        x + (width - nameWidth) / 2,
+        y + metrics.getHeight() - metrics.getDescent()
     );
 
     // Draw all the rows
@@ -89,10 +89,10 @@ public class SchemaTable {
   }
 
   public int getHeight(FontMetrics metrics) {
-    int height=3+metrics.getHeight();
-    int size=rows.size();
-    for (int c=0;c<size;c++) {
-      height+=rows.get(c).getHeight(metrics);
+    int height = 3 + metrics.getHeight();
+    int size = rows.size();
+    for (int c = 0; c < size; c++) {
+      height += rows.get(c).getHeight(metrics);
     }
     return height;
   }
@@ -102,14 +102,14 @@ public class SchemaTable {
   }
 
   public synchronized SchemaRow getRow(String rowName) {
-    int size=rows.size();
-    for (int c=0;c<size;c++) {
-      SchemaRow row=rows.get(c);
+    int size = rows.size();
+    for (int c = 0; c < size; c++) {
+      SchemaRow row = rows.get(c);
       if (row.getName().equals(rowName)) {
         return row;
       }
     }
-    SchemaRow row=new SchemaRow(this, rowName);
+    SchemaRow row = new SchemaRow(this, rowName);
     rows.add(row);
     return row;
   }
@@ -118,19 +118,19 @@ public class SchemaTable {
    * Gets the y position of the center of a row, relative to top of table.
    */
   public int getRowLinkY(String rowName, FontMetrics metrics) {
-    int size=rows.size();
-    int ypos=2+metrics.getHeight();
-    for (int c=0;c<size;c++) {
-      SchemaRow row=rows.get(c);
-      int rowHeight=row.getHeight(metrics);
+    int size = rows.size();
+    int ypos = 2 + metrics.getHeight();
+    for (int c = 0; c < size; c++) {
+      SchemaRow row = rows.get(c);
+      int rowHeight = row.getHeight(metrics);
       if (row.getName().equals(rowName)) {
         // Find center and return
-        return ypos+rowHeight/2-1;
+        return ypos + rowHeight / 2 - 1;
       }
-      ypos+=rowHeight;
+      ypos += rowHeight;
     }
     // Row not found, throw error
-    throw new NullPointerException("Row not found: "+rowName);
+    throw new NullPointerException("Row not found: " + rowName);
   }
 
   public List<SchemaRow> getRows() {
@@ -138,14 +138,14 @@ public class SchemaTable {
   }
 
   public int getWidth(FontMetrics metrics) {
-    int widest=metrics.stringWidth(name)+4;
-    int size=rows.size();
-    for (int c=0;c<size;c++) {
-      int rowWidth=rows.get(c).getWidth(metrics);
-      if (rowWidth>widest) {
-        widest=rowWidth;
+    int widest = metrics.stringWidth(name) + 4;
+    int size = rows.size();
+    for (int c = 0; c < size; c++) {
+      int rowWidth = rows.get(c).getWidth(metrics);
+      if (rowWidth > widest) {
+        widest = rowWidth;
       }
     }
-    return widest+2;
+    return widest + 2;
   }
 }

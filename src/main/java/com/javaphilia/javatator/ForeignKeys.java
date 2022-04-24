@@ -91,28 +91,28 @@ public class ForeignKeys {
   private final List<JDBCConnector.Boolean> areInitiallyDeferred;
 
   public ForeignKeys(
-    List<String> constraintNames,
-    List<String> foreignKeys,
-    List<String> foreignTables,
-    List<String> primaryKeys,
-    List<String> primaryTables,
-    List<String> insertRules,
-    List<String> deleteRules,
-    List<String> updateRules,
-    List<JDBCConnector.Boolean> areDeferrable,
-    List<JDBCConnector.Boolean> areInitiallyDeferred
+      List<String> constraintNames,
+      List<String> foreignKeys,
+      List<String> foreignTables,
+      List<String> primaryKeys,
+      List<String> primaryTables,
+      List<String> insertRules,
+      List<String> deleteRules,
+      List<String> updateRules,
+      List<JDBCConnector.Boolean> areDeferrable,
+      List<JDBCConnector.Boolean> areInitiallyDeferred
   ) {
-    this.constraintNames=constraintNames;
-    this.foreignKeys=foreignKeys;
-    this.foreignTables=foreignTables;
-    this.primaryKeys=primaryKeys;
-    this.primaryTables=primaryTables;
-    this.insertRules=insertRules;
-    this.deleteRules=deleteRules;
-    this.updateRules=updateRules;
-    this.areDeferrable=areDeferrable;
-    this.areInitiallyDeferred=areInitiallyDeferred;
-    size=constraintNames.size();
+    this.constraintNames = constraintNames;
+    this.foreignKeys = foreignKeys;
+    this.foreignTables = foreignTables;
+    this.primaryKeys = primaryKeys;
+    this.primaryTables = primaryTables;
+    this.insertRules = insertRules;
+    this.deleteRules = deleteRules;
+    this.updateRules = updateRules;
+    this.areDeferrable = areDeferrable;
+    this.areInitiallyDeferred = areInitiallyDeferred;
+    size = constraintNames.size();
   }
 
   /**
