@@ -38,4 +38,4 @@ module com.javaphilia.javatator {
   // Java SE
   requires java.desktop;
   requires java.sql;
-}
+} // TODO: Avoiding rewrite-maven-plugin-4.22.2 truncation
