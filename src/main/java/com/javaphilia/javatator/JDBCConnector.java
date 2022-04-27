@@ -921,7 +921,7 @@ public class JDBCConnector {
   protected ForeignKeys getForeignKeys(String table, boolean isImported) throws SQLException, IOException {
     try (
       Connection conn = DatabasePool.getConnection(settings);
-      ResultSet r = (isImported)
+      ResultSet r = isImported
             ? conn.getMetaData().getImportedKeys(null, null, table)
             : conn.getMetaData().getExportedKeys(null, null, table)
         ) {

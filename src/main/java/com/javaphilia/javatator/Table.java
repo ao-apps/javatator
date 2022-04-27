@@ -219,7 +219,9 @@ public class Table {
    */
   public Settings createTable(JavatatorWriter out) throws SQLException, IOException {
     int count = 0;
-    while (settings.getParameter("newcolumn" + count) != null) count++;
+    while (settings.getParameter("newcolumn" + count) != null) {
+      count++;
+    }
     String[] newColumn = new String[count];
     String[] newType = new String[count];
     String[] newLength = new String[count];
@@ -1254,8 +1256,8 @@ public class Table {
       }
       StringBuilder query = new StringBuilder()
           .append("SELECT ")
-          .append((selectCols == null || "".equals(selectCols)) ?
-              "*" :
+          .append((selectCols == null || "".equals(selectCols))
+              ? "*" :
               selectCols
           ).append(" FROM ")
           .append(conn.quoteTable(settings.getTable()));

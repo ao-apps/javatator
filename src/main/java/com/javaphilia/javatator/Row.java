@@ -134,7 +134,9 @@ public class Row {
     }
 
     int count = 0;
-    while (settings.getParameter("column" + count) != null) count++;
+    while (settings.getParameter("column" + count) != null) {
+      count++;
+    }
     String[] column = new String[count];
     String[] function = new String[count];
     String[] value = new String[count];
@@ -157,7 +159,7 @@ public class Row {
         // Nothing to do
 
         // Handle user function
-      } else if (func.equals("F")) {
+      } else if ("F".equals(func)) {
         func = val;
         val = null;
 
@@ -206,7 +208,9 @@ public class Row {
    */
   public Settings insert(JavatatorWriter out) throws SQLException, IOException {
     int count = 0;
-    while (settings.getParameter("column" + count) != null) count++;
+    while (settings.getParameter("column" + count) != null) {
+      count++;
+    }
     String[] newColumn = new String[count];
     String[] newFunction = new String[count];
     String[] newValue = new String[count];
@@ -229,7 +233,7 @@ public class Row {
         // Nothing to do
 
         // Handle user function
-      } else if (function.equals("F")) {
+      } else if ("F".equals(function)) {
         function = value;
         value = null;
 

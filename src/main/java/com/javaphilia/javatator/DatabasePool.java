@@ -140,7 +140,7 @@ public class DatabasePool {
   private final Object connectLock = new Object();
 
   // Only load the driver the first time
-  private boolean driverLoaded = false;
+  private boolean driverLoaded;
 
   static {
     DatabasePoolCleanup.startThread();
@@ -192,9 +192,9 @@ public class DatabasePool {
     synchronized (connectLock) {
       for (int c = 0; c < size; c++) {
         if (
-            connections[c] != null &&
-                !busyConnections[c] &&
-                (time - releaseTimes[c]) >= MAX_IDLE_TIME
+            connections[c] != null
+                && !busyConnections[c]
+                && (time - releaseTimes[c]) >= MAX_IDLE_TIME
         ) {
           connections[c].close();
           connections[c] = null;
@@ -231,8 +231,8 @@ public class DatabasePool {
       for (int c = 0; c < size; c++) {
         if (connections[c] != null) {
           if (
-              !busyConnections[c] ||
-                  (busyConnections[c] && (time - releaseTimes[c]) >= MAX_IDLE_TIME)
+              !busyConnections[c]
+                  || (busyConnections[c] && (time - releaseTimes[c]) >= MAX_IDLE_TIME)
           ) {
             connections[c].close();
             connections[c] = null;

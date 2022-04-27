@@ -39,10 +39,10 @@ public class SQLOutputStream extends OutputStream {
 
   private final Statement stmt;
 
-  private boolean doubleQuotes = false;
-  private boolean singleQuotes = false;
+  private boolean doubleQuotes;
+  private boolean singleQuotes;
   private int check = -1;
-  private int count = 0;
+  private int count;
   private final StringBuilder sb = new StringBuilder();
 
   /**

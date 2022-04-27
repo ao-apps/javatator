@@ -1317,7 +1317,7 @@ public class PgSQLConnector extends JDBCConnector {
             int pos2 = s.indexOf("\\000", pos + 1);
             if (pos2 > -1) {
               if (table.equals(s.substring(pos + 4, pos2))) {
-                return r.getString(2).equals("t") ? Boolean.TRUE : Boolean.FALSE;
+                return "t".equals(r.getString(2)) ? Boolean.TRUE : Boolean.FALSE;
               }
             }
           }
@@ -1350,7 +1350,7 @@ public class PgSQLConnector extends JDBCConnector {
             int pos2 = s.indexOf("\\000", pos + 1);
             if (pos2 > -1) {
               if (table.equals(s.substring(pos + 4, pos2))) {
-                return r.getString(2).equals("t") ? Boolean.TRUE : Boolean.FALSE;
+                return "t".equals(r.getString(2)) ? Boolean.TRUE : Boolean.FALSE;
               }
             }
           }
