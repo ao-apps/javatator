@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Redirects requests from old Main servlet URL to now at /
+ * Redirects requests from old Main servlet URL to now at <code>/</code>.
  */
 @WebServlet("/servlet/com.javaphilia.javatator.Main")
 public class MainRedirect extends HttpServlet {

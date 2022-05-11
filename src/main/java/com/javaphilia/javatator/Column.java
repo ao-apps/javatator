@@ -32,7 +32,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Various methods for manipulating columns
+ * Various methods for manipulating columns.
  */
 public class Column {
 
@@ -75,7 +75,7 @@ public class Column {
       }
     }
 
-    settings.getJDBCConnector().addColumn(
+    settings.getJdbcConnector().addColumn(
         settings.getColumn(),
         settings.getParameter("newtype"),
         settings.getParameter("newlength"),
@@ -102,7 +102,7 @@ public class Column {
     out.print(" added on ");
     out.print(column);
     out.print("</h2>\n");
-    settings.getJDBCConnector().addIndex(indexName, column);
+    settings.getJdbcConnector().addIndex(indexName, column);
     out.print("An index has been added on ");
     out.print(column);
     out.print('.');
@@ -120,7 +120,7 @@ public class Column {
     out.print(" : primary key ");
     out.print(settings.getColumn());
     out.print(" added</h2>\n");
-    settings.getJDBCConnector().addPrimaryKey(settings.getColumn());
+    settings.getJdbcConnector().addPrimaryKey(settings.getColumn());
     out.print("Primary key ");
     out.print(settings.getColumn());
     out.print(" has been added successfully.");
@@ -142,7 +142,7 @@ public class Column {
     out.print(" added on ");
     out.print(column);
     out.print("</h2>\n");
-    settings.getJDBCConnector().addUniqueIndex(indexName, column);
+    settings.getJdbcConnector().addUniqueIndex(indexName, column);
     out.print("A unique index has been added on ");
     out.print(column);
     out.print('.');
@@ -218,7 +218,7 @@ public class Column {
     out.print(" : deleted column ");
     out.print(settings.getColumn());
     out.print("</h2>\n");
-    settings.getJDBCConnector().deleteColumn(settings.getColumn());
+    settings.getJdbcConnector().deleteColumn(settings.getColumn());
     out.print("Column deleted successfully.");
     return new Table(settings).printTableProperties(out);
   }
@@ -234,7 +234,7 @@ public class Column {
     out.print(" : primary key ");
     out.print(settings.getColumn());
     out.print(" dropped</h2>\n");
-    settings.getJDBCConnector().dropPrimaryKey(settings.getColumn());
+    settings.getJdbcConnector().dropPrimaryKey(settings.getColumn());
     out.print("Primary key on ");
     out.print(settings.getColumn());
     out.print(" has been dropped successfully.");
@@ -269,7 +269,7 @@ public class Column {
       }
     }
 
-    settings.getJDBCConnector().editColumn(
+    settings.getJdbcConnector().editColumn(
         settings.getColumn(),
         settings.getParameter("newcolumn"),
         settings.getParameter("newtype"),
@@ -294,25 +294,25 @@ public class Column {
 
     out.startTable(null, "cellspacing=1");
 
-    out.startTR();
-    out.printTH("Column");
-    out.printTH("Type");
-    out.printTH("Length/Set");
-    out.printTH("Nullable");
-    out.printTH("Default");
-    out.printTH("Remarks");
-    out.endTR();
+    out.startTr();
+    out.printTh("Column");
+    out.printTh("Type");
+    out.printTh("Length/Set");
+    out.printTh("Nullable");
+    out.printTh("Default");
+    out.printTh("Remarks");
+    out.endTr();
 
-    out.startTR();
-    out.printTD("<input type='text' name='column' size=10 value=''>");
+    out.startTr();
+    out.printTd("<input type='text' name='column' size=10 value=''>");
 
     try {
-      JDBCConnector conn = settings.getJDBCConnector();
+      JdbcConnector conn = settings.getJdbcConnector();
       //Columns columns=conn.getColumns();
       List<String> types = conn.getTypes();
 
       // List all the possible types
-      out.startTD();
+      out.startTd();
       out.print("<select name='newtype'>");
       int size = types.size();
       for (int i = 0; i < size; i++) {
@@ -324,25 +324,25 @@ public class Column {
         out.print("</option>\n");
       }
       out.print("</select>");
-      out.endTD();
+      out.endTd();
 
-      out.printTD("<input type='text' name='newlength' size=8 value=''>");
+      out.printTd("<input type='text' name='newlength' size=8 value=''>");
 
-      out.printTD("<select name='newnull'>\n"
+      out.printTd("<select name='newnull'>\n"
           + "<option value='not null' selected>NO</option>\n"
           + "<option value='null'>YES</option>\n"
           + "</select>\n");
 
-      out.printTD("<select name='newdefaulttype'>\n"
+      out.printTd("<select name='newdefaulttype'>\n"
           + "<option value=''>[NULL]</option>\n"
           + "<option value='V'>[VALUE-->]</option>\n"
           + "<option value='F'>[FUNCTION-->]</option>\n"
           + "</select>\n"
           + "<input type='text' name='newdefaultvalue' size=12 value=''>");
 
-      out.printTD("<input type='text' name='newremarks' size=12 value=''>");
+      out.printTd("<input type='text' name='newremarks' size=12 value=''>");
     } finally {
-      out.endTR();
+      out.endTr();
       out.endTable();
     }
     out.print("<br><input type='submit' value='Save!' onClick=\"return selectAction('doadd_column');\">");
@@ -397,35 +397,35 @@ public class Column {
 
     out.startTable(null, "cellspacing=1");
 
-    out.startTR();
-    out.printTH("Column");
-    out.printTH("Type");
-    out.printTH("Length/Set");
-    out.printTH("Nullable");
-    out.printTH("Default");
-    out.printTH("Remarks");
-    out.endTR();
+    out.startTr();
+    out.printTh("Column");
+    out.printTh("Type");
+    out.printTh("Length/Set");
+    out.printTh("Nullable");
+    out.printTh("Default");
+    out.printTh("Remarks");
+    out.endTr();
 
-    out.startTR();
-    out.startTD();
+    out.startTr();
+    out.startTd();
     out.print("<input type='text' name='newcolumn' size=10 value='");
     Util.printEscapedInputValue(out, column);
     out.print("'>");
-    out.endTD();
+    out.endTd();
 
     try {
-      JDBCConnector conn = settings.getJDBCConnector();
-      Columns columns = conn.getColumns();
-      int id = columns.getID(column);
-      String columnType = columns.getType(id);
-      String columnLength = columns.getLength(id);
+      final JdbcConnector conn = settings.getJdbcConnector();
+      final Columns columns = conn.getColumns();
+      final int id = columns.getId(column);
+      final String columnType = columns.getType(id);
+      final String columnLength = columns.getLength(id);
       String columnDefault = columns.getDefault(id);
-      String columnExtra = columns.getRemark(id);
-      JDBCConnector.Boolean isNullable = columns.isNullable(id);
-      List<String> types = conn.getTypes();
+      final String columnExtra = columns.getRemark(id);
+      final JdbcConnector.Boolean isNullable = columns.isNullable(id);
+      final List<String> types = conn.getTypes();
 
       // List all the possible types
-      out.startTD();
+      out.startTd();
       out.print("<select name='newtype'>");
       boolean done = false;
       int size = types.size();
@@ -451,17 +451,17 @@ public class Column {
         out.print("</option>\n");
       }
       out.print("</select>");
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       out.print("<input type='text' name='newlength' size=8 value='");
       Util.printEscapedInputValue(out, columnLength);
       out.print("'>");
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       out.print("<select name='newnull'>");
-      if (isNullable == JDBCConnector.Boolean.TRUE) {
+      if (isNullable == JdbcConnector.Boolean.TRUE) {
         out.print("<option value='null' selected>YES</option>\n"
             + "<option value='not null'>NO</option>\n");
       } else {
@@ -469,9 +469,9 @@ public class Column {
             + "<option value='null'>YES</option>\n");
       }
       out.print("</select>");
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       out.print("<select name='newdefaulttype'>\n");
       List<String> pvalues = conn.getPossibleValues(column, columnType);
       if (pvalues != null) {
@@ -550,17 +550,17 @@ public class Column {
         out.print(columnDefault == null ? "" : columnDefault.substring(1));
         out.print("\">");
       }
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       out.print("<input type='text' name='newremarks' size=12 value=\"");
       if (columnExtra != null) {
         out.print(columnExtra);
       }
       out.print("\">");
-      out.endTD();
+      out.endTd();
     } finally {
-      out.endTR();
+      out.endTr();
       out.endTable();
     }
     out.print("<br><input type='submit' value='Save!' onClick=\"return selectAction('doedit_column');\">");

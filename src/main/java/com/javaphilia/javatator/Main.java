@@ -141,7 +141,7 @@ public class Main extends HttpServlet {
             && settings.getDatabase() != null;
     if (isConnected) {
       try {
-        JDBCConnector conn = settings.getJDBCConnector();
+        JdbcConnector conn = settings.getJdbcConnector();
         // TODO: This has no <html> tag?
         out.print("<script language=javascript><!--\n"
             + "var t=top.top_frame;\n"
@@ -229,7 +229,7 @@ public class Main extends HttpServlet {
     int size = dbProducts.size();
 
     out.print("<table width='100%' border=0 cellspacing=0 cellpadding=0>\n");
-    out.startTR();
+    out.startTr();
     try {
       for (int c = 0; c < size; c++) {
         String dbProduct = dbProducts.get(c);
@@ -241,19 +241,19 @@ public class Main extends HttpServlet {
             + "<input type=hidden name=frame value=top>");
         out.startTable(null);
 
-        out.startTR();
-        out.startTD("colspan=3 align=center");
+        out.startTr();
+        out.startTd("colspan=3 align=center");
         out.print("<b>");
         out.print(databaseConfiguration.getProperty("name", dbProduct));
         out.print("</b>");
-        out.endTD();
-        out.endTR();
+        out.endTd();
+        out.endTr();
 
         // Hostname
-        out.startTR();
-        out.printTD("Hostname:");
-        out.printTD("&nbsp;", "rowspan=6 width=12 nowrap");
-        out.startTD();
+        out.startTr();
+        out.printTd("Hostname:");
+        out.printTd("&nbsp;", "rowspan=6 width=12 nowrap");
+        out.startTd();
 
         String settingsHostname = settings.getParameter(dbProduct + "_hostname");
         if (settingsHostname == null) {
@@ -286,13 +286,13 @@ public class Main extends HttpServlet {
           Util.printEscapedJavaScript(out, settingsHostname);
           out.print("'>");
         }
-        out.endTD();
-        out.endTR();
+        out.endTd();
+        out.endTr();
 
         // Port
-        out.startTR();
-        out.printTD("Port:");
-        out.startTD();
+        out.startTr();
+        out.printTd("Port:");
+        out.startTd();
         String configPort = databaseConfiguration.getProperty("port", dbProduct);
         if (configPort != null && configPort.length() > 0) {
           out.print(configPort);
@@ -320,13 +320,13 @@ public class Main extends HttpServlet {
           }
           out.print("'>");
         }
-        out.endTD();
-        out.endTR();
+        out.endTd();
+        out.endTr();
 
         // SSL
-        out.startTR();
-        out.printTD("SSL:");
-        out.startTD();
+        out.startTr();
+        out.printTd("SSL:");
+        out.startTd();
         Boolean ssl = databaseConfiguration.getBooleanProperty("ssl", dbProduct);
         if (ssl != null) {
           out.print(ssl ? "Enabled" : "Disabled");
@@ -353,13 +353,13 @@ public class Main extends HttpServlet {
           }
           out.print(">");
         }
-        out.endTD();
-        out.endTR();
+        out.endTd();
+        out.endTr();
 
         // Username
-        out.startTR();
-        out.printTD("Username:");
-        out.startTD();
+        out.startTr();
+        out.printTd("Username:");
+        out.startTd();
         String configUsername = databaseConfiguration.getProperty("username", dbProduct);
         if (configUsername != null && configUsername.length() > 0) {
           out.print(configUsername);
@@ -375,13 +375,13 @@ public class Main extends HttpServlet {
           Util.printEscapedJavaScript(out, username);
           out.print("'>");
         }
-        out.endTD();
-        out.endTR();
+        out.endTd();
+        out.endTr();
 
         // Password
-        out.startTR();
-        out.printTD("Password:");
-        out.startTD();
+        out.startTr();
+        out.printTd("Password:");
+        out.startTd();
         String configPassword = databaseConfiguration.getProperty("password", dbProduct);
         if (configPassword != null && configPassword.length() > 0) {
           out.print("XXXXXXXXXXXX");
@@ -397,13 +397,13 @@ public class Main extends HttpServlet {
           Util.printEscapedJavaScript(out, password);
           out.print("'>");
         }
-        out.endTD();
-        out.endTR();
+        out.endTd();
+        out.endTr();
 
         // Database
-        out.startTR();
-        out.printTD("Database:");
-        out.startTD();
+        out.startTr();
+        out.printTd("Database:");
+        out.startTd();
         String configDatabase = databaseConfiguration.getProperty("database", dbProduct);
         if (configDatabase != null && configDatabase.length() > 0) {
           out.print(configDatabase);
@@ -419,22 +419,22 @@ public class Main extends HttpServlet {
           Util.printEscapedJavaScript(out, database);
           out.print("'>");
         }
-        out.endTD();
-        out.endTR();
+        out.endTd();
+        out.endTr();
 
-        out.startTR();
-        out.printTD("&nbsp;", "colspan=3");
-        out.endTR();
+        out.startTr();
+        out.printTd("&nbsp;", "colspan=3");
+        out.endTr();
 
-        out.startTR();
-        out.startTD("align='center' colspan=3");
+        out.startTr();
+        out.startTd("align='center' colspan=3");
         out.print("<input type=hidden name=action value='db_details'>"
             + "<input type=hidden name=dbproduct value='");
         out.print(dbProduct);
         out.print("'>"
             + "<input type=submit value=' Login '>");
-        out.endTD();
-        out.endTR();
+        out.endTd();
+        out.endTr();
 
         out.endTable();
         settings.printGlobalForm(out);
@@ -442,7 +442,7 @@ public class Main extends HttpServlet {
         out.print("</td>\n");
       }
     } finally {
-      out.endTR();
+      out.endTr();
       out.print("</table>\n");
     }
   }
@@ -451,9 +451,15 @@ public class Main extends HttpServlet {
    * Prints the contents of the right-hand frame.
    */
   private void printRightFrame(HttpServletResponse response, JavatatorWriter out, Settings settings, String action) throws IOException {
-    ServletContext servletContext = getServletContext();
-    HttpServletRequest request = settings.getRequest();
-    boolean isConnected = action != null && settings.getDatabaseProduct() != null && settings.getHostname() != null && settings.getPort() > 0 && settings.getUsername() != null && settings.getDatabase() != null;
+    final ServletContext servletContext = getServletContext();
+    final HttpServletRequest request = settings.getRequest();
+    final boolean isConnected =
+        action != null
+        && settings.getDatabaseProduct() != null
+        && settings.getHostname() != null
+        && settings.getPort() > 0
+        && settings.getUsername() != null
+        && settings.getDatabase() != null;
     // TODO: Forward to a set of appropriate JSP views
     out.print("<html>\n"
         + "  <head>\n"
@@ -511,9 +517,9 @@ public class Main extends HttpServlet {
    * Prints the contents of the top frame.
    */
   private void printTopFrame(HttpServletResponse response, JavatatorWriter out, Settings settings, String action) throws IOException {
-    ServletContext servletContext = getServletContext();
-    HttpServletRequest request = settings.getRequest();
-    boolean isConnected =
+    final ServletContext servletContext = getServletContext();
+    final HttpServletRequest request = settings.getRequest();
+    final boolean isConnected =
         settings.getDatabaseProduct() != null
             && settings.getHostname() != null
             && settings.getPort() > 0
@@ -540,7 +546,7 @@ public class Main extends HttpServlet {
     out.print('\n');
     if (isConnected) {
       try {
-        JDBCConnector conn = settings.getJDBCConnector();
+        JdbcConnector conn = settings.getJdbcConnector();
         out.print("<script language=javascript><!--\n"
             + "var databases=new Array();\n"
             + "var tables=new Array();\n"
@@ -607,8 +613,8 @@ public class Main extends HttpServlet {
     out.print("/images/2.gif' alt='Javatator Admin' border=0 align=left width=345 height=72></a>\n");
 
     out.startTable(null);
-    out.startTR();
-    out.startTD();
+    out.startTr();
+    out.startTd();
     out.print("<b>Javatator version ");
     out.print(Maven.properties.get("project.version"));
     out.print("</b> running on ");
@@ -626,13 +632,13 @@ public class Main extends HttpServlet {
 
     if (isConnected) {
       try {
-        JDBCConnector conn = settings.getJDBCConnector();
+        JdbcConnector conn = settings.getJdbcConnector();
 
         out.print("<b>");
         out.print(conn.getDatabaseProductName());
         out.print("</b>");
         out.print(" running on ");
-        out.print(conn.getURL());
+        out.print(conn.getUrl());
         out.print(" <a href=\"javascript:showInfo()\">"
             + "More&nbsp;Info</a>"
             + "&nbsp;|&nbsp;"
@@ -649,8 +655,8 @@ public class Main extends HttpServlet {
         e.printStackTrace();
       }
     }
-    out.endTD();
-    out.endTR();
+    out.endTd();
+    out.endTr();
     out.endTable();
     out.endBody();
     out.print("</html>\n");
@@ -659,23 +665,23 @@ public class Main extends HttpServlet {
   private void showOptions(JavatatorWriter out, Settings settings) {
     out.print("<h2>Advanced Options</h2>");
     out.startTable(null);
-    out.startTR();
-    out.printTD("Maximum foreign key rows:");
-    out.startTD();
+    out.startTr();
+    out.printTd("Maximum foreign key rows:");
+    out.startTd();
     out.print("<input type=text name=newfkeyrows value='");
     out.print(settings.getForeignKeyRows());
     out.print("'>\n");
-    out.endTD();
-    out.endTR();
-    out.startTR();
-    out.startTD("colspan=2");
+    out.endTd();
+    out.endTr();
+    out.startTr();
+    out.startTd("colspan=2");
     out.print("<input type=checkbox name=newusemultiline value=true");
     if (settings.useMultiLine()) {
       out.print(" checked");
     }
     out.print("> Use multiline textareas as default for text data types.\n");
-    out.endTD();
-    out.endTR();
+    out.endTd();
+    out.endTr();
     out.endTable();
     out.print("<br><input type=submit value='Update Settings' "
         + "onClick=\"updateSettings(this.form)\">");

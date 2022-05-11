@@ -293,11 +293,11 @@ public class Settings {
   }
 
   /**
-   * Gets a {@link JDBCConnector} for these {@link Settings}.
+   * Gets a {@link JdbcConnector} for these {@link Settings}.
    */
-  public JDBCConnector getJDBCConnector() throws IOException {
+  public JdbcConnector getJdbcConnector() throws IOException {
     try {
-      return JDBCConnector.getInstance(this);
+      return JdbcConnector.getInstance(this);
     } catch (ReflectiveOperationException err) {
       throw new IOException(err);
     }
@@ -409,7 +409,7 @@ public class Settings {
   /**
    * Generates the proper URL based on the settings and configuration.
    */
-  public String getURL() throws IOException {
+  public String getUrl() throws IOException {
     String url = databaseConfiguration.getProperty("url", databaseProduct);
     if (url.length() == 0) {
       throw new IOException("Unable to find URL for databaseProduct=" + databaseProduct);
@@ -529,13 +529,13 @@ public class Settings {
   private void printParam(JavatatorWriter out, String name, String value) throws IOException {
     out.print(name);
     out.print('=');
-    Util.printEscapedURLValue(out, value);
+    Util.printEscapedUrlValue(out, value);
   }
 
   /**
    * Prints a URL with the {@link Settings} embedded in the URL string.
    */
-  public void printURLParams(String url, JavatatorWriter out) throws IOException {
+  public void printUrlParams(String url, JavatatorWriter out) throws IOException {
     // TODO: response encodeURL
     out.print(url);
     out.print('?');
@@ -632,7 +632,7 @@ public class Settings {
   }
 
   /**
-   * Should multiline textareas be used?
+   * Should multiline textareas be used?.
    */
   public boolean useMultiLine() {
     return useMultiLine;

@@ -81,14 +81,14 @@ public class ForeignKeys {
   private final List<String> updateRules;
 
   /**
-   * Are the keys deferrable?
+   * Are the keys deferrable?.
    */
-  private final List<JDBCConnector.Boolean> areDeferrable;
+  private final List<JdbcConnector.Boolean> areDeferrable;
 
   /**
-   * Are the keys initially deferred?
+   * Are the keys initially deferred?.
    */
-  private final List<JDBCConnector.Boolean> areInitiallyDeferred;
+  private final List<JdbcConnector.Boolean> areInitiallyDeferred;
 
   public ForeignKeys(
       List<String> constraintNames,
@@ -99,8 +99,8 @@ public class ForeignKeys {
       List<String> insertRules,
       List<String> deleteRules,
       List<String> updateRules,
-      List<JDBCConnector.Boolean> areDeferrable,
-      List<JDBCConnector.Boolean> areInitiallyDeferred
+      List<JdbcConnector.Boolean> areDeferrable,
+      List<JdbcConnector.Boolean> areInitiallyDeferred
   ) {
     this.constraintNames = constraintNames;
     this.foreignKeys = foreignKeys;
@@ -116,16 +116,16 @@ public class ForeignKeys {
   }
 
   /**
-   * Are the keys deferrable?
+   * Are the keys deferrable?.
    */
-  public List<JDBCConnector.Boolean> areDeferrable() {
+  public List<JdbcConnector.Boolean> areDeferrable() {
     return areDeferrable;
   }
 
   /**
-   * Are the keys initially deferred?
+   * Are the keys initially deferred?.
    */
-  public List<JDBCConnector.Boolean> areInitiallyDeferred() {
+  public List<JdbcConnector.Boolean> areInitiallyDeferred() {
     return areInitiallyDeferred;
   }
 
@@ -153,7 +153,7 @@ public class ForeignKeys {
   /**
    * Gets the id of the specified foreign key in the array.
    */
-  public int getForeignID(String column) {
+  public int getForeignId(String column) {
     for (int i = 0; i < size; i++) {
       if (foreignKeys.get(i).equals(column)) {
         return i;
@@ -165,7 +165,7 @@ public class ForeignKeys {
   /**
    * Gets the ids of the specified foreign key in the array.
    */
-  public List<Integer> getForeignIDs(String column) {
+  public List<Integer> getForeignIds(String column) {
     // List<String> hasBeen = new ArrayList<>();
     List<Integer> ids = new ArrayList<>();
     for (int i = 0; i < size; i++) {
@@ -215,7 +215,7 @@ public class ForeignKeys {
   /**
    * Gets the id of the specified primary key in the array.
    */
-  public int getPrimaryID(String column) {
+  public int getPrimaryId(String column) {
     for (int i = 0; i < size; i++) {
       if (primaryKeys.get(i).equals(column)) {
         return i;

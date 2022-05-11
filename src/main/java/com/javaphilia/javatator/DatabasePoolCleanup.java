@@ -35,7 +35,7 @@ package com.javaphilia.javatator;
 public class DatabasePoolCleanup extends Thread {
 
   /**
-   * A reference to the thread is used to only allow one thread at a time
+   * A reference to the thread is used to only allow one thread at a time.
    */
   private static DatabasePoolCleanup thread;
 

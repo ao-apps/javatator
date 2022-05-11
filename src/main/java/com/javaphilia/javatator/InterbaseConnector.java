@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * The Interbase connection class. Implements things which the driver doesn't do using JDBC.
  */
-public class InterbaseConnector extends JDBCConnector {
+public class InterbaseConnector extends JdbcConnector {
 
   /**
    * Instantiate a new InterbaseConnector.
@@ -143,7 +143,7 @@ public class InterbaseConnector extends JDBCConnector {
         sql.append(" UNIQUE");
       }
       if (newDefault[i].length() > 0) {
-        sql.append(" DEFAULT ").append(Util.escapeSQLValue(newDefault[i]));
+        sql.append(" DEFAULT ").append(Util.escapeSqlValue(newDefault[i]));
       }
       if (primaryKey[i]) {
         sql.append(", PRIMARY KEY (").append(newColumn[i]).append(')');
@@ -219,19 +219,22 @@ public class InterbaseConnector extends JDBCConnector {
   }
 
   /**
-   * @see JDBCConnector#editColumn
-   *
+   * {@inheritDoc}
+   * <p>
    * It appears that Interbase can only change the column name and the column type.
    * Therefore the length, default, null, etc. parameters will be ignored.
+   * </p>
+   *
+   * @see JdbcConnector#editColumn
    */
   @Override
   public void editColumn(String column,
-    String newColumn,
-    String newType,
-    String newLength,
-    String newDefault,
-    String newNull,
-    String newRemarks
+      String newColumn,
+      String newType,
+      String newLength,
+      String newDefault,
+      String newNull,
+      String newRemarks
   ) throws SQLException, IOException {
     StringBuilder sql = new StringBuilder();
     sql
@@ -258,7 +261,10 @@ public class InterbaseConnector extends JDBCConnector {
    */
   @Override
   public List<String> getFunctionList() throws SQLException, IOException {
-    //return executeListQuery("SELECT p.proname as Function FROM pg_proc p, pg_type t WHERE p.prorettype = t.oid and (pronargs = 0 or oidvectortypes(p.proargtypes) != '') GROUP BY Function ORDER BY Function");
+    //return executeListQuery("SELECT p.proname as Function FROM pg_proc p, pg_type t WHERE"
+    //    + " p.prorettype = t.oid"
+    //    + " and (pronargs = 0 or oidvectortypes(p.proargtypes) != '')"
+    //    + " GROUP BY Function ORDER BY Function");
     return Collections.emptyList();
   }
 
@@ -267,7 +273,11 @@ public class InterbaseConnector extends JDBCConnector {
    */
   @Override
   public List<String> getFunctionList(String type) throws SQLException, IOException {
-    //return executeListQuery("SELECT p.proname as Function FROM pg_proc p, pg_type t WHERE p.prorettype = t.oid and t.typname=lower(?) and (pronargs = 0 or oidvectortypes(p.proargtypes) != '') GROUP BY Function ORDER BY Function", type);
+    //return executeListQuery("SELECT p.proname as Function FROM pg_proc p, pg_type t WHERE"
+    //    + " p.prorettype = t.oid"
+    //    + " and t.typname=lower(?)"
+    //    + " and (pronargs = 0 or oidvectortypes(p.proargtypes) != '')"
+    //    + " GROUP BY Function ORDER BY Function", type);
     return Collections.emptyList();
   }
 
@@ -317,8 +327,8 @@ public class InterbaseConnector extends JDBCConnector {
     String s = sql.toString();
 
     try (
-      Connection conn = DatabasePool.getConnection(getSettings());
-      PreparedStatement stmt = conn.prepareStatement(s)
+        Connection conn = DatabasePool.getConnection(getSettings());
+        PreparedStatement stmt = conn.prepareStatement(s)
         ) {
       // stmt.setEscapeProcessing(false);
       int num = 1;

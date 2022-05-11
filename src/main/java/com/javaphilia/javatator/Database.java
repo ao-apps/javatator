@@ -76,7 +76,7 @@ public class Database {
     out.print("<h2>Creating database ");
     out.print(db);
     out.print("</h2>");
-    settings.getJDBCConnector().createDatabase(db);
+    settings.getJdbcConnector().createDatabase(db);
     out.print("Database created successfully.\n"
         + "<script language=javascript><!--\n"
         + "top.top_frame.reloadMenu();\n"
@@ -87,19 +87,20 @@ public class Database {
   /**
    * Executes some user-specified SQL on the current database.
    */
-  public Settings doSQL(JavatatorWriter out,
-    String sql,
-    int startPos,
-    int numrows
+  public Settings doSql(
+      JavatatorWriter out,
+      String sql,
+      int startPos,
+      int numrows
   ) throws SQLException, IOException {
-    JDBCConnector conn = settings.getJDBCConnector();
+    final JdbcConnector conn = settings.getJdbcConnector();
     boolean countRows = false;
 
     out.print("<h2>Database ");
     out.print(settings.getDatabase());
     out.print("</h2>"
         + "Results of query: ");
-    Util.printEscapedHTML(out, sql);
+    Util.printEscapedHtml(out, sql);
     out.print("<br><br>\n");
     int totalRows = conn.countRecords();
     printPreviousNext(out, startPos, numrows, totalRows, 1);
@@ -109,13 +110,13 @@ public class Database {
     out.startTable(null, "cellspacing=1");
     try {
       try (
-        Connection dbconn = DatabasePool.getConnection(settings);
-        Statement stmt = dbconn.createStatement();
-        ResultSet results = stmt.executeQuery(sql)
+          Connection dbconn = DatabasePool.getConnection(settings);
+          Statement stmt = dbconn.createStatement();
+          ResultSet results = stmt.executeQuery(sql)
           ) {
         ResultSetMetaData resultMetaData = results.getMetaData();
         int numberOfColumns = resultMetaData.getColumnCount();
-        out.startTR();
+        out.startTr();
         if (numberOfColumns > 0) {
           for (int i = 1; i <= numberOfColumns; i++) {
             String col = resultMetaData.getColumnName(i);
@@ -123,31 +124,31 @@ public class Database {
             if (col.equals(settings.getSortColumn()) && "asc".equals(settings.getSortOrder())) {
               order = "desc";
             }
-            out.printTH("<A href=\"javascript:setSortColumn('" + col + "');"
+            out.printTh("<A href=\"javascript:setSortColumn('" + col + "');"
                 + "setSortOrder('" + order + "');"
                 + "selectAction('dosql');"
                 + "\">"
-                + Util.escapeHTML(col)
+                + Util.escapeHtml(col)
                 + "</A>");
           }
-          out.printTH("Options");
-          out.endTR();
+          out.printTh("Options");
+          out.endTr();
           for (numberOfRows = 0; results.next(); numberOfRows++) {
             if (countRows || (numberOfRows >= startPos && numberOfRows < startPos + numrows)) {
-              out.startTR();
+              out.startTr();
               for (int i = 1; i <= numberOfColumns; i++) {
                 String value = results.getString(i);
-                out.printTD(
+                out.printTd(
                     (value == null) ? ""
                         : (value.length() == 0) ? "&nbsp;"
-                        : Util.escapeHTML(value));
+                        : Util.escapeHtml(value));
               }
-              out.endTR();
+              out.endTr();
             }
           }
         } else {
-          out.printTH("Query executed successfully. No data returned.");
-          out.endTR();
+          out.printTh("Query executed successfully. No data returned.");
+          out.endTr();
         }
       }
     } finally {
@@ -166,7 +167,7 @@ public class Database {
     out.print("<h2>Dropping database ");
     out.print(settings.getDatabase());
     out.print("</h2>");
-    settings.getJDBCConnector().dropDatabase();
+    settings.getJdbcConnector().dropDatabase();
     out.print("Database dropped successfully.\n"
         + "<script language=javascript><!--\n"
         + "var t=top.top_frame;\n"
@@ -189,22 +190,22 @@ public class Database {
 
     out.startTable(null, "cellspacing=1");
     try {
-      out.startTR();
-      out.printTH("Table");
-      out.printTH("Options");
-      out.printTH("Records");
-      out.endTR();
+      out.startTr();
+      out.printTh("Table");
+      out.printTh("Options");
+      out.printTh("Records");
+      out.endTr();
 
-      JDBCConnector conn = settings.getJDBCConnector();
+      JdbcConnector conn = settings.getJdbcConnector();
       List<String> v = conn.getTables();
       int size = v.size();
       for (int i = 0; i < size; i++) {
         String table = v.get(i);
-        out.startTR();
+        out.startTr();
 
-        out.printTD(table);
+        out.printTd(table);
 
-        out.startTD();
+        out.startTd();
         out.print("<a href=\"javascript:selectTable('");
         out.print(table);
         out.print("','doselect');\">Explore</a> | "
@@ -226,11 +227,11 @@ public class Database {
             + "<a href=\"javascript:selectTable('");
         out.print(table);
         out.print("','table_privileges');\">Privileges</a>");
-        out.endTD();
+        out.endTd();
 
-        out.printTD(settings.setTable(table).getJDBCConnector().countRecords());
+        out.printTd(settings.setTable(table).getJdbcConnector().countRecords());
 
-        out.endTR();
+        out.endTr();
       }
     } finally {
       out.endTable();
@@ -334,7 +335,7 @@ public class Database {
     } else if ("dodrop_database".equals(action)) {
       return dropDatabase(out);
     } else if ("dosql".equals(action)) {
-      return doSQL(out, settings.getParameter("sql"), startPos, settings.getNumRows());
+      return doSql(out, settings.getParameter("sql"), startPos, settings.getNumRows());
     } else if (settings.getTable() != null) {
       return new Table(settings).processRequest(out);
     } else if (action == null) {
@@ -354,7 +355,7 @@ public class Database {
     out.print(settings.getDatabase());
     out.print("</h2>\n"
         + "<img src='");
-    settings.printURLParams(req.getContextPath() + "/schema.gif", out);
+    settings.printUrlParams(req.getContextPath() + "/schema.gif", out);
     out.print("'>\n"
         + "<br><br>\n"
         + "<a href=\"javascript:selectAction('db_details');\">View properties</a>");

@@ -55,10 +55,10 @@ public final class Info {
 
       out.startTable(null, "cellspacing=1");
       try {
-        out.startTR();
-        out.printTH("Description");
-        out.printTH("Value");
-        out.endTR();
+        out.startTr();
+        out.printTh("Description");
+        out.printTh("Value");
+        out.endTr();
 
         printInfoRow(out, "DatabaseProduct", metaData.getDatabaseProductName() + ' ' + metaData.getDatabaseProductVersion());
         printInfoRow(out, "Driver", metaData.getDriverName() + ' ' + metaData.getDriverVersion());
@@ -78,7 +78,8 @@ public final class Info {
         printInfoRow(out, "A comma separated list of string functions.", Util.addSpaceToCommas(metaData.getStringFunctions()));
         printInfoRow(out, "A comma separated list of system functions.", Util.addSpaceToCommas(metaData.getSystemFunctions()));
         printInfoRow(out, "A comma separated list of time and date functions.", Util.addSpaceToCommas(metaData.getTimeDateFunctions()));
-        printInfoRow(out, "This is the string that can be used to escape '_' or '%' in the string pattern style catalog search parameters.<br>The '_' character represents any single character.<br>The '%' character represents any sequence of zero or more characters.", metaData.getSearchStringEscape());
+        printInfoRow(out, "This is the string that can be used to escape '_' or '%' in the string pattern style catalog search parameters.<br>"
+            + "The '_' character represents any single character.<br>The '%' character represents any sequence of zero or more characters.", metaData.getSearchStringEscape());
         printInfoRow(out, "Get all the \"extra\" characters that can be used in unquoted identifier names (those beyond a-z, 0-9 and _).", metaData.getExtraNameCharacters());
         printInfoRow(out, "Is \"ALTER TABLE\" with add column supported?", metaData.supportsAlterTableWithAddColumn());
         printInfoRow(out, "Is \"ALTER TABLE\" with drop column supported?", metaData.supportsAlterTableWithDropColumn());
@@ -183,10 +184,10 @@ public final class Info {
    * Prints one row of the info tables.
    */
   private static void printInfoRow(JavatatorWriter out, String title, String value) {
-    out.startTR();
-    out.printTD(title);
-    out.printTD(value);
-    out.endTR();
+    out.startTr();
+    out.printTd(title);
+    out.printTd(value);
+    out.endTr();
   }
 
   private static void printInfoRow(JavatatorWriter out, String title, boolean value) {

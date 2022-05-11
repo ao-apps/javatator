@@ -34,7 +34,7 @@ import java.io.Writer;
 /**
  * Provides additional print methods for writing tables.
  */
-public class HTMLWriter extends FilterWriter {
+public class HtmlWriter extends FilterWriter {
 
   // TODO: Switch to ao-encoding?
   private static final char[] LT = new char[]{'&', '#', '6', '0', ';'};
@@ -44,9 +44,9 @@ public class HTMLWriter extends FilterWriter {
   private static final char[] BR = new char[]{'<', 'b', 'r', ' ', '/', '>'};
 
   /**
-   * Constructs this {@link HTMLWriter}.
+   * Constructs this {@link HtmlWriter}.
    */
-  public HTMLWriter(Writer out) {
+  public HtmlWriter(Writer out) {
     super(out);
   }
 

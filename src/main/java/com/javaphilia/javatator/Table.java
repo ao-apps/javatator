@@ -55,8 +55,8 @@ public class Table {
   }
 
   public Settings addCheckConstraint(JavatatorWriter out) throws SQLException, IOException {
-    String constraint = settings.getParameter("constraint");
-    String checkClause = settings.getParameter("checkclause");
+    final String constraint = settings.getParameter("constraint");
+    final String checkClause = settings.getParameter("checkclause");
     out.print("<h2>Database ");
     out.print(settings.getDatabase());
     out.print(" : table ");
@@ -64,27 +64,27 @@ public class Table {
     out.print(" : added CHECK constraint ");
     out.print(constraint);
     out.print("</h2>\n");
-    settings.getJDBCConnector().addCheckConstraint(constraint, checkClause);
+    settings.getJdbcConnector().addCheckConstraint(constraint, checkClause);
     out.print("Constraint ");
     out.print(constraint);
     out.print(" added successfully with CHECK clause:<br><br>\n");
-    Util.printEscapedHTML(out, checkClause);
+    Util.printEscapedHtml(out, checkClause);
     return printTableProperties(out);
   }
 
   public Settings addForeignKey(JavatatorWriter out) throws SQLException, IOException {
-    String constraint = settings.getParameter("constraint");
-    String primaryKey = settings.getParameter("primarykey");
-    String foreignTable = settings.getParameter("foreigntable");
-    String foreignKey = settings.getParameter("foreignkey");
+    final String constraint = settings.getParameter("constraint");
+    final String primaryKey = settings.getParameter("primarykey");
+    final String foreignTable = settings.getParameter("foreigntable");
+    final String foreignKey = settings.getParameter("foreignkey");
     String matchType = settings.getParameter("match");
     if ("".equals(matchType)) {
       matchType = null;
     }
-    String onDelete = settings.getParameter("ondelete");
-    String onUpdate = settings.getParameter("onupdate");
-    boolean isDeferrable = "DEFERRABLE".equals(settings.getParameter("deferrable"));
-    String initially = settings.getParameter("initially");
+    final String onDelete = settings.getParameter("ondelete");
+    final String onUpdate = settings.getParameter("onupdate");
+    final boolean isDeferrable = "DEFERRABLE".equals(settings.getParameter("deferrable"));
+    final String initially = settings.getParameter("initially");
     out.print("<h2>Database ");
     out.print(settings.getDatabase());
     out.print(" : table ");
@@ -92,7 +92,7 @@ public class Table {
     out.print(" : added foreign key ");
     out.print(constraint);
     out.print("</h2>\n");
-    settings.getJDBCConnector().addForeignKey(constraint,
+    settings.getJdbcConnector().addForeignKey(constraint,
         primaryKey,
         foreignTable,
         foreignKey,
@@ -115,10 +115,10 @@ public class Table {
     out.print(settings.getTable());
     out.print(" : Change Privileges</h2>\n");
     if ("GRANT".equals(settings.getParameter("type"))) {
-      settings.getJDBCConnector().grantPrivileges(settings.getParameter("user"),
+      settings.getJdbcConnector().grantPrivileges(settings.getParameter("user"),
           settings.getParameterValues("privileges"));
     } else {
-      settings.getJDBCConnector().revokePrivileges(settings.getParameter("user"),
+      settings.getJdbcConnector().revokePrivileges(settings.getParameter("user"),
           settings.getParameterValues("privileges"));
     }
     out.print("Privileges for this table have been updated<br><br>\n");
@@ -126,7 +126,7 @@ public class Table {
   }
 
   /**
-   * Shows a screen asking if the user wants to delete the specified table
+   * Shows a screen asking if the user wants to delete the specified table.
    */
   public Settings confirmDeleteTable(JavatatorWriter out) throws SQLException {
     out.print("<h2>Database ");
@@ -196,7 +196,7 @@ public class Table {
   }
 
   /**
-   * Asks the user to confirm that they want to empty the current table
+   * Asks the user to confirm that they want to empty the current table.
    */
   public Settings confirmEmptyTable(JavatatorWriter out) throws SQLException {
     out.print("<h2>Database ");
@@ -248,7 +248,7 @@ public class Table {
     out.print(" : created table ");
     out.print(settings.getTable());
     out.print("</h2>\n");
-    settings.getJDBCConnector().createTable(
+    settings.getJdbcConnector().createTable(
         newColumn,
         newType,
         newLength,
@@ -275,7 +275,7 @@ public class Table {
     out.print(" : deleting table ");
     out.print(settings.getTable());
     out.print("</h2>\n");
-    settings.getJDBCConnector().dropTable();
+    settings.getJdbcConnector().dropTable();
     out.print("Table deleted successfully.\n"
         + "<script language=javascript><!--\n"
         + "top.top_frame.deleteTable('");
@@ -290,8 +290,8 @@ public class Table {
    * Removes the specified constraint.
    */
   public Settings dropConstraint(JavatatorWriter out) throws SQLException, IOException {
-    String constraint = settings.getParameter("constraint");
-    String behaviour = settings.getParameter("behaviour");
+    final String constraint = settings.getParameter("constraint");
+    final String behaviour = settings.getParameter("behaviour");
     out.print("<h2>Database ");
     out.print(settings.getDatabase());
     out.print(" : table ");
@@ -299,7 +299,7 @@ public class Table {
     out.print(" : constraint ");
     out.print(constraint);
     out.print(" dropped</h2>\n");
-    settings.getJDBCConnector().dropConstraint(constraint, behaviour);
+    settings.getJdbcConnector().dropConstraint(constraint, behaviour);
     out.print("Constraint ");
     out.print(constraint);
     out.print(" has been dropped successfully.");
@@ -318,7 +318,7 @@ public class Table {
     out.print(" : dropping index ");
     out.print(indexName);
     out.print("</h2>\n");
-    settings.getJDBCConnector().dropIndex(indexName);
+    settings.getJdbcConnector().dropIndex(indexName);
     out.print("Index dropped successfully.");
     return printTableProperties(out);
   }
@@ -336,8 +336,8 @@ public class Table {
         + "# Please report anything strange to jason@javatator.com<br>\n"
         + "#<br><br>\n");
 
-    HTMLWriter html = new HTMLWriter(out);
-    JDBCConnector conn = settings.getJDBCConnector();
+    HtmlWriter html = new HtmlWriter(out);
+    JdbcConnector conn = settings.getJdbcConnector();
     if (settings.getParameter("structure") != null) {
       conn.dumpTableStructure(html);
     }
@@ -356,7 +356,7 @@ public class Table {
     out.print(" : emptied table ");
     out.print(settings.getTable());
     out.print("</h2>\n");
-    settings.getJDBCConnector().emptyTable();
+    settings.getJdbcConnector().emptyTable();
     out.print("Table emptied successfully.");
     return new Database(settings).printDatabaseDetails(out);
   }
@@ -391,17 +391,17 @@ public class Table {
     out.print(" : table ");
     out.print(settings.getTable());
     out.print(" : add foreign key</h2>\n");
-    JDBCConnector conn = settings.getJDBCConnector();
-    List<String> tables = conn.getTables();
-    List<String> columns = conn.getColumns().getNames();
+    final JdbcConnector conn = settings.getJdbcConnector();
+    final List<String> tables = conn.getTables();
+    final List<String> columns = conn.getColumns().getNames();
     out.startTable(null, "cellspacing=1");
-    out.startTR();
-    out.printTD("Constraint name:");
-    out.printTD("<input type=text name=constraint value=''>");
-    out.endTR();
-    out.startTR();
-    out.printTD("Column:");
-    out.startTD();
+    out.startTr();
+    out.printTd("Constraint name:");
+    out.printTd("<input type=text name=constraint value=''>");
+    out.endTr();
+    out.startTr();
+    out.printTd("Column:");
+    out.startTd();
     out.print("<select name=primarykey>\n");
     int size = columns.size();
     for (int i = 0; i < size; i++) {
@@ -412,10 +412,10 @@ public class Table {
       out.print('\n');
     }
     out.print("</select>\n");
-    out.endTD();
-    out.endTR();
-    out.startTR();
-    out.startTD("colspan=2");
+    out.endTd();
+    out.endTr();
+    out.startTr();
+    out.startTd("colspan=2");
     out.print("References table <select name=foreigntable>\n");
     size = tables.size();
     for (int i = 0; i < size; i++) {
@@ -427,49 +427,49 @@ public class Table {
     }
     out.print("</select>\n");
     out.print("column <input type=text name=foreignkey value=''>\n");
-    out.endTD();
-    out.endTR();
-    out.startTR();
-    out.printTD("MATCH:");
-    out.printTD("<select name=match>\n"
+    out.endTd();
+    out.endTr();
+    out.startTr();
+    out.printTd("MATCH:");
+    out.printTd("<select name=match>\n"
         + " <option value=''>[DEFAULT]\n"
         + " <option value=PARTIAL>PARTIAL\n"
         + " <option value=ALL>ALL\n"
         + "</select>");
-    out.endTR();
-    out.startTR();
-    out.printTD("ON DELETE:");
-    out.printTD("<select name=ondelete>\n"
+    out.endTr();
+    out.startTr();
+    out.printTd("ON DELETE:");
+    out.printTd("<select name=ondelete>\n"
         + " <option value='NO ACTION'>NO ACTION\n"
         + " <option value=RESTRICT>RESTRICT\n"
         + " <option value=CASCADE>CASCADE\n"
         + " <option value='SET NULL'>SET NULL\n"
         + " <option value='SET DEFAULT'>SET DEFAULT\n"
         + "</select>");
-    out.endTR();
-    out.startTR();
-    out.printTD("ON UPDATE:");
-    out.printTD("<select name=onupdate>\n"
+    out.endTr();
+    out.startTr();
+    out.printTd("ON UPDATE:");
+    out.printTd("<select name=onupdate>\n"
         + " <option value='NO ACTION'>NO ACTION\n"
         + " <option value=RESTRICT>RESTRICT\n"
         + " <option value=CASCADE>CASCADE\n"
         + " <option value='SET NULL'>SET NULL\n"
         + " <option value='SET DEFAULT'>SET DEFAULT\n"
         + "</select>");
-    out.endTR();
-    out.startTR();
-    out.printTD("<select name=deferrable>\n"
+    out.endTr();
+    out.startTr();
+    out.printTd("<select name=deferrable>\n"
         + "<option value='NOT DEFERRABLE'>NOT DEFERRABLE\n"
         + "<option value='DEFERRABLE'>DEFERRABLE\n"
         + "</select>", "colspan=2");
-    out.endTR();
-    out.startTR();
-    out.printTD("INITIALLY:");
-    out.printTD("<select name=initially>\n"
+    out.endTr();
+    out.startTr();
+    out.printTd("INITIALLY:");
+    out.printTd("<select name=initially>\n"
         + "<option value=IMMEDIATE>IMMEDIATE\n"
         + "<option value=DEFERRED>DEFERRED\n"
         + "</select>");
-    out.endTR();
+    out.endTr();
     out.endTable();
     out.print("<input type=submit value='Go!' onClick=\"return selectAction('doadd_foreignkey')\">\n "
         + "<input type=submit value='<< Back' onClick=\"history.go(-1);return false;\">");
@@ -477,10 +477,10 @@ public class Table {
   }
 
   /**
-   * Displays a form enabling the user to create a new table
+   * Displays a form enabling the user to create a new table.
    */
   public Settings printCreateTable(JavatatorWriter out) throws SQLException, IOException {
-    int columns = Integer.parseInt(settings.getParameter("numcolumns"));
+    final int columns = Integer.parseInt(settings.getParameter("numcolumns"));
     out.print("<h2>Database ");
     out.print(settings.getDatabase());
     out.print(" : table ");
@@ -489,31 +489,31 @@ public class Table {
 
     out.startTable(null, "cellspacing=1");
 
-    out.startTR();
-    out.printTH("Column");
-    out.printTH("Type");
-    out.printTH("Length/Set");
-    out.printTH("Nullable");
-    out.printTH("Default");
-    out.printTH("Remarks");
-    out.printTH("Primary");
-    out.printTH("Index");
-    out.printTH("Unique");
-    out.endTR();
+    out.startTr();
+    out.printTh("Column");
+    out.printTh("Type");
+    out.printTh("Length/Set");
+    out.printTh("Nullable");
+    out.printTh("Default");
+    out.printTh("Remarks");
+    out.printTh("Primary");
+    out.printTh("Index");
+    out.printTh("Unique");
+    out.endTr();
 
-    List<String> types = settings.getJDBCConnector().getTypes();
+    List<String> types = settings.getJdbcConnector().getTypes();
     int size = types.size();
 
     for (int i = 0; i < columns; i++) {
-      out.startTR();
+      out.startTr();
 
-      out.startTD();
+      out.startTd();
       out.print("<input type='text' name='newcolumn");
       out.print(i);
       out.print("' size=10>");
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       out.print("<select name='newtype");
       out.print(i);
       out.print("'>\n");
@@ -525,54 +525,54 @@ public class Table {
         out.print(type);
       }
       out.print("</select>");
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       out.print("<input type='text' name='newlength");
       out.print(i);
       out.print("' size=8>");
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       out.print("<select name='newnull");
       out.print(i);
       out.print("'>\n"
           + "<option value='not null' selected>NO</option>\n"
           + "<option value='null'>YES</option>\n"
           + "</select>");
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       out.print("<input type='text' name='newdefault");
       out.print(i);
       out.print("' size=12>");
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       out.print("<input type='text' name='newremarks");
       out.print(i);
       out.print("' size=12>");
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       out.print("<input type='checkbox' name='primarykey");
       out.print(i);
       out.print("' size=12 value='yes'>");
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       out.print("<input type='checkbox' name='indexkey");
       out.print(i);
       out.print("' size=12 value='yes'>");
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       out.print("<input type='checkbox' name='uniquekey");
       out.print(i);
       out.print("' size=12 value='yes'>");
-      out.endTD();
+      out.endTd();
 
-      out.endTR();
+      out.endTr();
     }
     out.endTable();
     out.print("<br><input type='submit' value='Save!' onClick=\"return selectAction('docreate_table')\">");
@@ -639,29 +639,29 @@ public class Table {
     out.print(settings.getTable());
     out.print(" : Privileges</h2>\n"
         + "Privileges for this table:<br><br>\n");
-    JDBCConnector conn = settings.getJDBCConnector();
+    JdbcConnector conn = settings.getJdbcConnector();
     out.startTable(null, "cellspacing=1");
-    out.startTR();
-    out.printTH("Grantor");
-    out.printTH("Grantee");
-    out.printTH("Privileges");
-    out.printTH("Grantable?");
-    out.endTR();
+    out.startTr();
+    out.printTh("Grantor");
+    out.printTh("Grantee");
+    out.printTh("Privileges");
+    out.printTh("Grantable?");
+    out.endTr();
     try {
       TablePrivileges tp = conn.getTablePrivileges();
       List<String> grantors = tp.getGrantors();
       List<String> grantees = tp.getGrantees();
       List<String> privileges = tp.getPrivileges();
-      List<JDBCConnector.Boolean> isGrantable = tp.getIsGrantable();
+      List<JdbcConnector.Boolean> isGrantable = tp.getIsGrantable();
       int size = grantors.size();
       for (int i = 0; i < size; i++) {
-        out.startTR();
-        out.printTD(grantors.get(i));
-        out.printTD(grantees.get(i));
-        out.printTD(privileges.get(i));
-        JDBCConnector.Boolean g = isGrantable.get(i);
-        out.printTD((g == JDBCConnector.Boolean.TRUE) ? "YES" : (g == JDBCConnector.Boolean.FALSE) ? "NO" : "Unknown");
-        out.endTR();
+        out.startTr();
+        out.printTd(grantors.get(i));
+        out.printTd(grantees.get(i));
+        out.printTd(privileges.get(i));
+        JdbcConnector.Boolean g = isGrantable.get(i);
+        out.printTd((g == JdbcConnector.Boolean.TRUE) ? "YES" : (g == JdbcConnector.Boolean.FALSE) ? "NO" : "Unknown");
+        out.endTr();
       }
     } finally {
       out.endTable();
@@ -669,20 +669,20 @@ public class Table {
     out.print("<br><br>");
     out.startTable(null, "cellspacing=1");
     try {
-      out.startTR();
-      out.printTD("Action:");
-      out.printTD("<select name=type>\n"
+      out.startTr();
+      out.printTd("Action:");
+      out.printTd("<select name=type>\n"
           + "<option value=GRANT>GRANT\n"
           + "<option value=REVOKE>REVOKE\n"
           + "</select>");
-      out.endTR();
-      out.startTR();
-      out.printTD("User:");
-      out.printTD("<input type=text name=user>");
-      out.endTR();
-      out.startTR();
-      out.printTD("Privileges:");
-      out.startTD();
+      out.endTr();
+      out.startTr();
+      out.printTd("User:");
+      out.printTd("<input type=text name=user>");
+      out.endTr();
+      out.startTr();
+      out.printTd("Privileges:");
+      out.startTd();
       try {
         List<String> v = conn.getPossiblePrivileges();
         int size = v.size();
@@ -695,13 +695,13 @@ public class Table {
           out.print('\n');
         }
       } finally {
-        out.endTD();
-        out.endTR();
+        out.endTd();
+        out.endTr();
       }
-      out.startTR();
-      out.printTD("On table:");
-      out.printTD(settings.getTable());
-      out.endTR();
+      out.startTr();
+      out.printTd("On table:");
+      out.printTd(settings.getTable());
+      out.endTr();
     } finally {
       out.endTable();
     }
@@ -722,12 +722,12 @@ public class Table {
         + "SELECT columns (at least one):<br>\n"
         + "<select multiple name='columns' size=10>");
 
-    JDBCConnector conn = settings.getJDBCConnector();
+    JdbcConnector conn = settings.getJdbcConnector();
     Columns columns = conn.getColumns();
     List<String> names = columns.getNames();
     List<String> types = columns.getTypes();
     // List<String> lengths=columns.getLengths();
-    List<JDBCConnector.Boolean> areNullable = columns.areNullable();
+    List<JdbcConnector.Boolean> areNullable = columns.areNullable();
     List<String> defaults = columns.getDefaults();
     int size = names.size();
     for (int i = 0; i < size; i++) {
@@ -749,32 +749,32 @@ public class Table {
 
     out.startTable(null, "cellspacing=1");
 
-    out.startTR();
-    out.printTH("Column");
-    out.printTH("Type");
-    out.printTH("Value");
-    out.endTR();
+    out.startTr();
+    out.printTh("Column");
+    out.printTh("Type");
+    out.printTh("Value");
+    out.endTr();
 
     for (int i = 0; i < size; i++) {
-      String columnName = names.get(i);
-      String columnType = types.get(i);
-      String columnDefault = defaults.get(i);
-      JDBCConnector.Boolean isNullable = areNullable.get(i);
+      final String columnName = names.get(i);
+      final String columnType = types.get(i);
+      final String columnDefault = defaults.get(i);
+      final JdbcConnector.Boolean isNullable = areNullable.get(i);
 
-      out.startTR();
+      out.startTr();
 
-      out.startTD();
+      out.startTd();
       out.print(columnName);
       out.print("<input type='hidden' name='scolumn");
       out.print(i);
       out.print("' value='");
       out.print(columnName);
       out.print("'>");
-      out.endTD();
+      out.endTd();
 
-      out.printTD(columnType);
+      out.printTd(columnType);
 
-      out.startTD();
+      out.startTd();
 
       if ((columnDefault == null || columnDefault.charAt(0) != 'F') && columnType.toUpperCase().endsWith("TEXT")) {
         out.print("<textarea rows=16 cols=80 name='value");
@@ -793,7 +793,7 @@ public class Table {
         }
         out.print("'>");
       }
-      if (isNullable == JDBCConnector.Boolean.TRUE) {
+      if (isNullable == JdbcConnector.Boolean.TRUE) {
         out.print("<input type='checkbox' name='null");
         out.print(i);
         out.print("' value='NULL'");
@@ -802,9 +802,9 @@ public class Table {
         }
         out.print("> NULL");
       }
-      out.endTD();
+      out.endTd();
 
-      out.endTR();
+      out.endTr();
     }
     out.endTable();
 
@@ -825,51 +825,51 @@ public class Table {
 
     out.startTable(null, "cellspacing=1");
 
-    JDBCConnector conn = settings.getJDBCConnector();
+    JdbcConnector conn = settings.getJdbcConnector();
 
     try {
-      out.startTR();
-      out.printTH("Column");
-      out.printTH("Type");
-      out.printTH("Length/Set");
-      out.printTH("Nullable");
-      out.printTH("Default");
-      out.printTH("Remarks");
-      out.printTH("Options");
-      out.endTR();
+      out.startTr();
+      out.printTh("Column");
+      out.printTh("Type");
+      out.printTh("Length/Set");
+      out.printTh("Nullable");
+      out.printTh("Default");
+      out.printTh("Remarks");
+      out.printTh("Options");
+      out.endTr();
 
       Columns columns = conn.getColumns();
       List<String> names = columns.getNames();
       List<String> types = columns.getTypes();
       List<String> lengths = columns.getLengths();
-      List<JDBCConnector.Boolean> areNullable = columns.areNullable();
+      List<JdbcConnector.Boolean> areNullable = columns.areNullable();
       List<String> defaults = columns.getDefaults();
       int size = names.size();
       for (int i = 0; i < size; i++) {
-        String columnName = names.get(i);
-        String columnDefault = defaults.get(i);
-        out.startTR();
-        out.printTD(columnName);
-        out.printTD(types.get(i));
-        out.printTD(lengths.get(i));
-        out.printTD(JDBCConnector.getBooleanString(areNullable.get(i)));
+        final String columnName = names.get(i);
+        final String columnDefault = defaults.get(i);
+        out.startTr();
+        out.printTd(columnName);
+        out.printTd(types.get(i));
+        out.printTd(lengths.get(i));
+        out.printTd(JdbcConnector.getBooleanString(areNullable.get(i)));
         if (columnDefault == null) {
-          out.printTD("");
+          out.printTd("");
         } else if (columnDefault.length() == 1) {
-          out.printTD("&nbsp;");
+          out.printTd("&nbsp;");
         } else {
-          out.printTD(columnDefault.substring(1));
+          out.printTd(columnDefault.substring(1));
         }
         String rem = conn.getRemark(columnName);
         if (rem == null) {
-          out.printTD("");
+          out.printTd("");
         } else if (rem.length() == 0) {
-          out.printTD("&nbsp;");
+          out.printTd("&nbsp;");
         } else {
-          out.printTD(rem);
+          out.printTd(rem);
         }
 
-        out.startTD();
+        out.startTd();
         out.print("<a href=\"javascript:setColumn('");
         out.print(columnName);
         out.print("'); selectAction('edit_column');\">Edit</a>&nbsp;|&nbsp;"
@@ -885,9 +885,9 @@ public class Table {
             + "<a href=\"javascript:setColumn('");
         out.print(columnName);
         out.print("'); selectAction('add_uniqueindex');\">Unique</a>");
-        out.endTD();
+        out.endTd();
 
-        out.endTR();
+        out.endTr();
       }
     } finally {
       out.endTable();
@@ -904,31 +904,31 @@ public class Table {
         + "<br><br>\n");
 
     // Obtain all the primary key names and columns for this table
-    PrimaryKeys pKeys = conn.getPrimaryKeys();
-    List<String> primaryKeyNames = pKeys.getNames();
-    List<String> primaryKeyColumns = pKeys.getColumns();
+    PrimaryKeys pkeys = conn.getPrimaryKeys();
+    List<String> primaryKeyNames = pkeys.getNames();
+    List<String> primaryKeyColumns = pkeys.getColumns();
     int primaryKeyCount = primaryKeyNames.size();
 
     if (primaryKeyCount > 0) {
       out.print("<b>Primary Keys:</b><br>\n");
       out.startTable(null, "cellspacing=1");
       try {
-        out.startTR();
-        out.printTH("Key name");
-        out.printTH("Column");
-        out.printTH("Options");
-        out.endTR();
+        out.startTr();
+        out.printTh("Key name");
+        out.printTh("Column");
+        out.printTh("Options");
+        out.endTr();
 
         for (int i = 0; i < primaryKeyCount; i++) {
-          out.startTR();
-          out.printTD(primaryKeyNames.get(i));
-          out.printTD(primaryKeyColumns.get(i));
-          out.startTD();
+          out.startTr();
+          out.printTd(primaryKeyNames.get(i));
+          out.printTd(primaryKeyColumns.get(i));
+          out.startTd();
           out.print("<a href=\"javascript:setColumn('");
           out.print(primaryKeyColumns.get(i));
           out.print("');selectAction('drop_primarykey');\">Drop</a>");
-          out.endTD();
-          out.endTR();
+          out.endTd();
+          out.endTr();
         }
       } finally {
         out.endTable();
@@ -938,7 +938,7 @@ public class Table {
 
     Indexes indexes = conn.getIndexes();
     List<String> indexNames = indexes.getNames();
-    List<JDBCConnector.Boolean> areUnique = indexes.areUnique();
+    List<JdbcConnector.Boolean> areUnique = indexes.areUnique();
     List<String> colNames = indexes.getColumns();
     int size = indexNames.size();
     if (size > 0) {
@@ -947,29 +947,29 @@ public class Table {
 
       out.startTable(null, "cellspacing=1");
       try {
-        out.startTR();
-        out.printTH("Key name");
-        out.printTH("Column");
-        out.printTH("Unique");
-        out.printTH("Options");
-        out.endTR();
+        out.startTr();
+        out.printTh("Key name");
+        out.printTh("Column");
+        out.printTh("Unique");
+        out.printTh("Options");
+        out.endTr();
 
         for (int i = 0; i < size; i++) {
-          out.startTR();
+          out.startTr();
 
-          out.printTD(indexNames.get(i));
-          out.printTD(colNames.get(i));
-          out.printTD(JDBCConnector.getBooleanString(areUnique.get(i)));
+          out.printTd(indexNames.get(i));
+          out.printTd(colNames.get(i));
+          out.printTd(JdbcConnector.getBooleanString(areUnique.get(i)));
 
-          out.startTD();
+          out.startTd();
           out.print("<a href=\"javascript:setColumn('");
           out.print(colNames.get(i));
           out.print("'); setIndexName('");
           out.print(indexNames.get(i));
           out.print("');selectAction('drop_index');\">Drop</a>");
-          out.endTD();
+          out.endTd();
 
-          out.endTR();
+          out.endTr();
         }
       } finally {
         out.endTable();
@@ -988,17 +988,17 @@ public class Table {
 
         out.startTable(null, "cellspacing=1");
         try {
-          out.startTR();
-          out.printTH("Name");
-          out.printTH("Foreign Key");
-          out.printTH("Primary Key");
-          out.printTH("Insert Rule");
-          out.printTH("Delete Rule");
-          out.printTH("Update Rule");
-          out.printTH("Deferrability");
-          out.printTH("Initially Deferred");
-          out.printTH("Options");
-          out.endTR();
+          out.startTr();
+          out.printTh("Name");
+          out.printTh("Foreign Key");
+          out.printTh("Primary Key");
+          out.printTh("Insert Rule");
+          out.printTh("Delete Rule");
+          out.printTh("Update Rule");
+          out.printTh("Deferrability");
+          out.printTh("Initially Deferred");
+          out.printTh("Options");
+          out.endTr();
 
           if (importedSize > 0) {
             assert importedKeys != null;
@@ -1010,25 +1010,25 @@ public class Table {
             List<String> insertRules = importedKeys.getInsertRules();
             List<String> deleteRules = importedKeys.getDeleteRules();
             List<String> updateRules = importedKeys.getUpdateRules();
-            List<JDBCConnector.Boolean> areDeferrable = importedKeys.areDeferrable();
-            List<JDBCConnector.Boolean> areInitiallyDeferred = importedKeys.areInitiallyDeferred();
+            List<JdbcConnector.Boolean> areDeferrable = importedKeys.areDeferrable();
+            List<JdbcConnector.Boolean> areInitiallyDeferred = importedKeys.areInitiallyDeferred();
 
             for (int i = 0; i < importedSize; i++) {
               String constraint = constraintNames.get(i);
 
-              out.startTR();
-              out.printTD(Util.escapeHTML(constraint));
-              out.printTD(Util.escapeHTML(foreignTables.get(i) + '.' + foreignKeys.get(i)));
-              out.printTD(Util.escapeHTML(primaryTables.get(i) + '.' + primaryKeys.get(i)));
-              out.printTD(insertRules.get(i));
-              out.printTD(deleteRules.get(i));
-              out.printTD(updateRules.get(i));
-              out.printTD(JDBCConnector.getBooleanString(areDeferrable.get(i)));
-              out.printTD(JDBCConnector.getBooleanString(areInitiallyDeferred.get(i)));
-              out.printTD("<a href=\"javascript:setConstraint('"
+              out.startTr();
+              out.printTd(Util.escapeHtml(constraint));
+              out.printTd(Util.escapeHtml(foreignTables.get(i) + '.' + foreignKeys.get(i)));
+              out.printTd(Util.escapeHtml(primaryTables.get(i) + '.' + primaryKeys.get(i)));
+              out.printTd(insertRules.get(i));
+              out.printTd(deleteRules.get(i));
+              out.printTd(updateRules.get(i));
+              out.printTd(JdbcConnector.getBooleanString(areDeferrable.get(i)));
+              out.printTd(JdbcConnector.getBooleanString(areInitiallyDeferred.get(i)));
+              out.printTd("<a href=\"javascript:setConstraint('"
                   + Util.escapeJavaScript(constraint)
                   + "');selectAction('drop_constraint');\">Drop</a>");
-              out.endTR();
+              out.endTr();
             }
           }
 
@@ -1042,25 +1042,25 @@ public class Table {
             List<String> insertRules = exportedKeys.getInsertRules();
             List<String> deleteRules = exportedKeys.getDeleteRules();
             List<String> updateRules = exportedKeys.getUpdateRules();
-            List<JDBCConnector.Boolean> areDeferrable = exportedKeys.areDeferrable();
-            List<JDBCConnector.Boolean> areInitiallyDeferred = exportedKeys.areInitiallyDeferred();
+            List<JdbcConnector.Boolean> areDeferrable = exportedKeys.areDeferrable();
+            List<JdbcConnector.Boolean> areInitiallyDeferred = exportedKeys.areInitiallyDeferred();
 
             for (int i = 0; i < exportedSize; i++) {
               String constraint = constraintNames.get(i);
 
-              out.startTR();
-              out.printTD(Util.escapeHTML(constraint));
-              out.printTD(Util.escapeHTML(foreignTables.get(i) + '.' + foreignKeys.get(i)));
-              out.printTD(Util.escapeHTML(primaryTables.get(i) + '.' + primaryKeys.get(i)));
-              out.printTD(insertRules.get(i));
-              out.printTD(deleteRules.get(i));
-              out.printTD(updateRules.get(i));
-              out.printTD(JDBCConnector.getBooleanString(areDeferrable.get(i)));
-              out.printTD(JDBCConnector.getBooleanString(areInitiallyDeferred.get(i)));
-              out.printTD("<a href=\"javascript:setConstraint('"
+              out.startTr();
+              out.printTd(Util.escapeHtml(constraint));
+              out.printTd(Util.escapeHtml(foreignTables.get(i) + '.' + foreignKeys.get(i)));
+              out.printTd(Util.escapeHtml(primaryTables.get(i) + '.' + primaryKeys.get(i)));
+              out.printTd(insertRules.get(i));
+              out.printTd(deleteRules.get(i));
+              out.printTd(updateRules.get(i));
+              out.printTd(JdbcConnector.getBooleanString(areDeferrable.get(i)));
+              out.printTd(JdbcConnector.getBooleanString(areInitiallyDeferred.get(i)));
+              out.printTd("<a href=\"javascript:setConstraint('"
                   + Util.escapeJavaScript(constraint)
                   + "');selectAction('drop_constraint');\">Drop</a>");
-              out.endTR();
+              out.endTr();
             }
           }
         } finally {
@@ -1079,18 +1079,18 @@ public class Table {
         out.print("<b>Check Constraints:</b><br>\n");
         out.startTable(null, "cellspacing=1");
         try {
-          out.startTR();
-          out.printTH("Constraint");
-          out.printTH("Check Clause");
-          out.printTH("Options");
-          out.endTR();
+          out.startTr();
+          out.printTh("Constraint");
+          out.printTh("Check Clause");
+          out.printTh("Options");
+          out.endTr();
           for (int i = 0; i < size; i++) {
-            out.startTR();
-            out.printTD(names.get(i));
-            out.startTD();
-            Util.printEscapedHTML(out, checkClauses.get(i));
-            out.endTD();
-            out.endTR();
+            out.startTr();
+            out.printTd(names.get(i));
+            out.startTd();
+            Util.printEscapedHtml(out, checkClauses.get(i));
+            out.endTd();
+            out.endTr();
           }
         } finally {
           out.endTable();
@@ -1176,7 +1176,7 @@ public class Table {
     out.print(" to ");
     out.print(newTable);
     out.print("</h2>\n");
-    settings.getJDBCConnector().renameTable(newTable);
+    settings.getJdbcConnector().renameTable(newTable);
     out.print("Table ");
     out.print(table);
     out.print(" renamed to ");
@@ -1197,7 +1197,7 @@ public class Table {
     out.print("</h2>\n");
 
     // Get the connector that will be used to access the database
-    JDBCConnector conn = settings.getJDBCConnector();
+    JdbcConnector conn = settings.getJdbcConnector();
 
     // Build the SQL select statement
     int startPos = getStartPos();         // The row number of the first that will be returned
@@ -1205,75 +1205,75 @@ public class Table {
     String selectCols;                  // The list of all columns that are being selected
     String selectWhere;                 // The settings provided where clause
     String fullQuery;                   // The result of the SQL generation
-    {
-      int count = 0;
-      String limitClause = conn.getLimitClause(startPos, numrows);
-      String sortColumn = settings.getSortColumn();
+      {
+        int count = 0;
+        final String limitClause = conn.getLimitClause(startPos, numrows);
+        final String sortColumn = settings.getSortColumn();
 
-      while (settings.getParameter("scolumn" + count) != null) {
-        count++;
-      }
+        while (settings.getParameter("scolumn" + count) != null) {
+          count++;
+        }
 
-      String[] colNames = new String[count];
-      String[] colValues = new String[count];
-      boolean[] likeComparators = new boolean[count];
-      for (int i = 0; i < count; i++) {
-        colNames[i] = settings.getParameter("scolumn" + i);
-        if (settings.getParameter("null" + i) != null) {
-          colValues[i] = null;
+        String[] colNames = new String[count];
+        String[] colValues = new String[count];
+        boolean[] likeComparators = new boolean[count];
+        for (int i = 0; i < count; i++) {
+          colNames[i] = settings.getParameter("scolumn" + i);
+          if (settings.getParameter("null" + i) != null) {
+            colValues[i] = null;
+          } else {
+            colValues[i] = settings.getParameter("value" + i);
+          }
+          likeComparators[i] = settings.getParameter("like" + i) != null;
+        }
+        String[] selectColNames = settings.getParameterValues("columns");
+
+        if (count > 0 && "doselect".equals(settings.getAction())) {
+          StringBuilder sb = new StringBuilder();
+          int size = (selectColNames == null) ? 0 : selectColNames.length;
+          for (int i = 0; i < size; i++) {
+            if (i > 0) {
+              sb.append(',');
+            }
+            sb.append(conn.quoteColumn(selectColNames[i]));
+          }
+          if (size == 0) {
+            sb.append('*');
+          }
+          selectCols = sb.toString();
+          sb.setLength(0);
+          sb.append(conn.getSelectWhereClause(colNames, colValues));
+          if (!"".equals(settings.getParameter("selectwhere"))) {
+            if (sb.length() > 0) {
+              sb.append(" AND ");
+            }
+            sb.append(settings.getParameter("selectwhere"));
+          }
+          selectWhere = sb.toString();
         } else {
-          colValues[i] = settings.getParameter("value" + i);
+          selectCols = settings.getParameter("selectcols");
+          selectWhere = settings.getParameter("selectwhere");
         }
-        likeComparators[i] = settings.getParameter("like" + i) != null;
-      }
-      String[] selectColNames = settings.getParameterValues("columns");
+        StringBuilder query = new StringBuilder()
+            .append("SELECT ")
+            .append((selectCols == null || "".equals(selectCols))
+                ? "*" :
+                selectCols
+            ).append(" FROM ")
+            .append(conn.quoteTable(settings.getTable()));
+        if (selectWhere != null && !"".equals(selectWhere)) {
+          query.append(" WHERE ").append(selectWhere);
+        }
 
-      if (count > 0 && "doselect".equals(settings.getAction())) {
-        StringBuilder sb = new StringBuilder();
-        int size = (selectColNames == null) ? 0 : selectColNames.length;
-        for (int i = 0; i < size; i++) {
-          if (i > 0) {
-            sb.append(',');
-          }
-          sb.append(conn.quoteColumn(selectColNames[i]));
+        //String sortClause = "";
+        if (sortColumn != null && !"".equals(sortColumn)) {
+          query.append(" ORDER BY ").append(conn.quoteColumn(sortColumn)).append(' ').append(settings.getSortOrder());
         }
-        if (size == 0) {
-          sb.append('*');
+        if (limitClause != null) {
+          query.append(' ').append(limitClause);
         }
-        selectCols = sb.toString();
-        sb.setLength(0);
-        sb.append(conn.getSelectWhereClause(colNames, colValues));
-        if (!"".equals(settings.getParameter("selectwhere"))) {
-          if (sb.length() > 0) {
-            sb.append(" AND ");
-          }
-          sb.append(settings.getParameter("selectwhere"));
-        }
-        selectWhere = sb.toString();
-      } else {
-        selectCols = settings.getParameter("selectcols");
-        selectWhere = settings.getParameter("selectwhere");
+        fullQuery = query.toString();
       }
-      StringBuilder query = new StringBuilder()
-          .append("SELECT ")
-          .append((selectCols == null || "".equals(selectCols))
-              ? "*" :
-              selectCols
-          ).append(" FROM ")
-          .append(conn.quoteTable(settings.getTable()));
-      if (selectWhere != null && !"".equals(selectWhere)) {
-        query.append(" WHERE ").append(selectWhere);
-      }
-
-      //String sortClause = "";
-      if (sortColumn != null && !"".equals(sortColumn)) {
-        query.append(" ORDER BY ").append(conn.quoteColumn(sortColumn)).append(' ').append(settings.getSortOrder());
-      }
-      if (limitClause != null) {
-        query.append(' ').append(limitClause);
-      }
-      fullQuery = query.toString();
-    }
 
     int totalRows;    // The total number of rows in the database
     if (selectCols == null && selectWhere == null) {
@@ -1288,7 +1288,7 @@ public class Table {
     } else {
       totalRows = 0;
       out.print("<b>Results of query:</b> ");
-      Util.printEscapedHTML(out, fullQuery);
+      Util.printEscapedHtml(out, fullQuery);
       out.print("<br><br>\n");
     }
     // Store the hidden fields for later use
@@ -1311,20 +1311,20 @@ public class Table {
       try (Connection dbcon = DatabasePool.getConnection(settings)) {
         // Get the list of all primary keys for this database/table
         List<String> primaryKeyCols = conn.getPrimaryKeys().getColumns();
-        StringBuilder primaryKeysSB = new StringBuilder();
+        StringBuilder primaryKeysSb = new StringBuilder();
         String primaryKeysString;
 
         // The number of columns in the results
         int columnCount;
 
         // The unique IDs of the imported key for each column (what this column references)
-        List<Integer> importedKeyIDs;
+        List<Integer> importedKeyIds;
         ForeignKeys importedKeys = conn.getImportedKeys();
         //for (int c=0;c<importedKeys.getSize();c++) {
         //    System.err.println("importedKeys: "+importedKeys.getForeignTable(c)+"."+importedKeys.getForeignKey(c)+"->"+importedKeys.getPrimaryTable(c)+"."+importedKeys.getPrimaryKey(c));
         //}
         // The unique IDs of the columns that reference this table
-        List<List<Integer>> exportedIDs;
+        List<List<Integer>> exportedIds;
         ForeignKeys exportedKeys = conn.getExportedKeys();
         //for (int c=0;c<exportedKeys.getSize();c++) {
         //    System.err.println("exportedKeys: "+exportedKeys.getForeignTable(c)+"."+exportedKeys.getForeignKey(c)+"->"+exportedKeys.getPrimaryTable(c)+"."+exportedKeys.getPrimaryKey(c));
@@ -1343,15 +1343,15 @@ public class Table {
         int resultSize;
 
         try (
-          Statement stmt = dbcon.createStatement();
-          ResultSet results = stmt.executeQuery(fullQuery)
+            Statement stmt = dbcon.createStatement();
+            ResultSet results = stmt.executeQuery(fullQuery)
             ) {
-          out.startTR();
+          out.startTr();
           // Compile the meta data about the table and print the table header
           ResultSetMetaData metaData = results.getMetaData();
           columnCount = metaData.getColumnCount();
-          importedKeyIDs = new ArrayList<>(columnCount);
-          exportedIDs = new ArrayList<>(columnCount);
+          importedKeyIds = new ArrayList<>(columnCount);
+          exportedIds = new ArrayList<>(columnCount);
           columnTypes = new ArrayList<>(columnCount);
           columnNames = new ArrayList<>(columnCount);
           resultCopies = new ArrayList<>(columnCount);
@@ -1363,56 +1363,56 @@ public class Table {
             if (col.equals(settings.getSortColumn()) && "asc".equals(settings.getSortOrder())) {
               order = "desc";
             }
-            out.printTH("<A href=\"javascript:setSortColumn('" + Util.escapeJavaScript(col) + "');setSortOrder('" + order + "');selectAction('doselect');\">" + Util.escapeHTML(col) + "</A>");
+            out.printTh("<A href=\"javascript:setSortColumn('" + Util.escapeJavaScript(col) + "');setSortOrder('" + order + "');selectAction('doselect');\">" + Util.escapeHtml(col) + "</A>");
 
             // Build up the list of primary key columns as we iterate through the columns
             if (primaryKeyCols.isEmpty() || primaryKeyCols.contains(col)) {
-              if (primaryKeysSB.length() > 0) {
-                primaryKeysSB.append(',');
+              if (primaryKeysSb.length() > 0) {
+                primaryKeysSb.append(',');
               }
-              primaryKeysSB.append(col);
+              primaryKeysSb.append(col);
             }
 
             if (importedKeys != null) {
-              importedKeyIDs.add(importedKeys.getForeignID(col));
+              importedKeyIds.add(importedKeys.getForeignId(col));
             } else {
-              importedKeyIDs.add(-1);
+              importedKeyIds.add(-1);
             }
             if (exportedKeys != null) {
-              exportedIDs.add(exportedKeys.getForeignIDs(col));
-              int eSize = exportedIDs.get(i - 1).size();
-              if (eSize > 0) {
-                for (int c = 0; c < eSize; c++) {
-                  List<Integer> ids = exportedIDs.get(i - 1);
+              exportedIds.add(exportedKeys.getForeignIds(col));
+              int exportedIdsSize = exportedIds.get(i - 1).size();
+              if (exportedIdsSize > 0) {
+                for (int c = 0; c < exportedIdsSize; c++) {
+                  List<Integer> ids = exportedIds.get(i - 1);
                   int z = ids.get(c);
-                  String fTable = exportedKeys.getForeignTable(z);
+                  String foreignTable = exportedKeys.getForeignTable(z);
                   // Also add the column name if this table is referenced more than once
                   boolean foundOther = false;
-                  for (int d = 0; d < eSize; d++) {
+                  for (int d = 0; d < exportedIdsSize; d++) {
                     if (d != c) {
                       int y = ids.get(d);
-                      if (fTable.equals(exportedKeys.getForeignTable(y))) {
+                      if (foreignTable.equals(exportedKeys.getForeignTable(y))) {
                         foundOther = true;
                         break;
                       }
                     }
                   }
                   if (foundOther) {
-                    out.printTH(fTable + "<br>." + exportedKeys.getForeignKey(z));
+                    out.printTh(foreignTable + "<br>." + exportedKeys.getForeignKey(z));
                   } else {
-                    out.printTH(fTable);
+                    out.printTh(foreignTable);
                   }
                 }
               }
             } else {
               List<Integer> emptyList = Collections.emptyList();
-              exportedIDs.add(emptyList);
+              exportedIds.add(emptyList);
             }
             resultCopies.add(new ArrayList<>());
           }
-          out.printTH("Options");
-          out.endTR();
-          primaryKeysString = Util.escapeJavaScript(primaryKeysSB.toString());
+          out.printTh("Options");
+          out.endTr();
+          primaryKeysString = Util.escapeJavaScript(primaryKeysSb.toString());
           resultSize = 0;
           while (resultSize < numrows && results.next()) {
             resultSize++;
@@ -1427,20 +1427,20 @@ public class Table {
         StringBuilder sb = new StringBuilder();
         for (int row = 0; row < resultSize; row++) {
           sb.setLength(0);
-          out.startTR();
+          out.startTr();
           for (int column = 0; column < columnCount; column++) {
             String s = resultCopies.get(column).get(row);
-            out.printTD(
+            out.printTd(
                 (s == null) ? ""
                     : (s.length() == 0) ? "&nbsp;"
-                    : (importedKeyIDs.get(column) < 0) ? Util.escapeHTML(s)
+                    : (importedKeyIds.get(column) < 0) ? Util.escapeHtml(s)
                     : "<A href=\"javascript:select('"
                     + Util.escapeJavaScript(
-                    importedKeys.getPrimaryTable(importedKeyIDs.get(column))
+                    importedKeys.getPrimaryTable(importedKeyIds.get(column))
                 ) + "','" + Util.escapeJavaScript(
-                    conn.quoteColumn(importedKeys.getPrimaryKey(importedKeyIDs.get(column)))
+                    conn.quoteColumn(importedKeys.getPrimaryKey(importedKeyIds.get(column)))
                         + "='" + Util.escapeJavaScript(s) + '\''
-                ) + "');\">" + Util.escapeHTML(s) + "</A>",
+                ) + "');\">" + Util.escapeHtml(s) + "</A>",
                 ("DATE".equalsIgnoreCase(columnTypes.get(column))) ? "nowrap"
                     : ("TIME".equalsIgnoreCase(columnTypes.get(column))) ? "nowrap"
                     : ("DATETIME".equalsIgnoreCase(columnTypes.get(column))) ? "nowrap"
@@ -1448,13 +1448,13 @@ public class Table {
                     : "");
 
             // Get the number of columns that reference this column
-            int eSize = exportedIDs.get(column).size();
-            if (eSize > 0) {
+            int exportedIdsSize = exportedIds.get(column).size();
+            if (exportedIdsSize > 0) {
               assert exportedKeys != null;
-              for (int c = 0; c < eSize; c++) {
-                int z = exportedIDs.get(column).get(c);
-                String fTable = exportedKeys.getForeignTable(z);
-                String fKey = exportedKeys.getForeignKey(z);
+              for (int c = 0; c < exportedIdsSize; c++) {
+                int z = exportedIds.get(column).get(c);
+                String foreignTable = exportedKeys.getForeignTable(z);
+                String foreignKey = exportedKeys.getForeignKey(z);
 
                 int tmp;
                 if (s == null) {
@@ -1466,12 +1466,12 @@ public class Table {
                           + "  COUNT(*)\n"
                           + "FROM\n"
                           + "  "
-                          + conn.quoteTable(fTable) + "\n"
+                          + conn.quoteTable(foreignTable) + "\n"
                           + "WHERE\n"
-                          + "  " + conn.quoteColumn(fKey) + "='" + Util.escapeSQL(s) + "'";
+                          + "  " + conn.quoteColumn(foreignKey) + "='" + Util.escapeSql(s) + "'";
                   try (
-                    Statement stmt2 = dbcon.createStatement();
-                    ResultSet results2 = stmt2.executeQuery(sql)
+                      Statement stmt2 = dbcon.createStatement();
+                      ResultSet results2 = stmt2.executeQuery(sql)
                       ) {
                     if (results2.next()) {
                       tmp = results2.getInt(1);
@@ -1484,12 +1484,12 @@ public class Table {
                   }
                 }
 
-                out.printTD(
+                out.printTd(
                     (tmp > 0) ? "<A href=\"javascript:select('"
-                        + Util.escapeJavaScript(exportedKeys.getForeignTable(exportedIDs.get(column).get(c)))
+                        + Util.escapeJavaScript(exportedKeys.getForeignTable(exportedIds.get(column).get(c)))
                         + "','"
                         + Util.escapeJavaScript(
-                        conn.quoteColumn(exportedKeys.getForeignKey(exportedIDs.get(column).get(c)))
+                        conn.quoteColumn(exportedKeys.getForeignKey(exportedIds.get(column).get(c)))
                             + "='" + Util.escapeJavaScript(s) + '\''
                     )
                         + "');\">" + tmp + "</A>"
@@ -1514,7 +1514,7 @@ public class Table {
           }
           String primaryKeyValues = Util.escapeJavaScript(sb.toString());
 
-          out.startTD();
+          out.startTd();
           out.print("<a href=\"javascript:setPrimaryKeys('");
           out.print(primaryKeysString);
           out.print("','");
@@ -1525,9 +1525,9 @@ public class Table {
           out.print("','");
           out.print(primaryKeyValues);
           out.print("'); selectAction('delete_row');\">Delete</a>");
-          out.endTD();
+          out.endTd();
 
-          out.endTR();
+          out.endTr();
         }
       }
     } finally {

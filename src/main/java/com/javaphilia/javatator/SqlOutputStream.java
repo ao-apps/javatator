@@ -35,7 +35,7 @@ import java.sql.Statement;
 /**
  * Executes SQL on-the-fly from a stream.
  */
-public class SQLOutputStream extends OutputStream {
+public class SqlOutputStream extends OutputStream {
 
   private final Statement stmt;
 
@@ -46,11 +46,11 @@ public class SQLOutputStream extends OutputStream {
   private final StringBuilder sb = new StringBuilder();
 
   /**
-   * Constructs this {@link SQLOutputStream}.
+   * Constructs this {@link SqlOutputStream}.
    *
    * @param stmt the {@link Statement} for executing the query.
    */
-  public SQLOutputStream(Statement stmt) {
+  public SqlOutputStream(Statement stmt) {
     this.stmt = stmt;
   }
 
@@ -62,7 +62,7 @@ public class SQLOutputStream extends OutputStream {
   /**
    * Executes the specified SQL query.
    */
-  private void executeSQL(String sql) throws IOException {
+  private void executeSql(String sql) throws IOException {
     try {
       stmt.executeUpdate(sql);
     } catch (SQLException e) {
@@ -91,7 +91,7 @@ public class SQLOutputStream extends OutputStream {
         } else if (!doubleQuotes && b[i] == '\'') {
           singleQuotes = !singleQuotes;
         } else if (!singleQuotes && !doubleQuotes && b[i] == ';') {
-          executeSQL(sb.toString());
+          executeSql(sb.toString());
           sb.setLength(0);
           check = -1;
           count = 0;

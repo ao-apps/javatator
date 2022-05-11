@@ -30,6 +30,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+/**
+ * Registers the styles in {@link RegistryEE}.
+ */
 @WebListener("Registers the styles in RegistryEE.")
 public class JavatatorStyles implements ServletContextListener {
 
@@ -42,8 +45,8 @@ public class JavatatorStyles implements ServletContextListener {
     // Add our CSS files
     RegistryEE.Application.get(event.getServletContext())
         .getGroup(RESOURCE_GROUP)
-        .styles
-        .add(JAVATATOR);
+            .styles
+            .add(JAVATATOR);
   }
 
   @Override

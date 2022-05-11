@@ -44,7 +44,7 @@ public final class Util {
   private static final char[] hexChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
   /**
-   * Adds a space to commas to make certain strings wrap properly in tables
+   * Adds a space to commas to make certain strings wrap properly in tables.
    */
   public static String addSpaceToCommas(String s) {
     int len = s.length();
@@ -65,7 +65,7 @@ public final class Util {
    *
    * @param s the string to be escaped.
    */
-  public static String escapeHTML(String s) {
+  public static String escapeHtml(String s) {
     if (s != null) {
       int len = s.length();
       StringBuilder sb = new StringBuilder(len);
@@ -170,7 +170,7 @@ public final class Util {
    * Escapes the '' returned by ENUMs in MySQL.
    */
   @SuppressWarnings("AssignmentToForLoopParameter")
-  public static String escapeMySQLQuotes(String s) {
+  public static String escapeMysqlQuotes(String s) {
     int len = s.length();
     int len2 = len - 1;
     StringBuilder sb = new StringBuilder();
@@ -191,10 +191,10 @@ public final class Util {
    *
    * @param s the string to be escaped.
    */
-  public static String escapeSQL(String s) {
+  public static String escapeSql(String s) {
     int i;
     StringBuilder b = new StringBuilder();
-    escapeSQL(s, b);
+    escapeSql(s, b);
     return b.toString();
   }
 
@@ -204,7 +204,7 @@ public final class Util {
    * @param s the string to be escaped.
    * @param sb the {@link StringBuilder} to append to.
    */
-  public static void escapeSQL(String s, StringBuilder sb) {
+  public static void escapeSql(String s, StringBuilder sb) {
     int i;
     for (i = 0; i < s.length(); i++) {
       char c = s.charAt(i);
@@ -221,13 +221,13 @@ public final class Util {
    *
    * @param s the string to be escaped.
    */
-  public static String escapeSQLValue(String s) {
+  public static String escapeSqlValue(String s) {
     if (s == null) {
       return "null";
     } else {
       StringBuilder b = new StringBuilder();
       b.append('\'');
-      escapeSQL(s, b);
+      escapeSql(s, b);
       return b.append('\'').toString();
     }
   }
@@ -257,7 +257,7 @@ public final class Util {
    * @param out the {@link JavatatorWriter} to write to.
    * @param s the string to be escaped.
    */
-  public static void printEscapedHTML(JavatatorWriter out, String s) {
+  public static void printEscapedHtml(JavatatorWriter out, String s) {
     if (s != null) {
       int len = s.length();
       for (int c = 0; c < len; c++) {
@@ -358,7 +358,7 @@ public final class Util {
    * @param out the {@link JavatatorWriter} to write to.
    * @param s the string to be escaped.
    */
-  public static void printEscapedSQL(Writer out, String s) throws IOException {
+  public static void printEscapedSql(Writer out, String s) throws IOException {
     int i;
     for (i = 0; i < s.length(); i++) {
       char c = s.charAt(i);
@@ -380,12 +380,12 @@ public final class Util {
    * @param out the {@link JavatatorWriter} to write to.
    * @param s the string to be escaped.
    */
-  public static void printEscapedSQLValue(Writer out, String s) throws IOException {
+  public static void printEscapedSqlValue(Writer out, String s) throws IOException {
     if (s == null) {
       out.write("null");
     } else {
       out.write('\'');
-      printEscapedSQL(out, s);
+      printEscapedSql(out, s);
       out.write('\'');
     }
   }
@@ -393,7 +393,7 @@ public final class Util {
   /**
    * Prints a value that may be placed in a URL.
    */
-  public static void printEscapedURLValue(JavatatorWriter out, String value) {
+  public static void printEscapedUrlValue(JavatatorWriter out, String value) {
     int len = value.length();
     for (int c = 0; c < len; c++) {
       char ch = value.charAt(c);

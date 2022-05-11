@@ -58,69 +58,69 @@ public class JavatatorWriter extends PrintWriter {
   /**
    * Prints the ending part of a table element.
    */
-  public void endTD() {
+  public void endTd() {
     print("</td>\n");
   }
 
   /**
    * Prints the ending of a table row.
    */
-  public void endTR() {
+  public void endTr() {
     print("</tr>\n");
   }
 
   /**
    * Prints a standard table element.
    */
-  public void printTD(int content) {
-    startTD();
+  public void printTd(int content) {
+    startTd();
     print(content);
-    endTD();
+    endTd();
   }
 
   /**
    * Prints a standard table element.
    */
-  public void printTD(Object content) {
+  public void printTd(Object content) {
     if ("".equals(content)) {
-      startAltTD("");
+      startAltTd("");
     } else {
-      startTD();
+      startTd();
     }
     print(content);
-    endTD();
+    endTd();
   }
 
   /**
    * Prints a standard table element.
    */
-  public void printTD(String content) {
+  public void printTd(String content) {
     if ("".equals(content)) {
-      startAltTD("");
+      startAltTd("");
     } else {
-      startTD();
+      startTd();
     }
     print(content);
-    endTD();
+    endTd();
   }
 
   /**
    * Prints a standard table element with additional attributes.
    */
-  public void printTD(String content, String attributes) {
+  public void printTd(String content, String attributes) {
     if ("".equals(content)) {
-      startAltTD(attributes);
+      startAltTd(attributes);
     } else {
-      startTD(attributes);
+      startTd(attributes);
     }
     print(content);
-    endTD();
+    endTd();
   }
 
   /**
    * Prints a standard table header.
    */
-  public void printTH(String label) {
+  public void printTh(String label) {
     print("<th>");
     print(label);
     print("</th>\n");
@@ -148,7 +148,7 @@ public class JavatatorWriter extends PrintWriter {
   /**
    * Prints the beginning part of a table element with additional attributes.
    */
-  public void startAltTD(String attributes) {
+  public void startAltTd(String attributes) {
     print("<td class='ALTBG' ");
     print(attributes);
     print('>');
@@ -207,14 +207,14 @@ public class JavatatorWriter extends PrintWriter {
   /**
    * Prints the beginning part of a table element.
    */
-  public void startTD() {
+  public void startTd() {
     print("<td>");
   }
 
   /**
    * Prints the beginning part of a table element with additional attributes.
    */
-  public void startTD(String attributes) {
+  public void startTd(String attributes) {
     print("<td ");
     print(attributes);
     print('>');
@@ -223,7 +223,7 @@ public class JavatatorWriter extends PrintWriter {
   /**
    * Prints the beginning of a table row.
    */
-  public void startTR() {
+  public void startTr() {
     print("<tr>\n");
   }
 }

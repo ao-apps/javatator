@@ -47,7 +47,7 @@ import java.util.StringTokenizer;
  * Contains all the default JDBC methods to connect to a database.
  * Override methods as needed if the driver has not implemented everything.
  */
-public class JDBCConnector {
+public class JdbcConnector {
 
   public enum Boolean {
     /**
@@ -79,11 +79,11 @@ public class JDBCConnector {
   protected final Settings settings;
 
   /**
-   * Instantiate a new JDBCConnector.
+   * Instantiate a new JdbcConnector.
    *
    * @param settings  the {@link Settings} to use.
    */
-  public JDBCConnector(Settings settings) {
+  public JdbcConnector(Settings settings) {
     this.settings = settings;
   }
 
@@ -132,7 +132,7 @@ public class JDBCConnector {
       if (dfault.charAt(0) == 'F') {
         sql.append(dfault.substring(1));
       } else {
-        sql.append(Util.escapeSQLValue(dfault.substring(1)));
+        sql.append(Util.escapeSqlValue(dfault.substring(1)));
       }
     }
     sql
@@ -268,14 +268,14 @@ public class JDBCConnector {
    * @param uniqueKey should the corresponding columns be a unique index?
    */
   public void createTable(String[] newColumn,
-    String[] newType,
-    String[] newLength,
-    String[] newDefault,
-    String[] newNull,
-    String[] newRemarks,
-    boolean[] primaryKey,
-    boolean[] indexKey,
-    boolean[] uniqueKey
+      String[] newType,
+      String[] newLength,
+      String[] newDefault,
+      String[] newNull,
+      String[] newRemarks,
+      boolean[] primaryKey,
+      boolean[] indexKey,
+      boolean[] uniqueKey
   ) throws SQLException, IOException {
     // Build the SQL first
     StringBuilder sql = new StringBuilder();
@@ -289,7 +289,7 @@ public class JDBCConnector {
         sql.append('(').append(newLength[i]).append(')');
       }
       if (newDefault[i].length() > 0) {
-        sql.append(" DEFAULT ").append(Util.escapeSQLValue(newDefault[i]));
+        sql.append(" DEFAULT ").append(Util.escapeSqlValue(newDefault[i]));
       }
       sql.append(' ').append(newNull[i]);
       if (primaryKey[i]) {
@@ -339,8 +339,8 @@ public class JDBCConnector {
     String sql = sb.toString();
 
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement stmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
       // stmt.setEscapeProcessing(false);
       int pos = 1;
@@ -431,8 +431,8 @@ public class JDBCConnector {
     try (Connection conn = DatabasePool.getConnection(settings)) {
       String table = settings.getTable();
       try (
-        Statement stmt = conn.createStatement();
-        ResultSet r = stmt.executeQuery("SELECT * FROM " + quoteTable(table))
+          Statement stmt = conn.createStatement();
+          ResultSet r = stmt.executeQuery("SELECT * FROM " + quoteTable(table))
           ) {
         int count = r.getMetaData().getColumnCount();
         while (r.next()) {
@@ -446,7 +446,7 @@ public class JDBCConnector {
             } else {
               hasBeen = true;
             }
-            Util.printEscapedSQLValue(out, r.getString(i));
+            Util.printEscapedSqlValue(out, r.getString(i));
           }
           out.write(");\n");
         }
@@ -490,7 +490,7 @@ public class JDBCConnector {
       if (defaults.get(i) != null && defaults.get(i).length() > 1) {
         out.write(" DEFAULT ");
         if (defaults.get(i).charAt(0) == 'V') {
-          Util.printEscapedSQLValue(out, defaults.get(i).substring(1));
+          Util.printEscapedSqlValue(out, defaults.get(i).substring(1));
         } else if (defaults.get(i).charAt(0) == 'F') {
           out.write(defaults.get(i).substring(1));
         }
@@ -559,7 +559,7 @@ public class JDBCConnector {
       if (newDefault.charAt(0) == 'F') {
         sql.append(newDefault.substring(1));
       } else {
-        sql.append(Util.escapeSQLValue(newDefault.substring(1)));
+        sql.append(Util.escapeSqlValue(newDefault.substring(1)));
       }
     }
     sql
@@ -580,10 +580,10 @@ public class JDBCConnector {
    * @param primaryKeyValues the values of the primary keys.
    */
   public void editRow(String[] column,
-    String[] function,
-    String[] value,
-    String[] primaryKeys,
-    String[] primaryKeyValues
+      String[] function,
+      String[] value,
+      String[] primaryKeys,
+      String[] primaryKeyValues
   ) throws SQLException, IOException {
     // Build the SQL statement
     StringBuilder sb = new StringBuilder("UPDATE ").append(quoteTable(settings.getTable())).append(" SET ");
@@ -608,8 +608,8 @@ public class JDBCConnector {
     }
     String sql = sb.toString();
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement stmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
       // stmt.setEscapeProcessing(false);
       int pos = 1;
@@ -639,9 +639,9 @@ public class JDBCConnector {
    */
   protected final List<String> executeListQuery(String sql) throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      Statement stmt = conn.createStatement();
-      ResultSet results = stmt.executeQuery(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        Statement stmt = conn.createStatement();
+        ResultSet results = stmt.executeQuery(sql)
         ) {
       List<String> v = new ArrayList<>();
       while (results.next()) {
@@ -659,8 +659,8 @@ public class JDBCConnector {
    */
   protected final List<String> executeListQuery(String sql, String param) throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement pstmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
       pstmt.setString(1, param);
       try (ResultSet results = pstmt.executeQuery()) {
@@ -674,7 +674,7 @@ public class JDBCConnector {
   }
 
   /**
-   * Executes an update using a {@link PreparedStatement}
+   * Executes an update using a {@link PreparedStatement}.
    *
    * @param  sql    the SQL to execute
    *
@@ -682,15 +682,15 @@ public class JDBCConnector {
    */
   protected final int executeUpdate(String sql) throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement pstmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
       return pstmt.executeUpdate();
     }
   }
 
   /**
-   * Executes an update using a {@link PreparedStatement}
+   * Executes an update using a {@link PreparedStatement}.
    *
    * @param  sql    the SQL to execute
    * @param  param  the parameter to the SQL
@@ -699,8 +699,8 @@ public class JDBCConnector {
    */
   protected final int executeUpdate(String sql, String param) throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement pstmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
       pstmt.setString(1, param);
       return pstmt.executeUpdate();
@@ -708,7 +708,7 @@ public class JDBCConnector {
   }
 
   /**
-   * Executes an update using a {@link PreparedStatement}
+   * Executes an update using a {@link PreparedStatement}.
    *
    * @param  sql     the SQL to execute
    * @param  param1  the first parameter to the SQL
@@ -718,8 +718,8 @@ public class JDBCConnector {
    */
   protected final int executeUpdate(String sql, String param1, String param2) throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement pstmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
       pstmt.setString(1, param1);
       pstmt.setString(2, param2);
@@ -733,11 +733,16 @@ public class JDBCConnector {
    */
   public static String getBooleanString(Boolean i) throws SQLException {
     switch (i) {
-      case FALSE : return "false";
-      case TRUE : return "true";
-      case UNKNOWN : return "unknown";
-      case NA : return "N/A";
-      default : throw new SQLException("Unknown value: " + i);
+      case FALSE:
+        return "false";
+      case TRUE:
+        return "true";
+      case UNKNOWN:
+        return "unknown";
+      case NA:
+        return "N/A";
+      default:
+        throw new SQLException("Unknown value: " + i);
     }
   }
 
@@ -753,8 +758,8 @@ public class JDBCConnector {
    */
   private String getColumnMetaData(String column, int index) throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      ResultSet r = conn.getMetaData().getColumns(null, null, settings.getTable(), column)
+        Connection conn = DatabasePool.getConnection(settings);
+        ResultSet r = conn.getMetaData().getColumns(null, null, settings.getTable(), column)
         ) {
       if (r.next()) {
         return r.getString(index);
@@ -780,8 +785,8 @@ public class JDBCConnector {
     List<String> remarks = new ArrayList<>();
 
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      ResultSet r = conn.getMetaData().getColumns(null, null, table, "%")
+        Connection conn = DatabasePool.getConnection(settings);
+        ResultSet r = conn.getMetaData().getColumns(null, null, table, "%")
         ) {
       while (r.next()) {
         names.add(r.getString(4));
@@ -920,8 +925,8 @@ public class JDBCConnector {
 
   protected ForeignKeys getForeignKeys(String table, boolean isImported) throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      ResultSet r = isImported
+        Connection conn = DatabasePool.getConnection(settings);
+        ResultSet r = isImported
             ? conn.getMetaData().getImportedKeys(null, null, table)
             : conn.getMetaData().getExportedKeys(null, null, table)
         ) {
@@ -1052,8 +1057,8 @@ public class JDBCConnector {
     List<Boolean> areUnique = new ArrayList<>();
     List<String> colNames = new ArrayList<>();
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      ResultSet r = conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false)
+        Connection conn = DatabasePool.getConnection(settings);
+        ResultSet r = conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false)
         ) {
       while (r.next()) {
         names.add(r.getString(6));
@@ -1066,8 +1071,8 @@ public class JDBCConnector {
 
   private List<String> getIndexInfo(int index) throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      ResultSet r = conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false)
+        Connection conn = DatabasePool.getConnection(settings);
+        ResultSet r = conn.getMetaData().getIndexInfo(null, null, settings.getTable(), false, false)
         ) {
       List<String> v = new ArrayList<>();
       while (r.next()) {
@@ -1078,17 +1083,16 @@ public class JDBCConnector {
   }
 
   /**
-   * Gets a {@link JDBCConnector} of the provided classname and info.
+   * Gets a {@link JdbcConnector} of the provided classname and info.
    *
    * @param settings  the {@link Settings} to use
    */
-  public static JDBCConnector getInstance(Settings settings)
+  public static JdbcConnector getInstance(Settings settings)
       throws
       IOException,
-      ReflectiveOperationException
-  {
+      ReflectiveOperationException {
     return
-        (JDBCConnector) Class
+        (JdbcConnector) Class
             .forName(settings.getDatabaseConfiguration().getProperty("connector", settings.getDatabaseProduct()))
             .getConstructor(Settings.class)
             .newInstance(settings);
@@ -1100,9 +1104,9 @@ public class JDBCConnector {
    */
   protected final int getIntQuery(String sql) throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement pstmt = conn.prepareStatement(sql);
-      ResultSet results = pstmt.executeQuery()
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        ResultSet results = pstmt.executeQuery()
         ) {
       if (results.next()) {
         return results.getInt(1);
@@ -1118,8 +1122,8 @@ public class JDBCConnector {
    */
   protected final int getIntQuery(String sql, String param) throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement pstmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
       pstmt.setString(1, param);
       try (ResultSet results = pstmt.executeQuery()) {
@@ -1197,8 +1201,8 @@ public class JDBCConnector {
     List<String> columns = new ArrayList<>();
     List<String> names = new ArrayList<>();
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      ResultSet r = conn.getMetaData().getPrimaryKeys(null, null, settings.getTable())
+        Connection conn = DatabasePool.getConnection(settings);
+        ResultSet r = conn.getMetaData().getPrimaryKeys(null, null, settings.getTable())
         ) {
       while (r.next()) {
         columns.add(r.getString(4));
@@ -1238,8 +1242,8 @@ public class JDBCConnector {
 
     // Then perform the query
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement pstmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
       // pstmt.setEscapeProcessing(false);
       int pos = 1;
@@ -1323,7 +1327,7 @@ public class JDBCConnector {
           sql
               .append(quoteColumn(colNames[i]))
               .append(" LIKE ")
-              .append(Util.escapeSQLValue(colValues[i]));
+              .append(Util.escapeSqlValue(colValues[i]));
         }
       }
     }
@@ -1331,7 +1335,7 @@ public class JDBCConnector {
   }
 
   /**
-   * Gets the {@link Settings} of this {@link JDBCConnector}.
+   * Gets the {@link Settings} of this {@link JdbcConnector}.
    */
   public final Settings getSettings() {
     return settings;
@@ -1342,8 +1346,8 @@ public class JDBCConnector {
    */
   public TablePrivileges getTablePrivileges() throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      ResultSet r = conn.getMetaData().getTablePrivileges(null, null, settings.getTable())
+        Connection conn = DatabasePool.getConnection(settings);
+        ResultSet r = conn.getMetaData().getTablePrivileges(null, null, settings.getTable())
         ) {
       List<String> grantors = new ArrayList<>();
       List<String> grantees = new ArrayList<>();
@@ -1370,8 +1374,8 @@ public class JDBCConnector {
    */
   public List<String> getTables() throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      ResultSet results = conn.getMetaData().getTables(null, null, "%", defaultTableTypes)
+        Connection conn = DatabasePool.getConnection(settings);
+        ResultSet results = conn.getMetaData().getTables(null, null, "%", defaultTableTypes)
         ) {
       List<String> v = new ArrayList<>();
       while (results.next()) {
@@ -1386,8 +1390,8 @@ public class JDBCConnector {
    */
   public List<String> getTypes() throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      ResultSet r = conn.getMetaData().getTypeInfo()
+        Connection conn = DatabasePool.getConnection(settings);
+        ResultSet r = conn.getMetaData().getTypeInfo()
         ) {
       List<String> v = new ArrayList<>();
       while (r.next()) {
@@ -1398,9 +1402,9 @@ public class JDBCConnector {
   }
 
   /**
-   * Gets the database server URL
+   * Gets the database server URL.
    */
-  public String getURL() throws SQLException, IOException {
+  public String getUrl() throws SQLException, IOException {
     try (Connection conn = DatabasePool.getConnection(settings)) {
       DatabaseMetaData metaData = conn.getMetaData();
       return metaData.getURL();
@@ -1462,8 +1466,8 @@ public class JDBCConnector {
     String sql = sb.toString();
 
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement stmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
       // stmt.setEscapeProcessing(false);
       int pos = 1;
@@ -1477,7 +1481,7 @@ public class JDBCConnector {
   }
 
   /**
-   * Is the specified column nullable?
+   * Is the specified column nullable?.
    *
    * @param column the name of the column,
    */
@@ -1519,27 +1523,27 @@ public class JDBCConnector {
   }
 
   /**
-   * Does the database product support CHECK constraints?
+   * Does the database product support CHECK constraints?.
    */
   public boolean supportsCheckConstraints() {
     return false;
   }
 
   /**
-   * Does the database product support foreign keys?
+   * Does the database product support foreign keys?.
    */
   public boolean supportsForeignKeys() {
     return true;
   }
 
-  /**
-   * Gets the type of the specified column.
-   *
-   * @param column the name of the column.
-   */
-  public String XgetType(String column) throws SQLException, IOException {
-    return getColumnMetaData(column, 6);
-  }
+  ///**
+  // * Gets the type of the specified column.
+  // *
+  // * @param column the name of the column.
+  // */
+  //public String getType(String column) throws SQLException, IOException {
+  //  return getColumnMetaData(column, 6);
+  //}
 
   /**
    * Checks if is a SQL keyword.

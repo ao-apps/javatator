@@ -88,7 +88,7 @@ public class Row {
   }
 
   /**
-   * Deletes the current row
+   * Deletes the current row.
    */
   public Settings deleteRow(JavatatorWriter out) throws SQLException, IOException {
     StringTokenizer keys = new StringTokenizer(settings.getParameter("primarykeys"), ",");
@@ -110,7 +110,7 @@ public class Row {
     out.print(" : table ");
     out.print(settings.getTable());
     out.print("</h2>\n");
-    settings.getJDBCConnector().deleteRow(primaryKeys, primaryKeyValues);
+    settings.getJdbcConnector().deleteRow(primaryKeys, primaryKeyValues);
     out.print("Row deleted successfully.");
     return new Table(settings).select(out);
   }
@@ -165,7 +165,7 @@ public class Row {
 
         // Handle predefined function
       } else {
-        func = func + '(' + Util.escapeSQLValue(val) + ')';
+        func = func + '(' + Util.escapeSqlValue(val) + ')';
         val = null;
       }
 
@@ -179,7 +179,7 @@ public class Row {
     out.print(" : table ");
     out.print(settings.getTable());
     out.print("</h2>\n");
-    settings.getJDBCConnector().editRow(
+    settings.getJdbcConnector().editRow(
         column,
         function,
         value,
@@ -239,7 +239,7 @@ public class Row {
 
         // Handle predefined function
       } else {
-        function = function + '(' + Util.escapeSQLValue(value) + ')';
+        function = function + '(' + Util.escapeSqlValue(value) + ')';
         value = null;
       }
 
@@ -252,7 +252,7 @@ public class Row {
     out.print(" : table ");
     out.print(settings.getTable());
     out.print("</h2>\n");
-    settings.getJDBCConnector().insertRow(newColumn, newFunction, newValue);
+    settings.getJdbcConnector().insertRow(newColumn, newFunction, newValue);
     out.print("Data successfully inserted.");
     String nextAction = settings.getParameter("nextaction");
     if (nextAction != null && !"".equals(nextAction)) {
@@ -313,20 +313,20 @@ public class Row {
 
     out.startTable(null, "cellspacing=1");
 
-    out.startTR();
-    out.printTH("Column");
-    out.printTH("Type");
-    out.printTH("Function");
-    out.printTH("Value");
-    out.endTR();
+    out.startTr();
+    out.printTh("Column");
+    out.printTh("Type");
+    out.printTh("Function");
+    out.printTh("Value");
+    out.endTr();
     try {
-      JDBCConnector conn = settings.getJDBCConnector();
+      JdbcConnector conn = settings.getJdbcConnector();
       List<String> rowValues = conn.getRow(primaryKeys, primaryValues);
       Columns columns = conn.getColumns();
       List<String> names = columns.getNames();
       List<String> types = columns.getTypes();
       List<String> lengths = columns.getLengths();
-      List<JDBCConnector.Boolean> areNullable = columns.areNullable();
+      List<JdbcConnector.Boolean> areNullable = columns.areNullable();
       //List<String> defaults=columns.getDefaults();
       int size = names.size();
       for (int i = 0; i < size; i++) {
@@ -334,33 +334,33 @@ public class Row {
         String columnType = types.get(i);
         String columnLength = lengths.get(i);
         String currentValue = rowValues.get(i);
-        JDBCConnector.Boolean isNullable = areNullable.get(i);
+        JdbcConnector.Boolean isNullable = areNullable.get(i);
 
-        out.startTR();
+        out.startTr();
 
-        out.startTD();
+        out.startTd();
         out.print(columnName);
         out.print("<input type='hidden' name='column");
         out.print(i);
         out.print("' value='");
         out.print(columnName);
         out.print("'>");
-        out.endTD();
+        out.endTd();
 
-        out.printTD(columnType);
+        out.printTd(columnType);
 
-        out.startTD();
+        out.startTd();
         // Don't show the the functions if all possible values are displayed
         List<String> pvalues = conn.getPossibleValues(columnName, columnType);
         if (pvalues == null) {
           List<String> functions = conn.getFunctionList(conn.getEffectiveType(columnType));
-          int fSize = functions.size();
+          final int fsize = functions.size();
           out.print("<select name='function");
           out.print(i);
           out.print("'>\n"
               + "<option value='' selected>[VALUE-->]</option>\n"
               + "<option value='F'>[FUNCTION-->]</option>\n");
-          for (int c = 0; c < fSize; c++) {
+          for (int c = 0; c < fsize; c++) {
             String function = functions.get(c);
             out.print("<option value='");
             out.print(function);
@@ -372,9 +372,9 @@ public class Row {
         } else {
           out.print("&nbsp;");
         }
-        out.endTD();
+        out.endTd();
 
-        out.startTD();
+        out.startTd();
         if (pvalues != null) {
           out.print("<select name='value");
           out.print(i);
@@ -382,7 +382,7 @@ public class Row {
           boolean found = false;
 
           // Add the null if null is allowed
-          if (isNullable == JDBCConnector.Boolean.TRUE) {
+          if (isNullable == JdbcConnector.Boolean.TRUE) {
             out.print("<option value='[NULL]'");
             if (currentValue == null) {
               out.print(" selected");
@@ -446,7 +446,7 @@ public class Row {
             }
             out.print('>');
           }
-          if (isNullable == JDBCConnector.Boolean.TRUE) {
+          if (isNullable == JdbcConnector.Boolean.TRUE) {
             out.print("<input type='checkbox' name='null");
             out.print(i);
             out.print("' value='NULL'");
@@ -456,9 +456,9 @@ public class Row {
             out.print("> NULL");
           }
         }
-        out.endTD();
+        out.endTd();
 
-        out.endTR();
+        out.endTr();
 
       }
     } finally {
@@ -498,42 +498,42 @@ public class Row {
 
     out.startTable(null, "cellspacing=1");
 
-    out.startTR();
-    out.printTH("Column");
-    out.printTH("Type");
-    out.printTH("Function");
-    out.printTH("Value");
-    out.endTR();
+    out.startTr();
+    out.printTh("Column");
+    out.printTh("Type");
+    out.printTh("Function");
+    out.printTh("Value");
+    out.endTr();
 
-    JDBCConnector conn = settings.getJDBCConnector();
+    JdbcConnector conn = settings.getJdbcConnector();
 
     Columns columns = conn.getColumns();
     List<String> names = columns.getNames();
     List<String> types = columns.getTypes();
     List<String> lengths = columns.getLengths();
-    List<JDBCConnector.Boolean> areNullable = columns.areNullable();
+    List<JdbcConnector.Boolean> areNullable = columns.areNullable();
     List<String> defaults = columns.getDefaults();
     int size = names.size();
     for (int i = 0; i < size; i++) {
-      String columnName = names.get(i);
-      String columnType = types.get(i);
-      String columnLength = lengths.get(i);
-      JDBCConnector.Boolean isNullable = areNullable.get(i);
-      String columnDefault = defaults.get(i);
-      out.startTR();
+      final String columnName = names.get(i);
+      final String columnType = types.get(i);
+      final String columnLength = lengths.get(i);
+      final JdbcConnector.Boolean isNullable = areNullable.get(i);
+      final String columnDefault = defaults.get(i);
+      out.startTr();
 
-      out.startTD();
+      out.startTd();
       out.print(columnName);
       out.print("<input type='hidden' name='column");
       out.print(i);
       out.print("' value='");
       out.print(columnName);
       out.print("'>");
-      out.endTD();
+      out.endTd();
 
-      out.printTD(columnType);
+      out.printTd(columnType);
 
-      out.startTD();
+      out.startTd();
 
       // Do not show the functions if all possible values are listed and the default is not a function
       List<String> values = conn.getPossibleValues(columnName, columnType);
@@ -558,8 +558,8 @@ public class Row {
 
         // Add the default functions to the available list
         List<String> fv = conn.getFunctionList(conn.getEffectiveType(columnType));
-        int fSize = fv.size();
-        for (int c = 0; c < fSize; c++) {
+        final int fsize = fv.size();
+        for (int c = 0; c < fsize; c++) {
           out.print("<option value='");
           String function = fv.get(c);
           out.print(function);
@@ -571,9 +571,9 @@ public class Row {
       } else {
         out.print("&nbsp;");
       }
-      out.endTD();
+      out.endTd();
 
-      out.startTD();
+      out.startTd();
       // Only show the list of possible values when available and the default is not a function
       if (values != null && (columnDefault == null || columnDefault.charAt(0) == 'V')) {
         String def = columnDefault == null ? null : columnDefault.substring(1);
@@ -583,7 +583,7 @@ public class Row {
         boolean found = false;
 
         // Add the null option if nullable
-        if (isNullable == JDBCConnector.Boolean.TRUE) {
+        if (isNullable == JdbcConnector.Boolean.TRUE) {
           out.print("<option value='[NULL]'");
           if (columnDefault == null) {
             out.print(" selected");
@@ -634,7 +634,7 @@ public class Row {
           }
           out.print('>');
         }
-        if (isNullable == JDBCConnector.Boolean.TRUE) {
+        if (isNullable == JdbcConnector.Boolean.TRUE) {
           out.print("<input type='checkbox' name='null");
           out.print(i);
           out.print("' value='NULL'");
@@ -644,9 +644,9 @@ public class Row {
           out.print("> NULL");
         }
       }
-      out.endTD();
+      out.endTd();
 
-      out.endTR();
+      out.endTr();
     }
     out.endTable();
     out.print("<br><br>\n"

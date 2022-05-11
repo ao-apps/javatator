@@ -27,7 +27,7 @@
 
 package com.javaphilia.javatator;
 
-import com.javaphilia.javatator.JDBCConnector.Boolean;
+import com.javaphilia.javatator.JdbcConnector.Boolean;
 import java.util.List;
 
 /**
@@ -51,7 +51,7 @@ public class Columns {
   private final List<String> lengths;
 
   /**
-   * Is NULL allowed?
+   * Is NULL allowed?.
    */
   private final List<Boolean> areNullable;
 
@@ -77,12 +77,12 @@ public class Columns {
    * @param types an array of the columns' types.
    * @param lengths an array of the columns' lengths.
    * @param areNullable can the columns be NULL?
-   * Possible {@link Integer} values are:
-   * <UL>
-   * <LI>{@link Boolean#TRUE} if NULL is allowed,
-   * <LI>{@link Boolean#FALSE} if NULL is not allowed,
-   * <LI>{@link Boolean#UNKNOWN} if unknown.
-   * </UL>
+   *                    Possible {@link Boolean} values are:
+   *                    <ul>
+   *                    <li>{@link Boolean#TRUE} if NULL is allowed,</li>
+   *                    <li>{@link Boolean#FALSE} if NULL is not allowed,</li>
+   *                    <li>{@link Boolean#UNKNOWN} if unknown.</li>
+   *                    </ul>
    * @param defaults an array containing the default values for the columns.
    * @param remarks an array of column remarks.
    */
@@ -119,7 +119,7 @@ public class Columns {
   }
 
   /**
-   * Can the columns contain NULL values?
+   * Can the columns contain NULL values?.
    */
   public List<Boolean> areNullable() {
     return areNullable;
@@ -142,7 +142,7 @@ public class Columns {
   /**
    * Gets the id of the specified column in the array.
    */
-  public int getID(String column) {
+  public int getId(String column) {
     for (int i = 0; i < size; i++) {
       if (names.get(i).equals(column)) {
         return i;
@@ -208,7 +208,7 @@ public class Columns {
   }
 
   /**
-   * Does the column at the specified index allow NULL values?
+   * Does the column at the specified index allow NULL values?.
    */
   public Boolean isNullable(int i) {
     return areNullable.get(i);

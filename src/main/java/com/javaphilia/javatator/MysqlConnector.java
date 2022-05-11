@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * The MySQL connection class. Implements things which the driver doesn't do using JDBC.
  */
-public class MySQLConnector extends JDBCConnector {
+public class MysqlConnector extends JdbcConnector {
 
   /**
    * These types are stored in a static final variable for faster access.
@@ -78,9 +78,9 @@ public class MySQLConnector extends JDBCConnector {
   }
 
   /**
-   * Instantiate a new MySQLConnector.
+   * Instantiate a new MysqlConnector.
    */
-  public MySQLConnector(Settings settings) {
+  public MysqlConnector(Settings settings) {
     super(settings);
   }
 
@@ -93,8 +93,8 @@ public class MySQLConnector extends JDBCConnector {
     List<String> defaults = new ArrayList<>();
     List<String> remarks = new ArrayList<>();
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      ResultSet r = conn.getMetaData().getColumns(null, null, table, "%")
+        Connection conn = DatabasePool.getConnection(settings);
+        ResultSet r = conn.getMetaData().getColumns(null, null, table, "%")
         ) {
       while (r.next()) {
         String column = r.getString(4);
@@ -192,8 +192,8 @@ public class MySQLConnector extends JDBCConnector {
     boolean enum0 = "ENUM".equalsIgnoreCase(type) || "SET".equalsIgnoreCase(type);
     if (enum0) {
       try (
-        Connection conn = DatabasePool.getConnection(getSettings());
-        PreparedStatement pstmt = conn.prepareStatement("SHOW COLUMNS FROM " + getSettings().getTable() + " LIKE ?")
+          Connection conn = DatabasePool.getConnection(getSettings());
+          PreparedStatement pstmt = conn.prepareStatement("SHOW COLUMNS FROM " + getSettings().getTable() + " LIKE ?")
           ) {
         pstmt.setString(1, column);
         try (ResultSet results = pstmt.executeQuery()) {
@@ -216,12 +216,12 @@ public class MySQLConnector extends JDBCConnector {
                       && s.charAt(i + 1) == ','
                       && s.charAt(i + 2) == '\''
               ) {
-                v.add(Util.escapeMySQLQuotes(s.substring(start, i)));
+                v.add(Util.escapeMysqlQuotes(s.substring(start, i)));
                 start = i + 3;
                 i += 3;
               }
             }
-            v.add(Util.escapeMySQLQuotes(s.substring(start)));
+            v.add(Util.escapeMysqlQuotes(s.substring(start)));
             return v;
           }
         }
@@ -270,7 +270,7 @@ public class MySQLConnector extends JDBCConnector {
           sql
               .append(colNames[i])
               .append(" LIKE ")
-              .append(Util.escapeSQLValue(colValues[i]));
+              .append(Util.escapeSqlValue(colValues[i]));
         }
       }
     }
@@ -337,7 +337,7 @@ public class MySQLConnector extends JDBCConnector {
   }
 
   /**
-   * Does the database product support foreign keys?
+   * Does the database product support foreign keys?.
    */
   @Override
   public boolean supportsForeignKeys() {

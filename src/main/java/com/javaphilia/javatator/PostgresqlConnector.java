@@ -45,12 +45,12 @@ import java.util.regex.Pattern;
 /**
  * The PostgreSQL connection class. Implements things which the driver doesn't do using JDBC.
  */
-public class PgSQLConnector extends JDBCConnector {
+public class PostgresqlConnector extends JdbcConnector {
 
   /**
-   * Instantiate a new PgSQLConnector.
+   * Instantiate a new PostgresqlConnector.
    */
-  public PgSQLConnector(Settings settings) {
+  public PostgresqlConnector(Settings settings) {
     super(settings);
   }
 
@@ -140,7 +140,7 @@ public class PgSQLConnector extends JDBCConnector {
         sql.append(" UNIQUE");
       }
       if (newDefault[i].length() > 0) {
-        sql.append(" DEFAULT ").append(Util.escapeSQLValue(newDefault[i]));
+        sql.append(" DEFAULT ").append(Util.escapeSqlValue(newDefault[i]));
       }
       if (primaryKey[i]) {
         sql.append(", PRIMARY KEY (").append(quoteColumn(newColumn[i])).append(')');
@@ -172,23 +172,21 @@ public class PgSQLConnector extends JDBCConnector {
             + "You have to copy the table into a temporary table, create the new table without the column, "
             + "then copy the data back into the new table."
     );
-    /**
-     * Connection conn=DatabasePool.getConnection(databaseProduct, username, password, url, database);
-     * try {
-     *   conn.setCatalog(database);
-     *   PreparedStatement pstmt=conn.prepareStatement("CREATE TEMPORARY TABLE "+quoteTable(table+"_")+" AS SELECT * FROM "+quoteTable(table)+";"
-     *     + "DROP TABLE "+quoteTable(table)+";"
-     *     + "CREATE TABLE "+quoteTable(table)
-     *  );
-     *   try {
-     *     pstmt.executeUpdate();
-     *   } finally {
-     *     pstmt.close();
-     *   }
-     * } finally {
-     *    conn.close();
-     * }
-     */
+    //Connection conn=DatabasePool.getConnection(databaseProduct, username, password, url, database);
+    //try {
+    //  conn.setCatalog(database);
+    //  PreparedStatement pstmt=conn.prepareStatement("CREATE TEMPORARY TABLE "+quoteTable(table+"_")+" AS SELECT * FROM "+quoteTable(table)+";"
+    //    + "DROP TABLE "+quoteTable(table)+";"
+    //    + "CREATE TABLE "+quoteTable(table)
+    //  );
+    //  try {
+    //    pstmt.executeUpdate();
+    //  } finally {
+    //    pstmt.close();
+    //  }
+    //} finally {
+    //   conn.close();
+    //}
   }
 
   /**
@@ -200,8 +198,8 @@ public class PgSQLConnector extends JDBCConnector {
     DatabasePool.closeDatabase(settings);
     String sql = "DROP DATABASE " + settings.getDatabase();
     try (
-      Connection conn = DatabasePool.getConnection(settings.setDatabase("template1"));
-      Statement stmt = conn.createStatement()
+        Connection conn = DatabasePool.getConnection(settings.setDatabase("template1"));
+        Statement stmt = conn.createStatement()
         ) {
       stmt.executeUpdate(sql);
     }
@@ -229,7 +227,9 @@ public class PgSQLConnector extends JDBCConnector {
   }
 
   /**
-   * @see JDBCConnector#editColumn
+   * {@inheritDoc}
+   *
+   * @see JdbcConnector#editColumn
    */
   @Override
   public void editColumn(
@@ -265,7 +265,7 @@ public class PgSQLConnector extends JDBCConnector {
       if (newDefault.charAt(0) == 'F') {
         sql.append(newDefault.substring(1));
       } else {
-        sql.append(Util.escapeSQLValue(newDefault.substring(1)));
+        sql.append(Util.escapeSqlValue(newDefault.substring(1)));
       }
     }
     executeUpdate(sql.toString());
@@ -329,8 +329,8 @@ public class PgSQLConnector extends JDBCConnector {
     List<Boolean> areNullable = new ArrayList<>();
     List<String> remarks = new ArrayList<>();
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      ResultSet r = conn.getMetaData().getColumns(null, null, table, "%")
+        Connection conn = DatabasePool.getConnection(settings);
+        ResultSet r = conn.getMetaData().getColumns(null, null, table, "%")
         ) {
       while (r.next()) {
         names.add(r.getString(4));
@@ -363,8 +363,8 @@ public class PgSQLConnector extends JDBCConnector {
       String version = metaData.getDatabaseProductVersion();
       if (version.startsWith("7.")) {
         try (
-          Statement stmt = conn.createStatement();
-          ResultSet r = stmt.executeQuery("select tgargs from pg_trigger")
+            Statement stmt = conn.createStatement();
+            ResultSet r = stmt.executeQuery("select tgargs from pg_trigger")
             ) {
           while (r.next()) {
             String s = r.getString(1);
@@ -426,7 +426,7 @@ public class PgSQLConnector extends JDBCConnector {
       DatabaseMetaData metaData = conn.getMetaData();
       String version = metaData.getDatabaseProductVersion();
       try (
-        PreparedStatement pstmt = conn.prepareStatement(
+          PreparedStatement pstmt = conn.prepareStatement(
               "SELECT " + (version.startsWith("7.") ? "d.adsrc" : "pg_get_expr(d.adbin, d.adrelid)") + ", a.attname"
                   + " FROM pg_attrdef d, pg_class c, pg_attribute a"
                   + " WHERE c.relname = ?"
@@ -484,13 +484,12 @@ public class PgSQLConnector extends JDBCConnector {
             default:
               throw new SQLException("Unknown default value for bool type: " + def);
           }
-        }
-        // Look for a String constant
-        else if (
+        } else if (
             defLen >= 2
                 && def.charAt(0) == '\''
                 && def.charAt(defLen - 1) == '\''
         ) {
+          // Look for a String constant
           out.set(i, 'V' + def.substring(1, defLen - 1));
         } else {
           // Look for a numerical constant
@@ -540,9 +539,9 @@ public class PgSQLConnector extends JDBCConnector {
     String table = getSettings().getTable();
 
     try (
-      Connection conn = DatabasePool.getConnection(getSettings());
-      Statement stmt = conn.createStatement();
-      ResultSet r = stmt.executeQuery("select tgname, tgargs, proname from pg_proc, pg_trigger where tgfoid = pg_proc.oid and proname like 'RI_FKey_%_del'")
+        Connection conn = DatabasePool.getConnection(getSettings());
+        Statement stmt = conn.createStatement();
+        ResultSet r = stmt.executeQuery("select tgname, tgargs, proname from pg_proc, pg_trigger where tgfoid = pg_proc.oid and proname like 'RI_FKey_%_del'")
         ) {
       while (r.next()) {
         String s = r.getString(2);
@@ -576,8 +575,8 @@ public class PgSQLConnector extends JDBCConnector {
       String version = metaData.getDatabaseProductVersion();
       if (version.startsWith("7.")) {
         try (
-          Statement stmt = conn.createStatement();
-          ResultSet r = stmt.executeQuery("select tgargs from pg_trigger")
+            Statement stmt = conn.createStatement();
+            ResultSet r = stmt.executeQuery("select tgargs from pg_trigger")
             ) {
           while (r.next()) {
             String s = r.getString(1);
@@ -589,9 +588,9 @@ public class PgSQLConnector extends JDBCConnector {
                 if (pos2 > -1) {
                   if (table.equals(s.substring(pos + 4, pos2))) {
                     pos = s.indexOf("\\000", pos2 + 1);
-                    String foreign_table = "";
+                    String foreignTable = "";
                     if (pos > -1) {
-                      foreign_table = s.substring(pos2 + 4, pos);
+                      foreignTable = s.substring(pos2 + 4, pos);
                       pos = s.indexOf("\\000", pos + 1);
                     }
                     if (pos > -1) {
@@ -600,7 +599,7 @@ public class PgSQLConnector extends JDBCConnector {
                     if (pos > -1) {
                       pos2 = s.indexOf("\\000", pos + 1);
                       if (pos2 > -1) {
-                        return foreign_table + "." + s.substring(pos + 4, pos2);
+                        return foreignTable + "." + s.substring(pos + 4, pos2);
                       }
                     }
                   }
@@ -645,8 +644,8 @@ public class PgSQLConnector extends JDBCConnector {
       String version = metaData.getDatabaseProductVersion();
       if (version.startsWith("7.")) {
         try (
-          Statement stmt = conn.createStatement();
-          ResultSet r = stmt.executeQuery(
+            Statement stmt = conn.createStatement();
+            ResultSet r = stmt.executeQuery(
                 "SELECT tgargs, "
                     + "CASE WHEN proname LIKE 'RI_FKey_%' "
                     + "THEN substring(proname from 9 for (char_length(proname)-12)) END, "
@@ -704,7 +703,7 @@ public class PgSQLConnector extends JDBCConnector {
         List<Long> primaryTableOids = new ArrayList<>();
         List<List<Short>> primaryKeyAttNums = new ArrayList<>();
         try (
-          PreparedStatement pstmt = conn.prepareStatement(
+            PreparedStatement pstmt = conn.prepareStatement(
                 "SELECT\n"
                     + "  co.conname,\n"
                     + "  ft.oid as primary_table_oid,\n"
@@ -804,13 +803,14 @@ public class PgSQLConnector extends JDBCConnector {
   }
 
   /**
-   * From parsenodes.h
-   *
+   * From <code>parsenodes.h</code>.
+   * <pre>
    * FKCONSTR_ACTION_NOACTION        'a'
    * FKCONSTR_ACTION_RESTRICT        'r'
    * FKCONSTR_ACTION_CASCADE         'c'
    * FKCONSTR_ACTION_SETNULL         'n'
    * FKCONSTR_ACTION_SETDEFAULT      'd'
+   * </pre>
    */
   private static String getActionRule(String rule) {
     if ("a".equals(rule)) {
@@ -832,11 +832,12 @@ public class PgSQLConnector extends JDBCConnector {
   }
 
   /**
-   * From parsenodes.h
-   *
+   * From <code>parsenodes.h</code>.
+   * <pre>
    * FKCONSTR_MATCH_FULL             'f'
    * FKCONSTR_MATCH_PARTIAL          'p'
    * FKCONSTR_MATCH_UNSPECIFIED      'u'
+   * </pre>
    */
   private static String getMatchRule(String rule) {
     if ("f".equals(rule)) {
@@ -856,7 +857,10 @@ public class PgSQLConnector extends JDBCConnector {
    */
   @Override
   public List<String> getFunctionList() throws SQLException, IOException {
-    return executeListQuery("SELECT p.proname as Function FROM pg_proc p, pg_type t WHERE p.prorettype = t.oid and (pronargs = 0 or oidvectortypes(p.proargtypes) != '') GROUP BY Function ORDER BY Function");
+    return executeListQuery("SELECT p.proname as Function FROM pg_proc p, pg_type t WHERE"
+        + " p.prorettype = t.oid"
+        + " and (pronargs = 0 or oidvectortypes(p.proargtypes) != '')"
+        + " GROUP BY Function ORDER BY Function");
   }
 
   /**
@@ -864,7 +868,11 @@ public class PgSQLConnector extends JDBCConnector {
    */
   @Override
   public List<String> getFunctionList(String type) throws SQLException, IOException {
-    return executeListQuery("SELECT p.proname as Function FROM pg_proc p, pg_type t WHERE p.prorettype = t.oid and t.typname=lower(?) and (pronargs = 0 or oidvectortypes(p.proargtypes) != '') GROUP BY Function ORDER BY Function", type);
+    return executeListQuery("SELECT p.proname as Function FROM pg_proc p, pg_type t WHERE"
+        + " p.prorettype = t.oid"
+        + " and t.typname=lower(?)"
+        + " and (pronargs = 0 or oidvectortypes(p.proargtypes) != '')"
+        + " GROUP BY Function ORDER BY Function", type);
   }
 
   /**
@@ -876,9 +884,9 @@ public class PgSQLConnector extends JDBCConnector {
     List<String> columns = new ArrayList<>();
     List<Boolean> areUnique = new ArrayList<>();
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      Statement stmt = conn.createStatement();
-      ResultSet r = stmt.executeQuery(
+        Connection conn = DatabasePool.getConnection(settings);
+        Statement stmt = conn.createStatement();
+        ResultSet r = stmt.executeQuery(
             "SELECT ic.relname as PK_NAME, "
                 + " a.attname AS COLUMN_NAME,"
                 + " i.indisunique as UNIQUE_KEY"
@@ -917,9 +925,9 @@ public class PgSQLConnector extends JDBCConnector {
     String table = getSettings().getTable();
 
     try (
-      Connection conn = DatabasePool.getConnection(getSettings());
-      Statement stmt = conn.createStatement();
-      ResultSet r = stmt.executeQuery("select tgname, tgargs, proname from pg_proc, pg_trigger where tgfoid = pg_proc.oid and proname like 'RI_FKey_%_ins'")
+        Connection conn = DatabasePool.getConnection(getSettings());
+        Statement stmt = conn.createStatement();
+        ResultSet r = stmt.executeQuery("select tgname, tgargs, proname from pg_proc, pg_trigger where tgfoid = pg_proc.oid and proname like 'RI_FKey_%_ins'")
         ) {
       while (r.next()) {
         String s = r.getString(2);
@@ -1064,9 +1072,9 @@ public class PgSQLConnector extends JDBCConnector {
     String table = getSettings().getTable();
 
     try (
-      Connection conn = DatabasePool.getConnection(getSettings());
-      Statement stmt = conn.createStatement();
-      ResultSet r = stmt.executeQuery("select tgargs from pg_trigger")
+        Connection conn = DatabasePool.getConnection(getSettings());
+        Statement stmt = conn.createStatement();
+        ResultSet r = stmt.executeQuery("select tgargs from pg_trigger")
         ) {
       while (r.next()) {
         String s = r.getString(1);
@@ -1114,9 +1122,9 @@ public class PgSQLConnector extends JDBCConnector {
   @SuppressWarnings("AssignmentToForLoopParameter")
   public TablePrivileges getTablePrivileges() throws SQLException, IOException {
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      Statement stmt = conn.createStatement();
-      ResultSet r = stmt.executeQuery(
+        Connection conn = DatabasePool.getConnection(settings);
+        Statement stmt = conn.createStatement();
+        ResultSet r = stmt.executeQuery(
             "SELECT u.usename, c.relacl "
                 + "FROM pg_class c, pg_user u "
                 + "WHERE (c.relkind='r' OR relkind='S') AND "
@@ -1271,9 +1279,9 @@ public class PgSQLConnector extends JDBCConnector {
     String table = getSettings().getTable();
 
     try (
-      Connection conn = DatabasePool.getConnection(getSettings());
-      Statement stmt = conn.createStatement();
-      ResultSet r = stmt.executeQuery("select tgname, tgargs, proname from pg_proc, pg_trigger where tgfoid = pg_proc.oid and proname like 'RI_FKey_%_upd'")
+        Connection conn = DatabasePool.getConnection(getSettings());
+        Statement stmt = conn.createStatement();
+        ResultSet r = stmt.executeQuery("select tgname, tgargs, proname from pg_proc, pg_trigger where tgfoid = pg_proc.oid and proname like 'RI_FKey_%_upd'")
         ) {
       while (r.next()) {
         String s = r.getString(2);
@@ -1304,9 +1312,9 @@ public class PgSQLConnector extends JDBCConnector {
     String table = getSettings().getTable();
 
     try (
-      Connection conn = DatabasePool.getConnection(getSettings());
-      Statement stmt = conn.createStatement();
-      ResultSet r = stmt.executeQuery("select tgargs, tgdeferrable from pg_trigger")
+        Connection conn = DatabasePool.getConnection(getSettings());
+        Statement stmt = conn.createStatement();
+        ResultSet r = stmt.executeQuery("select tgargs, tgdeferrable from pg_trigger")
         ) {
       while (r.next()) {
         String s = r.getString(1);
@@ -1337,9 +1345,9 @@ public class PgSQLConnector extends JDBCConnector {
     String table = getSettings().getTable();
 
     try (
-      Connection conn = DatabasePool.getConnection(getSettings());
-      Statement stmt = conn.createStatement();
-      ResultSet r = stmt.executeQuery("select tgargs, tginitdeferred from pg_trigger")
+        Connection conn = DatabasePool.getConnection(getSettings());
+        Statement stmt = conn.createStatement();
+        ResultSet r = stmt.executeQuery("select tgargs, tginitdeferred from pg_trigger")
         ) {
       while (r.next()) {
         String s = r.getString(1);
@@ -1362,7 +1370,7 @@ public class PgSQLConnector extends JDBCConnector {
   }
 
   /**
-   * Does the database product support CHECK constraints?
+   * Does the database product support CHECK constraints?.
    */
   @Override
   public boolean supportsCheckConstraints() {
@@ -1392,7 +1400,7 @@ public class PgSQLConnector extends JDBCConnector {
       if (function[i] != null && function[i].length() > 0) {
         sb.append(function[i]);
       } else {
-        String type = getCastType(columns.getType(columns.getID(column[i])));
+        String type = getCastType(columns.getType(columns.getId(column[i])));
         if ("bool".equals(type) || "boolean".equals(type)) {
           sb.append("?");
         } else {
@@ -1404,14 +1412,14 @@ public class PgSQLConnector extends JDBCConnector {
     String sql = sb.toString();
 
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement stmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
       // stmt.setEscapeProcessing(false);
       int pos = 1;
       for (int i = 0; i < column.length; i++) {
         if (function[i] == null || function[i].length() == 0) {
-          String type = getCastType(columns.getType(columns.getID(column[i])));
+          String type = getCastType(columns.getType(columns.getId(column[i])));
           String val = values[i];
           if ("bool".equals(type) || "boolean".equals(type)) {
             if (val == null) {
@@ -1449,15 +1457,15 @@ public class PgSQLConnector extends JDBCConnector {
       if (primaryKeyValues[i] == null) {
         appendIsNull(sb, primaryKeys[i]);
       } else {
-        String type = getCastType(columns.getType(columns.getID(primaryKeys[i])));
+        String type = getCastType(columns.getType(columns.getId(primaryKeys[i])));
         sb.append(quoteColumn(primaryKeys[i])).append("=?::").append(quoteType(type));
       }
     }
     String sql = sb.toString();
 
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement stmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
       // stmt.setEscapeProcessing(false);
       int pos = 1;
@@ -1497,7 +1505,7 @@ public class PgSQLConnector extends JDBCConnector {
       if (primaryValues.get(i) == null) {
         appendIsNull(sb, primaryKeys.get(i));
       } else {
-        String type = getCastType(columns.getType(columns.getID(primaryKeys.get(i))));
+        String type = getCastType(columns.getType(columns.getId(primaryKeys.get(i))));
         sb.append(quoteColumn(primaryKeys.get(i))).append("=?::").append(quoteType(type));
       }
     }
@@ -1505,8 +1513,8 @@ public class PgSQLConnector extends JDBCConnector {
 
     // Then perform the query
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement pstmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
       // pstmt.setEscapeProcessing(false);
       int pos = 1;
@@ -1533,10 +1541,10 @@ public class PgSQLConnector extends JDBCConnector {
    */
   @Override
   public void editRow(String[] column,
-    String[] function,
-    String[] value,
-    String[] primaryKeys,
-    String[] primaryKeyValues
+      String[] function,
+      String[] value,
+      String[] primaryKeys,
+      String[] primaryKeyValues
   ) throws SQLException, IOException {
     String table = settings.getTable();
     Columns columns = getColumns(table);
@@ -1550,7 +1558,7 @@ public class PgSQLConnector extends JDBCConnector {
       if (function[i] != null && function[i].length() > 0) {
         sb.append(function[i]);
       } else {
-        String type = getCastType(columns.getType(columns.getID(column[i])));
+        String type = getCastType(columns.getType(columns.getId(column[i])));
         sb.append("?::").append(quoteType(type));
       }
     }
@@ -1559,14 +1567,14 @@ public class PgSQLConnector extends JDBCConnector {
       if (primaryKeyValues[i] == null) {
         appendIsNull(sb, primaryKeys[i]);
       } else {
-        String type = getCastType(columns.getType(columns.getID(primaryKeys[i])));
+        String type = getCastType(columns.getType(columns.getId(primaryKeys[i])));
         sb.append(quoteColumn(primaryKeys[i])).append("=?::").append(quoteType(type));
       }
     }
     String sql = sb.toString();
     try (
-      Connection conn = DatabasePool.getConnection(settings);
-      PreparedStatement stmt = conn.prepareStatement(sql)
+        Connection conn = DatabasePool.getConnection(settings);
+        PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
       // stmt.setEscapeProcessing(false);
       int pos = 1;

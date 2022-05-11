@@ -60,8 +60,8 @@ public class SchemaImage extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   /**
-   * The different structures are based on
-   *
+   * The different structures.  Based on:
+   * <pre>
    *   1 2 3
    *  4 5 6 7
    *   8 9 a
@@ -81,6 +81,7 @@ public class SchemaImage extends HttpServlet {
    *   e Q R S T U V W f
    *    g D E F G H I h
    *     i j k l m n o
+   * </pre>
    */
   private static final short[][][] structures = {
       {
@@ -93,7 +94,7 @@ public class SchemaImage extends HttpServlet {
       {  8,  0, 28,  0, 18,  0, 17,  0, 19,  0, 29,  0,  9},
       {  0, 10,  0, 24,  0, 25,  0, 26,  0, 27,  0, 11,  0},
       {  0,  0, 12,  0, 13,  0, 14,  0, 15,  0, 16,  0,  0}
-  }, {
+    }, {
       {  0,  0,  0,  1,  0,  2,  0,  3,  0,  4,  0,  5,  0,  6,  0,  7,  0,  0,  0},
       {  0,  0,  8,  0, 31,  0, 32,  0, 33,  0, 34,  0, 35,  0, 36,  0,  9,  0,  0},
       {  0, 10,  0, 45,  0, 46,  0, 47,  0, 48,  0, 49,  0, 50,  0, 51,  0, 11,  0},
@@ -101,16 +102,16 @@ public class SchemaImage extends HttpServlet {
       {  0, 14,  0, 52,  0, 53,  0, 54,  0, 55,  0, 56,  0, 57,  0, 58,  0, 15,  0},
       {  0,  0, 16,  0, 39,  0, 40,  0, 41,  0, 42,  0, 43,  0, 44,  0, 17,  0,  0},
       {  0,  0,  0, 18,  0, 19,  0, 20,  0, 21,  0, 22,  0, 23,  0, 24,  0,  0,  0}
-  }
+    }
   };
 
   /**
-   * The spread of the arrow, in radians
+   * The spread of the arrow, in radians.
    */
   private static final double ARROW_SPREAD = Math.PI / 2;
 
   /**
-   * The length of the arrow, in pixels
+   * The length of the arrow, in pixels.
    */
   private static final int ARROW_LENGTH = 8;
 
@@ -140,7 +141,7 @@ public class SchemaImage extends HttpServlet {
 
     List<SchemaTable> tables;
     try {
-      tables = settings.getJDBCConnector().getDatabaseSchema();
+      tables = settings.getJdbcConnector().getDatabaseSchema();
     } catch (SQLException e) {
       throw new ServletException(e);
     }
@@ -323,7 +324,8 @@ public class SchemaImage extends HttpServlet {
           int link2x1 = xs[foreignIndex];
           int width2 = foreignTable.getWidth(fm);
           int link2x2 = link2x1 + width2;
-          int x1, x2;
+          int x1;
+          int x2;
           if ((link1x1 <= link2x1 && link1x2 >= link2x2) || (link1x1 >= link2x1 && link1x2 <= link2x2)) {
             if (link1x2 == link2x2 || link1x1 != link2x1) {
               x1 = link1x1 - 2;

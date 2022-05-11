@@ -45,7 +45,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 /**
- * The configuration for the database is stored in a properties file
+ * The configuration for the database is stored in a properties file.
  */
 public class DatabaseConfiguration {
 
@@ -54,7 +54,10 @@ public class DatabaseConfiguration {
   private static final ScopeEE.Application.Attribute<DatabaseConfiguration> APPLICATION_ATTRIBUTE =
       ScopeEE.APPLICATION.attribute(DatabaseConfiguration.class.getName());
 
-  @WebListener
+  /**
+   * Loads the database configuration during {@linkplain ServletContextListener application start-up}.
+   */
+  @WebListener("Loads the database configuration during application start-up.")
   public static class Initializer implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
@@ -72,7 +75,7 @@ public class DatabaseConfiguration {
    */
   public static DatabaseConfiguration getInstance(ServletContext servletContext) {
     try {
-      return APPLICATION_ATTRIBUTE.context(servletContext).computeIfAbsent(__ -> {
+      return APPLICATION_ATTRIBUTE.context(servletContext).computeIfAbsent(name -> {
         String filename = Strings.trimNullIfEmpty(servletContext.getInitParameter(INIT_PARAM));
         servletContext.log(DatabaseConfiguration.class.getName() + ": " + INIT_PARAM + '=' + filename);
         if (filename != null) {
@@ -95,14 +98,14 @@ public class DatabaseConfiguration {
    * Loads the default configuration from the bundled database.properties file.
    */
   private DatabaseConfiguration() throws IOException {
-    final String RESOURCE = "com/javaphilia/javatator/database.properties";
-    InputStream in = DatabaseConfiguration.class.getResourceAsStream("/" + RESOURCE);
+    final String resource = "com/javaphilia/javatator/database.properties";
+    InputStream in = DatabaseConfiguration.class.getResourceAsStream("/" + resource);
     if (in == null) {
       // Try ClassLoader for when modules enabled
       ClassLoader classloader = Thread.currentThread().getContextClassLoader();
       in = (classloader != null)
-          ? classloader.getResourceAsStream(RESOURCE)
-          : ClassLoader.getSystemResourceAsStream(RESOURCE);
+          ? classloader.getResourceAsStream(resource)
+          : ClassLoader.getSystemResourceAsStream(resource);
     }
     if (in == null) {
       throw new IOException("database.properties not found as resource");

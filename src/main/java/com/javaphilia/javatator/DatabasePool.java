@@ -100,7 +100,7 @@ public class DatabasePool {
   private final int numConnections;
 
   /**
-   * Instances of {@link Connection} to reuse i.e. the {@link Connection}
+   * Instances of {@link Connection} to reuse i.e. the {@link Connection}.
    * pool.
    *
    * @see  #getConnection
@@ -108,32 +108,32 @@ public class DatabasePool {
   private final Connection[] connections;
 
   /**
-   * Flags used to keep track of which connections are busy
+   * Flags used to keep track of which connections are busy.
    */
   private final boolean[] busyConnections;
 
   /**
-   * Total time using each connection
+   * Total time using each connection.
    */
   private final long[] totalTimes;
 
   /**
-   * The time getting each DB connection from the pool
+   * The time getting each DB connection from the pool.
    */
   private final long[] startTimes;
 
   /**
-   * The time returning each DB connection to the pool
+   * The time returning each DB connection to the pool.
    */
   private final long[] releaseTimes;
 
   /**
-   * Counts the number of times each connection is connected
+   * Counts the number of times each connection is connected.
    */
   private final long[] connectCount;
 
   /**
-   * Counts the number of times each connection is used
+   * Counts the number of times each connection is used.
    */
   private final long[] connectionUses;
 
@@ -307,7 +307,7 @@ public class DatabasePool {
             username,
             password,
             database,
-            settings.getURL()
+            settings.getUrl()
         );
         pools.add(pool);
       }

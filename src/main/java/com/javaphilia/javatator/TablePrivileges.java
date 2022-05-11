@@ -37,7 +37,7 @@ public class TablePrivileges {
   private final List<String> grantors;
   private final List<String> grantees;
   private final List<String> privileges;
-  private final List<JDBCConnector.Boolean> isGrantable;
+  private final List<JdbcConnector.Boolean> isGrantable;
 
   /**
    * Instantiate a new {@link TablePrivileges} object.
@@ -50,7 +50,7 @@ public class TablePrivileges {
       List<String> grantors,
       List<String> grantees,
       List<String> privileges,
-      List<JDBCConnector.Boolean> isGrantable
+      List<JdbcConnector.Boolean> isGrantable
   ) {
     this.grantors = grantors;
     this.grantees = grantees;
@@ -66,7 +66,7 @@ public class TablePrivileges {
     return grantors;
   }
 
-  public List<JDBCConnector.Boolean> getIsGrantable() {
+  public List<JdbcConnector.Boolean> getIsGrantable() {
     return isGrantable;
   }
 

@@ -40,9 +40,9 @@ public class Indexes {
   private final List<String> names;
 
   /**
-   * Are they unique?
+   * Are they unique?.
    */
-  private final List<JDBCConnector.Boolean> areUnique;
+  private final List<JdbcConnector.Boolean> areUnique;
 
   /**
    * The column names.
@@ -58,7 +58,7 @@ public class Indexes {
    */
   public Indexes(
       List<String> names,
-      List<JDBCConnector.Boolean> areUnique,
+      List<JdbcConnector.Boolean> areUnique,
       List<String> columns
   ) {
     this.names = names;
@@ -67,9 +67,9 @@ public class Indexes {
   }
 
   /**
-   * Are the indexes UNIQUE?
+   * Are the indexes UNIQUE?.
    */
-  public List<JDBCConnector.Boolean> areUnique() {
+  public List<JdbcConnector.Boolean> areUnique() {
     return areUnique;
   }
 
