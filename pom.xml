@@ -300,9 +300,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </manifestEntries>
               </archive>
               <packagingExcludes>
-                <!-- META-INF/context.xml is used for local development deployment only -->
-                META-INF/context.xml,
-                WEB-INF/classes/module-info.class
+                <!-- Default Excludes -->
+                META-INF/context.xml
+                <!-- Exclude module-info due to named dependencies-->
+                ,WEB-INF/classes/module-info.class
               </packagingExcludes>
               <!-- There is no way to exclude module-info.class from secondary artifact, just don't attach -->
               <attachClasses>false</attachClasses>
