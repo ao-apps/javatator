@@ -846,7 +846,13 @@ pipeline {
             mavenLocalRepo: '.m2/repository',
             jdk: "jdk-$deployJdk"
           ) {
+            // Begin custom
+            lock(resource: 'aoindustries.com_tomcat_manager', inversePrecedence: true) {
+            // End custom
             sh "${niceCmd}$MVN_CMD $mvnCommon -Pnexus,jenkins-deploy,publish -Dalt.build.dir=target/jdk-$deployJdk deploy"
+            // Begin custom
+            }
+            // End custom
           }
           // Restore surefire-reports
           sh restoreSurefireReportsScript(deployJdk)
