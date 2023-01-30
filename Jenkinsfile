@@ -2,7 +2,7 @@
 /*
  * javatator - Multi-database admin tool.
  *
- * Copyright (C) 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2021, 2022, 2023  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -39,7 +39,6 @@ def upstreamProjects = [
   'oss/web-resources/servlet', // <groupId>com.aoapps</groupId><artifactId>ao-web-resources-servlet</artifactId>
   'aoserv/client', // <groupId>com.aoindustries</groupId><artifactId>aoserv-client</artifactId>
   // No Jenkins: <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId>
-  // No Jenkins: <groupId>javax.servlet.jsp</groupId><artifactId>javax.servlet.jsp-api</artifactId>
 
   // Runtime Direct
   'oss/error-pages', // <groupId>com.aoapps</groupId><artifactId>ao-error-pages</artifactId>
