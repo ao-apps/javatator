@@ -284,9 +284,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       <id>release</id>
       <properties>
         <!--
-          Releases use "Automatic-Module-Name" instead of "module-info.java"
-          since has direct dependencies that are not yet modularized.
-
           Newer plugins are failing on release builds:
           error: -\-add-modules ALL-MODULE-PATH can only be used when compiling the unnamed module or when compiling in the context of an automatic module
 
