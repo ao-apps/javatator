@@ -45,6 +45,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <!-- Require secure session cookies in production -->
     <session.cookie.secure>true</session.cookie.secure>
     <!-- Default publish settings -->
+    <publish-aoindustries.com-ssh-path>/usr/bin/ssh</publish-aoindustries.com-ssh-path>
     <publish-aoindustries.com-javatator-warmup-get-url>https://aoindustries.com/javatator/</publish-aoindustries.com-javatator-warmup-get-url>
   </properties>
 
@@ -346,6 +347,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId><artifactId>maven-antrun-plugin</artifactId>
             <executions>
+              <execution>
+                <id>delete-tomcat-work</id><phase>deploy</phase><goals><goal>run</goal></goals>
+                <configuration>
+                  <target>
+                    <sleep seconds="1" />
+                    <exec executable="${publish-aoindustries.com-ssh-path}" failonerror="true">
+                      <arg value="-oControlPath=none" />
+                      <arg value="-T" />
+                      <arg value="${publish-aoindustries.com-tomcat-username}@${publish-aoindustries.com-tomcat-hostname}"/>
+                      <arg value="find '${publish-aoindustries.com-javatator-tomcat-work}' '(' -name '*.java' -or -name '*.class' ')' -delete" />
+                    </exec>
+                  </target>
+                </configuration>
+              </execution>
               <execution>
                 <id>warmup-sleep</id><phase>deploy</phase><goals><goal>run</goal></goals>
                 <configuration>
