@@ -356,7 +356,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                       <arg value="-oControlPath=none" />
                       <arg value="-T" />
                       <arg value="${publish-aoindustries.com-tomcat-username}@${publish-aoindustries.com-tomcat-hostname}"/>
-                      <arg value="bash -c '[ -d &quot;$1&quot; ] &amp;&amp; find &quot;$1&quot; &quot;(&quot; -name &quot;*.java&quot; -or -name &quot;*.class&quot; &quot;)&quot; -delete' delete-tomcat-work '${publish-aoindustries.com-javatator-tomcat-work}'" />
+                      <arg value="bash -c 'if [ -d &quot;$1&quot; ] ; then find &quot;$1&quot; &quot;(&quot; -name &quot;*.java&quot; -or -name &quot;*.class&quot; &quot;)&quot; -delete ; fi' delete-tomcat-work '${publish-aoindustries.com-javatator-tomcat-work}'" />
                     </exec>
                   </target>
                 </configuration>
