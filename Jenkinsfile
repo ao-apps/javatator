@@ -29,6 +29,7 @@ def upstreamProjects = [
 
   // Direct
   'oss/collections', // <groupId>com.aoapps</groupId><artifactId>ao-collections</artifactId>
+  'oss/fluent-html-any', // <groupId>com.aoapps</groupId><artifactId>ao-fluent-html-any</artifactId>
   'oss/fluent-html-servlet', // <groupId>com.aoapps</groupId><artifactId>ao-fluent-html-servlet</artifactId>
   'oss/lang', // <groupId>com.aoapps</groupId><artifactId>ao-lang</artifactId>
   'oss/net-types', // <groupId>com.aoapps</groupId><artifactId>ao-net-types</artifactId>
