@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2009, 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2009, 2018, 2019, 2020, 2021, 2022, 2023  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -1321,13 +1321,13 @@ public class Table {
         List<Integer> importedKeyIds;
         ForeignKeys importedKeys = conn.getImportedKeys();
         //for (int c=0;c<importedKeys.getSize();c++) {
-        //    System.err.println("importedKeys: "+importedKeys.getForeignTable(c)+"."+importedKeys.getForeignKey(c)+"->"+importedKeys.getPrimaryTable(c)+"."+importedKeys.getPrimaryKey(c));
+        //    System.err.println("importedKeys: "+importedKeys.getForeignTable(c)+"."+importedKeys.getForeignKey(c)+"→"+importedKeys.getPrimaryTable(c)+"."+importedKeys.getPrimaryKey(c));
         //}
         // The unique IDs of the columns that reference this table
         List<List<Integer>> exportedIds;
         ForeignKeys exportedKeys = conn.getExportedKeys();
         //for (int c=0;c<exportedKeys.getSize();c++) {
-        //    System.err.println("exportedKeys: "+exportedKeys.getForeignTable(c)+"."+exportedKeys.getForeignKey(c)+"->"+exportedKeys.getPrimaryTable(c)+"."+exportedKeys.getPrimaryKey(c));
+        //    System.err.println("exportedKeys: "+exportedKeys.getForeignTable(c)+"."+exportedKeys.getForeignKey(c)+"→"+exportedKeys.getPrimaryTable(c)+"."+exportedKeys.getPrimaryKey(c));
         //}
 
         // The type of each column
