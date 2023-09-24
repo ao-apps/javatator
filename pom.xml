@@ -559,11 +559,5 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       <groupId>com.aoapps</groupId><artifactId>ao-servlet-filter</artifactId>
       <scope>runtime</scope>
     </dependency>
-    <!-- Imports (Reactor build order only) -->
-    <dependency>
-      <groupId>com.aoapps</groupId><artifactId>javaee-web-api-bom</artifactId><version>7.0.1-POST-SNAPSHOT</version>
-      <type>pom</type>
-      <exclusions><exclusion><artifactId>*</artifactId><groupId>*</groupId></exclusion></exclusions>
-    </dependency>
   </dependencies>
 </project>
