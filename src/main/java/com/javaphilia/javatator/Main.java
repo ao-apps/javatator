@@ -464,8 +464,8 @@ public class Main extends HttpServlet {
         && settings.getDatabase() != null;
     // TODO: Forward to a set of appropriate JSP views
     // Locate registries
-    Registry requestRegistry = RegistryEE.Request.get(servletContext, request);
-    Registry pageRegistry = RegistryEE.Page.get(request);
+    final Registry requestRegistry = RegistryEE.Request.get(servletContext, request);
+    final Registry pageRegistry = RegistryEE.Page.get(request);
     out.print("<html>\n"
         + "  <head>\n");
     DocumentEE head = new DocumentEE(servletContext, request, response, out);
@@ -576,8 +576,8 @@ public class Main extends HttpServlet {
             && settings.getUsername() != null
             && settings.getDatabase() != null;
     // Locate registries
-    Registry requestRegistry = RegistryEE.Request.get(servletContext, request);
-    Registry pageRegistry = RegistryEE.Page.get(request);
+    final Registry requestRegistry = RegistryEE.Request.get(servletContext, request);
+    final Registry pageRegistry = RegistryEE.Page.get(request);
     // TODO: Forward to a set of appropriate JSP views
     out.print("<html>\n"
         + "<head>");
