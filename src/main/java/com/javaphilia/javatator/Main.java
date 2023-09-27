@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021, 2022, 2023  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -29,6 +29,8 @@ package com.javaphilia.javatator;
 
 import com.aoapps.html.servlet.DocumentEE;
 import com.aoapps.lang.io.ContentType;
+import com.aoapps.web.resources.registry.Registry;
+import com.aoapps.web.resources.registry.Script;
 import com.aoapps.web.resources.renderer.Renderer;
 import com.aoapps.web.resources.servlet.RegistryEE;
 import java.io.IOException;
@@ -461,9 +463,24 @@ public class Main extends HttpServlet {
         && settings.getUsername() != null
         && settings.getDatabase() != null;
     // TODO: Forward to a set of appropriate JSP views
+    // Locate registries
+    Registry requestRegistry = RegistryEE.Request.get(servletContext, request);
+    Registry pageRegistry = RegistryEE.Page.get(request);
     out.print("<html>\n"
-        + "  <head>\n"
-        + "    <script language=javascript src='");
+        + "  <head>\n");
+    DocumentEE head = new DocumentEE(servletContext, request, response, out);
+    Renderer.get(servletContext).renderScripts(
+        request,
+        response,
+        head,
+        true, // registeredActivations
+        Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
+        Script.Position.HEAD_START,
+        requestRegistry,
+        RegistryEE.Session.get(request.getSession(false)), // Lookup each time since session might have been created
+        pageRegistry
+    );
+    out.print("    <script language=javascript src='");
     // TODO: response encodeURL
     out.print(request.getContextPath());
     out.print("/javatator.js'></script>\n"
@@ -471,16 +488,38 @@ public class Main extends HttpServlet {
     Renderer.get(servletContext).renderStyles(
         request,
         response,
-        new DocumentEE(servletContext, request, response, out),
-        true,
+        head,
+        true, // registeredActivations
         Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
-        RegistryEE.Request.get(servletContext, request),
-        RegistryEE.Session.get(request.getSession(false)),
-        RegistryEE.Page.get(request)
+        requestRegistry,
+        RegistryEE.Session.get(request.getSession(false)), // Lookup each time since session might have been created
+        pageRegistry
     );
-    out.print("\n"
-        + "  </head>\n"
+    out.print("\n");
+    Renderer.get(servletContext).renderScripts(
+        request,
+        response,
+        head,
+        true, // registeredActivations
+        Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
+        Script.Position.HEAD_END,
+        requestRegistry,
+        RegistryEE.Session.get(request.getSession(false)), // Lookup each time since session might have been created
+        pageRegistry
+    );
+    out.print("  </head>\n"
         + "<body class='ALTBODY'>\n");
+    Renderer.get(servletContext).renderScripts(
+        request,
+        response,
+        head,
+        true, // registeredActivations
+        Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
+        Script.Position.BODY_START,
+        requestRegistry,
+        RegistryEE.Session.get(request.getSession(false)), // Lookup each time since session might have been created
+        pageRegistry
+    );
     if (isConnected) {
       out.print("<form method=post action='");
       // TODO: response encodeURL
@@ -508,8 +547,19 @@ public class Main extends HttpServlet {
         settings.printForm(out);
         out.print("</form>\n");
       }
-      out.endBody();
-      out.print("</html>\n");
+      Renderer.get(servletContext).renderScripts(
+          request,
+          response,
+          head,
+          true, // registeredActivations
+          Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
+          Script.Position.BODY_END,
+          requestRegistry,
+          RegistryEE.Session.get(request.getSession(false)), // Lookup each time since session might have been created
+          pageRegistry
+      );
+      out.print("</body>\n"
+          + "</html>\n");
     }
   }
 
@@ -525,10 +575,25 @@ public class Main extends HttpServlet {
             && settings.getPort() > 0
             && settings.getUsername() != null
             && settings.getDatabase() != null;
+    // Locate registries
+    Registry requestRegistry = RegistryEE.Request.get(servletContext, request);
+    Registry pageRegistry = RegistryEE.Page.get(request);
     // TODO: Forward to a set of appropriate JSP views
     out.print("<html>\n"
-        + "<head>"
-        + "    <script language=javascript src='");
+        + "<head>");
+    DocumentEE head = new DocumentEE(servletContext, request, response, out);
+    Renderer.get(servletContext).renderScripts(
+        request,
+        response,
+        head,
+        true, // registeredActivations
+        Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
+        Script.Position.HEAD_START,
+        requestRegistry,
+        RegistryEE.Session.get(request.getSession(false)), // Lookup each time since session might have been created
+        pageRegistry
+    );
+    out.print("    <script language=javascript src='");
     // TODO: response encodeURL
     out.print(request.getContextPath());
     out.print("/javatator.js'></script>\n"
@@ -536,12 +601,12 @@ public class Main extends HttpServlet {
     Renderer.get(servletContext).renderStyles(
         request,
         response,
-        new DocumentEE(servletContext, request, response, out),
-        true,
+        head,
+        true, // registeredActivations
         Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
-        RegistryEE.Request.get(servletContext, request),
-        RegistryEE.Session.get(request.getSession(false)),
-        RegistryEE.Page.get(request)
+        requestRegistry,
+        RegistryEE.Session.get(request.getSession(false)), // Lookup each time since session might have been created
+        pageRegistry
     );
     out.print('\n');
     if (isConnected) {
@@ -588,6 +653,17 @@ public class Main extends HttpServlet {
         e.printStackTrace();
       }
     }
+    Renderer.get(servletContext).renderScripts(
+        request,
+        response,
+        head,
+        true, // registeredActivations
+        Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
+        Script.Position.HEAD_END,
+        requestRegistry,
+        RegistryEE.Session.get(request.getSession(false)), // Lookup each time since session might have been created
+        pageRegistry
+    );
     out.print("</head>\n"
         + "<body onLoad='");
     if (isConnected) {
@@ -596,8 +672,19 @@ public class Main extends HttpServlet {
     if (action == null || "db_details".equals(action)) {
       out.print("document.theform.submit();");
     }
-    out.print("'>\n"
-        + "<form method=post name=theform target='right_frame' action='");
+    out.print("'>\n");
+    Renderer.get(servletContext).renderScripts(
+        request,
+        response,
+        head,
+        true, // registeredActivations
+        Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
+        Script.Position.BODY_START,
+        requestRegistry,
+        RegistryEE.Session.get(request.getSession(false)), // Lookup each time since session might have been created
+        pageRegistry
+    );
+    out.print("<form method=post name=theform target='right_frame' action='");
     // TODO: response encodeURL
     out.print(request.getContextPath());
     out.print("/'>\n"
@@ -658,8 +745,19 @@ public class Main extends HttpServlet {
     out.endTd();
     out.endTr();
     out.endTable();
-    out.endBody();
-    out.print("</html>\n");
+    Renderer.get(servletContext).renderScripts(
+        request,
+        response,
+        head,
+        true, // registeredActivations
+        Collections.singletonMap(JavatatorStyles.RESOURCE_GROUP, true),
+        Script.Position.BODY_END,
+        requestRegistry,
+        RegistryEE.Session.get(request.getSession(false)), // Lookup each time since session might have been created
+        pageRegistry
+    );
+    out.print("</body>\n"
+        + "</html>\n");
   }
 
   private void showOptions(JavatatorWriter out, Settings settings) {

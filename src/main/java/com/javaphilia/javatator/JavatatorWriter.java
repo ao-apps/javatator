@@ -4,7 +4,7 @@
  * Copyright (C) 2001  Dan Armstrong.
  *     dan@dans-home.com
  *
- * Copyright (C) 2019, 2022  AO Industries, Inc.
+ * Copyright (C) 2019, 2022, 2023  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -39,13 +39,6 @@ public class JavatatorWriter extends PrintWriter {
    */
   public JavatatorWriter(OutputStream out) {
     super(out);
-  }
-
-  /**
-   * Ends the body of the HTML page.
-   */
-  public void endBody() {
-    print("</body>\n");
   }
 
   /**
