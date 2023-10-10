@@ -45,6 +45,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <!-- Require secure session cookies in production -->
     <session.cookie.secure>true</session.cookie.secure>
     <!-- Default publish settings -->
+    <!-- TODO: Parallel deployment -->
     <publish-aoindustries.com-ssh-path>/usr/bin/ssh</publish-aoindustries.com-ssh-path>
     <publish-aoindustries.com-javatator-warmup-get-url>https://aoindustries.com/javatator/</publish-aoindustries.com-javatator-warmup-get-url>
   </properties>
