@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2009, 2015, 2017, 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2009, 2015, 2017, 2018, 2019, 2020, 2021, 2022, 2023  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -791,11 +791,11 @@ public class PostgresqlConnector extends JdbcConnector {
       pstmt.setInt(2, attNum);
       try (ResultSet result = pstmt.executeQuery()) {
         if (!result.next()) {
-          throw new SQLException("No row returned");
+          throw new SQLException("No row returned"); // TODO: NoRowException move to ao-sql
         }
         String name = result.getString(1);
         if (result.next()) {
-          throw new SQLException("More than one row returned");
+          throw new SQLException("More than one row returned"); // TODO: ExtraRowException move to ao-sql
         }
         return name;
       }
