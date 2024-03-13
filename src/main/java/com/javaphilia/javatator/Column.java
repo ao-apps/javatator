@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2019, 2022  AO Industries, Inc.
+ * Copyright (C) 2019, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -419,7 +419,6 @@ public class Column {
       final int id = columns.getId(column);
       final String columnType = columns.getType(id);
       final String columnLength = columns.getLength(id);
-      String columnDefault = columns.getDefault(id);
       final String columnExtra = columns.getRemark(id);
       final JdbcConnector.Boolean isNullable = columns.isNullable(id);
       final List<String> types = conn.getTypes();
@@ -473,6 +472,7 @@ public class Column {
 
       out.startTd();
       out.print("<select name='newdefaulttype'>\n");
+      String columnDefault = columns.getDefault(id);
       List<String> pvalues = conn.getPossibleValues(column, columnType);
       if (pvalues != null) {
         // Show empty in choice first

@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -461,11 +461,11 @@ public class JdbcConnector {
    */
   public void dumpTableStructure(Writer out) throws SQLException, IOException {
     Columns columns = getColumns();
-    List<String> names = columns.getNames();
-    List<String> types = columns.getTypes();
-    List<String> lengths = columns.getLengths();
-    List<Boolean> areNullable = columns.areNullable();
-    List<String> defaults = columns.getDefaults();
+    final List<String> names = columns.getNames();
+    final List<String> types = columns.getTypes();
+    final List<String> lengths = columns.getLengths();
+    final List<Boolean> areNullable = columns.areNullable();
+    final List<String> defaults = columns.getDefaults();
     out.write("CREATE TABLE ");
     out.write(quoteTable(settings.getTable()));
     out.write(" (");

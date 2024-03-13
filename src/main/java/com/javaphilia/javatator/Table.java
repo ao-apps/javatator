@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2009, 2018, 2019, 2020, 2021, 2022, 2023  AO Industries, Inc.
+ * Copyright (C) 2009, 2018, 2019, 2020, 2021, 2022, 2023, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -724,11 +724,11 @@ public class Table {
 
     JdbcConnector conn = settings.getJdbcConnector();
     Columns columns = conn.getColumns();
-    List<String> names = columns.getNames();
-    List<String> types = columns.getTypes();
+    final List<String> names = columns.getNames();
+    final List<String> types = columns.getTypes();
     // List<String> lengths=columns.getLengths();
-    List<JdbcConnector.Boolean> areNullable = columns.areNullable();
-    List<String> defaults = columns.getDefaults();
+    final List<JdbcConnector.Boolean> areNullable = columns.areNullable();
+    final List<String> defaults = columns.getDefaults();
     int size = names.size();
     for (int i = 0; i < size; i++) {
       out.print("<option selected value='");

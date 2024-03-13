@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -330,11 +330,10 @@ public class Row {
       //List<String> defaults=columns.getDefaults();
       int size = names.size();
       for (int i = 0; i < size; i++) {
-        String columnName = names.get(i);
-        String columnType = types.get(i);
-        String columnLength = lengths.get(i);
-        String currentValue = rowValues.get(i);
-        JdbcConnector.Boolean isNullable = areNullable.get(i);
+        final String columnName = names.get(i);
+        final String columnType = types.get(i);
+        final String columnLength = lengths.get(i);
+        final JdbcConnector.Boolean isNullable = areNullable.get(i);
 
         out.startTr();
 
@@ -375,6 +374,7 @@ public class Row {
         out.endTd();
 
         out.startTd();
+        String currentValue = rowValues.get(i);
         if (pvalues != null) {
           out.print("<select name='value");
           out.print(i);
@@ -576,7 +576,7 @@ public class Row {
       out.startTd();
       // Only show the list of possible values when available and the default is not a function
       if (values != null && (columnDefault == null || columnDefault.charAt(0) == 'V')) {
-        String def = columnDefault == null ? null : columnDefault.substring(1);
+        final String def = columnDefault == null ? null : columnDefault.substring(1);
         out.print("<select name='value");
         out.print(i);
         out.print("'>\n");
