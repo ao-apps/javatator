@@ -470,7 +470,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       </dependency>
       <!-- Runtime Direct -->
       <dependency>
-        <groupId>com.aoapps</groupId><artifactId>ao-error-pages</artifactId><version>1.1.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+        <groupId>com.aoapps</groupId><artifactId>ao-error-pages</artifactId><version>1.1.0${POST-SNAPSHOT}</version>
       </dependency>
       <dependency>
         <groupId>com.aoapps</groupId><artifactId>ao-mime-mappings</artifactId><version>1.2.0${POST-SNAPSHOT}</version>
