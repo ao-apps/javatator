@@ -39,6 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <javadoc.breadcrumbs><![CDATA[<a target="${javadoc.target}" href="${project.url}">${project.name}</a>]]></javadoc.breadcrumbs>
     <com.javaphilia.javatator.DatabaseConfiguration />
     <!-- com.aoindustries is on original Sonatype Nexus Repository Manager -->
+    <nexusServerId>ossrh-aoindustries</nexusServerId>
     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
     <!-- TODO: Implement tests -->
     <sonar.coverage.exclusions>**.*</sonar.coverage.exclusions>
