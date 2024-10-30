@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019, 2020, 2021, 2022, 2023  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021, 2022, 2023, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -55,9 +55,8 @@ public class Main extends HttpServlet {
   /*
    * The version of this release.
    * TODO: Move to changelog.jspx in book
-   * <p>
-   * 0.5.0 - Added SSL support and quotes for PostgreSQL case-sensitivity.
-   * </p>
+   *
+   * <p>0.5.0 - Added SSL support and quotes for PostgreSQL case-sensitivity.</p>
    */
 
   /**

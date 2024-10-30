@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2009, 2015, 2017, 2018, 2019, 2020, 2021, 2022, 2023  AO Industries, Inc.
+ * Copyright (C) 2009, 2015, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -804,13 +804,12 @@ public class PostgresqlConnector extends JdbcConnector {
 
   /**
    * From <code>parsenodes.h</code>.
-   * <pre>
-   * FKCONSTR_ACTION_NOACTION        'a'
+   *
+   * <pre>FKCONSTR_ACTION_NOACTION        'a'
    * FKCONSTR_ACTION_RESTRICT        'r'
    * FKCONSTR_ACTION_CASCADE         'c'
    * FKCONSTR_ACTION_SETNULL         'n'
-   * FKCONSTR_ACTION_SETDEFAULT      'd'
-   * </pre>
+   * FKCONSTR_ACTION_SETDEFAULT      'd'</pre>
    */
   private static String getActionRule(String rule) {
     if ("a".equals(rule)) {
@@ -833,11 +832,10 @@ public class PostgresqlConnector extends JdbcConnector {
 
   /**
    * From <code>parsenodes.h</code>.
-   * <pre>
-   * FKCONSTR_MATCH_FULL             'f'
+   *
+   * <pre>FKCONSTR_MATCH_FULL             'f'
    * FKCONSTR_MATCH_PARTIAL          'p'
-   * FKCONSTR_MATCH_UNSPECIFIED      'u'
-   * </pre>
+   * FKCONSTR_MATCH_UNSPECIFIED      'u'</pre>
    */
   private static String getMatchRule(String rule) {
     if ("f".equals(rule)) {

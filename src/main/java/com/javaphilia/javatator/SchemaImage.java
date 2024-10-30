@@ -4,7 +4,7 @@
  * Copyright (C) 2001  Dan Armstrong.
  *     dan@dans-home.com
  *
- * Copyright (C) 2015, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2015, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -61,8 +61,8 @@ public class SchemaImage extends HttpServlet {
 
   /**
    * The different structures.  Based on:
-   * <pre>
-   *   1 2 3
+   *
+   * <pre>  1 2 3
    *  4 5 6 7
    *   8 9 a
    *
@@ -80,8 +80,7 @@ public class SchemaImage extends HttpServlet {
    *  c B t r p q s u C d
    *   e Q R S T U V W f
    *    g D E F G H I h
-   *     i j k l m n o
-   * </pre>
+   *     i j k l m n o</pre>
    */
   private static final short[][][] structures = {
       {

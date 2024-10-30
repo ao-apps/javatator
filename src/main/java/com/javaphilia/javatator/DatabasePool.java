@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2016, 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2018, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -320,11 +320,10 @@ public class DatabasePool {
   /**
    * Calls {@link #releaseConnection0(java.sql.Connection)} when this
    * connection is closed.
-   * <p>
-   * TODO: A future improvement would be to close a connection that has
+   *
+   * <p>TODO: A future improvement would be to close a connection that has
    * experienced a fatal SQLException, or refactor to use a different
-   * and more standard connection pooling implementation.
-   * </p>
+   * and more standard connection pooling implementation.</p>
    */
   // TODO: Extend NoCloseConnectionWrapper instead
   private class ReleaseOnCloseConnection extends ConnectionWrapperImpl {
