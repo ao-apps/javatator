@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2009, 2018, 2019, 2020, 2021, 2022, 2023, 2024  AO Industries, Inc.
+ * Copyright (C) 2009, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -1205,75 +1205,75 @@ public class Table {
     String selectCols;                  // The list of all columns that are being selected
     String selectWhere;                 // The settings provided where clause
     String fullQuery;                   // The result of the SQL generation
-      {
-        int count = 0;
-        final String limitClause = conn.getLimitClause(startPos, numrows);
-        final String sortColumn = settings.getSortColumn();
+    {
+      int count = 0;
+      final String limitClause = conn.getLimitClause(startPos, numrows);
+      final String sortColumn = settings.getSortColumn();
 
-        while (settings.getParameter("scolumn" + count) != null) {
-          count++;
-        }
-
-        String[] colNames = new String[count];
-        String[] colValues = new String[count];
-        boolean[] likeComparators = new boolean[count];
-        for (int i = 0; i < count; i++) {
-          colNames[i] = settings.getParameter("scolumn" + i);
-          if (settings.getParameter("null" + i) != null) {
-            colValues[i] = null;
-          } else {
-            colValues[i] = settings.getParameter("value" + i);
-          }
-          likeComparators[i] = settings.getParameter("like" + i) != null;
-        }
-        String[] selectColNames = settings.getParameterValues("columns");
-
-        if (count > 0 && "doselect".equals(settings.getAction())) {
-          StringBuilder sb = new StringBuilder();
-          int size = (selectColNames == null) ? 0 : selectColNames.length;
-          for (int i = 0; i < size; i++) {
-            if (i > 0) {
-              sb.append(',');
-            }
-            sb.append(conn.quoteColumn(selectColNames[i]));
-          }
-          if (size == 0) {
-            sb.append('*');
-          }
-          selectCols = sb.toString();
-          sb.setLength(0);
-          sb.append(conn.getSelectWhereClause(colNames, colValues));
-          if (!"".equals(settings.getParameter("selectwhere"))) {
-            if (sb.length() > 0) {
-              sb.append(" AND ");
-            }
-            sb.append(settings.getParameter("selectwhere"));
-          }
-          selectWhere = sb.toString();
-        } else {
-          selectCols = settings.getParameter("selectcols");
-          selectWhere = settings.getParameter("selectwhere");
-        }
-        StringBuilder query = new StringBuilder()
-            .append("SELECT ")
-            .append((selectCols == null || "".equals(selectCols))
-                ? "*" :
-                selectCols
-            ).append(" FROM ")
-            .append(conn.quoteTable(settings.getTable()));
-        if (selectWhere != null && !"".equals(selectWhere)) {
-          query.append(" WHERE ").append(selectWhere);
-        }
-
-        //String sortClause = "";
-        if (sortColumn != null && !"".equals(sortColumn)) {
-          query.append(" ORDER BY ").append(conn.quoteColumn(sortColumn)).append(' ').append(settings.getSortOrder());
-        }
-        if (limitClause != null) {
-          query.append(' ').append(limitClause);
-        }
-        fullQuery = query.toString();
+      while (settings.getParameter("scolumn" + count) != null) {
+        count++;
       }
+
+      String[] colNames = new String[count];
+      String[] colValues = new String[count];
+      boolean[] likeComparators = new boolean[count];
+      for (int i = 0; i < count; i++) {
+        colNames[i] = settings.getParameter("scolumn" + i);
+        if (settings.getParameter("null" + i) != null) {
+          colValues[i] = null;
+        } else {
+          colValues[i] = settings.getParameter("value" + i);
+        }
+        likeComparators[i] = settings.getParameter("like" + i) != null;
+      }
+      String[] selectColNames = settings.getParameterValues("columns");
+
+      if (count > 0 && "doselect".equals(settings.getAction())) {
+        StringBuilder sb = new StringBuilder();
+        int size = (selectColNames == null) ? 0 : selectColNames.length;
+        for (int i = 0; i < size; i++) {
+          if (i > 0) {
+            sb.append(',');
+          }
+          sb.append(conn.quoteColumn(selectColNames[i]));
+        }
+        if (size == 0) {
+          sb.append('*');
+        }
+        selectCols = sb.toString();
+        sb.setLength(0);
+        sb.append(conn.getSelectWhereClause(colNames, colValues));
+        if (!"".equals(settings.getParameter("selectwhere"))) {
+          if (sb.length() > 0) {
+            sb.append(" AND ");
+          }
+          sb.append(settings.getParameter("selectwhere"));
+        }
+        selectWhere = sb.toString();
+      } else {
+        selectCols = settings.getParameter("selectcols");
+        selectWhere = settings.getParameter("selectwhere");
+      }
+      StringBuilder query = new StringBuilder()
+          .append("SELECT ")
+          .append((selectCols == null || "".equals(selectCols))
+              ? "*" :
+              selectCols
+          ).append(" FROM ")
+          .append(conn.quoteTable(settings.getTable()));
+      if (selectWhere != null && !"".equals(selectWhere)) {
+        query.append(" WHERE ").append(selectWhere);
+      }
+
+      //String sortClause = "";
+      if (sortColumn != null && !"".equals(sortColumn)) {
+        query.append(" ORDER BY ").append(conn.quoteColumn(sortColumn)).append(' ').append(settings.getSortOrder());
+      }
+      if (limitClause != null) {
+        query.append(' ').append(limitClause);
+      }
+      fullQuery = query.toString();
+    }
 
     int totalRows;    // The total number of rows in the database
     if (selectCols == null && selectWhere == null) {
