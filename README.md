@@ -23,7 +23,7 @@ Multi-database admin tool.
 * [Project Home](https://aoindustries.com/javatator/)
 * [Changelog](https://aoindustries.com/javatator/changelog)
 * [API Docs](https://aoindustries.com/javatator/apidocs/)
-* [Maven Central Repository](https://central.sonatype.com/artifact/com.aoindustries/javatator)
+* [Central Repository](https://central.sonatype.com/artifact/com.aoindustries/javatator)
 * [GitHub](https://github.com/ao-apps/javatator)
 
 ## Contact Us

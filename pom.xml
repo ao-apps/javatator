@@ -38,9 +38,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <module.name>com.javaphilia.javatator</module.name>
     <javadoc.breadcrumbs><![CDATA[<a target="${javadoc.target}" href="${project.url}">${project.name}</a>]]></javadoc.breadcrumbs>
     <com.javaphilia.javatator.DatabaseConfiguration />
-    <!-- com.aoindustries is on original Sonatype Nexus Repository Manager -->
-    <nexusServerId>ossrh-aoindustries</nexusServerId>
-    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
     <!-- TODO: Implement tests -->
     <sonar.coverage.exclusions>**.*</sonar.coverage.exclusions>
     <!-- Require secure session cookies in production -->
@@ -110,9 +107,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   <repositories>
     <!-- Repository required here, too, so can find parent -->
     <repository>
-      <id>sonatype-nexus-snapshots-s01</id>
-      <name>Sonatype Nexus Snapshots S01</name>
-      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+      <id>central-snapshots</id>
+      <name>Central Snapshot Repository</name>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
       <releases>
         <enabled>false</enabled>
       </releases>
