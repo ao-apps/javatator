@@ -260,10 +260,10 @@ public class InterbaseConnector extends JdbcConnector {
    */
   @Override
   public List<String> getFunctionList() throws SQLException, IOException {
-    //return executeListQuery("SELECT p.proname as Function FROM pg_proc p, pg_type t WHERE"
-    //    + " p.prorettype = t.oid"
-    //    + " and (pronargs = 0 or oidvectortypes(p.proargtypes) != '')"
-    //    + " GROUP BY Function ORDER BY Function");
+    // return executeListQuery("SELECT p.proname as Function FROM pg_proc p, pg_type t WHERE"
+    //     + " p.prorettype = t.oid"
+    //     + " and (pronargs = 0 or oidvectortypes(p.proargtypes) != '')"
+    //     + " GROUP BY Function ORDER BY Function");
     return Collections.emptyList();
   }
 
@@ -272,11 +272,11 @@ public class InterbaseConnector extends JdbcConnector {
    */
   @Override
   public List<String> getFunctionList(String type) throws SQLException, IOException {
-    //return executeListQuery("SELECT p.proname as Function FROM pg_proc p, pg_type t WHERE"
-    //    + " p.prorettype = t.oid"
-    //    + " and t.typname=lower(?)"
-    //    + " and (pronargs = 0 or oidvectortypes(p.proargtypes) != '')"
-    //    + " GROUP BY Function ORDER BY Function", type);
+    // return executeListQuery("SELECT p.proname as Function FROM pg_proc p, pg_type t WHERE"
+    //     + " p.prorettype = t.oid"
+    //     + " and t.typname=lower(?)"
+    //     + " and (pronargs = 0 or oidvectortypes(p.proargtypes) != '')"
+    //     + " GROUP BY Function ORDER BY Function", type);
     return Collections.emptyList();
   }
 

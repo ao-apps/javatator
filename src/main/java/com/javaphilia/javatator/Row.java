@@ -327,7 +327,7 @@ public class Row {
       List<String> types = columns.getTypes();
       List<String> lengths = columns.getLengths();
       List<JdbcConnector.Boolean> areNullable = columns.areNullable();
-      //List<String> defaults=columns.getDefaults();
+      // List<String> defaults=columns.getDefaults();
       int size = names.size();
       for (int i = 0; i < size; i++) {
         final String columnName = names.get(i);
@@ -466,8 +466,8 @@ public class Row {
     }
     out.print("<br><br>\n"
         + "<input type='submit' value='Save!' onClick=\"return selectAction('doedit_row')\">");
-    //+ " <input type='submit' value='Save and edit next row!' "
-    //+ "onClick=\"setNextAction('edit_row');return selectAction('doedit_row');\">");
+    // + " <input type='submit' value='Save and edit next row!' "
+    // + "onClick=\"setNextAction('edit_row');return selectAction('doedit_row');\">");
     return settings;
   }
 

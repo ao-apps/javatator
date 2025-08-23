@@ -172,21 +172,21 @@ public class PostgresqlConnector extends JdbcConnector {
             + "You have to copy the table into a temporary table, create the new table without the column, "
             + "then copy the data back into the new table."
     );
-    //Connection conn=DatabasePool.getConnection(databaseProduct, username, password, url, database);
-    //try {
-    //  conn.setCatalog(database);
-    //  PreparedStatement pstmt=conn.prepareStatement("CREATE TEMPORARY TABLE "+quoteTable(table+"_")+" AS SELECT * FROM "+quoteTable(table)+";"
-    //    + "DROP TABLE "+quoteTable(table)+";"
-    //    + "CREATE TABLE "+quoteTable(table)
-    //  );
-    //  try {
-    //    pstmt.executeUpdate();
-    //  } finally {
-    //    pstmt.close();
-    //  }
-    //} finally {
-    //   conn.close();
-    //}
+    // Connection conn=DatabasePool.getConnection(databaseProduct, username, password, url, database);
+    // try {
+    //   conn.setCatalog(database);
+    //   PreparedStatement pstmt=conn.prepareStatement("CREATE TEMPORARY TABLE "+quoteTable(table+"_")+" AS SELECT * FROM "+quoteTable(table)+";"
+    //     + "DROP TABLE "+quoteTable(table)+";"
+    //     + "CREATE TABLE "+quoteTable(table)
+    //   );
+    //   try {
+    //     pstmt.executeUpdate();
+    //   } finally {
+    //     pstmt.close();
+    //   }
+    // } finally {
+    //    conn.close();
+    // }
   }
 
   /**

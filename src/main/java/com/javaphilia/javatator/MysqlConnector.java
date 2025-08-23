@@ -207,7 +207,7 @@ public class MysqlConnector extends JdbcConnector {
               s = s.substring(5, len - 2);
               len -= 9;
             }
-            //Split up into tokens on ','
+            // Split up into tokens on ','
             List<String> v = new ArrayList<>();
             int start = 0;
             for (int i = 0; i < len; i++) {

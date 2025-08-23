@@ -1265,7 +1265,7 @@ public class Table {
         query.append(" WHERE ").append(selectWhere);
       }
 
-      //String sortClause = "";
+      // String sortClause = "";
       if (sortColumn != null && !"".equals(sortColumn)) {
         query.append(" ORDER BY ").append(conn.quoteColumn(sortColumn)).append(' ').append(settings.getSortOrder());
       }
@@ -1320,15 +1320,15 @@ public class Table {
         // The unique IDs of the imported key for each column (what this column references)
         List<Integer> importedKeyIds;
         ForeignKeys importedKeys = conn.getImportedKeys();
-        //for (int c=0;c<importedKeys.getSize();c++) {
-        //    System.err.println("importedKeys: "+importedKeys.getForeignTable(c)+"."+importedKeys.getForeignKey(c)+"→"+importedKeys.getPrimaryTable(c)+"."+importedKeys.getPrimaryKey(c));
-        //}
+        // for (int c=0;c<importedKeys.getSize();c++) {
+        //     System.err.println("importedKeys: "+importedKeys.getForeignTable(c)+"."+importedKeys.getForeignKey(c)+"→"+importedKeys.getPrimaryTable(c)+"."+importedKeys.getPrimaryKey(c));
+        // }
         // The unique IDs of the columns that reference this table
         List<List<Integer>> exportedIds;
         ForeignKeys exportedKeys = conn.getExportedKeys();
-        //for (int c=0;c<exportedKeys.getSize();c++) {
-        //    System.err.println("exportedKeys: "+exportedKeys.getForeignTable(c)+"."+exportedKeys.getForeignKey(c)+"→"+exportedKeys.getPrimaryTable(c)+"."+exportedKeys.getPrimaryKey(c));
-        //}
+        // for (int c=0;c<exportedKeys.getSize();c++) {
+        //     System.err.println("exportedKeys: "+exportedKeys.getForeignTable(c)+"."+exportedKeys.getForeignKey(c)+"→"+exportedKeys.getPrimaryTable(c)+"."+exportedKeys.getPrimaryKey(c));
+        // }
 
         // The type of each column
         List<String> columnTypes;

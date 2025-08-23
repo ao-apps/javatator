@@ -308,7 +308,7 @@ public class Column {
 
     try {
       JdbcConnector conn = settings.getJdbcConnector();
-      //Columns columns=conn.getColumns();
+      // Columns columns=conn.getColumns();
       List<String> types = conn.getTypes();
 
       // List all the possible types

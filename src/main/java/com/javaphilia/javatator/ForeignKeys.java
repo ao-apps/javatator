@@ -170,7 +170,7 @@ public class ForeignKeys {
     List<Integer> ids = new ArrayList<>();
     for (int i = 0; i < size; i++) {
       if (primaryKeys.get(i).equals(column) /* && !hasBeen.contains(foreignTables.get(i))*/) {
-        //hasBeen.add(foreignTables.get(i));
+        // hasBeen.add(foreignTables.get(i));
         ids.add(i);
       }
     }

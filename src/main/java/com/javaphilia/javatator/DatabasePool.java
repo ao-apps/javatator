@@ -217,7 +217,7 @@ public class DatabasePool {
           while (!temp.closeDatabase0()) {
             // Try until closed
           }
-          //break;
+          // break;
         }
       }
     }

@@ -1536,14 +1536,14 @@ public class JdbcConnector {
     return true;
   }
 
-  ///**
-  // * Gets the type of the specified column.
-  // *
-  // * @param column the name of the column.
-  // */
-  //public String getType(String column) throws SQLException, IOException {
-  //  return getColumnMetaData(column, 6);
-  //}
+  // /**
+  //  * Gets the type of the specified column.
+  //  *
+  //  * @param column the name of the column.
+  //  */
+  // public String getType(String column) throws SQLException, IOException {
+  //   return getColumnMetaData(column, 6);
+  // }
 
   /**
    * Checks if is a SQL keyword.

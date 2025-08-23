@@ -153,7 +153,7 @@ public class SchemaImage extends HttpServlet {
     textAttributes.put(TextAttribute.FAMILY, "Helvetica");
     textAttributes.put(TextAttribute.SIZE, 14f);
     Font font = new Font(textAttributes);
-    //FontMetrics FM=toolkit.getFontMetrics(font);
+    // FontMetrics FM=toolkit.getFontMetrics(font);
 
     // Figure out the structure to use
     short[][] structure = null;
@@ -377,7 +377,7 @@ public class SchemaImage extends HttpServlet {
           g.drawLine(x1, linky1 + 1, ax2, ay2 + 1);
           g.drawLine(x1 + 1, linky1 + 1, ax2 + 1, ay2 + 1);
 
-          //points.addElement(new Point(x1, linky1));
+          // points.addElement(new Point(x1, linky1));
           points.add(new Point(x2, linky2));
         }
       }
