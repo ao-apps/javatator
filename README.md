@@ -8,7 +8,7 @@
 [![semantic versioning: 2.0.0](https://aoindustries.com/ao-badges/semver-2.0.0.svg)](https://semver.org/spec/v2.0.0.html)
 [![license: GPL v2](https://aoindustries.com/ao-badges/license-gpl-2.0.svg)](https://www.gnu.org/licenses/gpl-2.0)
 
-[![Build](https://github.com/ao-apps/javatator/workflows/Build/badge.svg?branch=master)](https://github.com/ao-apps/javatator/actions?query=workflow%3ABuild)
+[![Build](https://github.com/ao-apps/javatator/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/ao-apps/javatator/actions?query=workflow%3ABuild)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.aoindustries/javatator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.aoindustries/javatator)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.aoindustries%3Ajavatator&metric=alert_status)](https://sonarcloud.io/dashboard?branch=master&id=com.aoindustries%3Ajavatator)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.aoindustries%3Ajavatator&metric=ncloc)](https://sonarcloud.io/component_measures?branch=master&id=com.aoindustries%3Ajavatator&metric=ncloc)  
