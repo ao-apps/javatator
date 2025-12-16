@@ -36,21 +36,21 @@ def upstreamProjects = [
   // Direct
   'oss/collections', // <groupId>com.aoapps</groupId><artifactId>ao-collections</artifactId>
   'oss/fluent-html-any', // <groupId>com.aoapps</groupId><artifactId>ao-fluent-html-any</artifactId>
-  'oss/fluent-html-servlet', // <groupId>com.aoapps</groupId><artifactId>ao-fluent-html-servlet</artifactId>
+  'oss/fluent-html-servlet-javaee', // <groupId>com.aoapps</groupId><artifactId>ao-fluent-html-servlet</artifactId>
   'oss/lang', // <groupId>com.aoapps</groupId><artifactId>ao-lang</artifactId>
   'oss/net-types', // <groupId>com.aoapps</groupId><artifactId>ao-net-types</artifactId>
-  'oss/servlet-util', // <groupId>com.aoapps</groupId><artifactId>ao-servlet-util</artifactId>
+  'oss/servlet-util-javaee', // <groupId>com.aoapps</groupId><artifactId>ao-servlet-util</artifactId>
   'oss/sql-wrapper', // <groupId>com.aoapps</groupId><artifactId>ao-sql-wrapper</artifactId>
   'oss/web-resources/registry', // <groupId>com.aoapps</groupId><artifactId>ao-web-resources-registry</artifactId>
-  'oss/web-resources/renderer', // <groupId>com.aoapps</groupId><artifactId>ao-web-resources-renderer</artifactId>
-  'oss/web-resources/servlet', // <groupId>com.aoapps</groupId><artifactId>ao-web-resources-servlet</artifactId>
+  'oss/web-resources/renderer-javaee', // <groupId>com.aoapps</groupId><artifactId>ao-web-resources-renderer</artifactId>
+  'oss/web-resources/servlet-javaee', // <groupId>com.aoapps</groupId><artifactId>ao-web-resources-servlet</artifactId>
   'aoserv/client', // <groupId>com.aoindustries</groupId><artifactId>aoserv-client</artifactId>
   // No Jenkins: <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId>
 
   // Runtime Direct
-  'oss/error-pages', // <groupId>com.aoapps</groupId><artifactId>ao-error-pages</artifactId>
+  'oss/error-pages-javaee', // <groupId>com.aoapps</groupId><artifactId>ao-error-pages</artifactId>
   'oss/mime-mappings', // <groupId>com.aoapps</groupId><artifactId>ao-mime-mappings</artifactId>
-  'oss/servlet-filter', // <groupId>com.aoapps</groupId><artifactId>ao-servlet-filter</artifactId>
+  'oss/servlet-filter-javaee', // <groupId>com.aoapps</groupId><artifactId>ao-servlet-filter</artifactId>
 
   // BOM
   'oss/javaee-web-api-bom', // <groupId>com.aoapps</groupId><artifactId>javaee-web-api-bom</artifactId>
