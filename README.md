@@ -8,14 +8,14 @@
 [![semantic versioning: 2.0.0](https://aoindustries.com/ao-badges/semver-2.0.0.svg)](https://semver.org/spec/v2.0.0.html)
 [![license: GPL v2](https://aoindustries.com/ao-badges/license-gpl-2.0.svg)](https://www.gnu.org/licenses/gpl-2.0)
 
-[![Build](https://github.com/ao-apps/javatator/actions/workflows/build.yml/badge.svg?branch=javaee)](https://github.com/ao-apps/javatator/actions?query=workflow%3ABuild)
+[![Build](https://github.com/ao-apps/javatator/actions/workflows/build.yml/badge.svg?branch=jakartaee)](https://github.com/ao-apps/javatator/actions?query=workflow%3ABuild)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.aoindustries/javatator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.aoindustries/javatator)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=javaee&project=com.aoindustries%3Ajavatator&metric=alert_status)](https://sonarcloud.io/dashboard?branch=javaee&id=com.aoindustries%3Ajavatator)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?branch=javaee&project=com.aoindustries%3Ajavatator&metric=ncloc)](https://sonarcloud.io/component_measures?branch=javaee&id=com.aoindustries%3Ajavatator&metric=ncloc)  
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?branch=javaee&project=com.aoindustries%3Ajavatator&metric=reliability_rating)](https://sonarcloud.io/component_measures?branch=javaee&id=com.aoindustries%3Ajavatator&metric=Reliability)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?branch=javaee&project=com.aoindustries%3Ajavatator&metric=security_rating)](https://sonarcloud.io/component_measures?branch=javaee&id=com.aoindustries%3Ajavatator&metric=Security)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?branch=javaee&project=com.aoindustries%3Ajavatator&metric=sqale_rating)](https://sonarcloud.io/component_measures?branch=javaee&id=com.aoindustries%3Ajavatator&metric=Maintainability)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?branch=javaee&project=com.aoindustries%3Ajavatator&metric=coverage)](https://sonarcloud.io/component_measures?branch=javaee&id=com.aoindustries%3Ajavatator&metric=Coverage)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=jakartaee&project=com.aoindustries%3Ajavatator&metric=alert_status)](https://sonarcloud.io/dashboard?branch=jakartaee&id=com.aoindustries%3Ajavatator)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?branch=jakartaee&project=com.aoindustries%3Ajavatator&metric=ncloc)](https://sonarcloud.io/component_measures?branch=jakartaee&id=com.aoindustries%3Ajavatator&metric=ncloc)  
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?branch=jakartaee&project=com.aoindustries%3Ajavatator&metric=reliability_rating)](https://sonarcloud.io/component_measures?branch=jakartaee&id=com.aoindustries%3Ajavatator&metric=Reliability)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?branch=jakartaee&project=com.aoindustries%3Ajavatator&metric=security_rating)](https://sonarcloud.io/component_measures?branch=jakartaee&id=com.aoindustries%3Ajavatator&metric=Security)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?branch=jakartaee&project=com.aoindustries%3Ajavatator&metric=sqale_rating)](https://sonarcloud.io/component_measures?branch=jakartaee&id=com.aoindustries%3Ajavatator&metric=Maintainability)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?branch=jakartaee&project=com.aoindustries%3Ajavatator&metric=coverage)](https://sonarcloud.io/component_measures?branch=jakartaee&id=com.aoindustries%3Ajavatator&metric=Coverage)
 
 Multi-database admin tool.
 
