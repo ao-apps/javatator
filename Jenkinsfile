@@ -49,7 +49,7 @@ def upstreamProjects = [
 
   // Runtime Direct
   'oss/error-pages-javaee', // <groupId>com.aoapps</groupId><artifactId>ao-error-pages</artifactId>
-  'oss/mime-mappings', // <groupId>com.aoapps</groupId><artifactId>ao-mime-mappings</artifactId>
+  'oss/mime-mappings-javaee', // <groupId>com.aoapps</groupId><artifactId>ao-mime-mappings</artifactId>
   'oss/servlet-filter-javaee', // <groupId>com.aoapps</groupId><artifactId>ao-servlet-filter</artifactId>
 
   // BOM
