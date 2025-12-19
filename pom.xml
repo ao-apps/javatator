@@ -322,11 +322,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </plugins>
       </build>
     </profile>
+    <!-- Publishing version javaee still:
     <profile>
       <id>publish</id>
       <build>
         <plugins>
-          <!-- Publishing version javaee still:
           <plugin>
             <groupId>org.apache.tomcat.maven</groupId><artifactId>tomcat7-maven-plugin</artifactId>
             <executions>
@@ -342,7 +342,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
               </execution>
             </executions>
           </plugin>
-          -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId><artifactId>maven-antrun-plugin</artifactId>
             <executions>
@@ -390,6 +389,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </plugins>
       </build>
     </profile>
+    -->
   </profiles>
 
   <dependencyManagement>
