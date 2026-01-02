@@ -2,7 +2,7 @@
 <!--
 javatator - Multi-database admin tool.
 
-Copyright (C) 2019, 2020, 2021, 2022, 2023, 2024, 2025  AO Industries, Inc.
+Copyright (C) 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -302,7 +302,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <configuration>
               <!--
                 Releases use "Automatic-Module-Name" instead of "module-info.java"
-                since has direct dependencies that are not yet modularized.
+                since has direct dependencies that are not yet modularized:
+                javax.el-api-3.0.0.jar
+                javax.servlet-api-3.1.0.jar
+                javax.servlet.jsp-api-2.3.3.jar
               -->
               <archive>
                 <manifestEntries>
