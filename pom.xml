@@ -38,6 +38,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <module.name>com.javaphilia.javatator</module.name>
     <javadoc.breadcrumbs><![CDATA[<a target="${javadoc.target}" href="${project.url}">${project.name}</a>]]></javadoc.breadcrumbs>
     <com.javaphilia.javatator.DatabaseConfiguration />
+    <!-- Jakarta EE 10 -->
+    <javaee.version>10</javaee.version>
+    <javadoc.link.javaee>${javadoc.link.jakartaee.10}</javadoc.link.javaee>
     <!-- TODO: Implement tests -->
     <sonar.coverage.exclusions>**.*</sonar.coverage.exclusions>
     <!-- Require secure session cookies in production -->
@@ -204,7 +207,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                       <includes>element-list, package-list</includes>
                       <outputDirectory>${project.build.directory}/offlineLinks/com.aoindustries/aoserv-client</outputDirectory>
                     </artifactItem>
-                    <!-- ao-javadoc-offline: <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId><classifier>javadoc</classifier> -->
+                    <!-- ao-javadoc-offline: <groupId>jakarta.servlet</groupId><artifactId>jakarta.servlet-api</artifactId><classifier>javadoc</classifier> -->
                   </artifactItems>
                 </configuration>
               </execution>
@@ -259,7 +262,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                   <url>https://aoindustries.com/aoserv/client/apidocs/</url>
                   <location>${project.build.directory}/offlineLinks/com.aoindustries/aoserv-client</location>
                 </offlineLink>
-                <!-- ao-javadoc-offline: <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId><classifier>javadoc</classifier> -->
+                <!-- ao-javadoc-offline: <groupId>jakarta.servlet</groupId><artifactId>jakarta.servlet-api</artifactId><classifier>javadoc</classifier> -->
               </offlineLinks>
             </configuration>
           </plugin>
@@ -295,35 +298,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <org.apache.maven.plugins.maven-javadoc-plugin.version>${org.apache.maven.plugins.maven-javadoc-plugin.version.compat}</org.apache.maven.plugins.maven-javadoc-plugin.version>
         <copy-element-list-to-package-list-before-javadoc.phase>prepare-package</copy-element-list-to-package-list-before-javadoc.phase>
       </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId><artifactId>maven-war-plugin</artifactId>
-            <configuration>
-              <!--
-                Releases use "Automatic-Module-Name" instead of "module-info.java"
-                since has direct dependencies that are not yet modularized:
-                javax.el-api-3.0.0.jar
-                javax.servlet-api-3.1.0.jar
-                javax.servlet.jsp-api-2.3.3.jar
-              -->
-              <archive>
-                <manifestEntries>
-                  <Automatic-Module-Name>${module.name}</Automatic-Module-Name>
-                </manifestEntries>
-              </archive>
-              <packagingExcludes>
-                <!-- Default Excludes -->
-                ${maven-war-plugin.packagingExcludes.default}
-                <!-- Exclude module-info due to named dependencies-->
-                ,WEB-INF/classes/module-info.class
-              </packagingExcludes>
-              <!-- There is no way to exclude module-info.class from secondary artifact, just don't attach -->
-              <attachClasses>false</attachClasses>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
     <!-- Publishing version javaee still:
     <profile>
@@ -432,7 +406,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <groupId>com.aoindustries</groupId><artifactId>aoserv-client</artifactId><version>1.92.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
       </dependency>
       <dependency>
-        <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId><version>3.1.0</version>
+        <groupId>jakarta.servlet</groupId><artifactId>jakarta.servlet-api</artifactId><version>6.0.0</version>
         <scope>provided</scope>
       </dependency>
       <!-- Transitive -->
@@ -464,11 +438,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>3.20.0</version>
       </dependency>
       <dependency>
-        <groupId>javax.el</groupId><artifactId>javax.el-api</artifactId><version>3.0.0</version>
+        <groupId>jakarta.el</groupId><artifactId>jakarta.el-api</artifactId><version>5.0.1</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>javax.servlet.jsp</groupId><artifactId>javax.servlet.jsp-api</artifactId><version>2.3.3</version>
+        <groupId>jakarta.servlet.jsp</groupId><artifactId>jakarta.servlet.jsp-api</artifactId><version>3.1.1</version>
         <scope>provided</scope>
       </dependency>
       <!-- Runtime Direct -->
@@ -500,11 +474,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       <dependency>
         <groupId>com.aoapps</groupId><artifactId>ao-web-resources-taglib</artifactId><version>0.7.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
       </dependency>
-      <!-- javaee-web-api-bom: <groupId>org.apache.taglibs</groupId><artifactId>taglibs-standard-impl</artifactId> -->
-      <!-- javaee-web-api-bom: <groupId>org.apache.taglibs</groupId><artifactId>taglibs-standard-spec</artifactId> -->
+      <!-- jakartaee-web-profile-bom: <groupId>org.glassfish.web</groupId><artifactId>jakarta.servlet.jsp.jstl</artifactId> -->
+      <!-- jakartaee-web-profile-bom: <groupId>jakarta.servlet.jsp.jstl</groupId><artifactId>jakarta.servlet.jsp.jstl-api</artifactId> -->
       <!-- Imports -->
       <dependency>
-        <groupId>com.aoapps</groupId><artifactId>javaee-web-api-bom</artifactId><version>7.0.1-POST-SNAPSHOT</version>
+        <groupId>com.aoapps</groupId><artifactId>jakartaee-web-profile-bom</artifactId><version>10.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -547,7 +521,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       <groupId>com.aoindustries</groupId><artifactId>aoserv-client</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId>
+      <groupId>jakarta.servlet</groupId><artifactId>jakarta.servlet-api</artifactId>
     </dependency>
     <!-- Runtime Direct -->
     <dependency>
