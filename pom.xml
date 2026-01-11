@@ -299,7 +299,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <copy-element-list-to-package-list-before-javadoc.phase>prepare-package</copy-element-list-to-package-list-before-javadoc.phase>
       </properties>
     </profile>
-    <!-- Publishing version javaee still:
     <profile>
       <id>publish</id>
       <build>
@@ -366,7 +365,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </plugins>
       </build>
     </profile>
-    -->
   </profiles>
 
   <dependencyManagement>
