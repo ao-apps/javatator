@@ -333,7 +333,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <retry retrycount="12" retrydelay="15000">
                       <sequential>
                         <local name="war-file-fingerprint" />
-                        <get retries="1" src="${publish-aoindustries.com-javatator-GetWarFileFingerprint-url}" dest="${project.build.directory}/verify-war-file-fingerprint/GetWarFileFingerprint" maxtime="120" httpusecaches="false" />
+                        <get
+                          retries="1"
+                          src="${publish-aoindustries.com-javatator-GetWarFileFingerprint-url}"
+                          dest="${project.build.directory}/verify-war-file-fingerprint/GetWarFileFingerprint"
+                          maxtime="120"
+                          httpusecaches="false"
+                        />
                         <loadfile property="war-file-fingerprint" srcFile="${project.build.directory}/verify-war-file-fingerprint/GetWarFileFingerprint" />
                         <condition property="war-file-fingerprint.matches">
                           <equals arg1="${war-file-fingerprint}" arg2="${expected-war-file-fingerprint}" />
