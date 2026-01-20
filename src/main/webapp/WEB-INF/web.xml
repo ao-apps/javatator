@@ -96,15 +96,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <servlet-class>com.aoapps.servlet.tomcat.GetWarFileFingerprint</servlet-class>
     <servlet-name>com.aoapps.servlet.tomcat.GetWarFileFingerprint</servlet-name>
     <load-on-startup>1</load-on-startup>
-    <init-param>
-      <param-name>role</param-name>
-      <param-value>*</param-value>
-    </init-param>
   </servlet>
   <servlet-mapping>
     <servlet-name>com.aoapps.servlet.tomcat.GetWarFileFingerprint</servlet-name>
     <url-pattern>/ao-servlet-util/tomcat/GetWarFileFingerprint</url-pattern>
   </servlet-mapping>
+  <security-role>
+    <description>Protecting with the same role as used to deploy via Tomcat manager</description>
+    <role-name>manager-script</role-name>
+  </security-role>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>AO Servlet Util / Tomcat</web-resource-name>
+      <url-pattern>/ao-servlet-util/tomcat/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>manager-script</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>Tomcat Manager Application</realm-name>
+  </login-config>
 
   <!-- Error Pages -->
   <!-- Using error pages from ao-error-pages:/META-INF/web-fragment.xml -->

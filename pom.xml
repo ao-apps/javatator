@@ -50,6 +50,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <publish-aoindustries.com-ssh-path>/usr/bin/ssh</publish-aoindustries.com-ssh-path>
     <publish-aoindustries.com-javatator-GetWarFileFingerprint-url>https://aoindustries.com/javatator/ao-servlet-util/tomcat/GetWarFileFingerprint</publish-aoindustries.com-javatator-GetWarFileFingerprint-url>
     <publish-aoindustries.com-javatator-warmup-get-url>https://aoindustries.com/javatator/</publish-aoindustries.com-javatator-warmup-get-url>
+
+    <!-- Plugins -->
+    <org.codehaus.gmaven.groovy-maven-plugin.version>2.1.1</org.codehaus.gmaven.groovy-maven-plugin.version>
   </properties>
 
   <name>Javatator</name>
@@ -283,6 +286,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       <build>
         <plugins>
           <plugin>
+            <groupId>org.codehaus.gmaven</groupId><artifactId>groovy-maven-plugin</artifactId><version>${org.codehaus.gmaven.groovy-maven-plugin.version}</version>
+            <executions>
+              <!-- See https://stackoverflow.com/a/11239913 -->
+              <execution>
+                <id>get-tomcatManager-auth-from-settings</id><phase>validate</phase><goals><goal>execute</goal></goals>
+                <configuration>
+                  <source>
+                    def server = settings.servers.find{ it.id.equals('tomcat7-maven-plugin-aoindustries.com') }
+                    project.properties.tomcatManagerUsername = server.username
+                    project.properties.tomcatManagerPassword = server.password
+                  </source>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <groupId>org.apache.tomcat.maven</groupId><artifactId>tomcat7-maven-plugin</artifactId>
             <executions>
               <execution>
@@ -335,6 +354,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <local name="war-file-fingerprint" />
                         <get
                           retries="1"
+                          username="${tomcatManagerUsername}"
+                          password="${tomcatManagerPassword}"
                           src="${publish-aoindustries.com-javatator-GetWarFileFingerprint-url}"
                           dest="${project.build.directory}/verify-war-file-fingerprint/GetWarFileFingerprint"
                           maxtime="120"
