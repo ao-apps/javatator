@@ -88,6 +88,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
   <!-- TODO: Review filters versus other projects -->
 
+  <!--
+    Gets the deployed WAR file MD5 fingerprint.  Used after deployment to catch
+    any silent failures by proactively verifying the correct artifact is running.
+  -->
+  <servlet>
+    <servlet-class>com.aoapps.servlet.tomcat.GetWarFileFingerprint</servlet-class>
+    <servlet-name>com.aoapps.servlet.tomcat.GetWarFileFingerprint</servlet-name>
+    <load-on-startup>1</load-on-startup>
+    <init-param>
+      <param-name>role</param-name>
+      <param-value>*</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>com.aoapps.servlet.tomcat.GetWarFileFingerprint</servlet-name>
+    <url-pattern>/ao-servlet-util/tomcat/GetWarFileFingerprint</url-pattern>
+  </servlet-mapping>
+
   <!-- Error Pages -->
   <!-- Using error pages from ao-error-pages:/META-INF/web-fragment.xml -->
 

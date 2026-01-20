@@ -48,6 +48,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <!-- Default publish settings -->
     <!-- TODO: Parallel deployment -->
     <publish-aoindustries.com-ssh-path>/usr/bin/ssh</publish-aoindustries.com-ssh-path>
+    <publish-aoindustries.com-javatator-GetWarFileFingerprint-url>https://aoindustries.com/javator/ao-servlet-util/tomcat/GetWarFileFingerprint</publish-aoindustries.com-javatator-GetWarFileFingerprint-url>
     <publish-aoindustries.com-javatator-warmup-get-url>https://aoindustries.com/javatator/</publish-aoindustries.com-javatator-warmup-get-url>
   </properties>
 
@@ -318,6 +319,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <configuration>
                   <target>
                     <sleep seconds="10" />
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>verify-war-file-fingerprint</id><phase>deploy</phase><goals><goal>run</goal></goals>
+                <configuration>
+                  <target>
+                    <!-- Compute the expected MD5 fingerprint -->
+                    <checksum file="${project.build.directory}/${project.build.finalName}.war" property="expected-war-file-fingerprint"/>
+                    <!-- Download and verify matches -->
+                    <mkdir dir="${project.build.directory}/verify-war-file-fingerprint" />
+                    <retry retrycount="12" retrydelay="15000">
+                      <sequential>
+                        <local name="war-file-fingerprint" />
+                        <get retries="1" src="${publish-aoindustries.com-javatator-GetWarFileFingerprint-url}" dest="${project.build.directory}/verify-war-file-fingerprint/GetWarFileFingerprint" maxtime="120" httpusecaches="false" />
+                        <loadfile property="war-file-fingerprint" srcFile="${project.build.directory}/verify-war-file-fingerprint/GetWarFileFingerprint" />
+                        <condition property="war-file-fingerprint.matches">
+                          <equals arg1="${war-file-fingerprint}" arg2="${expected-war-file-fingerprint}" />
+                        </condition>
+                        <fail
+                          message="WAR file MD5 fingerprint mismatch.  Expected ${expected-war-file-fingerprint}, got ${war-file-fingerprint}."
+                          unless="war-file-fingerprint.matches"
+                        />
+                      </sequential>
+                    </retry>
                   </target>
                 </configuration>
               </execution>
