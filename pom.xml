@@ -48,7 +48,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <!-- Default publish settings -->
     <!-- TODO: Parallel deployment -->
     <publish-aoindustries.com-ssh-path>/usr/bin/ssh</publish-aoindustries.com-ssh-path>
-    <publish-aoindustries.com-javatator-GetWarFileFingerprint-url>https://aoindustries.com/javator/ao-servlet-util/tomcat/GetWarFileFingerprint</publish-aoindustries.com-javatator-GetWarFileFingerprint-url>
+    <publish-aoindustries.com-javatator-GetWarFileFingerprint-url>https://aoindustries.com/javatator/ao-servlet-util/tomcat/GetWarFileFingerprint</publish-aoindustries.com-javatator-GetWarFileFingerprint-url>
     <publish-aoindustries.com-javatator-warmup-get-url>https://aoindustries.com/javatator/</publish-aoindustries.com-javatator-warmup-get-url>
   </properties>
 
