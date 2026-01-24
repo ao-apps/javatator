@@ -46,13 +46,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <!-- Require secure session cookies in production -->
     <session.cookie.secure>true</session.cookie.secure>
     <!-- Default publish settings -->
+    <publish.tomcat7-maven-plugin.1.server>tomcat7-maven-plugin-aoindustries.com</publish.tomcat7-maven-plugin.1.server>
+    <publish.tomcat7-maven-plugin.1.url>${tomcat7-maven-plugin-aoindustries.com}</publish.tomcat7-maven-plugin.1.url>
+    <publish.tomcat7-maven-plugin.1.GetWarFileFingerprint-url>https://aoindustries.com/javatator/ao-servlet-util/tomcat/GetWarFileFingerprint</publish.tomcat7-maven-plugin.1.GetWarFileFingerprint-url>
+    <publish.tomcat7-maven-plugin.1.warmup-get-url.1>https://aoindustries.com/javatator/</publish.tomcat7-maven-plugin.1.warmup-get-url.1>
+    <!-- Non-Parallel Deployment -->
     <!-- TODO: Parallel deployment -->
-    <publish-aoindustries.com-ssh-path>/usr/bin/ssh</publish-aoindustries.com-ssh-path>
-    <publish-aoindustries.com-javatator-GetWarFileFingerprint-url>https://aoindustries.com/javatator/ao-servlet-util/tomcat/GetWarFileFingerprint</publish-aoindustries.com-javatator-GetWarFileFingerprint-url>
-    <publish-aoindustries.com-javatator-warmup-get-url>https://aoindustries.com/javatator/</publish-aoindustries.com-javatator-warmup-get-url>
-
-    <!-- Plugins -->
-    <org.codehaus.gmaven.groovy-maven-plugin.version>2.1.1</org.codehaus.gmaven.groovy-maven-plugin.version>
+    <publish.tomcat7-maven-plugin.1.path>/javatator</publish.tomcat7-maven-plugin.1.path>
+    <publish.tomcat7-maven-plugin.1.ssh-path>/usr/bin/ssh</publish.tomcat7-maven-plugin.1.ssh-path>
+    <publish.tomcat7-maven-plugin.1.tomcat-username>${publish-aoindustries.com-tomcat-username}</publish.tomcat7-maven-plugin.1.tomcat-username>
+    <publish.tomcat7-maven-plugin.1.tomcat-hostname>${publish-aoindustries.com-tomcat-hostname}</publish.tomcat7-maven-plugin.1.tomcat-hostname>
+    <!-- Not restarting Tomcat:
+    <publish.tomcat7-maven-plugin.1.tomcat-path>${publish-aoindustries.com-tomcat-path}</publish.tomcat7-maven-plugin.1.tomcat-path>
+    -->
+    <publish.tomcat7-maven-plugin.1.tomcat-work>${publish-aoindustries.com-javatator-tomcat-work}</publish.tomcat7-maven-plugin.1.tomcat-work>
   </properties>
 
   <name>Javatator</name>
@@ -280,121 +287,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <!-- Allow unsecure session cookies in development -->
         <session.cookie.secure>false</session.cookie.secure>
       </properties>
-    </profile>
-    <profile>
-      <id>publish</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.gmaven</groupId><artifactId>groovy-maven-plugin</artifactId><version>${org.codehaus.gmaven.groovy-maven-plugin.version}</version>
-            <executions>
-              <!-- See https://stackoverflow.com/a/11239913 -->
-              <execution>
-                <id>get-tomcatManager-auth-from-settings</id><phase>validate</phase><goals><goal>execute</goal></goals>
-                <configuration>
-                  <source>
-                    def server = settings.servers.find{ it.id.equals('tomcat7-maven-plugin-aoindustries.com') }
-                    project.properties.tomcatManagerUsername = server.username
-                    project.properties.tomcatManagerPassword = server.password
-                  </source>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.tomcat.maven</groupId><artifactId>tomcat7-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>publish</id><phase>deploy</phase><goals><goal>deploy-only</goal></goals>
-                <configuration>
-                  <charset>UTF-8</charset>
-                  <server>tomcat7-maven-plugin-aoindustries.com</server>
-                  <path>/javatator</path>
-                  <update>true</update>
-                  <url>${tomcat7-maven-plugin-aoindustries.com}</url>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId><artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>delete-tomcat-work</id><phase>deploy</phase><goals><goal>run</goal></goals>
-                <configuration>
-                  <target>
-                    <sleep seconds="1" />
-                    <exec executable="${publish-aoindustries.com-ssh-path}" failonerror="true">
-                      <arg value="-oControlPath=none" />
-                      <arg value="-T" />
-                      <arg value="${publish-aoindustries.com-tomcat-username}@${publish-aoindustries.com-tomcat-hostname}"/>
-                      <arg value="bash -c 'if [ -d &quot;$1&quot; ] ; then find &quot;$1&quot; &quot;(&quot; -name &quot;*.java&quot; -or -name &quot;*.class&quot; &quot;)&quot; -delete ; fi' delete-tomcat-work '${publish-aoindustries.com-javatator-tomcat-work}'" />
-                    </exec>
-                  </target>
-                </configuration>
-              </execution>
-              <execution>
-                <id>warmup-sleep</id><phase>deploy</phase><goals><goal>run</goal></goals>
-                <configuration>
-                  <target>
-                    <sleep seconds="10" />
-                  </target>
-                </configuration>
-              </execution>
-              <execution>
-                <id>verify-war-file-fingerprint</id><phase>deploy</phase><goals><goal>run</goal></goals>
-                <configuration>
-                  <target>
-                    <!-- Compute the expected MD5 fingerprint -->
-                    <checksum file="${project.build.directory}/${project.build.finalName}.war" property="expected-war-file-fingerprint"/>
-                    <!-- Download and verify matches -->
-                    <mkdir dir="${project.build.directory}/verify-war-file-fingerprint" />
-                    <retry retrycount="12" retrydelay="15000">
-                      <sequential>
-                        <local name="war-file-fingerprint" />
-                        <get
-                          retries="1"
-                          username="${tomcatManagerUsername}"
-                          password="${tomcatManagerPassword}"
-                          src="${publish-aoindustries.com-javatator-GetWarFileFingerprint-url}"
-                          dest="${project.build.directory}/verify-war-file-fingerprint/GetWarFileFingerprint"
-                          maxtime="120"
-                          httpusecaches="false"
-                        />
-                        <loadfile property="war-file-fingerprint" srcFile="${project.build.directory}/verify-war-file-fingerprint/GetWarFileFingerprint" />
-                        <condition property="war-file-fingerprint.matches">
-                          <equals arg1="${war-file-fingerprint}" arg2="${expected-war-file-fingerprint}" />
-                        </condition>
-                        <fail
-                          message="WAR file MD5 fingerprint mismatch.  Expected ${expected-war-file-fingerprint}, got ${war-file-fingerprint}."
-                          unless="war-file-fingerprint.matches"
-                        />
-                      </sequential>
-                    </retry>
-                  </target>
-                </configuration>
-              </execution>
-              <execution>
-                <id>warmup-get-url</id><phase>deploy</phase><goals><goal>run</goal></goals>
-                <configuration>
-                  <target>
-                    <mkdir dir="${project.build.directory}/warmup-get-url" />
-                    <retry retrycount="12" retrydelay="15000">
-                      <get
-                        retries="1"
-                        src="${publish-aoindustries.com-javatator-warmup-get-url}"
-                        dest="${project.build.directory}/warmup-get-url/response"
-                        maxtime="120"
-                        httpusecaches="false"
-                      />
-                    </retry>
-                  </target>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
   </profiles>
 
