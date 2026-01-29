@@ -51,22 +51,22 @@ public class JdbcConnector {
 
   public enum Boolean {
     /**
-     * Expanded boolean {@link #FALSE} is returned when something is known to be false.
+     * Expanded boolean {@link Boolean#FALSE} is returned when something is known to be false.
      */
     FALSE,
 
     /**
-     * Expanded boolean {@link #TRUE} is returned when something is known to be true.
+     * Expanded boolean {@link Boolean#TRUE} is returned when something is known to be true.
      */
     TRUE,
 
     /**
-     * Expanded boolean {@link #UNKNOWN} is returned when something is not known to be true or false.
+     * Expanded boolean {@link Boolean#UNKNOWN} is returned when something is not known to be true or false.
      */
     UNKNOWN,
 
     /**
-     * Expanded boolean {@link #NA} is returned when something is known to not apply to this database.
+     * Expanded boolean {@link Boolean#NA} is returned when something is known to not apply to this database.
      */
     NA
   }
@@ -1596,7 +1596,7 @@ public class JdbcConnector {
   /**
    * Quotes an identifier used for a table name.
    *
-   * @see  #defaultQuote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+   * @see  JdbcConnector#defaultQuote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
    */
   public String quoteTable(String table) {
     return defaultQuote("\"", "\"\"", "\"", table);
@@ -1605,7 +1605,7 @@ public class JdbcConnector {
   /**
    * Quotes an identifier used for a column name.
    *
-   * @see  #defaultQuote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+   * @see  JdbcConnector#defaultQuote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
    */
   public String quoteColumn(String column) {
     return defaultQuote("\"", "\"\"", "\"", column);
@@ -1614,7 +1614,7 @@ public class JdbcConnector {
   /**
    * Quotes an identifier used for a type name.
    *
-   * @see  #defaultQuote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+   * @see  JdbcConnector#defaultQuote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
    */
   public String quoteType(String type) {
     return defaultQuote("\"", "\"\"", "\"", type);

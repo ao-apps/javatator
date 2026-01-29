@@ -103,7 +103,7 @@ public class DatabasePool {
    * Instances of {@link Connection} to reuse i.e. the {@link Connection}.
    * pool.
    *
-   * @see  #getConnection
+   * @see  DatabasePool#getConnection
    */
   private final Connection[] connections;
 
@@ -318,7 +318,7 @@ public class DatabasePool {
   }
 
   /**
-   * Calls {@link #releaseConnection0(java.sql.Connection)} when this
+   * Calls {@link DatabasePool#releaseConnection0(java.sql.Connection)} when this
    * connection is closed.
    *
    * <p>TODO: A future improvement would be to close a connection that has
@@ -333,7 +333,7 @@ public class DatabasePool {
     }
 
     /**
-     * Calls {@link #releaseConnection0(java.sql.Connection)}, the connection
+     * Calls {@link ReleaseOnCloseConnection#releaseConnection0(java.sql.Connection)}, the connection
      * itself is not closed.
      */
     @Override
