@@ -51,6 +51,7 @@ binding.setVariable('upstreamProjects', [
   'oss/error-pages', // <groupId>com.aoapps</groupId><artifactId>ao-error-pages</artifactId>
   'oss/mime-mappings', // <groupId>com.aoapps</groupId><artifactId>ao-mime-mappings</artifactId>
   'oss/servlet-filter', // <groupId>com.aoapps</groupId><artifactId>ao-servlet-filter</artifactId>
+  // No Jenkins: <groupId>org.glassfish.web</groupId><artifactId>jakarta.servlet.jsp.jstl</artifactId>
 
   // BOM
   'oss/jakartaee-web-profile-bom', // <groupId>com.aoapps</groupId><artifactId>jakartaee-web-profile-bom</artifactId>

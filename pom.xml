@@ -309,7 +309,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <groupId>com.aoapps</groupId><artifactId>ao-net-types</artifactId><version>3.0.0${POST-SNAPSHOT}</version>
       </dependency>
       <dependency>
-        <groupId>com.aoapps</groupId><artifactId>ao-servlet-util</artifactId><version>6.0.0${POST-SNAPSHOT}</version>
+        <groupId>com.aoapps</groupId><artifactId>ao-servlet-util</artifactId><version>6.0.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
       </dependency>
       <dependency>
         <groupId>com.aoapps</groupId><artifactId>ao-sql-wrapper</artifactId><version>2.2.0${POST-SNAPSHOT}</version>
@@ -365,7 +365,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       </dependency>
       <!-- Runtime Direct -->
       <dependency>
-        <groupId>com.aoapps</groupId><artifactId>ao-error-pages</artifactId><version>2.0.0${POST-SNAPSHOT}</version>
+        <groupId>com.aoapps</groupId><artifactId>ao-error-pages</artifactId><version>2.0.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
       </dependency>
       <dependency>
         <groupId>com.aoapps</groupId><artifactId>ao-mime-mappings</artifactId><version>2.0.0${POST-SNAPSHOT}</version>
@@ -373,6 +373,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       <dependency>
         <groupId>com.aoapps</groupId><artifactId>ao-servlet-filter</artifactId><version>4.0.0${POST-SNAPSHOT}</version>
       </dependency>
+      <!-- jakartaee-web-profile-bom: <groupId>org.glassfish.web</groupId><artifactId>jakarta.servlet.jsp.jstl</artifactId> -->
       <!-- Runtime Transitive -->
       <dependency>
         <groupId>com.aoapps</groupId><artifactId>ao-encoding-taglib</artifactId><version>6.0.0${POST-SNAPSHOT}</version>
@@ -395,7 +396,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       <dependency>
         <groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>3.20.0</version>
       </dependency>
-      <!-- jakartaee-web-profile-bom: <groupId>org.glassfish.web</groupId><artifactId>jakarta.servlet.jsp.jstl</artifactId> -->
       <!-- jakartaee-web-profile-bom: <groupId>jakarta.servlet.jsp.jstl</groupId><artifactId>jakarta.servlet.jsp.jstl-api</artifactId> -->
       <!-- Imports -->
       <dependency>
@@ -456,6 +456,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </dependency>
     <dependency>
       <groupId>com.aoapps</groupId><artifactId>ao-servlet-filter</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.web</groupId><artifactId>jakarta.servlet.jsp.jstl</artifactId>
       <scope>runtime</scope>
     </dependency>
   </dependencies>
