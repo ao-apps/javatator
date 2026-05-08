@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2009, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025  AO Industries, Inc.
+ * Copyright (C) 2009, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -639,7 +639,7 @@ public class Table {
     out.print(settings.getTable());
     out.print(" : Privileges</h2>\n"
         + "Privileges for this table:<br><br>\n");
-    JdbcConnector conn = settings.getJdbcConnector();
+    final JdbcConnector conn = settings.getJdbcConnector();
     out.startTable(null, "cellspacing=1");
     out.startTr();
     out.printTh("Grantor");

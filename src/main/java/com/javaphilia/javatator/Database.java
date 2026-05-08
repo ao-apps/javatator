@@ -94,7 +94,7 @@ public class Database {
       int numrows
   ) throws SQLException, IOException {
     final JdbcConnector conn = settings.getJdbcConnector();
-    boolean countRows = false;
+    final boolean countRows = false;
 
     out.print("<h2>Database ");
     out.print(settings.getDatabase());
