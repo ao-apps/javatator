@@ -5,7 +5,7 @@
  *     If you want to help or want to report any bugs, please email me:
  *     jason@javaphilia.com
  *
- * Copyright (C) 2018, 2019, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2021, 2022, 2024, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -71,7 +71,7 @@ public class JdbcConnector {
     NA
   }
 
-  protected static final String[] defaultTableTypes = new String[]{"TABLE"};
+  protected static final String[] defaultTableTypes = new String[] {"TABLE"};
 
   /**
    * The {@link Settings} store all the configuration parameters.

@@ -440,9 +440,9 @@ public class Settings {
     url = url.replace("%d", database);
 
     /* TODO:
-    if (ssl) {
-      url = UrlUtils.addQuery(url, "ssl=true";
-    }
+     * if (ssl) {
+     *   url = UrlUtils.addQuery(url, "ssl=true";
+     * }
      */
     return url;
   }
