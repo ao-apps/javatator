@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 module com.javaphilia.javatator {
-  exports com.javaphilia.javatator;
   // Direct
   requires com.aoapps.collections; // <groupId>com.aoapps</groupId><artifactId>ao-collections</artifactId>
   requires com.aoapps.html.any; // <groupId>com.aoapps</groupId><artifactId>ao-fluent-html-any</artifactId>
@@ -38,4 +37,6 @@ module com.javaphilia.javatator {
   // Java SE
   requires java.desktop;
   requires java.sql;
+
+  exports com.javaphilia.javatator;
 }
