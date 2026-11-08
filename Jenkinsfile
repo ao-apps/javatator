@@ -57,6 +57,11 @@ binding.setVariable('upstreamProjects', [
   'oss/jakartaee-web-profile-bom', // <groupId>com.aoapps</groupId><artifactId>jakartaee-web-profile-bom</artifactId>
 ])
 
+// This project always runs off the latest snapshot, regardless whether it is
+// *-POST-SNAPSHOT (after the latest release) or *-SNAPSHOT (before the next release).
+// This project will not be re-released solely for updated dependency versions.
+binding.setVariable('scmAdditionalAuditBranches', [])
+
 /******************************************************************************************
  *                                                                                        *
  * Everything below this line is identical for all projects, except the copied matrix     *
